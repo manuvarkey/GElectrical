@@ -1,0 +1,229 @@
+item_name;item_category;designation;conductor_material;insulation_material;conductor_cross_section;neutral_xsec;type_of_cable;x_ohm_per_km;c_nf_per_km;armour_material;armour_cross_section
+2x1.5 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;2x1.5 Y;Copper;PVC;1.5;1;1ph;;;Steel;
+2x2.5 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;2x2.5 Y;Copper;PVC;2.5;1;1ph;;;Steel;
+2x4 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;2x4 Y;Copper;PVC;4;1;1ph;;;Steel;
+2x6 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;2x6 Y;Copper;PVC;6;1;1ph;;;Steel;
+2x10 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;2x10 Y;Copper;PVC;10;1;1ph;;;Steel;
+2x16 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;2x16 Y;Copper;PVC;16;1;1ph;;;Steel;
+2x25 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;2x25 Y;Copper;PVC;25;1;1ph;;;Steel;
+4x1.5 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;4x1.5 Y;Copper;PVC;1.5;1;3ph;;;Steel;
+4x2.5 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;4x2.5 Y;Copper;PVC;2.5;1;3ph;;;Steel;
+4x4 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;4x4 Y;Copper;PVC;4;1;3ph;;;Steel;
+4x6 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;4x6 Y;Copper;PVC;6;1;3ph;;;Steel;
+4x10 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;4x10 Y;Copper;PVC;10;1;3ph;;;Steel;
+4x16 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;4x16 Y;Copper;PVC;16;1;3ph;;;Steel;
+4x25 Y;PVC Insulated Copper Condutor, Single Core Cable in Conduit;4x25 Y;Copper;PVC;25;1;3ph;0.3;;Steel;
+2x4 2XY;Copper XLPE Cables;2x4 2XY;Copper;XLPE/EPR;4;1;1ph;0.08;110;Steel;
+2x6 2XY;Copper XLPE Cables;2x6 2XY;Copper;XLPE/EPR;6;1;1ph;0.08;130;Steel;
+2x10 2XY;Copper XLPE Cables;2x10 2XY;Copper;XLPE/EPR;10;1;1ph;0.08;160;Steel;
+2x16 2XY;Copper XLPE Cables;2x16 2XY;Copper;XLPE/EPR;16;1;1ph;0.08;180;Steel;
+2x25 2XY;Copper XLPE Cables;2x25 2XY;Copper;XLPE/EPR;25;1;1ph;0.08;200;Steel;
+2x35 2XY;Copper XLPE Cables;2x35 2XY;Copper;XLPE/EPR;35;1;1ph;0.08;230;Steel;
+2x50 2XY;Copper XLPE Cables;2x50 2XY;Copper;XLPE/EPR;50;1;1ph;0.08;240;Steel;
+2x70 2XY;Copper XLPE Cables;2x70 2XY;Copper;XLPE/EPR;70;1;1ph;0.08;260;Steel;
+2x95 2XY;Copper XLPE Cables;2x95 2XY;Copper;XLPE/EPR;95;1;1ph;0.08;290;Steel;
+2x120 2XY;Copper XLPE Cables;2x120 2XY;Copper;XLPE/EPR;120;1;1ph;0.08;290;Steel;
+2x150 2XY;Copper XLPE Cables;2x150 2XY;Copper;XLPE/EPR;150;1;1ph;0.08;290;Steel;
+2x185 2XY;Copper XLPE Cables;2x185 2XY;Copper;XLPE/EPR;185;1;1ph;0.08;290;Steel;
+2x240 2XY;Copper XLPE Cables;2x240 2XY;Copper;XLPE/EPR;240;1;1ph;0.08;310;Steel;
+2x300 2XY;Copper XLPE Cables;2x300 2XY;Copper;XLPE/EPR;300;1;1ph;0.08;330;Steel;
+3x4 2XY;Copper XLPE Cables;3x4 2XY;Copper;XLPE/EPR;4;0;3ph;0.08;110;Steel;
+3x6 2XY;Copper XLPE Cables;3x6 2XY;Copper;XLPE/EPR;6;0;3ph;0.08;130;Steel;
+3x10 2XY;Copper XLPE Cables;3x10 2XY;Copper;XLPE/EPR;10;0;3ph;0.08;160;Steel;
+3x16 2XY;Copper XLPE Cables;3x16 2XY;Copper;XLPE/EPR;16;0;3ph;0.08;180;Steel;
+3x25 2XY;Copper XLPE Cables;3x25 2XY;Copper;XLPE/EPR;25;0;3ph;0.08;200;Steel;
+3x35 2XY;Copper XLPE Cables;3x35 2XY;Copper;XLPE/EPR;35;0;3ph;0.08;230;Steel;
+3x50 2XY;Copper XLPE Cables;3x50 2XY;Copper;XLPE/EPR;50;0;3ph;0.08;240;Steel;
+3x70 2XY;Copper XLPE Cables;3x70 2XY;Copper;XLPE/EPR;70;0;3ph;0.08;260;Steel;
+3x95 2XY;Copper XLPE Cables;3x95 2XY;Copper;XLPE/EPR;95;0;3ph;0.08;290;Steel;
+3x120 2XY;Copper XLPE Cables;3x120 2XY;Copper;XLPE/EPR;120;0;3ph;0.08;290;Steel;
+3x150 2XY;Copper XLPE Cables;3x150 2XY;Copper;XLPE/EPR;150;0;3ph;0.08;290;Steel;
+3x185 2XY;Copper XLPE Cables;3x185 2XY;Copper;XLPE/EPR;185;0;3ph;0.08;290;Steel;
+3x240 2XY;Copper XLPE Cables;3x240 2XY;Copper;XLPE/EPR;240;0;3ph;0.08;310;Steel;
+3x300 2XY;Copper XLPE Cables;3x300 2XY;Copper;XLPE/EPR;300;0;3ph;0.08;330;Steel;
+3.5x25 2XY;Copper XLPE Cables;3.5x25 2XY;Copper;XLPE/EPR;25;0.64;3ph;0.08;200;Steel;
+3.5x35 2XY;Copper XLPE Cables;3.5x35 2XY;Copper;XLPE/EPR;35;0.457;3ph;0.08;230;Steel;
+3.5x50 2XY;Copper XLPE Cables;3.5x50 2XY;Copper;XLPE/EPR;50;0.5;3ph;0.08;240;Steel;
+3.5x70 2XY;Copper XLPE Cables;3.5x70 2XY;Copper;XLPE/EPR;70;0.5;3ph;0.08;260;Steel;
+3.5x95 2XY;Copper XLPE Cables;3.5x95 2XY;Copper;XLPE/EPR;95;0.526;3ph;0.08;290;Steel;
+3.5x120 2XY;Copper XLPE Cables;3.5x120 2XY;Copper;XLPE/EPR;120;0.583;3ph;0.08;290;Steel;
+3.5x150 2XY;Copper XLPE Cables;3.5x150 2XY;Copper;XLPE/EPR;150;0.467;3ph;0.08;290;Steel;
+3.5x185 2XY;Copper XLPE Cables;3.5x185 2XY;Copper;XLPE/EPR;185;0.514;3ph;0.08;290;Steel;
+3.5x240 2XY;Copper XLPE Cables;3.5x240 2XY;Copper;XLPE/EPR;240;0.5;3ph;0.08;310;Steel;
+3.5x300 2XY;Copper XLPE Cables;3.5x300 2XY;Copper;XLPE/EPR;300;0.5;3ph;0.08;330;Steel;
+4x4 2XY;Copper XLPE Cables;4x4 2XY;Copper;XLPE/EPR;4;1;3ph;0.08;110;Steel;
+4x6 2XY;Copper XLPE Cables;4x6 2XY;Copper;XLPE/EPR;6;1;3ph;0.08;130;Steel;
+4x10 2XY;Copper XLPE Cables;4x10 2XY;Copper;XLPE/EPR;10;1;3ph;0.08;160;Steel;
+4x16 2XY;Copper XLPE Cables;4x16 2XY;Copper;XLPE/EPR;16;1;3ph;0.08;180;Steel;
+4x25 2XY;Copper XLPE Cables;4x25 2XY;Copper;XLPE/EPR;25;1;3ph;0.08;200;Steel;
+4x35 2XY;Copper XLPE Cables;4x35 2XY;Copper;XLPE/EPR;35;1;3ph;0.08;230;Steel;
+4x50 2XY;Copper XLPE Cables;4x50 2XY;Copper;XLPE/EPR;50;1;3ph;0.08;240;Steel;
+4x70 2XY;Copper XLPE Cables;4x70 2XY;Copper;XLPE/EPR;70;1;3ph;0.08;260;Steel;
+4x95 2XY;Copper XLPE Cables;4x95 2XY;Copper;XLPE/EPR;95;1;3ph;0.08;290;Steel;
+4x120 2XY;Copper XLPE Cables;4x120 2XY;Copper;XLPE/EPR;120;1;3ph;0.08;290;Steel;
+4x150 2XY;Copper XLPE Cables;4x150 2XY;Copper;XLPE/EPR;150;1;3ph;0.08;290;Steel;
+4x185 2XY;Copper XLPE Cables;4x185 2XY;Copper;XLPE/EPR;185;1;3ph;0.08;290;Steel;
+4x240 2XY;Copper XLPE Cables;4x240 2XY;Copper;XLPE/EPR;240;1;3ph;0.08;310;Steel;
+4x300 2XY;Copper XLPE Cables;4x300 2XY;Copper;XLPE/EPR;300;1;3ph;0.08;330;Steel;
+2x4 A2XY;Aluminium XLPE Cables;2x4 A2XY;Aluminium;XLPE/EPR;4;1;1ph;0.08;110;Steel;
+2x6 A2XY;Aluminium XLPE Cables;2x6 A2XY;Aluminium;XLPE/EPR;6;1;1ph;0.08;130;Steel;
+2x10 A2XY;Aluminium XLPE Cables;2x10 A2XY;Aluminium;XLPE/EPR;10;1;1ph;0.08;160;Steel;
+2x16 A2XY;Aluminium XLPE Cables;2x16 A2XY;Aluminium;XLPE/EPR;16;1;1ph;0.08;180;Steel;
+2x25 A2XY;Aluminium XLPE Cables;2x25 A2XY;Aluminium;XLPE/EPR;25;1;1ph;0.08;200;Steel;
+2x35 A2XY;Aluminium XLPE Cables;2x35 A2XY;Aluminium;XLPE/EPR;35;1;1ph;0.08;230;Steel;
+2x50 A2XY;Aluminium XLPE Cables;2x50 A2XY;Aluminium;XLPE/EPR;50;1;1ph;0.08;240;Steel;
+2x70 A2XY;Aluminium XLPE Cables;2x70 A2XY;Aluminium;XLPE/EPR;70;1;1ph;0.08;260;Steel;
+2x95 A2XY;Aluminium XLPE Cables;2x95 A2XY;Aluminium;XLPE/EPR;95;1;1ph;0.08;290;Steel;
+2x120 A2XY;Aluminium XLPE Cables;2x120 A2XY;Aluminium;XLPE/EPR;120;1;1ph;0.08;290;Steel;
+2x150 A2XY;Aluminium XLPE Cables;2x150 A2XY;Aluminium;XLPE/EPR;150;1;1ph;0.08;290;Steel;
+2x185 A2XY;Aluminium XLPE Cables;2x185 A2XY;Aluminium;XLPE/EPR;185;1;1ph;0.08;290;Steel;
+2x240 A2XY;Aluminium XLPE Cables;2x240 A2XY;Aluminium;XLPE/EPR;240;1;1ph;0.08;310;Steel;
+2x300 A2XY;Aluminium XLPE Cables;2x300 A2XY;Aluminium;XLPE/EPR;300;1;1ph;0.08;330;Steel;
+3x4 A2XY;Aluminium XLPE Cables;3x4 A2XY;Aluminium;XLPE/EPR;4;0;3ph;0.08;110;Steel;
+3x6 A2XY;Aluminium XLPE Cables;3x6 A2XY;Aluminium;XLPE/EPR;6;0;3ph;0.08;130;Steel;
+3x10 A2XY;Aluminium XLPE Cables;3x10 A2XY;Aluminium;XLPE/EPR;10;0;3ph;0.08;160;Steel;
+3x16 A2XY;Aluminium XLPE Cables;3x16 A2XY;Aluminium;XLPE/EPR;16;0;3ph;0.08;180;Steel;
+3x25 A2XY;Aluminium XLPE Cables;3x25 A2XY;Aluminium;XLPE/EPR;25;0;3ph;0.08;200;Steel;
+3x35 A2XY;Aluminium XLPE Cables;3x35 A2XY;Aluminium;XLPE/EPR;35;0;3ph;0.08;230;Steel;
+3x50 A2XY;Aluminium XLPE Cables;3x50 A2XY;Aluminium;XLPE/EPR;50;0;3ph;0.08;240;Steel;
+3x70 A2XY;Aluminium XLPE Cables;3x70 A2XY;Aluminium;XLPE/EPR;70;0;3ph;0.08;260;Steel;
+3x95 A2XY;Aluminium XLPE Cables;3x95 A2XY;Aluminium;XLPE/EPR;95;0;3ph;0.08;290;Steel;
+3x120 A2XY;Aluminium XLPE Cables;3x120 A2XY;Aluminium;XLPE/EPR;120;0;3ph;0.08;290;Steel;
+3x150 A2XY;Aluminium XLPE Cables;3x150 A2XY;Aluminium;XLPE/EPR;150;0;3ph;0.08;290;Steel;
+3x185 A2XY;Aluminium XLPE Cables;3x185 A2XY;Aluminium;XLPE/EPR;185;0;3ph;0.08;290;Steel;
+3x240 A2XY;Aluminium XLPE Cables;3x240 A2XY;Aluminium;XLPE/EPR;240;0;3ph;0.08;310;Steel;
+3x300 A2XY;Aluminium XLPE Cables;3x300 A2XY;Aluminium;XLPE/EPR;300;0;3ph;0.08;330;Steel;
+3.5x25 A2XY;Aluminium XLPE Cables;3.5x25 A2XY;Aluminium;XLPE/EPR;25;0.64;3ph;0.08;200;Steel;
+3.5x35 A2XY;Aluminium XLPE Cables;3.5x35 A2XY;Aluminium;XLPE/EPR;35;0.457;3ph;0.08;230;Steel;
+3.5x50 A2XY;Aluminium XLPE Cables;3.5x50 A2XY;Aluminium;XLPE/EPR;50;0.5;3ph;0.08;240;Steel;
+3.5x70 A2XY;Aluminium XLPE Cables;3.5x70 A2XY;Aluminium;XLPE/EPR;70;0.5;3ph;0.08;260;Steel;
+3.5x95 A2XY;Aluminium XLPE Cables;3.5x95 A2XY;Aluminium;XLPE/EPR;95;0.526;3ph;0.08;290;Steel;
+3.5x120 A2XY;Aluminium XLPE Cables;3.5x120 A2XY;Aluminium;XLPE/EPR;120;0.583;3ph;0.08;290;Steel;
+3.5x150 A2XY;Aluminium XLPE Cables;3.5x150 A2XY;Aluminium;XLPE/EPR;150;0.467;3ph;0.08;290;Steel;
+3.5x185 A2XY;Aluminium XLPE Cables;3.5x185 A2XY;Aluminium;XLPE/EPR;185;0.514;3ph;0.08;290;Steel;
+3.5x240 A2XY;Aluminium XLPE Cables;3.5x240 A2XY;Aluminium;XLPE/EPR;240;0.5;3ph;0.08;310;Steel;
+3.5x300 A2XY;Aluminium XLPE Cables;3.5x300 A2XY;Aluminium;XLPE/EPR;300;0.5;3ph;0.08;330;Steel;
+4x4 A2XY;Aluminium XLPE Cables;4x4 A2XY;Aluminium;XLPE/EPR;4;1;3ph;0.08;110;Steel;
+4x6 A2XY;Aluminium XLPE Cables;4x6 A2XY;Aluminium;XLPE/EPR;6;1;3ph;0.08;130;Steel;
+4x10 A2XY;Aluminium XLPE Cables;4x10 A2XY;Aluminium;XLPE/EPR;10;1;3ph;0.08;160;Steel;
+4x16 A2XY;Aluminium XLPE Cables;4x16 A2XY;Aluminium;XLPE/EPR;16;1;3ph;0.08;180;Steel;
+4x25 A2XY;Aluminium XLPE Cables;4x25 A2XY;Aluminium;XLPE/EPR;25;1;3ph;0.08;200;Steel;
+4x35 A2XY;Aluminium XLPE Cables;4x35 A2XY;Aluminium;XLPE/EPR;35;1;3ph;0.08;230;Steel;
+4x50 A2XY;Aluminium XLPE Cables;4x50 A2XY;Aluminium;XLPE/EPR;50;1;3ph;0.08;240;Steel;
+4x70 A2XY;Aluminium XLPE Cables;4x70 A2XY;Aluminium;XLPE/EPR;70;1;3ph;0.08;260;Steel;
+4x95 A2XY;Aluminium XLPE Cables;4x95 A2XY;Aluminium;XLPE/EPR;95;1;3ph;0.08;290;Steel;
+4x120 A2XY;Aluminium XLPE Cables;4x120 A2XY;Aluminium;XLPE/EPR;120;1;3ph;0.08;290;Steel;
+4x150 A2XY;Aluminium XLPE Cables;4x150 A2XY;Aluminium;XLPE/EPR;150;1;3ph;0.08;290;Steel;
+4x185 A2XY;Aluminium XLPE Cables;4x185 A2XY;Aluminium;XLPE/EPR;185;1;3ph;0.08;290;Steel;
+4x240 A2XY;Aluminium XLPE Cables;4x240 A2XY;Aluminium;XLPE/EPR;240;1;3ph;0.08;310;Steel;
+4x300 A2XY;Aluminium XLPE Cables;4x300 A2XY;Aluminium;XLPE/EPR;300;1;3ph;0.08;330;Steel;
+2x1.5 2XWY;Copper XLPE Cables Armoured;2x1.5 2XWY;Copper;XLPE/EPR;1.5;1;1ph;0.1;90;Steel;35
+2x2.5 2XWY;Copper XLPE Cables Armoured;2x2.5 2XWY;Copper;XLPE/EPR;2.5;1;1ph;0.1;90;Steel;35
+2x4 2XWY;Copper XLPE Cables Armoured;2x4 2XWY;Copper;XLPE/EPR;4;1;1ph;0.08;110;Steel;49
+2x6 2XWY;Copper XLPE Cables Armoured;2x6 2XWY;Copper;XLPE/EPR;6;1;1ph;0.08;130;Steel;52
+2x10 2XWY;Copper XLPE Cables Armoured;2x10 2XWY;Copper;XLPE/EPR;10;1;1ph;0.08;160;Steel;56
+2x16 2XFY;Copper XLPE Cables Armoured;2x16 2XFY;Copper;XLPE/EPR;16;1;1ph;0.08;180;Steel;36
+2x25 2XFY;Copper XLPE Cables Armoured;2x25 2XFY;Copper;XLPE/EPR;25;1;1ph;0.08;200;Steel;41
+2x35 2XFY;Copper XLPE Cables Armoured;2x35 2XFY;Copper;XLPE/EPR;35;1;1ph;0.08;230;Steel;46
+2x50 2XFY;Copper XLPE Cables Armoured;2x50 2XFY;Copper;XLPE/EPR;50;1;1ph;0.08;240;Steel;54
+2x70 2XFY;Copper XLPE Cables Armoured;2x70 2XFY;Copper;XLPE/EPR;70;1;1ph;0.08;260;Steel;58
+2x95 2XFY;Copper XLPE Cables Armoured;2x95 2XFY;Copper;XLPE/EPR;95;1;1ph;0.08;290;Steel;66
+2x120 2XFY;Copper XLPE Cables Armoured;2x120 2XFY;Copper;XLPE/EPR;120;1;1ph;0.08;290;Steel;71
+2x150 2XFY;Copper XLPE Cables Armoured;2x150 2XFY;Copper;XLPE/EPR;150;1;1ph;0.08;290;Steel;77
+2x185 2XFY;Copper XLPE Cables Armoured;2x185 2XFY;Copper;XLPE/EPR;185;1;1ph;0.08;290;Steel;84
+2x240 2XFY;Copper XLPE Cables Armoured;2x240 2XFY;Copper;XLPE/EPR;240;1;1ph;0.08;310;Steel;96
+2x300 2XFY;Copper XLPE Cables Armoured;2x300 2XFY;Copper;XLPE/EPR;300;1;1ph;0.08;330;Steel;108
+3x1.5 2XWY;Copper XLPE Cables Armoured;3x1.5 2XWY;Copper;XLPE/EPR;1.5;0;3ph;0.1;90;Steel;35
+3x2.5 2XWY;Copper XLPE Cables Armoured;3x2.5 2XWY;Copper;XLPE/EPR;2.5;0;3ph;0.1;90;Steel;38
+3x4 2XWY;Copper XLPE Cables Armoured;3x4 2XWY;Copper;XLPE/EPR;4;0;3ph;0.08;110;Steel;48
+3x6 2XWY;Copper XLPE Cables Armoured;3x6 2XWY;Copper;XLPE/EPR;6;0;3ph;0.08;130;Steel;51
+3x10 2XWY;Copper XLPE Cables Armoured;3x10 2XWY;Copper;XLPE/EPR;10;0;3ph;0.08;160;Steel;58
+3x16 2XFY;Copper XLPE Cables Armoured;3x16 2XFY;Copper;XLPE/EPR;16;0;3ph;0.08;180;Steel;41
+3x25 2XFY;Copper XLPE Cables Armoured;3x25 2XFY;Copper;XLPE/EPR;25;0;3ph;0.08;200;Steel;49
+3x35 2XFY;Copper XLPE Cables Armoured;3x35 2XFY;Copper;XLPE/EPR;35;0;3ph;0.08;230;Steel;51
+3x50 2XFY;Copper XLPE Cables Armoured;3x50 2XFY;Copper;XLPE/EPR;50;0;3ph;0.08;240;Steel;58
+3x70 2XFY;Copper XLPE Cables Armoured;3x70 2XFY;Copper;XLPE/EPR;70;0;3ph;0.08;260;Steel;68
+3x95 2XFY;Copper XLPE Cables Armoured;3x95 2XFY;Copper;XLPE/EPR;95;0;3ph;0.08;290;Steel;78
+3x120 2XFY;Copper XLPE Cables Armoured;3x120 2XFY;Copper;XLPE/EPR;120;0;3ph;0.08;290;Steel;82
+3x150 2XFY;Copper XLPE Cables Armoured;3x150 2XFY;Copper;XLPE/EPR;150;0;3ph;0.08;290;Steel;92
+3x185 2XFY;Copper XLPE Cables Armoured;3x185 2XFY;Copper;XLPE/EPR;185;0;3ph;0.08;290;Steel;104
+3x240 2XFY;Copper XLPE Cables Armoured;3x240 2XFY;Copper;XLPE/EPR;240;0;3ph;0.08;310;Steel;115
+3x300 2XFY;Copper XLPE Cables Armoured;3x300 2XFY;Copper;XLPE/EPR;300;0;3ph;0.08;330;Steel;127
+3.5x25 2XFY;Copper XLPE Cables Armoured;3.5x25 2XFY;Copper;XLPE/EPR;25;0.64;3ph;0.08;200;Steel;51
+3.5x35 2XFY;Copper XLPE Cables Armoured;3.5x35 2XFY;Copper;XLPE/EPR;35;0.457;3ph;0.08;230;Steel;56
+3.5x50 2XFY;Copper XLPE Cables Armoured;3.5x50 2XFY;Copper;XLPE/EPR;50;0.5;3ph;0.08;240;Steel;66
+3.5x70 2XFY;Copper XLPE Cables Armoured;3.5x70 2XFY;Copper;XLPE/EPR;70;0.5;3ph;0.08;260;Steel;76
+3.5x95 2XFY;Copper XLPE Cables Armoured;3.5x95 2XFY;Copper;XLPE/EPR;95;0.526;3ph;0.08;290;Steel;83
+3.5x120 2XFY;Copper XLPE Cables Armoured;3.5x120 2XFY;Copper;XLPE/EPR;120;0.583;3ph;0.08;290;Steel;92
+3.5x150 2XFY;Copper XLPE Cables Armoured;3.5x150 2XFY;Copper;XLPE/EPR;150;0.467;3ph;0.08;290;Steel;102
+3.5x185 2XFY;Copper XLPE Cables Armoured;3.5x185 2XFY;Copper;XLPE/EPR;185;0.514;3ph;0.08;290;Steel;111
+3.5x240 2XFY;Copper XLPE Cables Armoured;3.5x240 2XFY;Copper;XLPE/EPR;240;0.5;3ph;0.08;310;Steel;125
+3.5x300 2XFY;Copper XLPE Cables Armoured;3.5x300 2XFY;Copper;XLPE/EPR;300;0.5;3ph;0.08;330;Steel;139
+4x1.5 2XWY;Copper XLPE Cables Armoured;4x1.5 2XWY;Copper;XLPE/EPR;1.5;1;3ph;0.1;90;Steel;38
+4x2.5 2XWY;Copper XLPE Cables Armoured;4x2.5 2XWY;Copper;XLPE/EPR;2.5;1;3ph;0.1;90;Steel;42
+4x4 2XWY;Copper XLPE Cables Armoured;4x4 2XWY;Copper;XLPE/EPR;4;1;3ph;0.08;110;Steel;49
+4x6 2XWY;Copper XLPE Cables Armoured;4x6 2XWY;Copper;XLPE/EPR;6;1;3ph;0.08;130;Steel;59
+4x10 2XFY;Copper XLPE Cables Armoured;4x10 2XFY;Copper;XLPE/EPR;10;1;3ph;0.08;160;Steel;44
+4x16 2XFY;Copper XLPE Cables Armoured;4x16 2XFY;Copper;XLPE/EPR;16;1;3ph;0.08;180;Steel;46
+4x25 2XFY;Copper XLPE Cables Armoured;4x25 2XFY;Copper;XLPE/EPR;25;1;3ph;0.08;200;Steel;54
+4x35 2XFY;Copper XLPE Cables Armoured;4x35 2XFY;Copper;XLPE/EPR;35;1;3ph;0.08;230;Steel;61
+4x50 2XFY;Copper XLPE Cables Armoured;4x50 2XFY;Copper;XLPE/EPR;50;1;3ph;0.08;240;Steel;71
+4x70 2XFY;Copper XLPE Cables Armoured;4x70 2XFY;Copper;XLPE/EPR;70;1;3ph;0.08;260;Steel;78
+4x95 2XFY;Copper XLPE Cables Armoured;4x95 2XFY;Copper;XLPE/EPR;95;1;3ph;0.08;290;Steel;90
+4x120 2XFY;Copper XLPE Cables Armoured;4x120 2XFY;Copper;XLPE/EPR;120;1;3ph;0.08;290;Steel;97
+4x150 2XFY;Copper XLPE Cables Armoured;4x150 2XFY;Copper;XLPE/EPR;150;1;3ph;0.08;290;Steel;109
+4x185 2XFY;Copper XLPE Cables Armoured;4x185 2XFY;Copper;XLPE/EPR;185;1;3ph;0.08;290;Steel;118
+4x240 2XFY;Copper XLPE Cables Armoured;4x240 2XFY;Copper;XLPE/EPR;240;1;3ph;0.08;310;Steel;134
+4x300 2XFY;Copper XLPE Cables Armoured;4x300 2XFY;Copper;XLPE/EPR;300;1;3ph;0.08;330;Steel;154
+2x4 A2XFY;Aluminium XLPE Cables Armoured;2x4 A2XFY;Aluminium;XLPE/EPR;4;1;1ph;0.08;110;Steel;49
+2x6 A2XFY;Aluminium XLPE Cables Armoured;2x6 A2XFY;Aluminium;XLPE/EPR;6;1;1ph;0.08;130;Steel;52
+2x10 A2XFY;Aluminium XLPE Cables Armoured;2x10 A2XFY;Aluminium;XLPE/EPR;10;1;1ph;0.08;160;Steel;56
+2x16 A2XFY;Aluminium XLPE Cables Armoured;2x16 A2XFY;Aluminium;XLPE/EPR;16;1;1ph;0.08;180;Steel;36
+2x25 A2XFY;Aluminium XLPE Cables Armoured;2x25 A2XFY;Aluminium;XLPE/EPR;25;1;1ph;0.08;200;Steel;41
+2x35 A2XFY;Aluminium XLPE Cables Armoured;2x35 A2XFY;Aluminium;XLPE/EPR;35;1;1ph;0.08;230;Steel;46
+2x50 A2XFY;Aluminium XLPE Cables Armoured;2x50 A2XFY;Aluminium;XLPE/EPR;50;1;1ph;0.08;240;Steel;54
+2x70 A2XFY;Aluminium XLPE Cables Armoured;2x70 A2XFY;Aluminium;XLPE/EPR;70;1;1ph;0.08;260;Steel;58
+2x95 A2XFY;Aluminium XLPE Cables Armoured;2x95 A2XFY;Aluminium;XLPE/EPR;95;1;1ph;0.08;290;Steel;66
+2x120 A2XFY;Aluminium XLPE Cables Armoured;2x120 A2XFY;Aluminium;XLPE/EPR;120;1;1ph;0.08;290;Steel;71
+2x150 A2XFY;Aluminium XLPE Cables Armoured;2x150 A2XFY;Aluminium;XLPE/EPR;150;1;1ph;0.08;290;Steel;77
+2x185 A2XFY;Aluminium XLPE Cables Armoured;2x185 A2XFY;Aluminium;XLPE/EPR;185;1;1ph;0.08;290;Steel;84
+2x240 A2XFY;Aluminium XLPE Cables Armoured;2x240 A2XFY;Aluminium;XLPE/EPR;240;1;1ph;0.08;310;Steel;96
+2x300 A2XFY;Aluminium XLPE Cables Armoured;2x300 A2XFY;Aluminium;XLPE/EPR;300;1;1ph;0.08;330;Steel;108
+3x4 A2XWY;Aluminium XLPE Cables Armoured;3x4 A2XWY;Aluminium;XLPE/EPR;4;0;3ph;0.08;110;Steel;48
+3x6 A2XWY;Aluminium XLPE Cables Armoured;3x6 A2XWY;Aluminium;XLPE/EPR;6;0;3ph;0.08;130;Steel;51
+3x10 A2XWY;Aluminium XLPE Cables Armoured;3x10 A2XWY;Aluminium;XLPE/EPR;10;0;3ph;0.08;160;Steel;58
+3x16 A2XFY;Aluminium XLPE Cables Armoured;3x16 A2XFY;Aluminium;XLPE/EPR;16;0;3ph;0.08;180;Steel;41
+3x25 A2XFY;Aluminium XLPE Cables Armoured;3x25 A2XFY;Aluminium;XLPE/EPR;25;0;3ph;0.08;200;Steel;49
+3x35 A2XFY;Aluminium XLPE Cables Armoured;3x35 A2XFY;Aluminium;XLPE/EPR;35;0;3ph;0.08;230;Steel;51
+3x50 A2XFY;Aluminium XLPE Cables Armoured;3x50 A2XFY;Aluminium;XLPE/EPR;50;0;3ph;0.08;240;Steel;58
+3x70 A2XFY;Aluminium XLPE Cables Armoured;3x70 A2XFY;Aluminium;XLPE/EPR;70;0;3ph;0.08;260;Steel;68
+3x95 A2XFY;Aluminium XLPE Cables Armoured;3x95 A2XFY;Aluminium;XLPE/EPR;95;0;3ph;0.08;290;Steel;78
+3x120 A2XFY;Aluminium XLPE Cables Armoured;3x120 A2XFY;Aluminium;XLPE/EPR;120;0;3ph;0.08;290;Steel;82
+3x150 A2XFY;Aluminium XLPE Cables Armoured;3x150 A2XFY;Aluminium;XLPE/EPR;150;0;3ph;0.08;290;Steel;92
+3x185 A2XFY;Aluminium XLPE Cables Armoured;3x185 A2XFY;Aluminium;XLPE/EPR;185;0;3ph;0.08;290;Steel;104
+3x240 A2XFY;Aluminium XLPE Cables Armoured;3x240 A2XFY;Aluminium;XLPE/EPR;240;0;3ph;0.08;310;Steel;115
+3x300 A2XFY;Aluminium XLPE Cables Armoured;3x300 A2XFY;Aluminium;XLPE/EPR;300;0;3ph;0.08;330;Steel;127
+3.5x25 A2XFY;Aluminium XLPE Cables Armoured;3.5x25 A2XFY;Aluminium;XLPE/EPR;25;0.64;3ph;0.08;200;Steel;51
+3.5x35 A2XFY;Aluminium XLPE Cables Armoured;3.5x35 A2XFY;Aluminium;XLPE/EPR;35;0.457;3ph;0.08;230;Steel;56
+3.5x50 A2XFY;Aluminium XLPE Cables Armoured;3.5x50 A2XFY;Aluminium;XLPE/EPR;50;0.5;3ph;0.08;240;Steel;66
+3.5x70 A2XFY;Aluminium XLPE Cables Armoured;3.5x70 A2XFY;Aluminium;XLPE/EPR;70;0.5;3ph;0.08;260;Steel;76
+3.5x95 A2XFY;Aluminium XLPE Cables Armoured;3.5x95 A2XFY;Aluminium;XLPE/EPR;95;0.526;3ph;0.08;290;Steel;83
+3.5x120 A2XFY;Aluminium XLPE Cables Armoured;3.5x120 A2XFY;Aluminium;XLPE/EPR;120;0.583;3ph;0.08;290;Steel;92
+3.5x150 A2XFY;Aluminium XLPE Cables Armoured;3.5x150 A2XFY;Aluminium;XLPE/EPR;150;0.467;3ph;0.08;290;Steel;102
+3.5x185 A2XFY;Aluminium XLPE Cables Armoured;3.5x185 A2XFY;Aluminium;XLPE/EPR;185;0.514;3ph;0.08;290;Steel;111
+3.5x240 A2XFY;Aluminium XLPE Cables Armoured;3.5x240 A2XFY;Aluminium;XLPE/EPR;240;0.5;3ph;0.08;310;Steel;125
+3.5x300 A2XFY;Aluminium XLPE Cables Armoured;3.5x300 A2XFY;Aluminium;XLPE/EPR;300;0.5;3ph;0.08;330;Steel;139
+4x4 A2XWY;Aluminium XLPE Cables Armoured;4x4 A2XWY;Aluminium;XLPE/EPR;4;1;3ph;0.08;110;Steel;49
+4x6 A2XWY;Aluminium XLPE Cables Armoured;4x6 A2XWY;Aluminium;XLPE/EPR;6;1;3ph;0.08;130;Steel;59
+4x10 A2XWY;Aluminium XLPE Cables Armoured;4x10 A2XWY;Aluminium;XLPE/EPR;10;1;3ph;0.08;160;Steel;44
+4x16 A2XFY;Aluminium XLPE Cables Armoured;4x16 A2XFY;Aluminium;XLPE/EPR;16;1;3ph;0.08;180;Steel;46
+4x25 A2XFY;Aluminium XLPE Cables Armoured;4x25 A2XFY;Aluminium;XLPE/EPR;25;1;3ph;0.08;200;Steel;54
+4x35 A2XFY;Aluminium XLPE Cables Armoured;4x35 A2XFY;Aluminium;XLPE/EPR;35;1;3ph;0.08;230;Steel;61
+4x50 A2XFY;Aluminium XLPE Cables Armoured;4x50 A2XFY;Aluminium;XLPE/EPR;50;1;3ph;0.08;240;Steel;71
+4x70 A2XFY;Aluminium XLPE Cables Armoured;4x70 A2XFY;Aluminium;XLPE/EPR;70;1;3ph;0.08;260;Steel;78
+4x95 A2XFY;Aluminium XLPE Cables Armoured;4x95 A2XFY;Aluminium;XLPE/EPR;95;1;3ph;0.08;290;Steel;90
+4x120 A2XFY;Aluminium XLPE Cables Armoured;4x120 A2XFY;Aluminium;XLPE/EPR;120;1;3ph;0.08;290;Steel;97
+4x150 A2XFY;Aluminium XLPE Cables Armoured;4x150 A2XFY;Aluminium;XLPE/EPR;150;1;3ph;0.08;290;Steel;109
+4x185 A2XFY;Aluminium XLPE Cables Armoured;4x185 A2XFY;Aluminium;XLPE/EPR;185;1;3ph;0.08;290;Steel;118
+4x240 A2XFY;Aluminium XLPE Cables Armoured;4x240 A2XFY;Aluminium;XLPE/EPR;240;1;3ph;0.08;310;Steel;134
+4x300 A2XFY;Aluminium XLPE Cables Armoured;4x300 A2XFY;Aluminium;XLPE/EPR;300;1;3ph;0.08;330;Steel;154

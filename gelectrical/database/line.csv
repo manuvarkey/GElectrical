@@ -1,0 +1,106 @@
+item_name;item_category;designation;r_ohm_per_km;x_ohm_per_km;c_nf_per_km;max_i_ka;type;r0_ohm_per_km;x0_ohm_per_km;phase_sc_current_rating;cpe_sc_current_rating
+NAYY 4x50 SE;Underground Cable System;NAYY 4x50 SE;0.642;0.083;210;0.142;Under Ground;;;;
+NAYY 4x120 SE;Underground Cable System;NAYY 4x120 SE;0.225;0.08;264;0.242;Under Ground;;;;
+NAYY 4x150 SE;Underground Cable System;NAYY 4x150 SE;0.208;0.08;261;0.27;Under Ground;;;;
+NA2XS2Y 1x95 RM/25 12/20 kV;Underground Cable System;NA2XS2Y 1x95 RM/25 12/20 kV;0.313;0.132;216;0.252;Under Ground;;;;
+NA2XS2Y 1x185 RM/25 12/20 kV;Underground Cable System;NA2XS2Y 1x185 RM/25 12/20 kV;0.161;0.117;273;0.362;Under Ground;;;;
+NA2XS2Y 1x240 RM/25 12/20 kV;Underground Cable System;NA2XS2Y 1x240 RM/25 12/20 kV;0.122;0.112;304;0.421;Under Ground;;;;
+NA2XS2Y 1x95 RM/25 6/10 kV;Underground Cable System;NA2XS2Y 1x95 RM/25 6/10 kV;0.313;0.123;315;0.249;Under Ground;;;;
+NA2XS2Y 1x185 RM/25 6/10 kV;Underground Cable System;NA2XS2Y 1x185 RM/25 6/10 kV;0.161;0.11;406;0.358;Under Ground;;;;
+NA2XS2Y 1x240 RM/25 6/10 kV;Underground Cable System;NA2XS2Y 1x240 RM/25 6/10 kV;0.122;0.105;456;0.416;Under Ground;;;;
+NA2XS2Y 1x150 RM/25 12/20 kV;Underground Cable System;NA2XS2Y 1x150 RM/25 12/20 kV;0.206;0.116;250;0.319;Under Ground;;;;
+NA2XS2Y 1x120 RM/25 12/20 kV;Underground Cable System;NA2XS2Y 1x120 RM/25 12/20 kV;0.253;0.119;230;0.283;Under Ground;;;;
+NA2XS2Y 1x70 RM/25 12/20 kV;Underground Cable System;NA2XS2Y 1x70 RM/25 12/20 kV;0.443;0.132;190;0.22;Under Ground;;;;
+NA2XS2Y 1x150 RM/25 6/10 kV;Underground Cable System;NA2XS2Y 1x150 RM/25 6/10 kV;0.206;0.11;360;0.315;Under Ground;;;;
+NA2XS2Y 1x120 RM/25 6/10 kV;Underground Cable System;NA2XS2Y 1x120 RM/25 6/10 kV;0.253;0.113;340;0.28;Under Ground;;;;
+NA2XS2Y 1x70 RM/25 6/10 kV;Underground Cable System;NA2XS2Y 1x70 RM/25 6/10 kV;0.443;0.123;280;0.217;Under Ground;;;;
+N2XS(FL)2Y 1x120 RM/35 64/110 kV;Underground Cable System;N2XS(FL)2Y 1x120 RM/35 64/110 kV;0.153;0.166;112;0.366;Under Ground;;;;
+N2XS(FL)2Y 1x185 RM/35 64/110 kV;Underground Cable System;N2XS(FL)2Y 1x185 RM/35 64/110 kV;0.099;0.156;125;0.457;Under Ground;;;;
+N2XS(FL)2Y 1x240 RM/35 64/110 kV;Underground Cable System;N2XS(FL)2Y 1x240 RM/35 64/110 kV;0.075;0.149;135;0.526;Under Ground;;;;
+N2XS(FL)2Y 1x300 RM/35 64/110 kV;Underground Cable System;N2XS(FL)2Y 1x300 RM/35 64/110 kV;0.06;0.144;144;0.588;Under Ground;;;;
+15-AL1/3-ST1A 0.4;Overhead Line;15-AL1/3-ST1A 0.4;1.8769;0.35;11;0.105;Over Head;;;;
+24-AL1/4-ST1A 0.4;Overhead Line;24-AL1/4-ST1A 0.4;1.2012;0.335;11.25;0.14;Over Head;;;;
+48-AL1/8-ST1A 0.4;Overhead Line;48-AL1/8-ST1A 0.4;0.5939;0.3;12.2;0.21;Over Head;;;;
+94-AL1/15-ST1A 0.4;Overhead Line;94-AL1/15-ST1A 0.4;0.306;0.29;13.2;0.35;Over Head;;;;
+34-AL1/6-ST1A 10.0;Overhead Line;34-AL1/6-ST1A 10.0;0.8342;0.36;9.7;0.17;Over Head;;;;
+48-AL1/8-ST1A 10.0;Overhead Line;48-AL1/8-ST1A 10.0;0.5939;0.35;10.1;0.21;Over Head;;;;
+70-AL1/11-ST1A 10.0;Overhead Line;70-AL1/11-ST1A 10.0;0.4132;0.339;10.4;0.29;Over Head;;;;
+94-AL1/15-ST1A 10.0;Overhead Line;94-AL1/15-ST1A 10.0;0.306;0.33;10.75;0.35;Over Head;;;;
+122-AL1/20-ST1A 10.0;Overhead Line;122-AL1/20-ST1A 10.0;0.2376;0.323;11.1;0.41;Over Head;;;;
+149-AL1/24-ST1A 10.0;Overhead Line;149-AL1/24-ST1A 10.0;0.194;0.315;11.25;0.47;Over Head;;;;
+34-AL1/6-ST1A 20.0;Overhead Line;34-AL1/6-ST1A 20.0;0.8342;0.382;9.15;0.17;Over Head;;;;
+48-AL1/8-ST1A 20.0;Overhead Line;48-AL1/8-ST1A 20.0;0.5939;0.372;9.5;0.21;Over Head;;;;
+70-AL1/11-ST1A 20.0;Overhead Line;70-AL1/11-ST1A 20.0;0.4132;0.36;9.7;0.29;Over Head;;;;
+94-AL1/15-ST1A 20.0;Overhead Line;94-AL1/15-ST1A 20.0;0.306;0.35;10;0.35;Over Head;;;;
+122-AL1/20-ST1A 20.0;Overhead Line;122-AL1/20-ST1A 20.0;0.2376;0.344;10.3;0.41;Over Head;;;;
+149-AL1/24-ST1A 20.0;Overhead Line;149-AL1/24-ST1A 20.0;0.194;0.337;10.5;0.47;Over Head;;;;
+184-AL1/30-ST1A 20.0;Overhead Line;184-AL1/30-ST1A 20.0;0.1571;0.33;10.75;0.535;Over Head;;;;
+243-AL1/39-ST1A 20.0;Overhead Line;243-AL1/39-ST1A 20.0;0.1188;0.32;11;0.645;Over Head;;;;
+48-AL1/8-ST1A 110.0;Overhead Line;48-AL1/8-ST1A 110.0;0.5939;0.46;8;0.21;Over Head;;;;
+70-AL1/11-ST1A 110.0;Overhead Line;70-AL1/11-ST1A 110.0;0.4132;0.45;8.4;0.29;Over Head;;;;
+94-AL1/15-ST1A 110.0;Overhead Line;94-AL1/15-ST1A 110.0;0.306;0.44;8.65;0.35;Over Head;;;;
+122-AL1/20-ST1A 110.0;Overhead Line;122-AL1/20-ST1A 110.0;0.2376;0.43;8.5;0.41;Over Head;;;;
+149-AL1/24-ST1A 110.0;Overhead Line;149-AL1/24-ST1A 110.0;0.194;0.41;8.75;0.47;Over Head;;;;
+184-AL1/30-ST1A 110.0;Overhead Line;184-AL1/30-ST1A 110.0;0.1571;0.4;8.8;0.535;Over Head;;;;
+243-AL1/39-ST1A 110.0;Overhead Line;243-AL1/39-ST1A 110.0;0.1188;0.39;9;0.645;Over Head;;;;
+305-AL1/39-ST1A 110.0;Overhead Line;305-AL1/39-ST1A 110.0;0.0949;0.38;9.2;0.74;Over Head;;;;
+490-AL1/64-ST1A 110.0;Overhead Line;490-AL1/64-ST1A 110.0;0.059;0.37;9.75;0.96;Over Head;;;;
+679-AL1/86-ST1A 110.0;Overhead Line;679-AL1/86-ST1A 110.0;0.042;0.36;9.95;1.15;Over Head;;;;
+490-AL1/64-ST1A 220.0;Overhead Line;490-AL1/64-ST1A 220.0;0.059;0.285;10;0.96;Over Head;;;;
+679-AL1/86-ST1A 220.0;Overhead Line;679-AL1/86-ST1A 220.0;0.042;0.275;11.7;1.15;Over Head;;;;
+490-AL1/64-ST1A 380.0;Overhead Line;490-AL1/64-ST1A 380.0;0.059;0.253;11;0.96;Over Head;;;;
+679-AL1/86-ST1A 380.0;Overhead Line;679-AL1/86-ST1A 380.0;0.042;0.25;14.6;1.15;Over Head;;;;
+3x95 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x95 A2XFY, 11kV;0.41;0.1;0.21;0.23;Under Ground;1.5053;0.3;8.93;9.11
+3x120 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x120 A2XFY, 11kV;0.325;0.1;0.23;0.26;Under Ground;1.3555;0.3;11.28;9.68
+3x150 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x150 A2XFY, 11kV;0.265;0.1;0.25;0.295;Under Ground;1.2481;0.3;14.1;10.15
+3x185 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x185 A2XFY, 11kV;0.211;0.1;0.26;0.335;Under Ground;1.1415;0.3;17.39;10.72
+3x240 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x240 A2XFY, 11kV;0.162;0.1;0.29;0.395;Under Ground;1.0216;0.3;22.56;11.61
+3x300 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x300 A2XFY, 11kV;0.13;0.1;0.32;0.45;Under Ground;0.9491;0.3;28.2;12.18
+3x95 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x95 A2XFY, 22kV;0.41;0.1;0.2;0.23;Under Ground;1.3782;0.3;8.93;10.3
+3x120 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x120 A2XFY, 22kV;0.325;0.1;0.22;0.265;Under Ground;1.2555;0.3;11.28;10.72
+3x150 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x150 A2XFY, 22kV;0.265;0.1;0.23;0.3;Under Ground;1.1566;0.3;14.1;11.19
+3x185 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x185 A2XFY, 22kV;0.211;0.1;0.25;0.34;Under Ground;1.0481;0.3;17.39;11.92
+3x240 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x240 A2XFY, 22kV;0.162;0.1;0.27;0.4;Under Ground;0.9319;0.3;22.56;12.96
+3x300 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x300 A2XFY, 22kV;0.13;0.1;0.3;0.455;Under Ground;0.8731;0.3;28.2;13.43
+3x95 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x95 A2XFY, 33kV;0.41;0.1;0.15;0.23;Under Ground;1.2155;0.3;8.93;12.38
+3x120 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x120 A2XFY, 33kV;0.325;0.1;0.16;0.265;Under Ground;1.092;0.3;11.28;13.01
+3x150 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x150 A2XFY, 33kV;0.265;0.1;0.18;0.3;Under Ground;0.9996;0.3;14.1;13.58
+3x185 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x185 A2XFY, 33kV;0.211;0.1;0.19;0.34;Under Ground;0.9212;0.3;17.39;14.05
+3x240 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x240 A2XFY, 33kV;0.162;0.1;0.21;0.4;Under Ground;0.8279;0.3;22.56;14.98
+3x300 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Air);3x300 A2XFY, 33kV;0.13;0.1;0.23;0.455;Under Ground;0.7757;0.3;28.2;15.45
+3x95 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x95 A2XFY, 11kV;0.41;0.1;0.21;0.165;Under Ground;1.5053;0.3;8.93;9.11
+3x120 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x120 A2XFY, 11kV;0.325;0.1;0.23;0.19;Under Ground;1.3555;0.3;11.28;9.68
+3x150 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x150 A2XFY, 11kV;0.265;0.1;0.25;0.21;Under Ground;1.2481;0.3;14.1;10.15
+3x185 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x185 A2XFY, 11kV;0.211;0.1;0.26;0.24;Under Ground;1.1415;0.3;17.39;10.72
+3x240 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x240 A2XFY, 11kV;0.162;0.1;0.29;0.275;Under Ground;1.0216;0.3;22.56;11.61
+3x300 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x300 A2XFY, 11kV;0.13;0.1;0.32;0.31;Under Ground;0.9491;0.3;28.2;12.18
+3x95 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x95 A2XFY, 22kV;0.41;0.1;0.2;0.17;Under Ground;1.3782;0.3;8.93;10.3
+3x120 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x120 A2XFY, 22kV;0.325;0.1;0.22;0.19;Under Ground;1.2555;0.3;11.28;10.72
+3x150 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x150 A2XFY, 22kV;0.265;0.1;0.23;0.215;Under Ground;1.1566;0.3;14.1;11.19
+3x185 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x185 A2XFY, 22kV;0.211;0.1;0.25;0.24;Under Ground;1.0481;0.3;17.39;11.92
+3x240 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x240 A2XFY, 22kV;0.162;0.1;0.27;0.275;Under Ground;0.9319;0.3;22.56;12.96
+3x300 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x300 A2XFY, 22kV;0.13;0.1;0.3;0.31;Under Ground;0.8731;0.3;28.2;13.43
+3x95 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x95 A2XFY, 33kV;0.41;0.1;0.15;0.17;Under Ground;1.2155;0.3;8.93;12.38
+3x120 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x120 A2XFY, 33kV;0.325;0.1;0.16;0.19;Under Ground;1.092;0.3;11.28;13.01
+3x150 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x150 A2XFY, 33kV;0.265;0.1;0.18;0.215;Under Ground;0.9996;0.3;14.1;13.58
+3x185 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x185 A2XFY, 33kV;0.211;0.1;0.19;0.24;Under Ground;0.9212;0.3;17.39;14.05
+3x240 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x240 A2XFY, 33kV;0.162;0.1;0.21;0.275;Under Ground;0.8279;0.3;22.56;14.98
+3x300 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Duct);3x300 A2XFY, 33kV;0.13;0.1;0.23;0.31;Under Ground;0.7757;0.3;28.2;15.45
+3x95 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x95 A2XFY, 11kV;0.41;0.1;0.21;0.19;Under Ground;1.5053;0.3;8.93;9.11
+3x120 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x120 A2XFY, 11kV;0.325;0.1;0.23;0.22;Under Ground;1.3555;0.3;11.28;9.68
+3x150 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x150 A2XFY, 11kV;0.265;0.1;0.25;0.245;Under Ground;1.2481;0.3;14.1;10.15
+3x185 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x185 A2XFY, 11kV;0.211;0.1;0.26;0.275;Under Ground;1.1415;0.3;17.39;10.72
+3x240 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x240 A2XFY, 11kV;0.162;0.1;0.29;0.315;Under Ground;1.0216;0.3;22.56;11.61
+3x300 A2XFY, 11kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x300 A2XFY, 11kV;0.13;0.1;0.32;0.355;Under Ground;0.9491;0.3;28.2;12.18
+3x95 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x95 A2XFY, 22kV;0.41;0.1;0.2;0.19;Under Ground;1.3782;0.3;8.93;10.3
+3x120 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x120 A2XFY, 22kV;0.325;0.1;0.22;0.215;Under Ground;1.2555;0.3;11.28;10.72
+3x150 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x150 A2XFY, 22kV;0.265;0.1;0.23;0.24;Under Ground;1.1566;0.3;14.1;11.19
+3x185 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x185 A2XFY, 22kV;0.211;0.1;0.25;0.27;Under Ground;1.0481;0.3;17.39;11.92
+3x240 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x240 A2XFY, 22kV;0.162;0.1;0.27;0.31;Under Ground;0.9319;0.3;22.56;12.96
+3x300 A2XFY, 22kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x300 A2XFY, 22kV;0.13;0.1;0.3;0.35;Under Ground;0.8731;0.3;28.2;13.43
+3x95 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x95 A2XFY, 33kV;0.41;0.1;0.15;0.19;Under Ground;1.2155;0.3;8.93;12.38
+3x120 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x120 A2XFY, 33kV;0.325;0.1;0.16;0.215;Under Ground;1.092;0.3;11.28;13.01
+3x150 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x150 A2XFY, 33kV;0.265;0.1;0.18;0.24;Under Ground;0.9996;0.3;14.1;13.58
+3x185 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x185 A2XFY, 33kV;0.211;0.1;0.19;0.27;Under Ground;0.9212;0.3;17.39;14.05
+3x240 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x240 A2XFY, 33kV;0.162;0.1;0.21;0.31;Under Ground;0.8279;0.3;22.56;14.98
+3x300 A2XFY, 33kV;Aluminium XLPE Cables Armoured – IS:7098-2 (In Ground);3x300 A2XFY, 33kV;0.13;0.1;0.23;0.35;Under Ground;0.7757;0.3;28.2;15.45

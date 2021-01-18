@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="40"
+   height="40"
+   viewBox="0 0 40 40"
+   id="svg44590"
+   version="1.1"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="transformer.svg">
+  <defs
+     id="defs44592" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.5999999"
+     inkscape:cx="-64.249288"
+     inkscape:cy="21.469552"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1007"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata44595">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-327.81644,-95.33417)">
+    <g
+       id="g45186"
+       transform="matrix(0,2.1405084,-2.1405084,0,618.48697,-594.69139)"
+       style="stroke:#000000;stroke-width:0.7007681;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+      <g
+         style="font-style:normal;font-weight:400;font-size:45.83330154px;font-family:Chilanka;fill:none;stroke:#000000;stroke-width:2.33590156;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="g31428"
+         font-style="normal"
+         font-weight="400"
+         font-size="45.8333"
+         transform="matrix(0,-0.29999897,0.299999,0,331.70884,123.95549)">
+        <path
+           style="vector-effect:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.33590156;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path31430"
+           d="M 0,12.4747 C 6.88958,12.4747 12.4747,6.88958 12.4747,0 12.4747,-6.88958 6.88958,-12.4747 0,-12.4747 c -6.88958,0 -12.4747,5.58512 -12.4747,12.4747 0,6.88958 5.58512,12.4747 12.4747,12.4747"
+           inkscape:connector-curvature="0" />
+      </g>
+      <g
+         style="font-style:normal;font-weight:400;font-size:45.83330154px;font-family:Chilanka;fill:none;stroke:#000000;stroke-width:2.33590156;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="g31434"
+         font-style="normal"
+         font-weight="400"
+         font-size="45.8333"
+         transform="matrix(0,-0.29999897,0.299999,0,331.70884,128.94749)">
+        <path
+           style="vector-effect:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.33590156;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path31436"
+           d="M 0,12.4747 C 6.88958,12.4747 12.4747,6.88958 12.4747,0 12.4747,-6.88958 6.88958,-12.4747 0,-12.4747 c -6.88958,0 -12.4747,5.58512 -12.4747,12.4747 0,6.88958 5.58512,12.4747 12.4747,12.4747"
+           inkscape:connector-curvature="0" />
+      </g>
+      <g
+         style="font-style:normal;font-weight:400;font-size:45.83330154px;font-family:Chilanka;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2.33590156;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="g31438"
+         font-style="normal"
+         font-weight="400"
+         font-size="45.8333"
+         transform="matrix(0.299999,0,0,0.29999897,-1109.7204,-1617.1485)">
+        <polyline
+           style="vector-effect:none;fill:none;stroke:#000000;stroke-width:2.33590156;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="polyline31440"
+           points="4804.78,5782.91 4804.78,5791.23 " />
+        <polyline
+           style="vector-effect:none;fill:none;stroke:#000000;stroke-width:2.33590156;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="polyline31442"
+           points="4804.78,5841.13 4804.78,5832.81 " />
+      </g>
+    </g>
+  </g>
+</svg>
