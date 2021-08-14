@@ -30,8 +30,8 @@ import cairo
 from .. import misc
 from ..model.graph import GraphModel
 
-from matplotlib.backends.backend_gtk3agg import (
-    FigureCanvasGTK3Agg as FigureCanvas)
+from matplotlib.backends.backend_gtk3cairo import (
+    FigureCanvasGTK3Cairo as FigureCanvas)
 from matplotlib.figure import Figure
 
 # Get logger object
@@ -57,7 +57,7 @@ class GraphView():
         self.inactivate = inactivate
         self.models = []
         self.model = None
-        self.colors = ('r', 'b', 'g', 'c', 'm', 'y', 'k', 'w')
+        self.colors = ('#218C8D', '#6CCECB', '#F9E559', '#EF7126', '#8EDC9D', '#473E3F', '#4e9a06', '#8f5902')
         self.signal1_id = None
         self.signal2_id = None
         

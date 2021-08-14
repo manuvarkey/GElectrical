@@ -1257,10 +1257,10 @@ class Template(ElementModel):
                              # Cut mark rectangle 2
                              ['RECT',(0,self.model_height-self.border_width), 2*self.border_width, self.border_width, True, []],
                              ['RECT',(0,self.model_height-2*self.border_width), self.border_width, 2*self.border_width, True, []],
-                             # Cut mark rectangle 2
+                             # Cut mark rectangle 3
                              ['RECT',(self.model_width-self.border_width,0), self.border_width, 2*self.border_width, True, []],
                              ['RECT',(self.model_width-2*self.border_width,0), 2*self.border_width, self.border_width, True, []],
-                             # Cut mark rectangle 2
+                             # Cut mark rectangle 4
                              ['RECT',(self.model_width-self.border_width,self.model_height-2*self.border_width), self.border_width, 2*self.border_width, True, []],
                              ['RECT',(self.model_width-2*self.border_width,self.model_height-self.border_width), 2*self.border_width, self.border_width, True, []],
                              # Centre lines
