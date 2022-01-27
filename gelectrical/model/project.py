@@ -61,12 +61,12 @@ class ProjectModel:
         # Data
         self.drawing_models = []
         self.fields = {'project_name':          misc.get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
-                       'drawing_field_dept':    misc.get_field_dict('str', 'Responsible department', '', '', status_inactivate=False),
-                       'drawing_field_techref': misc.get_field_dict('str', 'Technical reference', '', '', status_inactivate=False),
-                       'drawing_field_created': misc.get_field_dict('str', 'Created by', '', '', status_inactivate=False),
-                       'drawing_field_approved':misc.get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
-                       'drawing_field_lang':    misc.get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
-                       'drawing_field_address': misc.get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)}
+                       'drawing_field_dept':    program_settings['drawing_field_dept'],
+                       'drawing_field_techref': program_settings['drawing_field_techref'],
+                       'drawing_field_created': program_settings['drawing_field_created'],
+                       'drawing_field_approved':program_settings['drawing_field_approved'],
+                       'drawing_field_lang':    program_settings['drawing_field_lang'],
+                       'drawing_field_address': program_settings['drawing_field_address']}
         self.loadprofiles = misc.DEFAULT_LOAD_PROFILE
         
         # State variables
@@ -913,6 +913,7 @@ class ProjectModel:
         
     def export_drawing(self, filename):
         surface = cairo.PDFSurface(filename, 0, 0)
+        #TODO
         #surface.set_metadata(PDFMetadata.TITLE, '')
         #surface.set_metadata(PDFMetadata.AUTHOR, '')
         #surface.set_metadata(PDFMetadata.SUBJECT, 'Electrical schematic drawing')

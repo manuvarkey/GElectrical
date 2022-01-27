@@ -22,7 +22,8 @@
 #  
 # 
 
-import os, platform, sys, queue, threading, logging, traceback, json, pickle, codecs, importlib, gi
+import os, platform, sys, queue, threading, logging, traceback, json, pickle, codecs, importlib, copy, gi
+import appdirs
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('PangoCairo', '1.0')
@@ -173,11 +174,12 @@ class MainWindow():
         if self.stack.haschanged():
             message = 'You have unsaved changes which will be lost if you continue.\n Are you sure you want to exit ?'
             title = 'Confirm Exit'
-            dialogWindow = Gtk.MessageDialog(self.window,
-                                     Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                     Gtk.MessageType.QUESTION,
-                                     Gtk.ButtonsType.YES_NO,
-                                     message)
+            dialogWindow = Gtk.MessageDialog(transient_for=self.window,
+                                     modal=True,
+                                     destroy_with_parent=True,
+                                     message_type=Gtk.MessageType.QUESTION,
+                                     buttons=Gtk.ButtonsType.YES_NO,
+                                     text=message)
             dialogWindow.set_transient_for(self.window)
             dialogWindow.set_title(title)
             dialogWindow.set_default_response(Gtk.ResponseType.NO)
@@ -202,20 +204,21 @@ class MainWindow():
                                                 Gtk.FileChooserAction.OPEN,
                                                 "Open", "Cancel")
         elif platform.system() == 'Windows':
-            open_dialog = Gtk.FileChooserDialog("Open project File", self.window,
-                                            Gtk.FileChooserAction.OPEN,
-                                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                                             Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT))
+            open_dialog = Gtk.FileChooserDialog(title="Open project File", 
+                                                parent=self.window,
+                                                action=Gtk.FileChooserAction.OPEN)
+            open_dialog.add_buttons("Open project File", self.window,
+                                                Gtk.FileChooserAction.OPEN,
+                                                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                                 Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT))
+
         # Remote files can be selected in the file selector
         open_dialog.set_local_only(True)
         # Dialog always on top of the textview window
         open_dialog.set_modal(True)
         # Set filters
         open_dialog.set_filter(self.builder.get_object("filefilter_project"))
-        # Set window position
-        #open_dialog.set_gravity(Gdk.Gravity.CENTER)
-        #open_dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
-
+        
         response_id = open_dialog.run()
         # If response is "ACCEPT" (the button "Save" has been clicked)
         if response_id == Gtk.ResponseType.ACCEPT:
@@ -264,7 +267,12 @@ class MainWindow():
         # Create a filechooserdialog to open:
         # The arguments are: title of the window, parent_window, action,
         # (buttons, response)
-        open_dialog = Gtk.FileChooserDialog("Save project as...", self.window,
+        if platform.system() == 'Linux':
+            open_dialog = Gtk.FileChooserNative.new("Save project File", self.window,
+                                                    Gtk.FileChooserAction.SAVE,
+                                                    "Save", "Cancel")
+        elif platform.system() == 'Windows':
+            open_dialog = Gtk.FileChooserDialog("Save project as...", self.window,
                                             Gtk.FileChooserAction.SAVE,
                                             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                                              Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
@@ -274,9 +282,6 @@ class MainWindow():
         open_dialog.set_modal(True)
         # Set filters
         open_dialog.set_filter(self.builder.get_object("filefilter_project"))
-        # Set window position
-        open_dialog.set_gravity(Gdk.Gravity.CENTER)
-        open_dialog.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
         # Set overwrite confirmation
         open_dialog.set_do_overwrite_confirmation(True)
         # Set default name
@@ -354,6 +359,22 @@ class MainWindow():
         fields = project_settings_dialog.run()
         if fields:
             self.project.update_project_fields(fields)
+        
+    def on_program_settings(self, button):
+        """Display dialog to input program settings"""
+        log.info('MainWindow - on_project_settings - Launch project settings')
+        # Setup project settings dialog
+        program_settings_dialog = FieldViewDialog(self.window, 
+                                      'Program Settings',
+                                      self.program_settings, 
+                                      'status_enable', 'status_inactivate')
+        # Show settings dialog
+        fields = program_settings_dialog.run()
+        if fields:
+            self.program_settings.update(fields)
+            with open(self.settings_filename, 'w') as fp:
+                json.dump(self.program_settings, fp)
+                log.info('Program settings saved at ' + str(self.settings_filename))
 
     def on_infobar_close(self, widget, response=0):
         """Hides the infobar"""
@@ -614,12 +635,34 @@ class MainWindow():
 
         # Project Filename
         self.filename = None
-
-        # Setup project settings dictionary
-        self.project_settings_dict = dict()
-        #TODO
-        for item_code in misc.global_vars:
-            self.project_settings_dict[item_code] = ''
+            
+        log.info('Setting up program settings')
+        dirs = appdirs.AppDirs(misc.PROGRAM_NAME, misc.PROGRAM_AUTHOR, version=misc.PROGRAM_VER)
+        settings_dir = dirs.user_data_dir
+        self.user_library_dir = misc.posix_path(dirs.user_data_dir,'database')
+        self.settings_filename = misc.posix_path(settings_dir,'settings.ini')
+        
+        # Create directory if does not exist
+        if not os.path.exists(settings_dir):
+            os.makedirs(settings_dir)
+        if not os.path.exists(self.user_library_dir):
+            os.makedirs(self.user_library_dir)
+        
+        try:
+            if os.path.exists(self.settings_filename):
+                with open(self.settings_filename, 'r') as fp:
+                    self.program_settings = json.load(fp)
+                    log.info('Program settings opened at ' + str(self.settings_filename))
+            else:
+                self.program_settings = copy.deepcopy(misc.default_program_settings)
+                with open(self.settings_filename, 'w') as fp:
+                    json.dump(self.program_settings, fp)
+                log.info('Program settings saved at ' + str(self.settings_filename))
+        except:
+            # If an error load default program preference
+            self.program_settings = copy.deepcopy(misc.default_program_settings)
+            log.info('Program settings initialisation failed - falling back on default values')
+        log.info('Program settings initialised')
         
         # Setup main window
         self.builder = Gtk.Builder()

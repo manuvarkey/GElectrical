@@ -37,6 +37,8 @@ log = logging.getLogger(__name__)
 
 # Program name
 PROGRAM_NAME = 'gElectrical'
+PROGRAM_AUTHOR = 'CPWD'
+PROGRAM_VER = '1'
 APPID = "com.kavilgroup.gelectrical"
 # CMB error codes used for displaying info in main window
 ERROR = -1
@@ -123,7 +125,7 @@ paper_sizes = {'A4 Landscape': (297, 210),
                'A2': (594, 420),
                'A1': (841, 594),
                'A0': (1189, 841), }
-# Item codes for project global variables
+
 # Item codes for project global variables
 global_vars = ['$cmbnameofwork$',
                '$cmbagency$',
@@ -884,6 +886,14 @@ def get_field_dict(field_type, caption, unit, value, max_chars=None,
         field_dict['click_to_edit_message'] = click_to_edit_message
         field_dict['alter_structure'] = alter_structure
         return field_dict
+
+# Default settings
+default_program_settings = {'drawing_field_dept':    get_field_dict('str', 'Responsible department', '', '', status_inactivate=False),
+                            'drawing_field_techref': get_field_dict('str', 'Technical reference', '', '', status_inactivate=False),
+                            'drawing_field_created': get_field_dict('str', 'Created by', '', '', status_inactivate=False),
+                            'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
+                            'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
+                            'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)}
 
 # Cairo drawing functions
 
