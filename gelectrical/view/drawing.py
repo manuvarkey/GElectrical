@@ -28,6 +28,7 @@ import cairo
 
 # local files import
 from .. import misc
+from ..misc import undoable, group
 from .graph import GraphView
 
 # Get logger object
@@ -139,6 +140,7 @@ class DrawingView:
     def select_elements(self, elements):
         if len(elements) == 1:
             element = elements[0]
+            
             def set_text_field(*data):
                 element.set_text_field_value(*data)
                 self.refresh() 
@@ -146,7 +148,24 @@ class DrawingView:
             # Element specific items
             if element.code in ('element_load', 'element_staticgenerator', 'element_async_motor'):
                 element.fields['load_profile']['selection_list'] = self.drawing_model.parent.loadprofiles
-                
+            
+            # Special class implementing undo for set text function
+            class UndoableSetTextValue:
+                def __init__(self, stack, refresh):
+                    self.stack = stack
+                    self.refresh = refresh
+            
+                @undoable
+                def set_text_field_value_undo(self, code, value):
+                    oldval = element.get_text_field(code)['value']
+                    element.set_text_field_value(code, value)
+                    self.refresh() 
+                    yield "Modify '{}' '{}' element field from '{}' to '{}'".format(code, element.name, oldval, value)
+                    # Undo action
+                    element.set_text_field_value(code, oldval)
+                    self.refresh() 
+            
+            set_text_field = UndoableSetTextValue(self.program_state['stack'], self.refresh).set_text_field_value_undo
             self.properties_view.update(element.fields, element.name, element.get_text_field, set_text_field)  # Update properties
             self.results_view.update(element.res_fields, element.name, element.get_res_field, None)  # Update results
             self.database_view.update_from_database(element.database_path)

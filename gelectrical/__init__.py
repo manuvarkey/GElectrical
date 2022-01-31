@@ -503,11 +503,13 @@ class MainWindow():
         self.project.drawing_view.save_scroll_position()
         floating_model = self.project.drawing_model.set_floating_model_from_code(code)
         if floating_model:
-            self.insert_view.update(floating_model.fields, floating_model.name, floating_model.get_text_field, floating_model.set_text_field_value)
             stack_toolbar_left = self.builder.get_object("stack_toolbar_left")
+            
             def on_end_callback():
                 stack_toolbar_left.set_visible_child_name('page_elements')
                 self.insert_view.clean()
+            
+            self.insert_view.update(floating_model.fields, floating_model.name, floating_model.get_text_field, floating_model.set_text_field_value)
             self.project.drawing_view.set_mode(misc.MODE_INSERT, [on_end_callback])
             stack_toolbar_left.set_visible_child_name('page_insert')
             self.project.drawing_view.restore_scroll_position()
@@ -570,6 +572,7 @@ class MainWindow():
     def on_insert_element_cycle_port(self, widget):
         self.project.drawing_model.modify_fm_attachment_port()
         
+        
     def __init__(self, id=0):
         
         log.info('MainWindow - Start initialisation')
@@ -580,6 +583,12 @@ class MainWindow():
         # Setup main data model
         self.program_settings = dict()
         self.program_state = dict()
+        
+        # Initialise undo/redo stack
+        self.stack = undo.Stack()
+        undo.setstack(self.stack)
+        # Save point in stack for checking change state
+        self.stack.savepoint()
         
         # Dynamically load elements from library
         #self.program_state['element_models'] = dict()
@@ -626,13 +635,7 @@ class MainWindow():
                 
         # Fill in default values
         self.program_state['mode'] = misc.MODE_DEFAULT
-        
-        # Initialise undo/redo stack
-        self.stack = undo.Stack()
-        undo.setstack(self.stack)
-        # Save point in stack for checking change state
-        self.stack.savepoint()
-
+        self.program_state['stack'] = self.stack
         # Project Filename
         self.filename = None
             

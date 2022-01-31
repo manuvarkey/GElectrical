@@ -43,8 +43,8 @@ matplotlib.use('GTK3Agg')  # configure matplotlib
 import matplotlib.pyplot as plt
 
 # local files import
-from .. import misc, undo
-from ..undo import undoable
+from .. import misc
+from ..misc import undoable, group
 from .drawing import DrawingModel
 from ..view.drawing import DrawingView
 from ..view.graph import GraphViewDialog
@@ -81,6 +81,7 @@ class ProjectModel:
         self.drawing_views = []
         self.drawing_model = None
         self.drawing_view = None
+        self.stack = program_state['stack']
         # Base variables
         self.port_mapping = dict()  # Maps (p,x,y) -> global_node
         self.node_mapping = dict()  # Maps local_node -> global_node
@@ -101,7 +102,7 @@ class ProjectModel:
         self.diagnostic_results = dict()
         
         # Initialise tab
-        self.add_page()
+        self.add_page_vanilla()
         self.drawing_notebook.connect("switch-page", self.on_switch_tab)
         
     ## Functions
@@ -126,33 +127,66 @@ class ProjectModel:
         dialog = GraphViewDialog(self.window, self.loadprofiles, xlim, ylim, xlabel, ylabel)
         dialog.run()
     
-    def add_page(self):
-        # Setup model
-        self.drawing_model = DrawingModel(self, self.program_state, self.program_settings)
-        self.drawing_models.append(self.drawing_model)
-        # Setup drawing view
-        sheet_name = "Sheet " + str(self.get_page_nos())
-        self.drawing_model.fields['name']['value'] = sheet_name
-        page = Gtk.Box()
-        self.drawing_notebook.append_page(page, Gtk.Label(sheet_name)) 
-        self.drawing_view = DrawingView(self.window, page, self.drawing_model, self.program_state, self.program_settings, self.properties_view, self.results_view, self.database_view)
-        self.drawing_views.append(self.drawing_view)
-        # Show all widgets
-        self.drawing_notebook.show_all()
-        # Switch to added page
-        self.set_page(self.get_page_nos() -1)
+    @undoable
+    def add_page(self, slno=None, model=None):
+        add_slno = self.add_page_vanilla(slno, model)
         
+        yield "Add page at " + str(add_slno)
+        # Undo action
+        self.remove_page(add_slno)
+        
+    def add_page_vanilla(self, slno=None, model=None):
+        if model:
+            self.drawing_model = model
+            sheet_name = self.drawing_model.fields['name']['value']
+        else:
+            self.drawing_model = DrawingModel(self, self.program_state, self.program_settings)
+            sheet_name = "Sheet " + str(self.get_page_nos())
+            self.drawing_model.fields['name']['value'] = sheet_name
+        if slno:
+            # Setup model
+            self.drawing_models.insert(slno, self.drawing_model)
+            # Setup drawing view
+            page = Gtk.Box()
+            self.drawing_notebook.insert_page(page, None, slno) 
+            self.drawing_view = DrawingView(self.window, page, self.drawing_model, self.program_state, self.program_settings, self.properties_view, self.results_view, self.database_view)
+            self.drawing_views.insert(slno, self.drawing_view)
+            self.drawing_notebook.show_all()
+            self.set_page(slno)  # Switch to added page
+            add_slno = slno
+        else:
+            # Setup model
+            self.drawing_models.append(self.drawing_model)
+            # Setup drawing view
+            page = Gtk.Box()
+            self.drawing_notebook.append_page(page, None)
+            self.drawing_view = DrawingView(self.window, page, self.drawing_model, self.program_state, self.program_settings, self.properties_view, self.results_view, self.database_view)
+            self.drawing_views.append(self.drawing_view)
+            self.drawing_notebook.show_all()
+            self.set_page(self.get_page_nos() -1)  # Switch to added page
+            add_slno = self.get_page_nos() -1       
+        return add_slno
+        
+    @undoable
     def remove_page(self, slno):
-        if self.get_page_nos() > 1 and slno < self.get_page_nos():
+        delete_slno = None
+        if self.get_page_nos() > 1 and slno and slno < self.get_page_nos():
+            del_model = self.drawing_models[slno]
             del self.drawing_models[slno]
             del self.drawing_views[slno]
             page = self.drawing_notebook.get_nth_page(slno)
             self.drawing_notebook.detach_tab(page)
+            delete_slno = slno
             if slno != 0:
                 self.set_page(slno-1)
             else:
                 self.set_page(0)
                 
+        yield "Remove page at " + str(delete_slno)
+        # Undo action
+        if delete_slno:
+            self.add_page(delete_slno, del_model)
+            
     def clear_all(self):
         # Delete all pages except first
         for slno in range(0,self.get_page_nos()):
@@ -181,15 +215,34 @@ class ProjectModel:
         label.set_use_markup(True)
     
     def update_tabs(self, slno=None):
+    
+        def set_label(page, sheet_name, slno):
+            
+            def remove_page_callback(button, slno):
+                self.remove_page(slno)
+                
+            label_hbox = Gtk.Box()
+            page_label = Gtk.Label(sheet_name)
+            close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
+            close_button.set_relief(Gtk.ReliefStyle.NONE)
+            close_button.connect("clicked", remove_page_callback, slno)
+            
+            label_hbox.pack_start(page_label, True, True, 0)
+            label_hbox.pack_start(close_button, True, True, 0)
+            self.drawing_notebook.set_tab_label(page, label_hbox)
+            label_hbox.show_all()
+            
         if slno:
             page = self.drawing_notebook.get_nth_page(slno)
             sheet_name = self.drawing_models[slno].fields['name']['value']
-            self.drawing_notebook.set_tab_label_text(page, sheet_name)
+            set_label(page, sheet_name, slno)
+            
         else:
             for slno in range(0, self.get_page_nos()):
                 page = self.drawing_notebook.get_nth_page(slno)
                 sheet_name = self.drawing_models[slno].fields['name']['value']
                 self.drawing_notebook.set_tab_label_text(page, sheet_name)
+                set_label(page, sheet_name, slno)
                 
     def update_title_blocks(self):
         for drawing_model in self.drawing_models:

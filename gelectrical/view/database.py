@@ -28,7 +28,6 @@ import cairo
 
 # local files import
 from .. import misc, undo
-from .. undo import undoable
 
 # Get logger object
 log = logging.getLogger(__name__)

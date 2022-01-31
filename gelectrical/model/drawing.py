@@ -29,8 +29,8 @@ from gi.repository import Gtk, Gdk
 import cairo
 
 # local files import
-from .. import misc, undo
-from ..undo import undoable
+from .. import misc
+from ..misc import undoable, group
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -40,6 +40,19 @@ class DrawingModel:
     """Class for modelling a drawing"""
     
     def __init__(self, parent, program_state, program_settings):
+        
+        # State variables
+        self.parent = parent
+        self.program_state = program_state
+        self.program_settings = program_settings
+        self.grid_width = misc.GRID_WIDTH
+        self.element_models = self.program_state['element_models']
+        self.floating_model = None
+        self.wire_points = []
+        self.selected_ports = []
+        self.selected_port_color = misc.COLOR_SELECTED
+        self.stack = program_state['stack']
+        
         # Data
         self.fields = {'name':          misc.get_field_dict('str', 'Sheet Name', '', 'Sheet', status_inactivate=False),
                        'page_size':     misc.get_field_dict('str', 'Page Size', '', 'A3', status_inactivate=False, selection_list=list(misc.paper_sizes.keys())),
@@ -58,17 +71,6 @@ class DrawingModel:
         self.template = Template(width, height)
         self.title_block = TitleBlock()
         self.elements = []
-        
-        # State variables
-        self.parent = parent
-        self.program_state = program_state
-        self.program_settings = program_settings
-        self.grid_width = misc.GRID_WIDTH
-        self.element_models = self.program_state['element_models']
-        self.floating_model = None
-        self.wire_points = []
-        self.selected_ports = []
-        self.selected_port_color = misc.COLOR_SELECTED
         
         # Initialisation
         self.update_title_block()
@@ -329,8 +331,13 @@ class DrawingModel:
                 x = port[0]
                 y = port[1]
                 self.floating_model.set_coordinates(x,y)
-            for element in self.floating_model.elements:
-                self.insert_element_at_index(copy.deepcopy(element))
+            with group(self, 'Insert element(s) at ' + str(port)):
+                for element in self.floating_model.elements:
+                    element_model = element.get_model()
+                    code = element.code
+                    element_copy = self.element_models[code]()
+                    element_copy.set_model(element_model)
+                    self.insert_element_at_index(element_copy)
             
     ## Wire functions
     
@@ -512,14 +519,9 @@ class ElementModel:
         self.text_extends = []
         self.schem_extends = []
     
-    @undoable
     def set_text_field_value(self, code, value):
         if self.fields and code in self.fields:
-            oldval = self.fields[code]['value']
             self.fields[code]['value'] = value
-            yield "Modify '{}' element field from '{}' to '{}'".format(self.name, oldval, value)
-            # Undo action
-            self.fields[code]['value'] = oldval
             
     def get_text_field(self, code):
         if self.fields and code in self.fields:
