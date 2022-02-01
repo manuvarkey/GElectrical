@@ -27,8 +27,7 @@ from gi.repository import Gtk, Gdk
 import cairo
 
 # local files import
-from .. import misc, undo
-from ..undo import undoable
+from .. import misc
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -41,10 +40,10 @@ class GraphModel():
         self.mode = model['mode']
         self.xval = model['xval']
         self.yval = model['yval']
+        self.title = model['title']
             
     # Functions
     
-    @undoable
     def modify_data(self, xdata, ydata):
         oldx = self.xval
         oldy = self.yval
@@ -53,16 +52,9 @@ class GraphModel():
         self.xval = xdata
         self.yval = ydata
         
-        yield "Update graph model"
-        self.modify_data(oldx, oldy)
-        
-    @undoable
     def modify_title(self, title):
         oldtitle = self.title
         self.model['title'] = title
-        
-        yield "Update graph model"
-        self.modify_title(oldtitle)
     
     def get_model(self):
         return self.model

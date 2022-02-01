@@ -433,8 +433,14 @@ class DrawingView:
                     self.refresh()
             # Deselect all
             elif keyname == Gdk.KEY_Escape:
-                self.drawing_model.deselect_all()
-                self.refresh()
+                if self.get_mode() in (misc.MODE_INSERT, misc.MODE_ADD_WIRE):
+                    self.set_mode(misc.MODE_DEFAULT)  # End insertion/ wire
+                    self.drawing_model.reset_floating_model()
+                    self.drawing_model.reset_wire_points()
+                else:
+                    self.drawing_model.deselect_all()
+                    self.refresh()
+                
             # Delete
             elif keyname in (Gdk.KEY_Delete, Gdk.KEY_KP_Delete):
                 self.delete_selected()
@@ -717,13 +723,17 @@ class FieldView:
                         (title, models) = field['value']
                         for model in models:
                             graphview.add_plot(model)
-                        title_widget = Gtk.Entry()
-                        title_widget.set_text(title)
+                        text_buffer = Gtk.TextBuffer()
+                        text_buffer.set_text(title)
+                        title_widget = Gtk.TextView.new_with_buffer(text_buffer)
+                        title_widget.props.editable = False
                         if field[self.inactivate_code] == False:
                             def set_title(code, text):
                                 field = self.fields[code]
                                 field['value'][0][0] = text
                                 graphview.model.title = text
+                            title_widget = Gtk.Entry()
+                            title_widget.set_text(title)
                             title_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-ok')
                             title_widget.connect("activate", activate_callback_graphtitle, get_field, set_title, code)
                             title_widget.connect("changed", changed_callback)

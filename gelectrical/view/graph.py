@@ -33,6 +33,7 @@ from ..model.graph import GraphModel
 from matplotlib.backends.backend_gtk3cairo import (
     FigureCanvasGTK3Cairo as FigureCanvas)
 from matplotlib.figure import Figure
+#import mplcursors
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -144,7 +145,15 @@ class GraphView():
         self.plot.grid(True, which='minor', alpha=0.2)
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
-            self.plot.plot(model.xval, model.yval, marker="o", color=color)
+            line = self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+            #cursor = mplcursors.cursor(line)
+            #def selection(sel):
+                #sel.annotation.set_text(model.title + '\nX: ' + str(sel.target[0]) + '\nY: ' + str(sel.target[1]))
+                #sel.annotation.set(fontfamily=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
+            #cursor.connect("add", selection)
+
+        if len(self.models) > 1:
+            self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
         self.canvas.draw()
         
     # Callbacks
