@@ -130,6 +130,12 @@ class ProjectModel:
     def append_page(self):
         model = DrawingModel(self, self.program_state, self.program_settings)
         slno = self.get_page_nos()
+        # Except first page copy fields from first page
+        if slno > 0:
+            base_model = self.drawing_models[0].get_model()
+            model.set_model(base_model, copy_elements=False)
+        sheet_name = "Sheet " + str(self.get_page_nos())
+        model.set_sheet_name(sheet_name)
         add_slno = self.add_page(slno, model)
     
     @undoable
@@ -143,11 +149,10 @@ class ProjectModel:
     def add_page_vanilla(self, slno=None, model=None):
         if model:
             self.drawing_model = model
-            sheet_name = self.drawing_model.fields['name']['value']
         else:
             self.drawing_model = DrawingModel(self, self.program_state, self.program_settings)
             sheet_name = "Sheet " + str(self.get_page_nos())
-            self.drawing_model.fields['name']['value'] = sheet_name
+            self.drawing_model.set_sheet_name(sheet_name)
         if slno:
             # Setup model
             self.drawing_models.insert(slno, self.drawing_model)

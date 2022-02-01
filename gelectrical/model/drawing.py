@@ -86,24 +86,25 @@ class DrawingModel:
         for element in self.elements:
             element_models.append(element.get_model())
         model = dict()
-        model['fields'] = self.fields
+        model['fields'] = copy.deepcopy(self.fields)
         model['elements'] = element_models
         return ['DrawingModel', model]
             
-    def set_model(self, model):
+    def set_model(self, model, copy_elements=True):
         """Set storage model"""
         self.elements = []
         if model[0] == 'DrawingModel':
-            for base_model in model[1]['elements']:
-                code = base_model['code']
-                if code == 'element_assembly':
-                    element = ElementAssembly()
-                elif code == 'element_wire':
-                    element = Wire()
-                else:
-                    element = self.program_state['element_models'][code]()
-                element.set_model(base_model)
-                self.elements.append(element)
+            if copy_elements:
+                for base_model in model[1]['elements']:
+                    code = base_model['code']
+                    if code == 'element_assembly':
+                        element = ElementAssembly()
+                    elif code == 'element_wire':
+                        element = Wire()
+                    else:
+                        element = self.program_state['element_models'][code]()
+                    element.set_model(base_model)
+                    self.elements.append(element)
             self.fields = model[1]['fields']
             if self.fields['page_size']['value'] != 'Custom':
                 (width, height) = misc.paper_sizes[self.fields['page_size']['value']]
@@ -118,8 +119,14 @@ class DrawingModel:
             self.wire_points = []
             self.selected_ports = []
             self.selected_port_color = misc.COLOR_SELECTED
+    
+    def set_sheet_name(self, sheet_name):
+        self.fields['name']['value'] = sheet_name
         
     ## Query Functions
+    
+    def get_sheet_name(self):
+        return self.fields['name']['value']
     
     def get_page_field(self, code):
         if code in self.fields:
