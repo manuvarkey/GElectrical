@@ -127,13 +127,18 @@ class ProjectModel:
         dialog = GraphViewDialog(self.window, self.loadprofiles, xlim, ylim, xlabel, ylabel)
         dialog.run()
     
+    def append_page(self):
+        model = DrawingModel(self, self.program_state, self.program_settings)
+        slno = self.get_page_nos()
+        add_slno = self.add_page(slno, model)
+    
     @undoable
-    def add_page(self, slno=None, model=None):
-        add_slno = self.add_page_vanilla(slno, model)
+    def add_page(self, slno, model):
+        self.add_page_vanilla(slno, model)
         
-        yield "Add page at " + str(add_slno)
+        yield "Add page at " + str(slno)
         # Undo action
-        self.remove_page(add_slno)
+        self.remove_page(slno)
         
     def add_page_vanilla(self, slno=None, model=None):
         if model:
@@ -171,9 +176,8 @@ class ProjectModel:
     def remove_page(self, slno):
         delete_slno = None
         if self.get_page_nos() > 1 and slno and slno < self.get_page_nos():
-            del_model = self.drawing_models[slno]
-            del self.drawing_models[slno]
-            del self.drawing_views[slno]
+            del_model = self.drawing_models.pop(slno)
+            self.drawing_views.pop(slno)
             page = self.drawing_notebook.get_nth_page(slno)
             self.drawing_notebook.detach_tab(page)
             delete_slno = slno
@@ -216,26 +220,29 @@ class ProjectModel:
     
     def update_tabs(self, slno=None):
     
-        def set_label(page, sheet_name, slno):
+        def set_label(page, sheet_name, slno, close_button=True):
             
             def remove_page_callback(button, slno):
                 self.remove_page(slno)
                 
             label_hbox = Gtk.Box()
             page_label = Gtk.Label(sheet_name)
-            close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
-            close_button.set_relief(Gtk.ReliefStyle.NONE)
-            close_button.connect("clicked", remove_page_callback, slno)
-            
             label_hbox.pack_start(page_label, True, True, 0)
-            label_hbox.pack_start(close_button, True, True, 0)
+            if close_button:
+                close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
+                close_button.set_relief(Gtk.ReliefStyle.NONE)
+                close_button.connect("clicked", remove_page_callback, slno)
+                label_hbox.pack_start(close_button, True, True, 0)
             self.drawing_notebook.set_tab_label(page, label_hbox)
             label_hbox.show_all()
             
         if slno:
             page = self.drawing_notebook.get_nth_page(slno)
             sheet_name = self.drawing_models[slno].fields['name']['value']
-            set_label(page, sheet_name, slno)
+            if slno == 0:
+                set_label(page, sheet_name, slno, close_button=False)
+            else:
+                set_label(page, sheet_name, slno)
             
         else:
             for slno in range(0, self.get_page_nos()):
@@ -243,6 +250,10 @@ class ProjectModel:
                 sheet_name = self.drawing_models[slno].fields['name']['value']
                 self.drawing_notebook.set_tab_label_text(page, sheet_name)
                 set_label(page, sheet_name, slno)
+                if slno == 0:
+                    set_label(page, sheet_name, slno, close_button=False)
+                else:
+                    set_label(page, sheet_name, slno)
                 
     def update_title_blocks(self):
         for drawing_model in self.drawing_models:
@@ -998,7 +1009,7 @@ class ProjectModel:
             self.loadprofiles = model[1]['loadprofiles']
             for slno, base_model in enumerate(model[1]['drawing_models']):
                 if slno > 0:
-                    self.add_page()
+                    self.append_page()
                 self.drawing_model.set_model(base_model)
         else:
             return False

@@ -127,7 +127,7 @@ class DrawingView:
     
     def refresh(self):
         self.drawing_area.queue_draw()
-        
+    
     def select_page(self):
         def get_page_field(*data):
             return self.drawing_model.get_page_field(*data)

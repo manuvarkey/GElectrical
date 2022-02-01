@@ -27,7 +27,8 @@ from gi.repository import Gtk, Gdk, GLib
 import cairo
 
 # local files import
-from .. import misc, undo
+from .. import misc
+from ..misc import undoable, group
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -36,12 +37,15 @@ log = logging.getLogger(__name__)
 class DatabaseView:
     """Class for loading database from file into FieldView"""
     
-    def __init__(self, window, button, field_view):
+    def __init__(self, window, button, field_view, program_state, program_settings):
         self.window = window
         self.button = button
         self.data_path = None
         self.field_view = field_view
         self.data = dict()
+        self.program_state = program_state
+        self.program_settings = program_settings
+        self.stack = self.program_state['stack']
 
         # Setup Widgets
         self.dialog_window = Gtk.Dialog("Select database item...", self.window, Gtk.DialogFlags.MODAL,
@@ -152,35 +156,36 @@ class DatabaseView:
                     item_category = self.store[item_iter][1]
                     if item_name != item_category:
                         item = self.data[item_category][item_name]
-                        for code, value in item.items():
-                            data_type = self.field_view.fields[code]['type']
-                            if data_type == 'int':
-                                try:
-                                    validated = int(value)
-                                except:
-                                    validated = 0
-                            elif data_type == 'float':
-                                try:
-                                    validated = float(value)
-                                except:
-                                    validated = 0
-                            elif data_type == 'bool':
-                                try:
-                                    validated = bool(value)
-                                except:
-                                    validated = False
-                            elif data_type == 'graph':
-                                try:
-                                    dirname = os.path.dirname(self.data_path)
-                                    valuepath = misc.abs_path(dirname, value)
-                                    with open(valuepath, 'r') as fileobj:
-                                        data = json.load(fileobj)
-                                        validated = data
-                                except:
-                                   validated = None
-                            else:
-                                validated = value
-                            self.field_view.set_field(code, validated)
+                        with group(self, 'Update data from database'):  # For grouping undo
+                            for code, value in item.items():
+                                data_type = self.field_view.fields[code]['type']
+                                if data_type == 'int':
+                                    try:
+                                        validated = int(value)
+                                    except:
+                                        validated = 0
+                                elif data_type == 'float':
+                                    try:
+                                        validated = float(value)
+                                    except:
+                                        validated = 0
+                                elif data_type == 'bool':
+                                    try:
+                                        validated = bool(value)
+                                    except:
+                                        validated = False
+                                elif data_type == 'graph':
+                                    try:
+                                        dirname = os.path.dirname(self.data_path)
+                                        valuepath = misc.abs_path(dirname, value)
+                                        with open(valuepath, 'r') as fileobj:
+                                            data = json.load(fileobj)
+                                            validated = data
+                                    except:
+                                        validated = None
+                                else:
+                                    validated = value
+                                self.field_view.set_field(code, validated)
                         self.field_view.update_widgets()
                 self.dialog_window.hide()
             else:

@@ -418,7 +418,7 @@ class MainWindow():
         self.project.drawing_view.delete_selected()
     
     def on_new_tab(self, button):
-        self.project.add_page()
+        self.project.append_page()
         
     def on_edit_loadprofiles(self, button):
         self.project.edit_loadprofiles()
@@ -480,6 +480,7 @@ class MainWindow():
             self.project.drawing_view.drawing_area.queue_draw()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached maximum scale).")
+        print(self.project.drawing_models)
         
     def on_draw_zoomout(self, button):
         """Zoom out draw view"""
@@ -721,7 +722,9 @@ class MainWindow():
         self.draw_load_database_button = self.builder.get_object("draw_load_database_button")
         self.database_view = DatabaseView(self.window, 
                                           self.draw_load_database_button,
-                                          self.properties_view)
+                                          self.properties_view,
+                                          self.program_state,
+                                          self.program_settings)
         
         # Setup ProjectView
         self.drawing_notebook = self.builder.get_object("drawing_notebook")
