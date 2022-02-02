@@ -49,7 +49,8 @@ class ElementAssembly(ElementModel):
                        'name':    self.get_field_dict('str', 'Name', '', 'ASSEMBLY'),
                        'text1':    self.get_field_dict('str', 'Text 1', '', ''),
                        'text2':    self.get_field_dict('str', 'Text 2', '', ''),
-                       'text3':    self.get_field_dict('str', 'Text 3', '', '')}
+                       'text3':    self.get_field_dict('str', 'Text 3', '', ''),
+                       'children': self.get_field_dict('str', 'Children', '', '', selection_list=[])}
         self.text_model = []
         self.schem_model = []
         # Additional Data

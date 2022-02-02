@@ -292,8 +292,10 @@ class FieldView:
                     # Pack
                     hbox_sub.pack_start(caption_widget, False, False, 0)
                     hbox_sub.pack_start(title_widget, True, True, 0)
+                    vbox.pack_start(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), False, False, 5)
                     vbox.pack_start(hbox_sub, True, True, 0)
                     vbox.pack_start(data_widget, True, True, 0)
+                    vbox.pack_start(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), False, False, 5)
                     hbox.pack_start(vbox, True, True, 0)
                 
                 # If click_to_edit_message set, hide edit option under a stack

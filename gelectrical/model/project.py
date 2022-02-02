@@ -109,7 +109,7 @@ class ProjectModel:
         
     ## Functions
     
-    def get_project_fields(self, page='Main', full=False):
+    def get_project_fields(self, page='Information', full=False):
         if full:
             return self.fields
         else:
@@ -305,6 +305,7 @@ class ProjectModel:
         self.global_nodes = set()
         self.virtual_global_nodes = set()
         self.base_models = dict()
+        self.base_elements = dict()
         
         duplicate_ports_list = []
         cur_gnode_num = 0
@@ -346,6 +347,7 @@ class ProjectModel:
         for k1, drawing_model in enumerate(self.drawing_models):
             for k2, element in enumerate(drawing_model.elements):
                 self.base_models[(k1,k2)] = element.get_model()
+                self.base_elements[(k1,k2)] = element
                 code = str(k1) + ',' + str(k2)
                 nodes = element.get_nodes(code)
                 # Add nodes
@@ -360,7 +362,7 @@ class ProjectModel:
                     self.global_nodes.add(gnode)
                     self.node_mapping[p0] = gnode
         
-        log.info('ProjectModel - setup_analysis - model generated')
+        log.info('ProjectModel - setup_base_model - model generated')
         
     def build_graph_model(self):
         self.graph = nx.MultiDiGraph()
@@ -998,6 +1000,65 @@ class ProjectModel:
                     element.res_fields = element_result
         log.info('ProjectModel - update_results - results updated')
         
+    ## Model functions
+    
+    @undoable
+    def renumber_elements(self, mode):
+        """Renumber drawing elements"""
+        self.setup_base_model()
+        base_ref = dict()
+        assembly_elements = set()
+        changed = []
+        excluded_codes = ('element_reference', 'element_wire')
+        # Compile base refs
+        for code, model in self.program_state['element_models'].items():
+            base_ref[code] = model().fields['ref']['value'].strip('?')
+        base_ref['element_assembly'] = 'A'
+        refs = {code:1 for code in base_ref}
+        # Compile elements in assemblies to be numbered seoerately
+        for model_index, model in self.base_elements.items():
+            if model.code == 'element_assembly':
+                for element_index, element in self.base_elements.items():
+                    print(model_index, element_index)
+                    if not (model_index[0] == element_index[0] and model_index[1] == element_index[1]):
+                        pass #TODO
+        
+        if mode == "All":
+            for key, model in self.base_models.items():
+                code = model['code']
+                if 'ref' in model['fields'] and code not in excluded_codes:
+                    ref = model['fields']['ref']['value']
+                    new_ref = base_ref[code] + str(refs[code])
+                    refs[code] += 1
+                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    changed.append([key, ref])
+        elif mode == "New values only":
+            # Update largest refs
+            for model in self.base_models.values():
+                code = model['code']
+                if 'ref' in model['fields'] and code not in excluded_codes:
+                    ref = model['fields']['ref']['value']
+                    try:
+                        count = int(ref.lstrip(base_ref[code]))
+                        refs[code] = max(refs[code], count+1)
+                    except:
+                        pass
+            # Modify refs
+            for key, model in self.base_models.items():
+                code = model['code']
+                if 'ref' in model['fields'] and code not in excluded_codes:
+                    ref = model['fields']['ref']['value']
+                    if ref.strip('?') == base_ref[code]:
+                        new_ref = base_ref[code] + str(refs[code])
+                        refs[code] += 1
+                        self.base_elements[key].set_text_field_value('ref', new_ref)
+                        changed.append([key, ref])
+        
+        yield "Renumber Elements - " + mode
+        # Undo action
+        for key, ref in changed:
+            self.base_elements[key].set_text_field_value('ref', ref)
+        
     ## Export/Import functions
     
     def export_html_report(self, filename):
@@ -1008,9 +1069,9 @@ class ProjectModel:
         
     def export_drawing(self, filename):
         surface = cairo.PDFSurface(filename, 0, 0)
-        #TODO
-        #surface.set_metadata(PDFMetadata.TITLE, '')
-        #surface.set_metadata(PDFMetadata.AUTHOR, '')
+        proj_fields = self.get_project_fields()
+        #surface.set_metadata(PDFMetadata.TITLE, proj_fields['project_name'])
+        #surface.set_metadata(PDFMetadata.AUTHOR, proj_fields['drawing_field_approved'])
         #surface.set_metadata(PDFMetadata.SUBJECT, 'Electrical schematic drawing')
         #surface.set_metadata(PDFMetadata.CREATOR, misc.PROGRAM_NAME)
         #surface.set_metadata(PDFMetadata.CREATE_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())

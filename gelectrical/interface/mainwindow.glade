@@ -508,6 +508,46 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkSeparatorToolItem" id="separatortoolitem5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="toolbutton_draw_renumber">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_markup" translatable="yes">Assign automatic numbering for items</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes">#</property>
+                        <property name="use_underline">True</property>
+                        <signal name="clicked" handler="on_draw_renumber" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="toolbutton_draw_linkref">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_markup" translatable="yes">Link reference</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes">#</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">emblem-symbolic-link</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorToolItem" id="separatortoolitem3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -526,8 +566,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-in</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -543,8 +583,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-out</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

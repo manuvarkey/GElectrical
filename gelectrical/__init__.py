@@ -376,7 +376,7 @@ class MainWindow():
             self.program_settings.update(fields)
             with open(self.settings_filename, 'w') as fp:
                 json.dump(self.program_settings, fp)
-                log.info('Program settings saved at ' + str(self.settings_filename))
+                log.info('MainWindow - on_project_settings - Program settings saved at ' + str(self.settings_filename))
 
     def on_infobar_close(self, widget, response=0):
         """Hides the infobar"""
@@ -491,6 +491,44 @@ class MainWindow():
             self.project.drawing_view.drawing_area.queue_draw()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached minimum scale).")
+            
+    def on_draw_renumber(self, button):
+        """Renumber elements"""
+        
+        # Setup dialog window
+        dialog_window = Gtk.Dialog("Select numbering method", self.window, Gtk.DialogFlags.MODAL,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+             Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        dialog_window.set_border_width(5)
+        dialog_window.get_content_area().set_spacing(15)
+        dialog_window.set_size_request(400,-1)
+        dialog_window.set_default_response(Gtk.ResponseType.OK)
+        
+        # Setup Data model
+        rounding_values = ("All",
+                           "New values only")
+        
+        # Pack Dialog
+        dialog_box = dialog_window.get_content_area()
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        dialog_box.add(box)
+        rounding_combo = Gtk.ComboBoxText()
+        for value in rounding_values:
+            rounding_combo.append_text(value)
+        box.pack_start(rounding_combo, True, True, 3)
+        rounding_combo.set_active(1)
+        
+        # Run dialog
+        dialog_window.show_all()
+        response = dialog_window.run()
+        if response == Gtk.ResponseType.OK:
+            # Update quantity
+            selected = rounding_combo.get_active_text()
+            self.project.renumber_elements(selected)
+            self.display_status(misc.INFO, "Elements renumbered")
+            
+        # Destroy dialog
+        dialog_window.destroy()
         
     def on_draw_drawwire(self, widget):
         """Start drawing wire"""

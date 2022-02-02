@@ -456,9 +456,7 @@ class LTCableIEC(Line):
         
     def set_text_field_value(self, code, value):
         if self.fields and code in self.fields:
-            oldval = self.fields[code]['value']
             self.fields[code]['value'] = value
-            
             # Modify variables based on selection
             if code == 'conductor_material':
                 self.fields['conductor_cross_section']['selection_list'] = self.cross_section_dict[value]
@@ -518,12 +516,7 @@ class LTCableIEC(Line):
                     self.fields['cpe_cross_section']['status_enable'] = True
                     self.fields['armour_sc_current_rating']['status_enable'] = True
                     self.fields['ext_cpe_sc_current_rating']['status_enable'] = True
-
             self.calculate_parameters()
-            
-            yield "Modify '{}' element field from '{}' to '{}'".format(self.name, oldval, value)
-            # Undo action
-            self.set_text_field_value(code, oldval)
             
     def conductor_k_value(self, conductor, t0, tf):
         B = self.conductor_B_dict[conductor]
