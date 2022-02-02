@@ -129,20 +129,9 @@ class MainWindow():
         # get filename and set project as active
         self.filename = filename
         
-        try:
-            fileobj = open(self.filename, 'r')
-        except:
-            log.error("MainWindow - open_project - Error opening file - " + self.filename)
-            self.display_status(misc.ERROR, "Project could not be opened: Error opening file")
-            return
-            
-        if fileobj == None:
-            log.error("MainWindow - open_project - Error opening file - " + self.filename)
-            self.display_status(misc.ERROR, "Project could not be opened: Error opening file")
-        else:
+        with open(self.filename, 'r') as fileobj:
             try:
                 data = json.load(fileobj)  # load data structure
-                fileobj.close()
                 if data[0] == misc.PROJECT_FILE_VER:
                     self.project.set_model(data[1])
 
@@ -164,7 +153,7 @@ class MainWindow():
             except:
                 log.exception("Error parsing project file - " + self.filename)
                 self.display_status(misc.ERROR, "Project could not be opened: Error opening file")
-
+                    
     ## Main Window callbacks
 
     def on_exit(self, *args):
@@ -252,12 +241,13 @@ class MainWindow():
             data.append(misc.PROJECT_FILE_VER)
             data.append(self.project.get_model())
             # Try to open file
-            fileobj = open(self.filename, 'w')
-            if fileobj == None:
-                log.error("MainWindow - on_save - Error opening file - " + self.filename)
-                self.display_status(misc.ERROR, "Project file could not be opened for saving")
-            json.dump(data, fileobj)
-            fileobj.close()
+            with open(self.filename, 'w') as fileobj:
+                try:
+                    json.dump(data, fileobj)
+                except:
+                    log.error("MainWindow - on_save - Error opening file - " + self.filename)
+                    self.display_status(misc.ERROR, "Project file could not be opened for saving")
+                    return
             self.display_status(misc.INFO, "Project successfully saved")
             log.info('MainWindow - on_save -  Project successfully saved')
             self.window.set_title(self.filename + ' - ' + misc.PROGRAM_NAME)
