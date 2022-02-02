@@ -37,14 +37,14 @@ log = logging.getLogger(__name__)
 class DatabaseView:
     """Class for loading database from file into FieldView"""
     
-    def __init__(self, window, button, field_view, program_state, program_settings):
+    def __init__(self, window, button, field_view, program_state):
         self.window = window
         self.button = button
         self.data_path = None
         self.field_view = field_view
         self.data = dict()
         self.program_state = program_state
-        self.program_settings = program_settings
+        self.program_settings = self.program_state['program_settings_main']
         self.stack = self.program_state['stack']
 
         # Setup Widgets

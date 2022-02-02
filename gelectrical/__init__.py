@@ -32,9 +32,11 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 # local files import
 from . import misc, undo
-from .model import drawing, switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator
+from .model import drawing
+from .elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator
 from .model.project import ProjectModel
-from .view.drawing import FieldView, FieldViewDialog, MessageView
+from .view.field import FieldView, FieldViewDialog
+from .view.message import MessageView
 from .view.database import DatabaseView
 
 # Add current path to sys for importing plugins
@@ -353,7 +355,7 @@ class MainWindow():
         # Setup project settings dialog
         project_settings_dialog = FieldViewDialog(self.window, 
                                       'Project Settings',
-                                      self.project.fields, 
+                                       self.project.get_project_fields(full=True), 
                                       'status_enable', 'status_inactivate')
         # Show settings dialog
         fields = project_settings_dialog.run()
@@ -366,7 +368,7 @@ class MainWindow():
         # Setup project settings dialog
         program_settings_dialog = FieldViewDialog(self.window, 
                                       'Program Settings',
-                                      self.program_settings, 
+                                       self.program_settings, 
                                       'status_enable', 'status_inactivate')
         # Show settings dialog
         fields = program_settings_dialog.run()
@@ -645,7 +647,6 @@ class MainWindow():
         settings_dir = dirs.user_data_dir
         self.user_library_dir = misc.posix_path(dirs.user_data_dir,'database')
         self.settings_filename = misc.posix_path(settings_dir,'settings.ini')
-        
         # Create directory if does not exist
         if not os.path.exists(settings_dir):
             os.makedirs(settings_dir)
@@ -666,6 +667,7 @@ class MainWindow():
             # If an error load default program preference
             self.program_settings = copy.deepcopy(misc.default_program_settings)
             log.info('Program settings initialisation failed - falling back on default values')
+        self.program_state['program_settings_main'] = self.program_settings['Defaults']
         log.info('Program settings initialised')
         
         # Setup main window
@@ -673,6 +675,9 @@ class MainWindow():
         self.builder.add_from_file(misc.abs_path("interface", "mainwindow.glade"))
         self.builder.connect_signals(self)
         self.window = self.builder.get_object("window_main")
+        self.drawing_notebook = self.builder.get_object("drawing_notebook")
+        self.program_state['window'] = self.window
+        self.program_state['drawing_notebook'] = self.drawing_notebook
         
         # Setup element addition toolbar
         self.draw_element_groups = dict()
@@ -719,20 +724,22 @@ class MainWindow():
         self.draw_diagnostic_listbox = self.builder.get_object("draw_diagnostic_listbox")
         self.diagnostics_view = MessageView(self.window, 
                                             self.draw_diagnostic_listbox)
+        self.program_state['insert_view'] = self.insert_view
+        self.program_state['properties_view'] = self.properties_view
+        self.program_state['results_view'] = self.results_view
+        self.program_state['diagnostics_view'] = self.diagnostics_view
+        
         self.draw_load_database_button = self.builder.get_object("draw_load_database_button")
         self.database_view = DatabaseView(self.window, 
                                           self.draw_load_database_button,
                                           self.properties_view,
-                                          self.program_state,
-                                          self.program_settings)
+                                          self.program_state)
+        self.program_state['database_view'] = self.database_view
         
         # Setup ProjectView
-        self.drawing_notebook = self.builder.get_object("drawing_notebook")
-        self.project = ProjectModel(self.window, self.drawing_notebook, 
-                                    self.properties_view, self.results_view, 
-                                    self.diagnostics_view, self.database_view,
-                                    self.program_state, 
-                                    self.program_settings)
+        self.program_state['project_settings_main'] = None  # Updated inside ProjectModel constructor
+        self.project = ProjectModel(self.window, self.program_state)
+        self.program_state['project'] = self.project
         
         # Setup infobar/ revealer
         self.progress_revealer = self.builder.get_object("progress_revealer")

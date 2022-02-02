@@ -57,26 +57,28 @@ log = logging.getLogger(__name__)
 class ProjectModel:
     """Class for modelling a project"""
     
-    def __init__(self, window, drawing_notebook, properties_view, results_view, diagnostics_view, database_view, program_state, program_settings):
+    def __init__(self, window, program_state):
         # Data
         self.drawing_models = []
-        self.fields = {'project_name':          misc.get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
+        program_settings = program_state['program_settings_main']
+        self.fields = {'Information': {'project_name':          misc.get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
                        'drawing_field_dept':    program_settings['drawing_field_dept'],
                        'drawing_field_techref': program_settings['drawing_field_techref'],
                        'drawing_field_created': program_settings['drawing_field_created'],
                        'drawing_field_approved':program_settings['drawing_field_approved'],
                        'drawing_field_lang':    program_settings['drawing_field_lang'],
-                       'drawing_field_address': program_settings['drawing_field_address']}
+                       'drawing_field_address': program_settings['drawing_field_address']}}
+        program_state['project_settings_main'] = self.fields['Information']
         self.loadprofiles = misc.DEFAULT_LOAD_PROFILE
         
         # State variables
         self.window = window
-        self.drawing_notebook = drawing_notebook
-        self.properties_view = properties_view
-        self.results_view = results_view
-        self.diagnostics_view = diagnostics_view
-        self.database_view = database_view
         self.program_state = program_state
+        self.drawing_notebook = program_state['drawing_notebook']
+        self.properties_view = program_state['properties_view']
+        self.results_view = program_state['results_view']
+        self.diagnostics_view = program_state['diagnostics_view']
+        self.database_view = program_state['database_view']
         self.program_settings = program_settings
         self.drawing_views = []
         self.drawing_model = None
@@ -107,6 +109,12 @@ class ProjectModel:
         
     ## Functions
     
+    def get_project_fields(self, page='Main', full=False):
+        if full:
+            return self.fields
+        else:
+            return self.fields[page]
+    
     @undoable
     def update_project_fields(self, new_fields):
         old_fields = self.fields
@@ -128,7 +136,7 @@ class ProjectModel:
         dialog.run()
     
     def append_page(self):
-        model = DrawingModel(self, self.program_state, self.program_settings)
+        model = DrawingModel(self, self.program_state)
         slno = self.get_page_nos()
         # Except first page copy fields from first page
         if slno > 0:
@@ -150,7 +158,7 @@ class ProjectModel:
         if model:
             self.drawing_model = model
         else:
-            self.drawing_model = DrawingModel(self, self.program_state, self.program_settings)
+            self.drawing_model = DrawingModel(self, self.program_state)
             sheet_name = "Sheet " + str(self.get_page_nos())
             self.drawing_model.set_sheet_name(sheet_name)
         if slno:
@@ -201,7 +209,7 @@ class ProjectModel:
         for slno in range(0,self.get_page_nos()):
             self.remove_page(slno)
         # Clear first page model
-        blank_model = DrawingModel(self, self.program_state, self.program_settings).get_model()
+        blank_model = DrawingModel(self, self.program_state).get_model()
         self.drawing_models[0].set_model(blank_model)
         
     def get_page_nos(self):

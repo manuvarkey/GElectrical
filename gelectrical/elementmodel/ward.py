@@ -20,8 +20,10 @@
 
 import os, cairo
 from gi.repository import PangoCairo
-from .drawing import ElementModel
+
+# local files import
 from .. import misc
+from .element import ElementModel
 
 
 class Ward(ElementModel):

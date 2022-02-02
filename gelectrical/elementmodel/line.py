@@ -20,12 +20,10 @@
 
 import os, cairo, math
 from gi.repository import PangoCairo
-from .drawing import ElementModel
-from .. import misc
 
 # local files import
-from .. import misc, undo
-from ..undo import undoable
+from .. import misc
+from .element import ElementModel
 
 
 class Line(ElementModel):
@@ -456,7 +454,6 @@ class LTCableIEC(Line):
         # Post processing
         self.modify_extends()
         
-    @undoable
     def set_text_field_value(self, code, value):
         if self.fields and code in self.fields:
             oldval = self.fields[code]['value']

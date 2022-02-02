@@ -58,7 +58,7 @@ class GraphView():
         self.inactivate = inactivate
         self.models = []
         self.model = None
-        self.colors = ('#218C8D', '#6CCECB', '#F9E559', '#EF7126', '#8EDC9D', '#473E3F', '#4e9a06', '#8f5902')
+        self.colors = ('#218C8D', '#EF7126', '#4e9a06', '#F9E559', '#8EDC9D', '#473E3F', '#8f5902', '#6CCECB')
         self.signal1_id = None
         self.signal2_id = None
         
