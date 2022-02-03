@@ -437,24 +437,24 @@ class MainWindow():
             self.project.run_powerflow_timeseries()
             
             progress.add_message('Running Symmetric Short Circuit Calculation...')
-            progress.set_fraction(0.6)
+            progress.set_fraction(0.7)
             self.project.run_sym_sccalc()
             
             progress.add_message('Running Line to Ground Short Circuit Calculation...')
-            progress.set_fraction(0.7)
+            progress.set_fraction(0.8)
             self.project.run_linetoground_sccalc()
             
             progress.add_message('Updating Results...')
-            progress.set_fraction(0.8)
+            progress.set_fraction(0.9)
             self.project.update_results()
             
-            progress.add_message('Setting up HTML Report...')
-            progress.set_fraction(0.9)
-            self.project.export_html_report('network.html')
+            #progress.add_message('Setting up HTML Report...')
+            #progress.set_fraction(0.9)
+            #self.project.export_html_report('network.html')  #TODO
             
-            progress.add_message('Exporting pandapower network to JSON...')
-            progress.set_fraction(0.95)
-            self.project.export_json('network.json')
+            #progress.add_message('Exporting pandapower network to JSON...')
+            #progress.set_fraction(0.95)
+            #self.project.export_json('network.json')  #TODO
             
             progress.set_fraction(1)
             progress.add_message('<b>Analysis run Successfully</b>')
@@ -496,7 +496,8 @@ class MainWindow():
         
         # Setup Data model
         rounding_values = ("All",
-                           "New values only")
+                           "New elements only",
+                           "Selected elements only")
         
         # Pack Dialog
         dialog_box = dialog_window.get_content_area()
@@ -506,7 +507,7 @@ class MainWindow():
         for value in rounding_values:
             rounding_combo.append_text(value)
         box.pack_start(rounding_combo, True, True, 3)
-        rounding_combo.set_active(1)
+        rounding_combo.set_active(2)
         
         # Run dialog
         dialog_window.show_all()

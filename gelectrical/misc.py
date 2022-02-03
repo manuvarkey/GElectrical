@@ -823,6 +823,21 @@ class Command(object):
             return -1
         return 0
 
+class ReferenceCounter:
+    """Class for implementing reference counting"""
+    
+    def __init__(self, start):
+        self.refs = dict()
+        self.start=start
+        
+    def __setitem__(self, code, value):
+        self.refs[code] = value
+            
+    def __getitem__(self, code):
+        if code in self.refs:
+            return self.refs[code]
+        else:
+            return self.start
 
 ## GLOBAL METHODS
 

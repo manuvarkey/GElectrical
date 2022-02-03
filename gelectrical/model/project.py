@@ -1010,6 +1010,7 @@ class ProjectModel:
         """Renumber drawing elements"""
         self.setup_base_model()
         base_ref = dict()
+        refs = misc.ReferenceCounter(1)
         prefix_codes = dict()
         changed = []
         # Compile base refs
@@ -1017,34 +1018,15 @@ class ProjectModel:
             base_ref[code] = model().fields['ref']['value'].strip('?')
         base_ref['element_assembly'] = 'A'
         
-        class RefCount:
-            def __init__(self, start):
-                self.refs = dict()
-                self.start=start
-                
-            def __setitem__(self, code, value):
-                self.refs[code] = value
-                    
-            def __getitem__(self, code):
-                if code in self.refs:
-                    return self.refs[code]
-                else:
-                    return self.start
+        # Get selected elements
+        if mode == "Selected elements only":
+            selected_elements = self.drawing_model.get_selected()
+            selected_keys = self.drawing_model.get_selected_codes()
+            drg_no = self.get_drawing_model_index(self.drawing_model)
+            selected_keys = [(drg_no, key) for key in selected_keys]
         
-        refs = RefCount(1)
-        
-        # Number assemblies and compile elements in assemblies to be numbered with assembly code
-        if mode == "All":
-            for key, model in self.base_elements.items():
-                code = model.code
-                if code == 'element_assembly':
-                    ref = model.fields['ref']['value']
-                    new_ref = base_ref[code] + str(refs[code])
-                    refs[code] += 1
-                    self.base_elements[key].set_text_field_value('ref', new_ref)
-                    changed.append([key, ref])
-        elif mode == "New values only":
-            # Update largest refs
+        # Update largest refs for assembly elements
+        if mode in ("New elements only", "Selected elements only"):
             for key, model in self.base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
@@ -1054,7 +1036,18 @@ class ProjectModel:
                         refs[code] = max(refs[code], count+1)
                     except:
                         pass
-            # Modify references
+                    
+        # Number assembly elements
+        if mode == "All":
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code == 'element_assembly':
+                    ref = model.fields['ref']['value']
+                    new_ref = base_ref[code] + str(refs[code])
+                    refs[code] += 1
+                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    changed.append([key, ref])
+        elif mode == "New elements only":
             for key, model in self.base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
@@ -1064,8 +1057,17 @@ class ProjectModel:
                         refs[code] += 1
                         self.base_elements[key].set_text_field_value('ref', new_ref)
                         changed.append([key, ref])
+        elif mode == "Selected elements only":
+            for key, model in zip(selected_keys, selected_elements):
+                code = model.code
+                if code == 'element_assembly':
+                    ref = model.fields['ref']['value']
+                    new_ref = base_ref[code] + str(refs[code])
+                    refs[code] += 1
+                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    changed.append([key, ref])
         
-        # Update prefix for assembly items
+        # Update prefix for elements inside assembly
         for key, model in self.base_elements.items():
             code = model.code
             if code == 'element_assembly':
@@ -1073,23 +1075,10 @@ class ProjectModel:
                 for drg_no, element_index in children:
                     prefix_codes[(drg_no, element_index)] = model.fields['ref']['value'] + '-'
         
-        # Number remaining elements
         excluded_codes = ('element_reference', 'element_wire', 'element_assembly')
-        if mode == "All":
-            for key, model in self.base_elements.items():
-                code = model.code
-                if code not in excluded_codes:
-                    if key in prefix_codes:
-                        prefix = prefix_codes[key]
-                    else:
-                        prefix = ''
-                    ref = model.fields['ref']['value']
-                    new_ref = prefix + base_ref[code] + str(refs[prefix + code])
-                    refs[prefix + code] += 1
-                    self.base_elements[key].set_text_field_value('ref', new_ref)
-                    changed.append([key, ref])
-        elif mode == "New values only":
-            # Update largest refs
+        
+        # Update largest refs for elements
+        if mode in ("New elements only", "Selected elements only"):
             for key, model in self.base_elements.items():
                 code = model.code
                 if code not in excluded_codes:
@@ -1106,6 +1095,22 @@ class ProjectModel:
                         refs[prefix + code] = max(refs[prefix + code], count+1)
                     except:
                         pass
+        
+        # Number remaining elements
+        if mode == "All":
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code not in excluded_codes:
+                    if key in prefix_codes:
+                        prefix = prefix_codes[key]
+                    else:
+                        prefix = ''
+                    ref = model.fields['ref']['value']
+                    new_ref = prefix + base_ref[code] + str(refs[prefix + code])
+                    refs[prefix + code] += 1
+                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    changed.append([key, ref])
+        elif mode == "New elements only":
             # Modify references
             for key, model in self.base_elements.items():
                 code = model.code
@@ -1120,6 +1125,19 @@ class ProjectModel:
                         refs[prefix + code] += 1
                         self.base_elements[key].set_text_field_value('ref', new_ref)
                         changed.append([key, ref])
+        elif mode == "Selected elements only":
+            for key, model in zip(selected_keys, selected_elements):
+                code = model.code
+                if code not in excluded_codes:
+                    if key in prefix_codes:
+                        prefix = prefix_codes[key]
+                    else:
+                        prefix = ''
+                    ref = model.fields['ref']['value']
+                    new_ref = prefix + base_ref[code] + str(refs[prefix + code])
+                    refs[prefix + code] += 1
+                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    changed.append([key, ref])
         
         yield "Renumber Elements - " + mode
         # Undo action

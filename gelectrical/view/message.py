@@ -85,6 +85,7 @@ class MessageView:
                 hbox.props.margin_top = 6
                 hbox.props.margin_bottom = 6
                 data_widget = Gtk.Label('', xalign=0)
+                data_widget.set_line_wrap(True)
                 data_widget.set_text(message[0])
                 row.set_activatable(True)
                 # Pack
