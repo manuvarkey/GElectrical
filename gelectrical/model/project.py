@@ -114,6 +114,9 @@ class ProjectModel:
             return self.fields
         else:
             return self.fields[page]
+        
+    def get_drawing_model_index(self, model):
+        return self.drawing_models.index(model)
     
     @undoable
     def update_project_fields(self, new_fields):
@@ -1007,50 +1010,114 @@ class ProjectModel:
         """Renumber drawing elements"""
         self.setup_base_model()
         base_ref = dict()
-        assembly_elements = set()
+        prefix_codes = dict()
         changed = []
-        excluded_codes = ('element_reference', 'element_wire')
         # Compile base refs
         for code, model in self.program_state['element_models'].items():
             base_ref[code] = model().fields['ref']['value'].strip('?')
         base_ref['element_assembly'] = 'A'
-        refs = {code:1 for code in base_ref}
-        # Compile elements in assemblies to be numbered seoerately
-        for model_index, model in self.base_elements.items():
-            if model.code == 'element_assembly':
-                for element_index, element in self.base_elements.items():
-                    print(model_index, element_index)
-                    if not (model_index[0] == element_index[0] and model_index[1] == element_index[1]):
-                        pass #TODO
         
+        class RefCount:
+            def __init__(self, start):
+                self.refs = dict()
+                self.start=start
+                
+            def __setitem__(self, code, value):
+                self.refs[code] = value
+                    
+            def __getitem__(self, code):
+                if code in self.refs:
+                    return self.refs[code]
+                else:
+                    return self.start
+        
+        refs = RefCount(1)
+        
+        # Number assemblies and compile elements in assemblies to be numbered with assembly code
         if mode == "All":
-            for key, model in self.base_models.items():
-                code = model['code']
-                if 'ref' in model['fields'] and code not in excluded_codes:
-                    ref = model['fields']['ref']['value']
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code == 'element_assembly':
+                    ref = model.fields['ref']['value']
                     new_ref = base_ref[code] + str(refs[code])
                     refs[code] += 1
                     self.base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         elif mode == "New values only":
             # Update largest refs
-            for model in self.base_models.values():
-                code = model['code']
-                if 'ref' in model['fields'] and code not in excluded_codes:
-                    ref = model['fields']['ref']['value']
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code == 'element_assembly':
+                    ref = model.fields['ref']['value']
                     try:
                         count = int(ref.lstrip(base_ref[code]))
                         refs[code] = max(refs[code], count+1)
                     except:
                         pass
-            # Modify refs
-            for key, model in self.base_models.items():
-                code = model['code']
-                if 'ref' in model['fields'] and code not in excluded_codes:
-                    ref = model['fields']['ref']['value']
+            # Modify references
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code == 'element_assembly':
+                    ref = model.fields['ref']['value']
                     if ref.strip('?') == base_ref[code]:
                         new_ref = base_ref[code] + str(refs[code])
                         refs[code] += 1
+                        self.base_elements[key].set_text_field_value('ref', new_ref)
+                        changed.append([key, ref])
+        
+        # Update prefix for assembly items
+        for key, model in self.base_elements.items():
+            code = model.code
+            if code == 'element_assembly':
+                children = model.get_children()
+                for drg_no, element_index in children:
+                    prefix_codes[(drg_no, element_index)] = model.fields['ref']['value'] + '-'
+        
+        # Number remaining elements
+        excluded_codes = ('element_reference', 'element_wire', 'element_assembly')
+        if mode == "All":
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code not in excluded_codes:
+                    if key in prefix_codes:
+                        prefix = prefix_codes[key]
+                    else:
+                        prefix = ''
+                    ref = model.fields['ref']['value']
+                    new_ref = prefix + base_ref[code] + str(refs[prefix + code])
+                    refs[prefix + code] += 1
+                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    changed.append([key, ref])
+        elif mode == "New values only":
+            # Update largest refs
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code not in excluded_codes:
+                    if key in prefix_codes:
+                        prefix = prefix_codes[key]
+                    else:
+                        prefix = ''
+                    ref = model.fields['ref']['value']
+                    try:
+                        # Add prefixed base to base_ref
+                        if prefix + code not in base_ref:
+                            base_ref[prefix + code] = prefix + base_ref[code]
+                        count = int(ref.lstrip(base_ref[prefix + code]))
+                        refs[prefix + code] = max(refs[prefix + code], count+1)
+                    except:
+                        pass
+            # Modify references
+            for key, model in self.base_elements.items():
+                code = model.code
+                if code not in excluded_codes:
+                    if key in prefix_codes:
+                        prefix = prefix_codes[key]
+                    else:
+                        prefix = ''
+                    ref = model.fields['ref']['value']
+                    if ref.strip('?') == base_ref[code]:
+                        new_ref = prefix + base_ref[code] + str(refs[prefix + code])
+                        refs[prefix + code] += 1
                         self.base_elements[key].set_text_field_value('ref', new_ref)
                         changed.append([key, ref])
         

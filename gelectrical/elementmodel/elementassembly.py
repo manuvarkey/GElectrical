@@ -36,7 +36,7 @@ log = logging.getLogger(__name__)
 
 class ElementAssembly(ElementModel):
     """Class for rendering element assemblies"""
-    def __init__(self, children=None):
+    def __init__(self, children=None, children_codes=None):
         # Global
         ElementModel.__init__(self, (0,0))
         self.code = 'element_assembly'
@@ -49,17 +49,17 @@ class ElementAssembly(ElementModel):
                        'name':    self.get_field_dict('str', 'Name', '', 'ASSEMBLY'),
                        'text1':    self.get_field_dict('str', 'Text 1', '', ''),
                        'text2':    self.get_field_dict('str', 'Text 2', '', ''),
-                       'text3':    self.get_field_dict('str', 'Text 3', '', ''),
-                       'children': self.get_field_dict('str', 'Children', '', '', selection_list=[])}
+                       'text3':    self.get_field_dict('str', 'Text 3', '', '')}
         self.text_model = []
         self.schem_model = []
         # Additional Data
-        self.element_rect_width = None
-        self.element_rect_height = None
+        self.element_rect_width = 50
+        self.element_rect_height = 50
+        self.children_codes = []
         # State variables
         
-        if children:
-            self.set_children(children)
+        if children and children_codes:
+            self.set_children(children, children_codes)
         
           
     def render_element(self, context):
@@ -105,7 +105,9 @@ class ElementAssembly(ElementModel):
                 'ports': copy.deepcopy(self.ports),
                 'fields': copy.deepcopy(self.fields),
                 'element_rect_width': self.element_rect_width,
-                'element_rect_height': self.element_rect_height}
+                'element_rect_height': self.element_rect_height,
+                'children_codes': self.element_rect_height,
+                'children_codes': self.children_codes}
     
     def set_model(self, model):
         """Set storage model"""
@@ -117,17 +119,22 @@ class ElementAssembly(ElementModel):
             self.fields = copy.deepcopy(model['fields'])
             self.element_rect_width = model['element_rect_width']
             self.element_rect_height = model['element_rect_height']
+            self.children_codes = model['children_codes']
         
-    def set_children(self, children):
+    def set_children(self, children, children_codes):
         # Setup model
         rects = []
-        for child in set(children):
+        for code, child in zip(children_codes, children):
             rects.append(cairo.RectangleInt(*child.get_dimensions()))
+            self.children_codes.append(code)
         element_region = cairo.Region(rects)
         element_rect = element_region.get_extents()
         self.x = element_rect.x - 10
         self.y = element_rect.y - 10
         self.element_rect_width = element_rect.width + 20
         self.element_rect_height = element_rect.height + 20
+        
+    def get_children(self):
+        return self.children_codes
         
         

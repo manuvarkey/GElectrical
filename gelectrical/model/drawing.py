@@ -83,6 +83,10 @@ class DrawingModel:
         
     ## Export/Import functions
     
+    def __getitem__(self, index):
+        if len(self.elements) > index:
+            return self.elements[index]
+    
     def export_drawing(self, context):
         self.draw_model(context, select=False)
     
@@ -293,17 +297,21 @@ class DrawingModel:
     
     def add_assembly_from_selection(self):
         selected = self.get_selected()
+        codes = self.get_selected_codes()
+        drg_no = self.parent.get_drawing_model_index(self)
+        element_codes = [(drg_no, code) for code in codes]
         if selected:
             # Update elements
-            for element in selected:
+            for code, element in zip(codes, selected):
                 if isinstance(element, ElementAssembly) and len(selected) > 1:
                     index = self.elements.index(element)
                     selected.remove(element)
-                    assembly = ElementAssembly(selected)
+                    element_codes.remove((drg_no,index))
+                    assembly = ElementAssembly(selected, element_codes)
                     self.update_element_at_index(assembly, index)
                     return
             # For new items
-            assembly = ElementAssembly(selected)
+            assembly = ElementAssembly(selected, element_codes)
             self.insert_element_at_index(assembly)
         
     def delete_selected_rows(self):
