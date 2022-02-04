@@ -423,10 +423,6 @@ class MainWindow():
             progress.set_fraction(0)
             self.project.setup_base_model()
             
-            progress.add_message('Building Power Model...')
-            progress.set_fraction(0.2)
-            self.project.build_power_model()
-            
             progress.add_message('Running Diagnostics...')
             progress.set_fraction(0.3)
             self.project.run_diagnostics()

@@ -87,7 +87,8 @@ class MessageView:
                 data_widget = Gtk.Label('', xalign=0)
                 data_widget.set_line_wrap(True)
                 data_widget.set_text(message[0])
-                row.set_activatable(True)
+                if self.select_callback:
+                    row.set_activatable(True)
                 # Pack
                 row.add(hbox)
                 hbox.pack_start(data_widget, True, True, 0)
