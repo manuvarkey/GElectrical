@@ -33,6 +33,7 @@ from .drawing import DrawingModel
 from ..view.drawing import DrawingView
 from ..view.graph import GraphViewDialog
 from ..model.graph import GraphModel
+from .networkmodel import NetworkModel
 from .pandapower import PandaPowerModel
 
 # Get logger object
@@ -70,6 +71,7 @@ class ProjectModel:
         self.drawing_view = None
         self.stack = program_state['stack']
         # Analysis varables
+        self.networkmodel = None
         self.powermodel = None
         self.graph = None
         # Initialise tab
@@ -271,21 +273,18 @@ class ProjectModel:
     
     ## Analysis functions
     
-    def setup_base_model(self):
-        self.powermodel = PandaPowerModel(self.drawing_models, self.loadprofiles)
-        self.powermodel.setup_base_model()
-        self.powermodel.build_power_model()
+    def setup_base_model(self, elements=True, nodes=True):
+        self.networkmodel = NetworkModel(self.drawing_models)
+        if elements:
+            self.networkmodel.setup_base_elements()
+        if nodes:
+            self.networkmodel.setup_global_nodes()
         log.info('ProjectModel - setup_base_model - model generated')
         
-    def build_graph_model(self):
-        self.graph = nx.MultiDiGraph()
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
-                code = str(k1) + ',' + str(k2)
-                sysdesign_model = element.get_sysdesign_model(code)
-                for code, ports, model in sysdesign_model:
-                    pass
-        log.info('ProjectModel - build_graph - model generated')
+    def build_power_model(self):
+        self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles)
+        self.powermodel.build_power_model()
+        log.info('ProjectModel - build_power_model - model generated')
         
     def run_diagnostics(self):
         """Run Diagnostics"""
@@ -325,12 +324,16 @@ class ProjectModel:
     @undoable
     def renumber_elements(self, mode):
         """Renumber drawing elements"""
-        self.setup_base_model()
-        base_ref = dict()
-        refs = misc.ReferenceCounter(1)
-        prefix_codes = dict()
-        changed = []
-        # Compile base refs
+        
+        # Setup network model
+        self.setup_base_model(elements=True, nodes=False)
+        base_elements = self.networkmodel.base_elements
+        
+        # Setup local variables
+        refs = misc.ReferenceCounter(1)  # Counter for base references
+        prefix_codes = dict()  # Prefix codes for elements for assembly references
+        changed = []  # Undo tracking of changed elements
+        base_ref = dict()  # Base references dictionary
         for code, model in self.program_state['element_models'].items():
             base_ref[code] = model().fields['ref']['value'].strip('?')
         base_ref['element_assembly'] = 'A'
@@ -344,7 +347,7 @@ class ProjectModel:
         
         # Update largest refs for assembly elements
         if mode in ("New elements only", "Selected elements only"):
-            for key, model in self.base_elements.items():
+            for key, model in base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
                     ref = model.fields['ref']['value']
@@ -356,23 +359,23 @@ class ProjectModel:
                     
         # Number assembly elements
         if mode == "All":
-            for key, model in self.base_elements.items():
+            for key, model in base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
                     ref = model.fields['ref']['value']
                     new_ref = base_ref[code] + str(refs[code])
                     refs[code] += 1
-                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         elif mode == "New elements only":
-            for key, model in self.base_elements.items():
+            for key, model in base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
                     ref = model.fields['ref']['value']
                     if ref.strip('?') == base_ref[code]:
                         new_ref = base_ref[code] + str(refs[code])
                         refs[code] += 1
-                        self.base_elements[key].set_text_field_value('ref', new_ref)
+                        base_elements[key].set_text_field_value('ref', new_ref)
                         changed.append([key, ref])
         elif mode == "Selected elements only":
             for key, model in zip(selected_keys, selected_elements):
@@ -381,11 +384,11 @@ class ProjectModel:
                     ref = model.fields['ref']['value']
                     new_ref = base_ref[code] + str(refs[code])
                     refs[code] += 1
-                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         
         # Update prefix for elements inside assembly
-        for key, model in self.base_elements.items():
+        for key, model in base_elements.items():
             code = model.code
             if code == 'element_assembly':
                 children = model.get_children()
@@ -396,7 +399,7 @@ class ProjectModel:
         
         # Update largest refs for elements
         if mode in ("New elements only", "Selected elements only"):
-            for key, model in self.base_elements.items():
+            for key, model in base_elements.items():
                 code = model.code
                 if code not in excluded_codes:
                     if key in prefix_codes:
@@ -415,7 +418,7 @@ class ProjectModel:
         
         # Number remaining elements
         if mode == "All":
-            for key, model in self.base_elements.items():
+            for key, model in base_elements.items():
                 code = model.code
                 if code not in excluded_codes:
                     if key in prefix_codes:
@@ -425,11 +428,11 @@ class ProjectModel:
                     ref = model.fields['ref']['value']
                     new_ref = prefix + base_ref[code] + str(refs[prefix + code])
                     refs[prefix + code] += 1
-                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         elif mode == "New elements only":
             # Modify references
-            for key, model in self.base_elements.items():
+            for key, model in base_elements.items():
                 code = model.code
                 if code not in excluded_codes:
                     if key in prefix_codes:
@@ -440,7 +443,7 @@ class ProjectModel:
                     if ref.strip('?') == base_ref[code]:
                         new_ref = prefix + base_ref[code] + str(refs[prefix + code])
                         refs[prefix + code] += 1
-                        self.base_elements[key].set_text_field_value('ref', new_ref)
+                        base_elements[key].set_text_field_value('ref', new_ref)
                         changed.append([key, ref])
         elif mode == "Selected elements only":
             for key, model in zip(selected_keys, selected_elements):
@@ -453,13 +456,13 @@ class ProjectModel:
                     ref = model.fields['ref']['value']
                     new_ref = prefix + base_ref[code] + str(refs[prefix + code])
                     refs[prefix + code] += 1
-                    self.base_elements[key].set_text_field_value('ref', new_ref)
+                    base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         
         yield "Renumber Elements - " + mode
         # Undo action
         for key, ref in changed:
-            self.base_elements[key].set_text_field_value('ref', ref)
+            base_elements[key].set_text_field_value('ref', ref)
         
     ## Export/Import functions
     

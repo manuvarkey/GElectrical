@@ -48,95 +48,29 @@ log = logging.getLogger(__name__)
 class PandaPowerModel:
     """Class for modelling a Panda Power Project"""
     
-    def __init__(self, drawing_models, loadprofiles):
+    def __init__(self, network_model, loadprofiles):
         # Data
-        self.drawing_models = drawing_models
+        self.network_model = network_model
         self.loadprofiles = loadprofiles
-        # Base variables
-        self.port_mapping = dict()  # Maps (p,x,y) -> global_node
-        self.node_mapping = dict()  # Maps local_node -> global_node
-        self.global_nodes = set()
-        self.virtual_global_nodes = set()
-        self.base_models = dict()
-        # Graph variables
-        self.graph = None
+        
+        self.global_nodes = self.network_model.global_nodes
+        self.base_elements = self.network_model.base_elements
+        self.port_mapping = self.network_model.port_mapping
+        self.node_mapping = self.network_model.node_mapping
+
         # Power variables
         self.power_model = None
         self.power_nodes = dict()  # Maps global_node -> power_node
         self.power_nodes_inverted = dict()  # Maps power_node -> global_node
         self.power_elements = dict()  # Maps code -> power_element
         self.power_elements_inverted = dict()  # power_element -> Maps code
+        
         # Results
         self.element_results = dict()
         self.node_results = dict()
         self.diagnostic_results = dict()
     
     ## Analysis functions
-    
-    def setup_base_model(self):
-        self.port_mapping = dict()  # Maps (p,x,y) -> global_node
-        self.node_mapping = dict()  # Maps local_node -> global_node
-        self.global_nodes = set()
-        self.virtual_global_nodes = set()
-        self.base_models = dict()
-        self.base_elements = dict()
-        
-        duplicate_ports_list = []
-        cur_gnode_num = 0
-        
-        # Populate self.port_mapping, self.virtual_global_nodes
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
-                code = str(k1) + ',' + str(k2)
-                nodes = element.get_nodes(code)
-                for (p0, ports) in nodes:
-                    gnode = cur_gnode_num
-                    duplicate_ports = set()
-                    if ports:
-                        for port in ports:
-                            # Get port in global coordinates
-                            if len(port) == 2:
-                                map_port = (k1, *port)  # If same page port ref add page number
-                            else:
-                                map_port = port
-                            # Populate data
-                            self.port_mapping[map_port] = gnode
-                            if len(ports) > 1:
-                                duplicate_ports.add(map_port)
-                        if len(ports) > 1:
-                            duplicate_ports_list.append(duplicate_ports)
-                    else:
-                        self.virtual_global_nodes.add(gnode)
-                    cur_gnode_num += 1
-                    
-        # Filter duplicates in self.port_mapping
-        duplicate_ports_list_comb = self.combine_connected_nodes(duplicate_ports_list)
-        for duplicate_ports in duplicate_ports_list_comb:
-            gnode = cur_gnode_num
-            for port in duplicate_ports:
-                self.port_mapping[port] = gnode
-            cur_gnode_num += 1
-            
-        # Populate self.node_mapping, self.global_nodes, self.base_models
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
-                self.base_models[(k1,k2)] = element.get_model()
-                self.base_elements[(k1,k2)] = element
-                code = str(k1) + ',' + str(k2)
-                nodes = element.get_nodes(code)
-                # Add nodes
-                for (p0, ports) in nodes:
-                    port = ports[0]
-                    # Get port in global coordinates
-                    if len(port) == 2:
-                        map_port = (k1, *port)  # If same page port ref add page number
-                    else:
-                        map_port = port
-                    gnode = self.port_mapping[map_port]
-                    self.global_nodes.add(gnode)
-                    self.node_mapping[p0] = gnode
-        
-        log.info('PandaPowerModel - setup_base_model - model generated')
         
     def build_power_model(self):
         self.power_model = pp.create_empty_network()
@@ -160,107 +94,106 @@ class PandaPowerModel:
                     return self.power_nodes[node]
                         
         # Create all elements
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
-                code = str(k1) + ',' + str(k2)
-                power_model = element.get_power_model(code)
-                for slno, power_model_sub in enumerate(power_model):
-                    elementcode, local_nodes, model = power_model_sub
-                    if elementcode == 'bus':
-                        node = get_node(local_nodes[0])
-                        self.power_model.bus.name.at[node] = model['name']
-                        self.power_model.bus.vn_kv.at[node] = model['vn_kv']
-                        self.power_model.bus.type.at[node] = model['type']
-                    elif elementcode == 'switch':
-                        node0 = get_node(local_nodes[0])
-                        node1 = get_node(local_nodes[1])
-                        element = pp.create_switch(self.power_model, bus=node0, element=node1, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'ext_grid':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_ext_grid(self.power_model, bus=node, **model)
-                        self.power_model.ext_grid.at[element, 'x0x_max'] = model['x0x_max']
-                        self.power_model.ext_grid.at[element, 'r0x0_max'] = model['r0x0_max']
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'trafo':
-                        node0 = get_node(local_nodes[0])
-                        node1 = get_node(local_nodes[1])
-                        element = pp.create_transformer_from_parameters(self.power_model, hv_bus=node0, lv_bus=node1, **model)
-                        self.power_model.trafo.at[element, 'vector_group'] = model['vector_group']
-                        self.power_model.trafo.at[element, 'vk0_percent'] = model['vk0_percent']
-                        self.power_model.trafo.at[element, 'vkr0_percent'] = model['vkr0_percent']
-                        self.power_model.trafo.at[element, 'mag0_percent'] = model['mag0_percent']
-                        self.power_model.trafo.at[element, 'mag0_rx'] = model['mag0_rx']
-                        self.power_model.trafo.at[element, 'si0_hv_partial'] = model['si0_hv_partial']
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'trafo3w':
-                        node0 = get_node(local_nodes[0])
-                        node1 = get_node(local_nodes[1])
-                        node2 = get_node(local_nodes[2])
-                        element = pp.create_transformer3w_from_parameters(self.power_model, hv_bus=node0, mv_bus=node1, lv_bus=node2, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'gen':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_gen(self.power_model, bus=node, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'sgen':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_sgen(self.power_model, bus=node, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'storage':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_storage(self.power_model, bus=node, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'impedance':
-                        node0 = get_node(local_nodes[0])
-                        node1 = get_node(local_nodes[1])
-                        element = pp.create_impedance(self.power_model, from_bus=node0, to_bus=node1, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'line':
-                        node0 = get_node(local_nodes[0])
-                        node1 = get_node(local_nodes[1])
-                        element = pp.create_line_from_parameters(self.power_model, from_bus=node0, to_bus=node1, **model)
-                        self.power_model.line.at[element, 'endtemp_degree'] = model['endtemp_degree']  # Add value explicitly to avoid bug in PP
-                        self.power_model.line.at[element, 'r0_ohm_per_km'] = model['r0_ohm_per_km']
-                        self.power_model.line.at[element, 'x0_ohm_per_km'] = model['x0_ohm_per_km']
-                        self.power_model.line.at[element, 'c0_nf_per_km'] = model['c0_nf_per_km']
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'dcline':
-                        node0 = get_node(local_nodes[0])
-                        node1 = get_node(local_nodes[1])
-                        element = pp.create_dcline(self.power_model, from_bus=node0, to_bus=node1, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'load':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_load_from_cosphi(self.power_model, bus=node, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'shunt':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_shunt(self.power_model, bus=node, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'ward':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_ward(self.power_model, bus=node, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                    elif elementcode == 'xward':
-                        node = get_node(local_nodes[0])
-                        element = pp.create_xward(self.power_model, bus=node, **model)
-                        self.power_elements[(k1,k2)] = (elementcode, element)
-                        self.power_elements_inverted[elementcode, element] = (k1,k2)
-                        
+        for (k1, k2), element in self.base_elements.items():
+            code = str(k1) + ',' + str(k2)
+            power_model = element.get_power_model(code)
+            for slno, power_model_sub in enumerate(power_model):
+                elementcode, local_nodes, model = power_model_sub
+                if elementcode == 'bus':
+                    node = get_node(local_nodes[0])
+                    self.power_model.bus.name.at[node] = model['name']
+                    self.power_model.bus.vn_kv.at[node] = model['vn_kv']
+                    self.power_model.bus.type.at[node] = model['type']
+                elif elementcode == 'switch':
+                    node0 = get_node(local_nodes[0])
+                    node1 = get_node(local_nodes[1])
+                    element = pp.create_switch(self.power_model, bus=node0, element=node1, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'ext_grid':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_ext_grid(self.power_model, bus=node, **model)
+                    self.power_model.ext_grid.at[element, 'x0x_max'] = model['x0x_max']
+                    self.power_model.ext_grid.at[element, 'r0x0_max'] = model['r0x0_max']
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'trafo':
+                    node0 = get_node(local_nodes[0])
+                    node1 = get_node(local_nodes[1])
+                    element = pp.create_transformer_from_parameters(self.power_model, hv_bus=node0, lv_bus=node1, **model)
+                    self.power_model.trafo.at[element, 'vector_group'] = model['vector_group']
+                    self.power_model.trafo.at[element, 'vk0_percent'] = model['vk0_percent']
+                    self.power_model.trafo.at[element, 'vkr0_percent'] = model['vkr0_percent']
+                    self.power_model.trafo.at[element, 'mag0_percent'] = model['mag0_percent']
+                    self.power_model.trafo.at[element, 'mag0_rx'] = model['mag0_rx']
+                    self.power_model.trafo.at[element, 'si0_hv_partial'] = model['si0_hv_partial']
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'trafo3w':
+                    node0 = get_node(local_nodes[0])
+                    node1 = get_node(local_nodes[1])
+                    node2 = get_node(local_nodes[2])
+                    element = pp.create_transformer3w_from_parameters(self.power_model, hv_bus=node0, mv_bus=node1, lv_bus=node2, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'gen':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_gen(self.power_model, bus=node, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'sgen':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_sgen(self.power_model, bus=node, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'storage':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_storage(self.power_model, bus=node, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'impedance':
+                    node0 = get_node(local_nodes[0])
+                    node1 = get_node(local_nodes[1])
+                    element = pp.create_impedance(self.power_model, from_bus=node0, to_bus=node1, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'line':
+                    node0 = get_node(local_nodes[0])
+                    node1 = get_node(local_nodes[1])
+                    element = pp.create_line_from_parameters(self.power_model, from_bus=node0, to_bus=node1, **model)
+                    self.power_model.line.at[element, 'endtemp_degree'] = model['endtemp_degree']  # Add value explicitly to avoid bug in PP
+                    self.power_model.line.at[element, 'r0_ohm_per_km'] = model['r0_ohm_per_km']
+                    self.power_model.line.at[element, 'x0_ohm_per_km'] = model['x0_ohm_per_km']
+                    self.power_model.line.at[element, 'c0_nf_per_km'] = model['c0_nf_per_km']
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'dcline':
+                    node0 = get_node(local_nodes[0])
+                    node1 = get_node(local_nodes[1])
+                    element = pp.create_dcline(self.power_model, from_bus=node0, to_bus=node1, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'load':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_load_from_cosphi(self.power_model, bus=node, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'shunt':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_shunt(self.power_model, bus=node, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'ward':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_ward(self.power_model, bus=node, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                elif elementcode == 'xward':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_xward(self.power_model, bus=node, **model)
+                    self.power_elements[(k1,k2)] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    
         # Update node voltages
         grids = self.power_model.ext_grid.to_dict(orient='records')
         gens = self.power_model.gen.to_dict(orient='records')      
@@ -284,12 +217,12 @@ class PandaPowerModel:
         for index, values in enumerate(grids):
             bus = values['bus']
             k1,k2 = self.power_elements_inverted['ext_grid', index]
-            vn_kv = self.base_models[(k1,k2)]['fields']['vn_kv']['value']
+            vn_kv = self.base_elements[(k1,k2)].fields['vn_kv']['value']
             set_voltage(bus, vn_kv, k1, k2)
         for index, values in enumerate(gens):
             bus = values['bus']
             k1,k2 = self.power_elements_inverted['gen', index]
-            vn_kv = self.base_models[(k1,k2)]['fields']['vn_kv']['value']
+            vn_kv = self.base_elements[(k1,k2)].fields['vn_kv']['value']
             set_voltage(bus, vn_kv, k1, k2)
         for index, values in enumerate(trafo):
             lv_bus = values['lv_bus']
@@ -422,64 +355,61 @@ class PandaPowerModel:
             # node_result['va_degree'] = misc.get_field_dict('float', 'V angle', 'degree', result['va_degree'], decimal=1)
             
         # Update elements
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
+        for (k1, k2), element in self.base_elements.items():
+            if (k1,k2) in self.power_elements:
+                # Create/get element dict
+                if (k1,k2) in self.element_results:
+                    element_result = self.element_results[k1,k2]
+                else:
+                    element_result = dict()
+                    self.element_results[k1,k2] = element_result
+                (elementcode, element_id) = self.power_elements[k1,k2]
+                # Remove elements without results
+                if elementcode != 'switch':
+                    result = getattr(self.power_model, 'res_' + elementcode).loc[element_id]
+                # Populate element results
+                if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
+                    element_result['p_mw'] = misc.get_field_dict('float', 'P', 'MW', result['p_mw'])
+                    element_result['q_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr', result['q_mvar'])
+                elif elementcode == 'trafo':
+                    element_result['p_hv_mw'] = misc.get_field_dict('float', 'P HV', 'MW', result['p_hv_mw'])
+                    element_result['q_hv_mvar'] = misc.get_field_dict('float', 'Q HV', 'MVAr', result['q_hv_mvar'])
+                    element_result['p_lv_mw'] = misc.get_field_dict('float', 'P LV', 'MW', result['p_lv_mw'])
+                    element_result['q_lv_mvar'] = misc.get_field_dict('float', 'Q LV', 'MVAr', result['q_lv_mvar'])
+                    element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
+                    element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
+                    element_result['loading_percent'] = misc.get_field_dict('float', '% Loading', '%', result['loading_percent'])
+                elif elementcode == 'trafo3w':
+                    element_result['p_hv_mw'] = misc.get_field_dict('float', 'P HV', 'MW', result['p_hv_mw'])
+                    element_result['q_hv_mvar'] = misc.get_field_dict('float', 'Q HV', 'MVAr', result['q_hv_mvar'])
+                    element_result['p_mv_mw'] = misc.get_field_dict('float', 'P MV', 'MW', result['p_mv_mw'])
+                    element_result['q_mv_mvar'] = misc.get_field_dict('float', 'Q MV', 'MVAr', result['q_mv_mvar'])
+                    element_result['p_lv_mw'] = misc.get_field_dict('float', 'P LV', 'MW', result['p_lv_mw'])
+                    element_result['q_lv_mvar'] = misc.get_field_dict('float', 'Q LV', 'MVAr', result['q_lv_mvar'])
+                    element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
+                    element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
+                    element_result['loading_percent'] = misc.get_field_dict('float', '% Loading', '%', result['loading_percent'])
+                elif elementcode == 'gen':
+                    element_result['p_mw'] = misc.get_field_dict('float', 'P', 'MW', result['p_mw'])
+                    element_result['q_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr', result['q_mvar'])
+                    element_result['vm_pu'] = misc.get_field_dict('float', 'V', 'pu', result['vm_pu'])
+                    element_result['va_degree'] = misc.get_field_dict('float', 'V angle', 'degree', result['va_degree'])
+                elif elementcode in ['impedence','dcline']:
+                    element_result['p_from_mw'] = misc.get_field_dict('float', 'P from', 'MW', result['p_from_mw'])
+                    element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q from', 'MVAr', result['q_from_mvar'])
+                    element_result['p_to_mw'] = misc.get_field_dict('float', 'P to', 'MW', result['p_to_mw'])
+                    element_result['q_to_mvar'] = misc.get_field_dict('float', 'Q to', 'MVAr', result['q_to_mvar'])
+                    element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
+                    element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
+                elif elementcode in ['line']:
+                    element_result['p_from_mw'] = misc.get_field_dict('float', 'P from', 'MW', result['p_from_mw'])
+                    element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q from', 'MVAr', result['q_from_mvar'])
+                    element_result['p_to_mw'] = misc.get_field_dict('float', 'P to', 'MW', result['p_to_mw'])
+                    element_result['q_to_mvar'] = misc.get_field_dict('float', 'Q to', 'MVAr', result['q_to_mvar'])
+                    element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
+                    element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
+                    element_result['loading_percent'] = misc.get_field_dict('float', '% Loading', '%', result['loading_percent'])
                 
-                if (k1,k2) in self.power_elements:
-                    # Create/get element dict
-                    if (k1,k2) in self.element_results:
-                        element_result = self.element_results[k1,k2]
-                    else:
-                        element_result = dict()
-                        self.element_results[k1,k2] = element_result
-                    (elementcode, element_id) = self.power_elements[k1,k2]
-                    # Remove elements without results
-                    if elementcode != 'switch':
-                        result = getattr(self.power_model, 'res_' + elementcode).loc[element_id]
-                    
-                    # Populate element results
-                    if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
-                        element_result['p_mw'] = misc.get_field_dict('float', 'P', 'MW', result['p_mw'])
-                        element_result['q_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr', result['q_mvar'])
-                    elif elementcode == 'trafo':
-                        element_result['p_hv_mw'] = misc.get_field_dict('float', 'P HV', 'MW', result['p_hv_mw'])
-                        element_result['q_hv_mvar'] = misc.get_field_dict('float', 'Q HV', 'MVAr', result['q_hv_mvar'])
-                        element_result['p_lv_mw'] = misc.get_field_dict('float', 'P LV', 'MW', result['p_lv_mw'])
-                        element_result['q_lv_mvar'] = misc.get_field_dict('float', 'Q LV', 'MVAr', result['q_lv_mvar'])
-                        element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
-                        element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
-                        element_result['loading_percent'] = misc.get_field_dict('float', '% Loading', '%', result['loading_percent'])
-                    elif elementcode == 'trafo3w':
-                        element_result['p_hv_mw'] = misc.get_field_dict('float', 'P HV', 'MW', result['p_hv_mw'])
-                        element_result['q_hv_mvar'] = misc.get_field_dict('float', 'Q HV', 'MVAr', result['q_hv_mvar'])
-                        element_result['p_mv_mw'] = misc.get_field_dict('float', 'P MV', 'MW', result['p_mv_mw'])
-                        element_result['q_mv_mvar'] = misc.get_field_dict('float', 'Q MV', 'MVAr', result['q_mv_mvar'])
-                        element_result['p_lv_mw'] = misc.get_field_dict('float', 'P LV', 'MW', result['p_lv_mw'])
-                        element_result['q_lv_mvar'] = misc.get_field_dict('float', 'Q LV', 'MVAr', result['q_lv_mvar'])
-                        element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
-                        element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
-                        element_result['loading_percent'] = misc.get_field_dict('float', '% Loading', '%', result['loading_percent'])
-                    elif elementcode == 'gen':
-                        element_result['p_mw'] = misc.get_field_dict('float', 'P', 'MW', result['p_mw'])
-                        element_result['q_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr', result['q_mvar'])
-                        element_result['vm_pu'] = misc.get_field_dict('float', 'V', 'pu', result['vm_pu'])
-                        element_result['va_degree'] = misc.get_field_dict('float', 'V angle', 'degree', result['va_degree'])
-                    elif elementcode in ['impedence','dcline']:
-                        element_result['p_from_mw'] = misc.get_field_dict('float', 'P from', 'MW', result['p_from_mw'])
-                        element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q from', 'MVAr', result['q_from_mvar'])
-                        element_result['p_to_mw'] = misc.get_field_dict('float', 'P to', 'MW', result['p_to_mw'])
-                        element_result['q_to_mvar'] = misc.get_field_dict('float', 'Q to', 'MVAr', result['q_to_mvar'])
-                        element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
-                        element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
-                    elif elementcode in ['line']:
-                        element_result['p_from_mw'] = misc.get_field_dict('float', 'P from', 'MW', result['p_from_mw'])
-                        element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q from', 'MVAr', result['q_from_mvar'])
-                        element_result['p_to_mw'] = misc.get_field_dict('float', 'P to', 'MW', result['p_to_mw'])
-                        element_result['q_to_mvar'] = misc.get_field_dict('float', 'Q to', 'MVAr', result['q_to_mvar'])
-                        element_result['pl_mw'] = misc.get_field_dict('float', 'P loss', 'MW', result['pl_mw'])
-                        element_result['ql_mvar'] = misc.get_field_dict('float', 'Q loss', 'MVAr', result['ql_mvar'])
-                        element_result['loading_percent'] = misc.get_field_dict('float', '% Loading', '%', result['loading_percent'])
-                    
         log.info('PandaPowerModel - run_powerflow - calculation run')
         
     def run_powerflow_timeseries(self):
@@ -501,7 +431,7 @@ class PandaPowerModel:
             p_mw = values['p_mw']
             q_mvar = values['q_mvar']
             k1,k2 = self.power_elements_inverted['sgen', gen_index]
-            load_profile = self.loadprofiles[self.base_models[(k1,k2)]['fields']['load_profile']['value']][1][0]
+            load_profile = self.loadprofiles[self.base_elements[(k1,k2)].fields['load_profile']['value']][1][0]
             load_profile_func = GraphModel(load_profile).get_value_func()
             for time_index in range(n_ts):
                 col_p.append(load_profile_func(time_index)*p_mw)
@@ -524,7 +454,7 @@ class PandaPowerModel:
             p_mw = values['p_mw']
             q_mvar = values['q_mvar']
             k1,k2 = self.power_elements_inverted['load', load_index]
-            load_profile = self.loadprofiles[self.base_models[(k1,k2)]['fields']['load_profile']['value']][1][0]
+            load_profile = self.loadprofiles[self.base_elements[(k1,k2)].fields['load_profile']['value']][1][0]
             load_profile_func = GraphModel(load_profile).get_value_func()
             for time_index in range(n_ts):
                 col_p.append(load_profile_func(time_index)*p_mw)
@@ -542,54 +472,51 @@ class PandaPowerModel:
         time_steps = range(n_ts)
         log_variables = []
         log_variables.append(('res_bus', 'vm_pu'))
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
-                
-                if (k1,k2) in self.power_elements:
-                    (elementcode, element_id) = self.power_elements[k1,k2]                    
-                    if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
-                        log_variables.append(('res_'+elementcode, 'p_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_mvar'))
-                    elif elementcode == 'trafo':
-                        log_variables.append(('res_'+elementcode, 'p_hv_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
-                        log_variables.append(('res_'+elementcode, 'p_lv_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
-                        log_variables.append(('res_'+elementcode, 'pl_mw'))
-                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                        log_variables.append(('res_'+elementcode, 'loading_percent'))
-                    elif elementcode == 'trafo3w':
-                        log_variables.append(('res_'+elementcode, 'p_hv_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
-                        log_variables.append(('res_'+elementcode, 'p_mv_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_mv_mvar'))
-                        log_variables.append(('res_'+elementcode, 'p_lv_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
-                        log_variables.append(('res_'+elementcode, 'pl_mw'))
-                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                        log_variables.append(('res_'+elementcode, 'loading_percent'))
-                    elif elementcode == 'gen':
-                        log_variables.append(('res_'+elementcode, 'p_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_mvar'))
-                        log_variables.append(('res_'+elementcode, 'vm_pu'))
-                        log_variables.append(('res_'+elementcode, 'va_degree'))
-                    elif elementcode in ['impedence','dcline']:
-                        log_variables.append(('res_'+elementcode, 'p_from_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_from_mvar'))
-                        log_variables.append(('res_'+elementcode, 'p_to_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_to_mvar'))
-                        log_variables.append(('res_'+elementcode, 'pl_mw'))
-                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                    elif elementcode in ['line']:
-                        log_variables.append(('res_'+elementcode, 'p_from_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_from_mvar'))
-                        log_variables.append(('res_'+elementcode, 'p_to_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_to_mvar'))
-                        log_variables.append(('res_'+elementcode, 'pl_mw'))
-                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                        log_variables.append(('res_'+elementcode, 'loading_percent'))
-        
-        
+        for (k1, k2), element in self.base_elements.items():
+            if (k1,k2) in self.power_elements:
+                (elementcode, element_id) = self.power_elements[k1,k2]                    
+                if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
+                    log_variables.append(('res_'+elementcode, 'p_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_mvar'))
+                elif elementcode == 'trafo':
+                    log_variables.append(('res_'+elementcode, 'p_hv_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
+                    log_variables.append(('res_'+elementcode, 'p_lv_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
+                    log_variables.append(('res_'+elementcode, 'pl_mw'))
+                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                    log_variables.append(('res_'+elementcode, 'loading_percent'))
+                elif elementcode == 'trafo3w':
+                    log_variables.append(('res_'+elementcode, 'p_hv_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
+                    log_variables.append(('res_'+elementcode, 'p_mv_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_mv_mvar'))
+                    log_variables.append(('res_'+elementcode, 'p_lv_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
+                    log_variables.append(('res_'+elementcode, 'pl_mw'))
+                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                    log_variables.append(('res_'+elementcode, 'loading_percent'))
+                elif elementcode == 'gen':
+                    log_variables.append(('res_'+elementcode, 'p_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_mvar'))
+                    log_variables.append(('res_'+elementcode, 'vm_pu'))
+                    log_variables.append(('res_'+elementcode, 'va_degree'))
+                elif elementcode in ['impedence','dcline']:
+                    log_variables.append(('res_'+elementcode, 'p_from_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_from_mvar'))
+                    log_variables.append(('res_'+elementcode, 'p_to_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_to_mvar'))
+                    log_variables.append(('res_'+elementcode, 'pl_mw'))
+                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                elif elementcode in ['line']:
+                    log_variables.append(('res_'+elementcode, 'p_from_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_from_mvar'))
+                    log_variables.append(('res_'+elementcode, 'p_to_mw'))
+                    log_variables.append(('res_'+elementcode, 'q_to_mvar'))
+                    log_variables.append(('res_'+elementcode, 'pl_mw'))
+                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                    log_variables.append(('res_'+elementcode, 'loading_percent'))
+    
         ow = OutputWriter(self.power_model, time_steps, output_path=None, log_variables=log_variables)
 
         # Starting the timeseries simulation
@@ -643,61 +570,60 @@ class PandaPowerModel:
             set_graphdata(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc]])
             
         # Update elements
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
+        for (k1, k2), element in self.base_elements.items():
+            
+            if (k1,k2) in self.power_elements:
+                # Create/get element dict
+                if (k1,k2) in self.element_results:
+                    element_result = self.element_results[k1,k2]
+                else:
+                    element_result = dict()
+                    self.element_results[k1,k2] = element_result
+                (elementcode, element_id) = self.power_elements[k1,k2]
                 
-                if (k1,k2) in self.power_elements:
-                    # Create/get element dict
-                    if (k1,k2) in self.element_results:
-                        element_result = self.element_results[k1,k2]
-                    else:
-                        element_result = dict()
-                        self.element_results[k1,k2] = element_result
-                    (elementcode, element_id) = self.power_elements[k1,k2]
-                    
-                    # Populate element results
-                    if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
-                        set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None],
-                                                                    ['q_mvar', element_id, 'Q', 'MVAr', 4, None]])
-                    elif elementcode == 'trafo':
-                        set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None],
-                                                                    ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None],
-                                                                    ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
-                    elif elementcode == 'trafo3w':
-                        set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None],
-                                                                    ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['p_mv_mw', element_id, 'P MV', 'MW', 4, None],
-                                                                    ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None],
-                                                                    ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
-                    elif elementcode == 'gen':
-                        set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None],
-                                                                    ['q_mvar', element_id, 'Q', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['vm_pu', element_id, 'V', 'pu', 3, None]])
-                        set_graphdata(element_result, elementcode, [['va_degree', element_id, 'V angle', 'degree', 1, None]])
-                    elif elementcode in ['impedence','dcline']:
-                        set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None],
-                                                                    ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None],
-                                                                    ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
-                    elif elementcode in ['line']:
-                        set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None],
-                                                                    ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None],
-                                                                    ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
-                        set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
-                    
+                # Populate element results
+                if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
+                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None],
+                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None]])
+                elif elementcode == 'trafo':
+                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None],
+                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None],
+                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
+                elif elementcode == 'trafo3w':
+                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None],
+                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['p_mv_mw', element_id, 'P MV', 'MW', 4, None],
+                                                                ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None],
+                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
+                elif elementcode == 'gen':
+                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None],
+                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['vm_pu', element_id, 'V', 'pu', 3, None]])
+                    set_graphdata(element_result, elementcode, [['va_degree', element_id, 'V angle', 'degree', 1, None]])
+                elif elementcode in ['impedence','dcline']:
+                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None],
+                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None],
+                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
+                elif elementcode in ['line']:
+                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None],
+                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None],
+                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
+                
         log.info('PandaPowerModel - run_powerflow - calculation run')
     
     def run_sym_sccalc(self):
@@ -744,45 +670,43 @@ class PandaPowerModel:
         
     def update_results(self):
         # Copy node data to element power model
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
-                
-                if (k1,k2) in self.power_elements:
-                    # Create/get element dict
-                    if (k1,k2) in self.element_results:
-                        element_result = self.element_results[k1,k2]
-                    else:
-                        element_result = dict()
-                        self.element_results[k1,k2] = element_result
-                    (elementcode, element_id) = self.power_elements[k1,k2]
-                    
-                    # Add node related data to elements
-                    for port_no, port in enumerate(element.get_ports_global()):
-                        node = self.port_mapping[(k1,) + tuple(port)]
-                        node_result = self.node_results[node]
-                        for code, field in node_result.items():
-                            code = 'port_' + str(port_no) + code
-                            element_result[code] = copy.deepcopy(field)
-                            element_result[code]['caption'] = '<i>[' + str(port_no) + ']: ' + element_result[code]['caption'] + '</i>'
-                
-                elif element.code == 'element_busbar':
-                    # Create/get element dict
-                    if (k1,k2) in self.element_results:
-                        element_result = self.element_results[k1,k2]
-                    else:
-                        element_result = dict()
-                        self.element_results[k1,k2] = element_result
-                    node = self.port_mapping[(k1,) + tuple(element.get_ports_global()[0])]
-                    node_result = self.node_results[node]
-                    for code, field in node_result.items():
-                        element_result[code] = copy.deepcopy(field)
-                        
-        # Update element with power model
-        for k1, drawing_model in enumerate(self.drawing_models):
-            for k2, element in enumerate(drawing_model.elements):
+        for (k1, k2), element in self.base_elements.items():
+            
+            if (k1,k2) in self.power_elements:
+                # Create/get element dict
                 if (k1,k2) in self.element_results:
                     element_result = self.element_results[k1,k2]
-                    element.res_fields = element_result
+                else:
+                    element_result = dict()
+                    self.element_results[k1,k2] = element_result
+                (elementcode, element_id) = self.power_elements[k1,k2]
+                
+                # Add node related data to elements
+                for port_no, port in enumerate(element.get_ports_global()):
+                    node = self.port_mapping[(k1,) + tuple(port)]
+                    node_result = self.node_results[node]
+                    for code, field in node_result.items():
+                        code = 'port_' + str(port_no) + code
+                        element_result[code] = copy.deepcopy(field)
+                        element_result[code]['caption'] = '<i>[' + str(port_no) + ']: ' + element_result[code]['caption'] + '</i>'
+            
+            elif element.code == 'element_busbar':
+                # Create/get element dict
+                if (k1,k2) in self.element_results:
+                    element_result = self.element_results[k1,k2]
+                else:
+                    element_result = dict()
+                    self.element_results[k1,k2] = element_result
+                node = self.port_mapping[(k1,) + tuple(element.get_ports_global()[0])]
+                node_result = self.node_results[node]
+                for code, field in node_result.items():
+                    element_result[code] = copy.deepcopy(field)
+                        
+        # Update element with power model
+        for (k1, k2), element in self.base_elements.items():
+            if (k1,k2) in self.element_results:
+                element_result = self.element_results[k1,k2]
+                element.res_fields = element_result
         log.info('PandaPowerModel - update_results - results updated')
         
     ## Export/Import functions
@@ -793,25 +717,3 @@ class PandaPowerModel:
     def export_json(self, filename):
         pp.to_json(self.power_model, filename)
         
-    ## Private functions
-    
-    def combine_connected_nodes(self, duplicate_ports_list):
-        def to_edges(ports):
-            """ 
-                treat `ports` as a Graph and returns it's edges 
-                to_edges(['a','b','c','d']) -> [(a,b), (b,c),(c,d)]
-            """
-            it = iter(ports)
-            last = next(it)
-            for current in it:
-                yield last, current
-                last = current
-                
-        G = nx.Graph()
-        for part in duplicate_ports_list:
-            # each sublist is a bunch of nodes
-            G.add_nodes_from(part)
-            # it also imlies a number of edges:
-            G.add_edges_from(to_edges(part))
-        return connected_components(G)
-    
