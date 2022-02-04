@@ -42,14 +42,12 @@ class NetworkModel:
         # Data
         self.drawing_models = drawing_models
         
-        # Base variables
+        # Generated
         self.global_nodes = set()  # Unique global node values after collapsing buses
         self.virtual_global_nodes = set()
         self.base_elements = dict()
-        
-        # Maps
+        self.node_mapping = dict()  # Maps local_node -> global_node i.e. ('(page,element):port') -> global_node
         self.port_mapping = dict()  # Maps (page,x,y) -> global_node
-        self.node_mapping = dict()  # Maps local_node -> global_node i.e. ('page,element:port') -> global_node
         
         # Graph variables
         self.graph = None
@@ -71,7 +69,7 @@ class NetworkModel:
         # Populate self.port_mapping, self.virtual_global_nodes
         for k1, drawing_model in enumerate(self.drawing_models):
             for k2, element in enumerate(drawing_model.elements):
-                code = str(k1) + ',' + str(k2)
+                code = str((k1,k2))
                 nodes = element.get_nodes(code)
                 for (p0, ports) in nodes:
                     gnode = cur_gnode_num
@@ -104,7 +102,7 @@ class NetworkModel:
         # Populate self.node_mapping, self.global_nodes
         for k1, drawing_model in enumerate(self.drawing_models):
             for k2, element in enumerate(drawing_model.elements):
-                code = str(k1) + ',' + str(k2)
+                code = str((k1,k2))
                 nodes = element.get_nodes(code)
                 # Add nodes
                 for (p0, ports) in nodes:

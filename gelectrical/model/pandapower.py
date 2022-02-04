@@ -49,21 +49,20 @@ class PandaPowerModel:
     """Class for modelling a Panda Power Project"""
     
     def __init__(self, network_model, loadprofiles):
+        
         # Data
         self.network_model = network_model
         self.loadprofiles = loadprofiles
         
-        self.global_nodes = self.network_model.global_nodes
         self.base_elements = self.network_model.base_elements
-        self.port_mapping = self.network_model.port_mapping
-        self.node_mapping = self.network_model.node_mapping
+        self.node_mapping = self.network_model.node_mapping  # Maps local_node -> global_node i.e. ('(page,element):port') -> global_node
 
         # Power variables
-        self.power_model = None
+        self.power_model = pp.create_empty_network()
         self.power_nodes = dict()  # Maps global_node -> power_node
         self.power_nodes_inverted = dict()  # Maps power_node -> global_node
-        self.power_elements = dict()  # Maps code -> power_element
-        self.power_elements_inverted = dict()  # power_element -> Maps code
+        self.power_elements = dict()  # Maps element_code -> (table_code, slno)
+        self.power_elements_inverted = dict()  # Maps (table_code, slno) -> element_code
         
         # Results
         self.element_results = dict()
@@ -73,14 +72,7 @@ class PandaPowerModel:
     ## Analysis functions
         
     def build_power_model(self):
-        self.power_model = pp.create_empty_network()
-        self.power_nodes = dict()
-        self.power_nodes_inverted = dict()
-        self.power_elements = dict()
-        self.power_elements_inverted = dict()
-        self.element_results = dict()
-        self.node_results = dict()
-        self.diagnostic_results = dict()
+        """Build power models for use with pandapower"""
         
         def get_node(local_node):
             if local_node in self.node_mapping:
@@ -94,9 +86,8 @@ class PandaPowerModel:
                     return self.power_nodes[node]
                         
         # Create all elements
-        for (k1, k2), element in self.base_elements.items():
-            code = str(k1) + ',' + str(k2)
-            power_model = element.get_power_model(code)
+        for e_code, element in self.base_elements.items():
+            power_model = element.get_power_model(str(e_code))
             for slno, power_model_sub in enumerate(power_model):
                 elementcode, local_nodes, model = power_model_sub
                 if elementcode == 'bus':
@@ -108,15 +99,15 @@ class PandaPowerModel:
                     node0 = get_node(local_nodes[0])
                     node1 = get_node(local_nodes[1])
                     element = pp.create_switch(self.power_model, bus=node0, element=node1, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'ext_grid':
                     node = get_node(local_nodes[0])
                     element = pp.create_ext_grid(self.power_model, bus=node, **model)
                     self.power_model.ext_grid.at[element, 'x0x_max'] = model['x0x_max']
                     self.power_model.ext_grid.at[element, 'r0x0_max'] = model['r0x0_max']
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'trafo':
                     node0 = get_node(local_nodes[0])
                     node1 = get_node(local_nodes[1])
@@ -127,36 +118,36 @@ class PandaPowerModel:
                     self.power_model.trafo.at[element, 'mag0_percent'] = model['mag0_percent']
                     self.power_model.trafo.at[element, 'mag0_rx'] = model['mag0_rx']
                     self.power_model.trafo.at[element, 'si0_hv_partial'] = model['si0_hv_partial']
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'trafo3w':
                     node0 = get_node(local_nodes[0])
                     node1 = get_node(local_nodes[1])
                     node2 = get_node(local_nodes[2])
                     element = pp.create_transformer3w_from_parameters(self.power_model, hv_bus=node0, mv_bus=node1, lv_bus=node2, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'gen':
                     node = get_node(local_nodes[0])
                     element = pp.create_gen(self.power_model, bus=node, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'sgen':
                     node = get_node(local_nodes[0])
                     element = pp.create_sgen(self.power_model, bus=node, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'storage':
                     node = get_node(local_nodes[0])
                     element = pp.create_storage(self.power_model, bus=node, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'impedance':
                     node0 = get_node(local_nodes[0])
                     node1 = get_node(local_nodes[1])
                     element = pp.create_impedance(self.power_model, from_bus=node0, to_bus=node1, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'line':
                     node0 = get_node(local_nodes[0])
                     node1 = get_node(local_nodes[1])
@@ -165,34 +156,34 @@ class PandaPowerModel:
                     self.power_model.line.at[element, 'r0_ohm_per_km'] = model['r0_ohm_per_km']
                     self.power_model.line.at[element, 'x0_ohm_per_km'] = model['x0_ohm_per_km']
                     self.power_model.line.at[element, 'c0_nf_per_km'] = model['c0_nf_per_km']
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'dcline':
                     node0 = get_node(local_nodes[0])
                     node1 = get_node(local_nodes[1])
                     element = pp.create_dcline(self.power_model, from_bus=node0, to_bus=node1, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'load':
                     node = get_node(local_nodes[0])
                     element = pp.create_load_from_cosphi(self.power_model, bus=node, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'shunt':
                     node = get_node(local_nodes[0])
                     element = pp.create_shunt(self.power_model, bus=node, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'ward':
                     node = get_node(local_nodes[0])
                     element = pp.create_ward(self.power_model, bus=node, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'xward':
                     node = get_node(local_nodes[0])
                     element = pp.create_xward(self.power_model, bus=node, **model)
-                    self.power_elements[(k1,k2)] = (elementcode, element)
-                    self.power_elements_inverted[elementcode, element] = (k1,k2)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                     
         # Update node voltages
         grids = self.power_model.ext_grid.to_dict(orient='records')
@@ -201,48 +192,48 @@ class PandaPowerModel:
         trafo3w = self.power_model.trafo3w.to_dict(orient='records')
         mg_no_trafos = pp.topology.create_nxgraph(self.power_model, include_trafos = False, include_trafo3ws=False)
         voltage_zones = list(pp.topology.connected_components(mg_no_trafos))
-        voltage_updated_from = dict()  # Maps node to voltage update elements; index: node, value: [(k1,k2), ...]
+        voltage_updated_from = dict()  # Maps node to voltage update elements; index: node, value: [e_code, ...]
         
-        def set_voltage(bus, vn_kv, k1, k2):
+        def set_voltage(bus, vn_kv, e_code):
             for zone in voltage_zones:
                 if bus in zone:  # If element bus in zone
                     for power_node in zone:  # Update all nodes in zone
                         node = self.power_nodes_inverted[power_node]
                         if node not in voltage_updated_from:
                             self.power_model.bus.vn_kv.at[power_node] = vn_kv
-                            voltage_updated_from[node] = [(k1,k2)]
+                            voltage_updated_from[node] = [e_code]
                         else:
-                            voltage_updated_from[node].append((k1,k2))
+                            voltage_updated_from[node].append(e_code)
                             
         for index, values in enumerate(grids):
             bus = values['bus']
-            k1,k2 = self.power_elements_inverted['ext_grid', index]
-            vn_kv = self.base_elements[(k1,k2)].fields['vn_kv']['value']
-            set_voltage(bus, vn_kv, k1, k2)
+            e_code = self.power_elements_inverted['ext_grid', index]
+            vn_kv = self.base_elements[e_code].fields['vn_kv']['value']
+            set_voltage(bus, vn_kv, e_code)
         for index, values in enumerate(gens):
             bus = values['bus']
-            k1,k2 = self.power_elements_inverted['gen', index]
-            vn_kv = self.base_elements[(k1,k2)].fields['vn_kv']['value']
-            set_voltage(bus, vn_kv, k1, k2)
+            e_code = self.power_elements_inverted['gen', index]
+            vn_kv = self.base_elements[e_code].fields['vn_kv']['value']
+            set_voltage(bus, vn_kv, e_code)
         for index, values in enumerate(trafo):
             lv_bus = values['lv_bus']
             hv_bus = values['hv_bus']
-            k1,k2 = self.power_elements_inverted['trafo', index]
+            e_code = self.power_elements_inverted['trafo', index]
             vn_lv_kv = values['vn_lv_kv']
             vn_hv_kv = values['vn_hv_kv']
-            set_voltage(lv_bus, vn_lv_kv, k1, k2)
-            set_voltage(hv_bus, vn_hv_kv, k1, k2)
+            set_voltage(lv_bus, vn_lv_kv, e_code)
+            set_voltage(hv_bus, vn_hv_kv, e_code)
         for index, values in enumerate(trafo3w):
             lv_bus = values['lv_bus']
             mv_bus = values['mv_bus']
             hv_bus = values['hv_bus']
-            k1,k2 = self.power_elements_inverted['trafo3w', index]
+            e_code = self.power_elements_inverted['trafo3w', index]
             vn_lv_kv = values['vn_lv_kv']
             vn_mv_kv = values['vn_mv_kv']
             vn_hv_kv = values['vn_hv_kv']
-            set_voltage(lv_bus, vn_lv_kv, k1, k2)
-            set_voltage(mv_bus, vn_mv_kv, k1, k2)
-            set_voltage(hv_bus, vn_hv_kv, k1, k2)
+            set_voltage(lv_bus, vn_lv_kv, e_code)
+            set_voltage(mv_bus, vn_mv_kv, e_code)
+            set_voltage(hv_bus, vn_hv_kv, e_code)
             
         # Update node voltage in results
         for bus, model in self.power_model.bus.iterrows():
@@ -355,15 +346,15 @@ class PandaPowerModel:
             # node_result['va_degree'] = misc.get_field_dict('float', 'V angle', 'degree', result['va_degree'], decimal=1)
             
         # Update elements
-        for (k1, k2), element in self.base_elements.items():
-            if (k1,k2) in self.power_elements:
+        for e_code, element in self.base_elements.items():
+            if e_code in self.power_elements:
                 # Create/get element dict
-                if (k1,k2) in self.element_results:
-                    element_result = self.element_results[k1,k2]
+                if e_code in self.element_results:
+                    element_result = self.element_results[e_code]
                 else:
                     element_result = dict()
-                    self.element_results[k1,k2] = element_result
-                (elementcode, element_id) = self.power_elements[k1,k2]
+                    self.element_results[e_code] = element_result
+                (elementcode, element_id) = self.power_elements[e_code]
                 # Remove elements without results
                 if elementcode != 'switch':
                     result = getattr(self.power_model, 'res_' + elementcode).loc[element_id]
@@ -430,8 +421,8 @@ class PandaPowerModel:
             dfdata_q[gen_index] = col_q
             p_mw = values['p_mw']
             q_mvar = values['q_mvar']
-            k1,k2 = self.power_elements_inverted['sgen', gen_index]
-            load_profile = self.loadprofiles[self.base_elements[(k1,k2)].fields['load_profile']['value']][1][0]
+            e_code = self.power_elements_inverted['sgen', gen_index]
+            load_profile = self.loadprofiles[self.base_elements[e_code].fields['load_profile']['value']][1][0]
             load_profile_func = GraphModel(load_profile).get_value_func()
             for time_index in range(n_ts):
                 col_p.append(load_profile_func(time_index)*p_mw)
@@ -453,8 +444,8 @@ class PandaPowerModel:
             dfdata_q[load_index] = col_q
             p_mw = values['p_mw']
             q_mvar = values['q_mvar']
-            k1,k2 = self.power_elements_inverted['load', load_index]
-            load_profile = self.loadprofiles[self.base_elements[(k1,k2)].fields['load_profile']['value']][1][0]
+            e_code = self.power_elements_inverted['load', load_index]
+            load_profile = self.loadprofiles[self.base_elements[e_code].fields['load_profile']['value']][1][0]
             load_profile_func = GraphModel(load_profile).get_value_func()
             for time_index in range(n_ts):
                 col_p.append(load_profile_func(time_index)*p_mw)
@@ -472,9 +463,9 @@ class PandaPowerModel:
         time_steps = range(n_ts)
         log_variables = []
         log_variables.append(('res_bus', 'vm_pu'))
-        for (k1, k2), element in self.base_elements.items():
-            if (k1,k2) in self.power_elements:
-                (elementcode, element_id) = self.power_elements[k1,k2]                    
+        for e_code, element in self.base_elements.items():
+            if e_code in self.power_elements:
+                (elementcode, element_id) = self.power_elements[e_code]                    
                 if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
                     log_variables.append(('res_'+elementcode, 'p_mw'))
                     log_variables.append(('res_'+elementcode, 'q_mvar'))
@@ -570,16 +561,16 @@ class PandaPowerModel:
             set_graphdata(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc]])
             
         # Update elements
-        for (k1, k2), element in self.base_elements.items():
+        for e_code, element in self.base_elements.items():
             
-            if (k1,k2) in self.power_elements:
+            if e_code in self.power_elements:
                 # Create/get element dict
-                if (k1,k2) in self.element_results:
-                    element_result = self.element_results[k1,k2]
+                if e_code in self.element_results:
+                    element_result = self.element_results[e_code]
                 else:
                     element_result = dict()
-                    self.element_results[k1,k2] = element_result
-                (elementcode, element_id) = self.power_elements[k1,k2]
+                    self.element_results[e_code] = element_result
+                (elementcode, element_id) = self.power_elements[e_code]
                 
                 # Populate element results
                 if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
@@ -670,21 +661,22 @@ class PandaPowerModel:
         
     def update_results(self):
         # Copy node data to element power model
-        for (k1, k2), element in self.base_elements.items():
+        for e_code, element in self.base_elements.items():
             
-            if (k1,k2) in self.power_elements:
+            if e_code in self.power_elements:
                 # Create/get element dict
-                if (k1,k2) in self.element_results:
-                    element_result = self.element_results[k1,k2]
+                if e_code in self.element_results:
+                    element_result = self.element_results[e_code]
                 else:
                     element_result = dict()
-                    self.element_results[k1,k2] = element_result
-                (elementcode, element_id) = self.power_elements[k1,k2]
+                    self.element_results[e_code] = element_result
+                (elementcode, element_id) = self.power_elements[e_code]
                 
                 # Add node related data to elements
-                for port_no, port in enumerate(element.get_ports_global()):
-                    node = self.port_mapping[(k1,) + tuple(port)]
-                    node_result = self.node_results[node]
+                for port_no, port_model in enumerate(element.get_nodes(str(e_code))):
+                    lnode = port_model[0]
+                    gnode = self.node_mapping[lnode]
+                    node_result = self.node_results[gnode]
                     for code, field in node_result.items():
                         code = 'port_' + str(port_no) + code
                         element_result[code] = copy.deepcopy(field)
@@ -692,20 +684,21 @@ class PandaPowerModel:
             
             elif element.code == 'element_busbar':
                 # Create/get element dict
-                if (k1,k2) in self.element_results:
-                    element_result = self.element_results[k1,k2]
+                if e_code in self.element_results:
+                    element_result = self.element_results[e_code]
                 else:
                     element_result = dict()
-                    self.element_results[k1,k2] = element_result
-                node = self.port_mapping[(k1,) + tuple(element.get_ports_global()[0])]
-                node_result = self.node_results[node]
+                    self.element_results[e_code] = element_result
+                lnode = element.get_nodes(str(e_code))[0][0]
+                gnode = self.node_mapping[lnode]
+                node_result = self.node_results[gnode]
                 for code, field in node_result.items():
                     element_result[code] = copy.deepcopy(field)
                         
         # Update element with power model
-        for (k1, k2), element in self.base_elements.items():
-            if (k1,k2) in self.element_results:
-                element_result = self.element_results[k1,k2]
+        for e_code, element in self.base_elements.items():
+            if e_code in self.element_results:
+                element_result = self.element_results[e_code]
                 element.res_fields = element_result
         log.info('PandaPowerModel - update_results - results updated')
         
