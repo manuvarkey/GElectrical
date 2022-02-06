@@ -56,6 +56,7 @@ class PandaPowerModel:
         
         self.base_elements = self.network_model.base_elements
         self.node_mapping = self.network_model.node_mapping  # Maps local_node -> global_node i.e. ('(page,element):port') -> global_node
+        self.gnode_element_mapping = self.network_model.gnode_element_mapping  # Maps global_node -> [element1, ..]
 
         # Power variables
         self.power_model = pp.create_empty_network()
@@ -253,79 +254,135 @@ class PandaPowerModel:
         pp_diagnostic_result = pp.diagnostic(self.power_model, report_style='None', warnings_only = True, return_result_dict=True)
         # Parse result and add to main diagnostic result dict
         result_parsed = []
-        print(self.power_elements_inverted)
-        error_code_subs_dict = {'buses': 'node'}
+        ret_codes = []
+        element_tables = ['switch', 'line', 'trafo', 'trafo3w', 'load', 'gen', 'sgen', 'ext_grid']
+        error_code_subs_dict = {'switches': 'switch', 
+                                'lines': 'line', 
+                                'trafos': 'trafo', 
+                                'trafos3w': 'trafo3w',
+                                'loads': 'load',
+                                'gens': 'gen',
+                                'sgens': 'sgen'}
+        tranfo_subs_dict = {'trafo' : 'element_transformer', 
+                            'trafo3w' : 'element_transformer3w'}
+        def error(message):
+            return {'message':message, 'type':'error'}
+        def warning(message):
+            return {'message':message, 'type':'warning'}
+            
         for code, result in pp_diagnostic_result.items():
             print(code, result)
-            
-            if code == 'disconnected_elements':
-                if result:
+            if result:
+                if code == 'disconnected_elements':
+                    ret_codes.append(misc.OK)
                     for element_result in result:
-                        element_error_code = list(element_result.keys())[0]
-                        elementids = list(element_result.values())[0]
-                        if element_error_code in ['buses', 'switches', 'lines', 'trafos', 'trafos3w', 'loads', 'gens', 'sgens']:
-                            element_code = error_code_subs_dict[element_error_code]
-                            message = 'Disconnected element - ' + element_code + ' ' + str(elementids)
-                            model = [[element_code, elementids]]
-                            result_parsed.append([message, model])
+                        for element_error_code, elementids_power in element_result.items():
+                            if element_error_code in ['buses']:
+                                gnodeids = [self.power_nodes_inverted[e_id] for e_id in elementids_power]
+                                message = 'Disconnected element - ' + 'nodes' + ' ' + str(gnodeids)
+                                model = [['node', gnodeids]]
+                                result_parsed.append([message, model])
+                                
+                            elif element_error_code in error_code_subs_dict:
+                                code = error_code_subs_dict[element_error_code]
+                                elementids = [self.power_elements_inverted[code, e_id] for e_id in elementids_power]
+                                message = 'Disconnected element - ' + code + ' ' + str(elementids)
+                                model = [[code, elementids]]
+                                result_parsed.append([message, model])
+                                    
+                elif code == 'different_voltage_levels_connected':
+                    ret_codes.append(misc.ERROR)
+                    for element_error_code, elementids_power in result.items():
+                            code = error_code_subs_dict[element_error_code]
+                            elementids = [self.power_elements_inverted[code, e_id] for e_id in elementids_power]
+                            message = 'Different voltage levels connected - ' + code + ' ' + str(elementids)
+                            model = [[code, elementids]]
+                            result_parsed.append([error(message), model])
+                                    
+                elif code == 'impedance_values_close_to_zero':
+                    ret_codes.append(misc.WARNING)
+                    for element_result in result:
+                        for element_error_code, elementids_power in element_result.items():
+                            if element_error_code in ['line', 'xward', 'impedance']:
+                                code = element_error_code
+                                for elementid_power in elementids_power:
+                                    elementid = self.power_elements_inverted[code, elementid_power]
+                                    message = 'Line impedence values close to zero - ' + code + ' ' + str(elementid)
+                                    model = [[code, [elementid]]]
+                                    result_parsed.append([warning(message), model])
+                                        
+                elif code == 'nominal_voltages_dont_match':
+                    ret_codes.append(misc.ERROR)
+                    for element_error_code, bus_dict in result.items():
+                        if element_error_code in ['trafo', 'trafo3w']:
+                            elementids_added = []
+                            for nodeids_power in bus_dict.values():
+                                for n_id in nodeids_power:
+                                    gnodeid = self.power_nodes_inverted[n_id]
+                                    elementids = self.gnode_element_mapping[gnodeid]
+                                    for elementid in elementids:
+                                        if self.base_elements[elementid].code == tranfo_subs_dict[element_error_code]:
+                                            elementids_added.append(elementid)
+                            message = 'Nominal voltages of transformer ports dont match' + ' ' + str(bus_dict)
+                            model = [[element_error_code, elementids_added]]
+                            result_parsed.append([error(message), model])
+                            
+                elif code == 'invalid_values':
+                    ret_codes.append(misc.ERROR)
+                    for element_error_code, error_lists in result.items():
+                        for error_list in error_lists:
+                            if element_error_code in ['bus']:
+                                elementid_power = error_list[0]
+                                gnodeids = [self.power_nodes_inverted[elementid_power]]
+                                message = 'Invalid values found in model - ' + 'node - ' + str(error_list)
+                                model = [['node', gnodeids]]
+                                result_parsed.append([message, model])
+                                
+                            elif element_error_code in element_tables:
+                                code = element_error_code
+                                elementid_power = error_list[0]
+                                elementids = [self.power_elements_inverted[code, elementid_power]]
+                                message = 'Invalid values found in model - ' + element_error_code + ' - ' + str(error_list)
+                                model = [[code, elementids]]
+                                result_parsed.append([error(message), model])
+                            
+                elif code == 'multiple_voltage_controlling_elements_per_bus':
+                    ret_codes.append(misc.WARNING)
+                    for element_error_code, error_lists in result.items():
+                        if element_error_code in ['buses_with_gens_and_ext_grids', 'buses_with_mult_ext_grids']:
+                            elementids_added = []
+                            for n_id in error_lists:
+                                gnodeid = self.power_nodes_inverted[n_id]
+                                elementids = self.gnode_element_mapping[gnodeid]
+                                for elementid in elementids:
+                                    if self.base_elements[elementid].code in ['element_reference', 'element_wire', 'element_busbar']:
+                                        elementids_added.append(elementid)
+                            message = 'Multiple voltage sources connected to bus'
+                            model = [['elements', elementids_added]]
+                            result_parsed.append([warning(message), model])
+                        
+                elif code == 'no_ext_grid':
+                    ret_codes.append(misc.ERROR)
+                    result_parsed.append([error('No power source found in the model.'), []])
                     
-            elif code == 'busses_mult_gens_ext_grids':
-                if result:
-                    message = 'Multiple voltage sources connected to bus'
-                    model = [['node', result]]
-                    result_parsed.append([message, model])
-            
-            elif code == 'no_ext_grid':
-                if result:
-                    result_parsed.append(['No power source found in the model.', []])
-            
-            elif code == 'inconsistent_voltages':
-                model = []
-                for element_code, elementids in result.items():
-                    model.append([element_code, elementids])
-                result_parsed.append(['Different voltage sources connected together.', model])
-            
-            elif code == 'invalid_values':
-                model = []
-                for element_code, elements in result.items():
-                    elementids = []
-                    for element in elements:
-                        if element:
-                            elementids.append(element[0])
-                    model.append([element_code, elementids])
-                result_parsed.append(['Invalid values found in model.', model])
-            
-            elif code == 'isolated_sections':
-                if 'isolated_sections' in result:
+                elif code == 'parallel_switches':
+                    ret_codes.append(misc.WARNING)
                     model = []
-                    for elementids in result['isolated_sections']:
-                        model.extend(elementids)
-                    result_parsed.append(['Elements disconnected from network.', [['node', model]]])
-                if 'lines_both_switches_open' in result:
-                    model = result['lines_both_switches_open']
-                    result_parsed.append(['Lines disconnected at both ends.', [['line', model]]])
-            
-            elif code == 'lines_with_impedance_zero':
-                result_parsed.append(['Lines with zero impedance.', [['line', result]]])
-            
-            elif code == 'wrong_switch_configuration':
-                if result:
-                    result_parsed.append(['Wrong switch configuration.', []])
-            
-            
-            
-            elif code == 'parallel_switches':
-                model = []
-                for elementids in result:
-                    model.extend(elementids)
-                result_parsed.append(['Parallel connected switches.', [['switch', model]]])
-            
-            else:
-                result_parsed.append(['Warning - ' + code + ': ' + str(result), []])
+                    for elementids_power in result:
+                        elementids = [self.power_elements_inverted['switch', e_id] for e_id in elementids_power]
+                        result_parsed.append(['Parallel connected switches.', [['switch', model]]])
+                        message = 'Parallel connected switches - ' + str(result)
+                        model = [[code, elementids]]
+                        result_parsed.append([warning(message), model])
+                    
+                else:
+                    ret_codes.append(misc.WARNING)
+                    result_parsed.append([warning(code + ': ' + str(result)), []])
                 
         self.diagnostic_results['Electrical Model'] = result_parsed
-        return self.diagnostic_results
+        ret_code = misc.ERROR if misc.ERROR in ret_codes else misc.WARNING
         log.info('PandaPowerModel - run_diagnostics - diagnostic run')
+        return self.diagnostic_results, ret_code
         
     def run_powerflow(self):
         """Run power flow"""

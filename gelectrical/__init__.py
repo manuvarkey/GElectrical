@@ -50,7 +50,7 @@ class MainWindow():
 
     ## General Methods
 
-    def display_status(self, status_code, message, timeout=misc.MESSAGE_TIMEOUT):
+    def display_status(self, status_code, message='', timeout=misc.MESSAGE_TIMEOUT):
         """Displays a formated message in Infobar
             
             Arguments:
@@ -61,21 +61,23 @@ class MainWindow():
         """
         infobar_main = self.builder.get_object("infobar_main")
         label_infobar_main = self.builder.get_object("label_infobar_main")
-
-        if status_code == misc.ERROR:
-            infobar_main.set_message_type(Gtk.MessageType.ERROR)
-            label_infobar_main.set_text(message)
-            infobar_main.show()
-        elif status_code == misc.WARNING:
-            infobar_main.set_message_type(Gtk.MessageType.WARNING)
-            label_infobar_main.set_text(message)
-            infobar_main.show()
-        elif status_code == misc.INFO:
-            infobar_main.set_message_type(Gtk.MessageType.INFO)
-            label_infobar_main.set_text(message)
-            infobar_main.show()
-            
-        GLib.timeout_add_seconds(timeout, infobar_main.hide)
+        
+        if status_code is not None:
+            if status_code == misc.ERROR:
+                infobar_main.set_message_type(Gtk.MessageType.ERROR)
+                label_infobar_main.set_text(message)
+                infobar_main.show()
+            elif status_code == misc.WARNING:
+                infobar_main.set_message_type(Gtk.MessageType.WARNING)
+                label_infobar_main.set_text(message)
+                infobar_main.show()
+            elif status_code == misc.INFO:
+                infobar_main.set_message_type(Gtk.MessageType.INFO)
+                label_infobar_main.set_text(message)
+                infobar_main.show()
+            GLib.timeout_add_seconds(timeout, infobar_main.hide)
+        else:
+            infobar_main.hide()
         
     def set_title(self, title):
         self.gtk_header = self.builder.get_object("gtk_header")
@@ -111,6 +113,8 @@ class MainWindow():
             progress.pulse(end=True)
             GLib.timeout_add_seconds(end_timeout, progress.close)
         
+        # Hide display_status 
+        self.display_status(None)
         # Run process in seperate thread
         que = queue.Queue()
         thread = threading.Thread(target=lambda q, arg: q.put(callback_combined(progress, data)), args=(que, 2))
@@ -429,36 +433,41 @@ class MainWindow():
             
             progress.add_message('Running Diagnostics...')
             progress.set_fraction(0.3)
-            self.project.run_diagnostics()
+            ret_code = self.project.run_diagnostics()
             
-            progress.add_message('Running Power Flow...')
-            progress.set_fraction(0.5)
-            #self.project.run_powerflow()
-            self.project.run_powerflow_timeseries()
+            if ret_code != misc.ERROR:
             
-            progress.add_message('Running Symmetric Short Circuit Calculation...')
-            progress.set_fraction(0.7)
-            self.project.run_sym_sccalc()
-            
-            progress.add_message('Running Line to Ground Short Circuit Calculation...')
-            progress.set_fraction(0.8)
-            self.project.run_linetoground_sccalc()
-            
-            progress.add_message('Updating Results...')
-            progress.set_fraction(0.9)
-            self.project.update_results()
-            
-            #progress.add_message('Setting up HTML Report...')
-            #progress.set_fraction(0.9)
-            #self.project.export_html_report('network.html')  #TODO
-            
-            #progress.add_message('Exporting pandapower network to JSON...')
-            #progress.set_fraction(0.95)
-            #self.project.export_json('network.json')  #TODO
-            
-            progress.set_fraction(1)
-            progress.add_message('<b>Analysis run Successfully</b>')
-            progress.pulse(end=True)
+                progress.add_message('Running Power Flow...')
+                progress.set_fraction(0.5)
+                #self.project.run_powerflow()
+                self.project.run_powerflow_timeseries()
+                
+                progress.add_message('Running Symmetric Short Circuit Calculation...')
+                progress.set_fraction(0.7)
+                self.project.run_sym_sccalc()
+                
+                progress.add_message('Running Line to Ground Short Circuit Calculation...')
+                progress.set_fraction(0.8)
+                self.project.run_linetoground_sccalc()
+                
+                progress.add_message('Updating Results...')
+                progress.set_fraction(0.9)
+                self.project.update_results()
+                
+                #progress.add_message('Setting up HTML Report...')
+                #progress.set_fraction(0.9)
+                #self.project.export_html_report('network.html')  #TODO
+                
+                #progress.add_message('Exporting pandapower network to JSON...')
+                #progress.set_fraction(0.95)
+                #self.project.export_json('network.json')  #TODO
+                
+                progress.set_fraction(1)
+                progress.add_message('<b>Analysis run Successfully</b>')
+                progress.pulse(end=True)
+                
+            else:
+                raise RuntimeError("Diagnostics run returned critical errors. Please see <i>Warnings</i> pane.")
             
         self.run_command(exec_func)
         log.info('MainWindow - on_run_analysis - analysis run')

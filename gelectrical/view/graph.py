@@ -22,7 +22,7 @@
 #  
 # 
 
-import logging, copy, pickle, codecs, bisect
+import logging, copy, pickle, codecs, bisect, math
 from gi.repository import Gtk, Gdk, GLib
 import cairo
 
@@ -139,7 +139,10 @@ class GraphView():
         self.plot.set_xlim(self.xlim[0], self.xlim[1])
         if len(self.xlim) == 4 and self.xlim[3] == 'log':
             self.plot.set_xscale('log')
-        self.plot.set_ylim(self.ylim[0], self.ylim[1])
+            
+        if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])):
+            self.plot.set_ylim(self.ylim[0], self.ylim[1])
+            
         self.plot.grid(True, which='major')
         self.plot.minorticks_on()
         self.plot.grid(True, which='minor', alpha=0.2)

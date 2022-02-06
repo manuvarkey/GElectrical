@@ -45,7 +45,9 @@ class NetworkModel:
         # Generated
         self.global_nodes = set()  # Unique global node values after collapsing buses
         self.virtual_global_nodes = set()
-        self.base_elements = dict()
+        self.base_elements = dict()  # Addressing by (page, slno)
+        self.gnode_element_mapping = dict()  # Maps global_node -> [element1, ..]
+        self.gnode_element_mapping_inverted = dict()  # Maps element -> [global_node1, ..]
         self.node_mapping = dict()  # Maps local_node -> global_node i.e. ('(page,element):port') -> global_node
         self.port_mapping = dict()  # Maps (page,x,y) -> global_node
         
@@ -99,11 +101,12 @@ class NetworkModel:
                 self.port_mapping[port] = gnode
             cur_gnode_num += 1
             
-        # Populate self.node_mapping, self.global_nodes
+        # Populate self.node_mapping, self.global_nodes, self.gnode_element_mapping, self.gnode_element_mapping_inverted
         for k1, drawing_model in enumerate(self.drawing_models):
             for k2, element in enumerate(drawing_model.elements):
                 code = str((k1,k2))
                 nodes = element.get_nodes(code)
+                self.gnode_element_mapping_inverted[(k1,k2)] = []
                 # Add nodes
                 for (p0, ports) in nodes:
                     port = ports[0]
@@ -115,6 +118,12 @@ class NetworkModel:
                     gnode = self.port_mapping[map_port]
                     self.global_nodes.add(gnode)
                     self.node_mapping[p0] = gnode
+                    if gnode in self.gnode_element_mapping:
+                        self.gnode_element_mapping[gnode].append((k1,k2))
+                    else:
+                        self.gnode_element_mapping[gnode] = [(k1,k2)]
+                    self.gnode_element_mapping_inverted[(k1,k2)].append(gnode)
+                        
                     
         log.info('NetworkModel - setup_base_model - model generated')
         

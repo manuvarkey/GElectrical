@@ -86,7 +86,19 @@ class MessageView:
                 hbox.props.margin_bottom = 6
                 data_widget = Gtk.Label('', xalign=0)
                 data_widget.set_line_wrap(True)
-                data_widget.set_text(message[0])
+                message_text = message[0]
+                if type(message_text) is dict:
+                    if message_text['type'] == 'error':
+                        message_processed = "<span fgcolor='#cc0000'>" + message_text['message'] + '</span>'
+                        data_widget.set_use_markup(True)
+                        data_widget.set_markup(message_processed)
+                    elif message_text['type'] == 'warning':
+                        message_processed = "<span fgcolor='#f57900'>" + message_text['message'] + '</span>'
+                        data_widget.set_use_markup(True)
+                        data_widget.set_markup(message_processed)
+                else:
+                    message_processed = message_text
+                    data_widget.set_text(message_processed)
                 if self.select_callback:
                     row.set_activatable(True)
                 # Pack

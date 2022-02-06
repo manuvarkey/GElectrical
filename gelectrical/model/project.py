@@ -70,6 +70,7 @@ class ProjectModel:
         self.drawing_model = None
         self.drawing_view = None
         self.stack = program_state['stack']
+        self.status = {'net_model': False, 'power_model': False, 'power_analysis': False}
         # Analysis varables
         self.networkmodel = None
         self.powermodel = None
@@ -79,6 +80,12 @@ class ProjectModel:
         self.drawing_notebook.connect("switch-page", self.on_switch_tab)
         
     ## Functions
+    
+    def clear_status(self):
+        """Clear module status"""
+        self.status = {'net_model': False, 'power_model': False, 'power_analysis': False}
+        self.networkmodel = None
+        self.powermodel = None
     
     def get_project_fields(self, page='Information', full=False):
         if full:
@@ -246,25 +253,20 @@ class ProjectModel:
         for drawing_model in self.drawing_models:
             drawing_model.update_title_block()            
                 
-    #TODO MODIFY TO LOCAL ADDRESSING
-    def select_powermodel(self, model):
+    def select_networkmodel(self, model):
         if model:
             for code, elementids in model:
                 if code == 'node':
                     for k1, drawing_model in enumerate(self.drawing_models):
-                        selected_ports = []
                         for k2, element in enumerate(drawing_model.elements):
-                            ports = element.get_ports_global()
-                            for port in ports:
-                                map_port = (k1, *port)
-                                node = self.port_mapping[map_port]
-                                if node in elementids:
-                                    selected_ports.append(port)
-                        self.drawing_models[k1].select_ports(selected_ports, color=misc.COLOR_SELECTED_WARNING)
-                        self.mark_page(k1)
+                            gnodes = self.networkmodel.gnode_element_mapping_inverted[(k1,k2)]
+                            for gnode in gnodes:
+                                if gnode in elementids:
+                                    element = self.drawing_models[k1][k2]
+                                    element.set_selection(select=True, color=misc.COLOR_SELECTED_WARNING)
+                                    self.mark_page(k1)
                 else:
-                    for elementid in elementids:
-                        (k1,k2) = self.power_elements_inverted[code, elementid]
+                    for k1,k2 in elementids:
                         element = self.drawing_models[k1][k2]
                         element.set_selection(select=True, color=misc.COLOR_SELECTED_WARNING)
                         self.mark_page(k1)
@@ -274,50 +276,79 @@ class ProjectModel:
     ## Analysis functions
     
     def setup_base_model(self, elements=True, nodes=True):
+        self.clear_status()
         self.networkmodel = NetworkModel(self.drawing_models)
         if elements:
             self.networkmodel.setup_base_elements()
         if nodes:
             self.networkmodel.setup_global_nodes()
+        self.status['net_model'] = True
         log.info('ProjectModel - setup_base_model - model generated')
         
     def build_power_model(self):
-        self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles)
-        self.powermodel.build_power_model()
-        log.info('ProjectModel - build_power_model - model generated')
+        if self.status['net_model']:
+            self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles)
+            self.powermodel.build_power_model()
+            self.status['power_model'] = True
+            log.info('ProjectModel - build_power_model - model generated')
+        else:
+            raise RuntimeError('ProjectModel - build_power_model - Network model not built')
         
     def run_diagnostics(self):
         """Run Diagnostics"""
-        log.info('ProjectModel - run_diagnostics - running diagnostic...')
-        diagnostic_results = self.powermodel.run_diagnostics()
-        self.diagnostics_view.update(diagnostic_results, self.select_powermodel)  #TODO
-        log.info('ProjectModel - run_diagnostics - diagnostic run')
+        if self.status['power_model']:
+            log.info('ProjectModel - run_diagnostics - running diagnostic...')
+            diagnostic_results, ret_code = self.powermodel.run_diagnostics()
+            self.diagnostics_view.update(diagnostic_results, self.select_networkmodel)
+            self.status['power_analysis'] = True
+            log.info('ProjectModel - run_diagnostics - diagnostic run')
+            return ret_code
+        else:
+            raise RuntimeError('ProjectModel - run_diagnostics - Power model not built')
         
     def run_powerflow(self):
         """Run power flow"""
-        self.powermodel.run_powerflow()
-        log.info('ProjectModel - run_powerflow - calculation run')
+        if self.status['power_model']:
+            self.powermodel.run_powerflow()
+            self.status['power_analysis'] = True
+            log.info('ProjectModel - run_powerflow - calculation run')
+        else:
+            raise RuntimeError('ProjectModel - run_powerflow - Power model not built')
     
     def run_powerflow_timeseries(self):
         """Run power flow"""
-        self.powermodel.run_powerflow_timeseries()
-        log.info('ProjectModel - run_powerflow_timeseries - calculation run')
-    
+        if self.status['power_model']:
+            self.powermodel.run_powerflow_timeseries()
+            self.status['power_analysis'] = True
+            log.info('ProjectModel - run_powerflow_timeseries - calculation run')
+        else:
+            raise RuntimeError('ProjectModel - run_powerflow_timeseries - Power model not built')
     
     def run_sym_sccalc(self):
         """Run symmetric short circuit calculation"""
-        self.powermodel.run_sym_sccalc()
-        log.info('ProjectModel - run_sym_sccalc - calculation run')
+        if self.status['power_model']:
+            self.powermodel.run_sym_sccalc()
+            self.status['power_analysis'] = True
+            log.info('ProjectModel - run_sym_sccalc - calculation run')
+        else:
+            raise RuntimeError('ProjectModel - run_sym_sccalc - Power model not built')
     
     def run_linetoground_sccalc(self):
         """Run line to ground short circuit calculation"""
-        self.powermodel.run_linetoground_sccalc()            
-        log.info('ProjectModel - run_linetoground_sccalc - calculation run')
+        if self.status['power_model']:
+            self.powermodel.run_linetoground_sccalc()
+            self.status['power_analysis'] = True
+            log.info('ProjectModel - run_linetoground_sccalc - calculation run')
+        else:
+            raise RuntimeError('ProjectModel - run_linetoground_sccalc - Power model not built')
         
     def update_results(self):
         # Copy node data to element power model
-        self.powermodel.update_results()
-        log.info('ProjectModel - update_results - results updated')
+        if self.status['power_analysis']:
+            self.powermodel.update_results()
+            log.info('ProjectModel - update_results - results updated')
+        else:
+            log.info('ProjectModel - update_results - no results to update')
         
     ## Model functions
     
