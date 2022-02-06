@@ -136,6 +136,7 @@ class DrawingView:
             self.refresh() 
         self.properties_view.update(self.drawing_model.fields, 'Sheet Properties', get_page_field, update_page_field)  # Update properties
         self.database_view.update_from_database(None)
+        self.drawing_model.update_elements()
         
     def select_elements(self, elements):
         if len(elements) == 1:
@@ -447,7 +448,7 @@ class DrawingView:
     
     def copy_selected(self, button=None):
         """Copy selected item to clipboard"""
-        elements = self.drawing_model.get_selected()
+        elements = self.drawing_model.get_selected(assembly_info=True)
         if elements: # if selection exists
             test_string = "DrawingGroup"
             text = codecs.encode(pickle.dumps([test_string, elements]), "base64").decode() # dump item as text
@@ -466,8 +467,8 @@ class DrawingView:
             try:
                 itemlist = pickle.loads(codecs.decode(text.encode(), "base64"))  # recover item from string
                 if itemlist[0] == test_string:
-                    group = itemlist[1]
-                    self.drawing_model.add_floating_model(group)
+                    group, assembly_dict = itemlist[1]
+                    self.drawing_model.add_floating_model(group, assembly_dict)
                     self.set_mode(misc.MODE_INSERT)
                 else:
                     log.warning('DrawingView - paste - No valid data in clipboard')

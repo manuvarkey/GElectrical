@@ -36,7 +36,7 @@ log = logging.getLogger(__name__)
 
 class ElementAssembly(ElementModel):
     """Class for rendering element assemblies"""
-    def __init__(self, children=None, children_codes=None):
+    def __init__(self, children_codes=None, children=None):
         # Global
         ElementModel.__init__(self, (0,0))
         self.code = 'element_assembly'
@@ -59,7 +59,7 @@ class ElementAssembly(ElementModel):
         # State variables
         
         if children and children_codes:
-            self.set_children(children, children_codes)
+            self.set_children(children_codes, children)
         
           
     def render_element(self, context):
@@ -121,18 +121,20 @@ class ElementAssembly(ElementModel):
             self.element_rect_height = model['element_rect_height']
             self.children_codes = model['children_codes']
         
-    def set_children(self, children, children_codes):
-        # Setup model
-        rects = []
-        for code, child in zip(children_codes, children):
-            rects.append(cairo.RectangleInt(*child.get_dimensions()))
-            self.children_codes.append(code)
-        element_region = cairo.Region(rects)
-        element_rect = element_region.get_extents()
-        self.x = element_rect.x - 10
-        self.y = element_rect.y - 10
-        self.element_rect_width = element_rect.width + 20
-        self.element_rect_height = element_rect.height + 20
+    def set_children(self, children_codes, children=None):
+        """Setup model"""
+        
+        self.children_codes = children_codes
+        if children:
+            rects = []
+            for child in children:
+                rects.append(cairo.RectangleInt(*child.get_dimensions()))
+            element_region = cairo.Region(rects)
+            element_rect = element_region.get_extents()
+            self.x = element_rect.x - 10
+            self.y = element_rect.y - 10
+            self.element_rect_width = element_rect.width + 20
+            self.element_rect_height = element_rect.height + 20
         
     def get_children(self):
         return self.children_codes

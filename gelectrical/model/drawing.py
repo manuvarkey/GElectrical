@@ -77,6 +77,8 @@ class DrawingModel:
         self.template = Template(width, height)
         self.title_block = TitleBlock()
         self.elements = []
+        # Flags
+        self.models_drawn = False
         
         # Initialisation
         self.update_title_block()
@@ -129,7 +131,25 @@ class DrawingModel:
             self.wire_points = []
             self.selected_ports = []
             self.selected_port_color = misc.COLOR_SELECTED
-    
+            self.models_drawn = False
+            
+    def update_elements(self):
+        """Update elements after elements are drawn"""
+        if self.models_drawn:
+            page = self.parent.get_drawing_model_index(self)
+            for el_no, element in enumerate(self.elements):
+                code = element.code
+                if code == 'element_assembly':
+                    children_codes = element.get_children()
+                    children_codes_new = []
+                    children = []
+                    for k1, k2 in children_codes:
+                        if k2 < len(self.elements):
+                            child = self.elements[k2]
+                            children_codes_new.append((page, k2))
+                            children.append(child)
+                    element.set_children(children_codes_new, children)
+        
     def set_sheet_name(self, sheet_name):
         self.fields['name']['value'] = sheet_name
         
@@ -142,12 +162,25 @@ class DrawingModel:
         if code in self.fields:
             return self.fields[code]
     
-    def get_selected(self):
+    def get_selected(self, assembly_info=False):
         selected = []
         for element in self.elements:
             if element.get_selection() is True:
                 selected.append(element)
-        return selected
+        if assembly_info:
+            assembly_dict = dict()
+            for slno, element in enumerate(selected):
+                if element.code == 'element_assembly':
+                    assembly_dict[slno] = []
+                    children = element.get_children()
+                    for k1, k2 in children:
+                        child = self.elements[k2]
+                        if child in selected:
+                            child_index = selected.index(child)
+                            assembly_dict[slno].append(child_index)
+            return selected, assembly_dict
+        else:
+            return selected
     
     def get_selected_codes(self):
         selected = []
@@ -307,11 +340,11 @@ class DrawingModel:
                     index = self.elements.index(element)
                     selected.remove(element)
                     element_codes.remove((drg_no,index))
-                    assembly = ElementAssembly(selected, element_codes)
+                    assembly = ElementAssembly(element_codes, selected)
                     self.update_element_at_index(assembly, index)
                     return
             # For new items
-            assembly = ElementAssembly(selected, element_codes)
+            assembly = ElementAssembly(element_codes, selected)
             self.insert_element_at_index(assembly)
         
     def delete_selected_rows(self):
@@ -329,10 +362,10 @@ class DrawingModel:
             self.floating_model.add_elements([element])
         return element
             
-    def add_floating_model(self, elements):
+    def add_floating_model(self, elements, assembly_dict=None):
         """Add a floating model"""
         self.floating_model = ElementGroup()
-        self.floating_model.add_elements(elements)
+        self.floating_model.add_elements(elements, assembly_dict)
         
     def rotate_floating_model(self):
         if self.floating_model:
@@ -352,11 +385,19 @@ class DrawingModel:
                 x = port[0]
                 y = port[1]
                 self.floating_model.set_coordinates(x,y)
+            k1 = self.parent.get_drawing_model_index(self)
+            k2 = len(self.elements)
+            self.floating_model.update_assembly(k1, k2)
             with group(self, 'Insert element(s) at ' + str(port)):
                 for element in self.floating_model.elements:
                     element_model = element.get_model()
                     code = element.code
-                    element_copy = self.element_models[code]()
+                    if code == 'element_assembly':
+                        element_copy = ElementAssembly()
+                    elif code == 'element_wire':
+                        element_copy = Wire()
+                    else:
+                        element_copy = self.element_models[code]()
                     element_copy.set_model(element_model)
                     self.insert_element_at_index(element_copy)
             
@@ -409,6 +450,7 @@ class DrawingModel:
         for element in self.elements:
             element.draw(context, select)
         self.draw_selected_ports(context)
+        self.models_drawn = True
             
     def draw_selected_ports(self, context):
         for port in self.selected_ports:

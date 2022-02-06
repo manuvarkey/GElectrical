@@ -52,7 +52,7 @@ class Wire(ElementModel):
         self.points = None
         # Initialise
         if points:
-            self.update_points(points)
+            self.update_points(points, init=True)
     
     def render_element(self, context):
         """Render element to context"""
@@ -76,21 +76,28 @@ class Wire(ElementModel):
         power_model = tuple()
         return power_model
         
-    def update_points(self, points):
-        self.points = points
+    def update_points(self, points=None, init=False):
+        """Update given points to wire element"""
+        
+        def local(port):  # convert to local coordinates
+            x = (port[0] - self.x)/misc.M
+            y = (port[1] - self.y)/misc.M
+            return (x,y)
+                
+        if points:
+            self.points = points
+            
         if len(self.points) > 1:
             # Set dimenstions
-            (self.x, self.y, self.model_width, self.model_height) = misc.rect_from_points(*self.points)
-            def local(port):  # convert to local coordinates
-                x = (port[0] - self.x)/misc.M
-                y = (port[1] - self.y)/misc.M
-                return (x,y)
-            
+            (x, y, self.model_width, self.model_height) = misc.rect_from_points(*self.points)
+            if init:
+                self.x = x
+                self.y = y
             # Set ports
             self.ports = []
             self.ports.append(local(self.points[0]))
             self.ports.append(local(self.points[-1]))
-            
+        
             # Set models
             self.fields = dict()
             self.text_model = []
@@ -104,6 +111,14 @@ class Wire(ElementModel):
                 self.text_model.append([(midx,midy), "${text" + str(i+1) + "}", True])
                 self.schem_model.append(['LINE', prev_point, point_local, []])
                 prev_point = point_local
+    
+    def move(self, dx, dy):
+        """Move element coordinates"""
+        self.x = self.x + dx
+        self.y = self.y + dy
+        for slno, point in enumerate(self.points):
+            self.points[slno] = (point[0] + dx, point[1] + dy)
+        self.update_points()
     
     def get_model(self):
         """Get storage model"""

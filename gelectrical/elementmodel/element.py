@@ -124,6 +124,17 @@ class ElementModel:
                     int(self.model_width))
         return rect
     
+    def set_coordinates(self, x, y):
+        """Set element coordinates"""
+        dx = x - self.x
+        dy = y - self.y
+        self.move(dx, dy)
+    
+    def move(self, dx, dy):
+        """Move element coordinates"""
+        self.x += dx
+        self.y += dy
+    
     def get_ports(self):
         if self.orientation == 'vertical':
             ports_v = []
@@ -516,21 +527,30 @@ class ElementGroup:
         self.x = int(cordinates[0])
         self.y = int(cordinates[1])
         self.elements = []
+        self.assembly_dict = []
         self.attachment_point_element = None
         self.attachment_point_port = None
         
-    def add_elements(self, elements):
+    def add_elements(self, elements, assembly_dict=None):
         if elements:
             self.elements = elements
+            self.assembly_dict = assembly_dict
             self.attachment_point_element = 0
             self.attachment_point_port = 0
             attachment_port_global = self.elements[0].get_ports_global()[0]
             dx = -attachment_port_global[0]
             dy = -attachment_port_global[1]
             for element in self.elements:
-                element.x += dx
-                element.y += dy
+                element.move(dx, dy)
             self.set_coordinates(self.x, self.y)
+            
+    def update_assembly(self, k1, k2):
+        for slno, assembly_list in self.assembly_dict.items():
+            assembly = self.elements[slno]
+            children_codes = []
+            for el_no in assembly_list:
+               children_codes.append((k1, k2 + el_no))
+            assembly.set_children(children_codes)
         
     def rotate_model(self):
         if len(self.elements) == 1:
@@ -538,8 +558,7 @@ class ElementGroup:
             attachment_port_global = self.elements[0].get_ports_global()[0]
             dx = self.x-attachment_port_global[0]
             dy = self.y-attachment_port_global[1]
-            self.elements[0].x += dx
-            self.elements[0].y += dy
+            self.elements[0].move(dx, dy)
             return True
         else:
             return False
@@ -558,8 +577,7 @@ class ElementGroup:
             dx = self.x-attachment_port_global[0]
             dy = self.y-attachment_port_global[1]
             for element in self.elements:
-                element.x += dx
-                element.y += dy
+                element.move(dx, dy)
                     
     def set_coordinates(self, x, y):
         dx = x - self.x
@@ -568,5 +586,4 @@ class ElementGroup:
         self.y = y
         if self.attachment_point_element is not None:
             for element in self.elements:
-                element.x += dx
-                element.y += dy
+                element.move(dx, dy)
