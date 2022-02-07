@@ -271,8 +271,8 @@ class PandaPowerModel:
             return {'message':message, 'type':'warning'}
             
         for code, result in pp_diagnostic_result.items():
-            print(code, result)
             if result:
+                
                 if code == 'disconnected_elements':
                     ret_codes.append(misc.OK)
                     for element_result in result:
@@ -387,7 +387,7 @@ class PandaPowerModel:
     def run_powerflow(self):
         """Run power flow"""
         
-        pp.runpp(self.power_model, neglect_open_switch_branches=True)
+        pp.runpp(self.power_model)
         
         # Update nodes
         for bus, result in self.power_model.res_bus.iterrows():

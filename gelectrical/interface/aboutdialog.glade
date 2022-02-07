@@ -6,9 +6,9 @@
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">gElectrical</property>
-    <property name="version">0.1</property>
+    <property name="version">1.0</property>
     <property name="copyright" translatable="yes">Copyright © 2020 Manu Varkey</property>
-    <property name="comments" translatable="yes">CAD and design aid for electrical systems.</property>
+    <property name="comments" translatable="yes">Simulation and design tool for electrical systems.</property>
     <property name="website">http://kavilgroup.com</property>
     <property name="authors">Manu Varkey
 (manuvarkey@gmail.com)

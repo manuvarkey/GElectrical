@@ -76,7 +76,7 @@ class Switch(ElementModel):
         p0 = code + ':0'
         p1 = code + ':1'
         power_model = (('switch', (p0, p1), {'name': self.fields['ref']['value'],
-                                             'closed': True,
+                                             'closed': self.fields['closed']['value'],
                                              'et': 'b'}),)
         return power_model
 
