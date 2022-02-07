@@ -58,6 +58,10 @@ class DrawingModel:
         self.selected_ports = []
         self.selected_port_color = misc.COLOR_SELECTED
         self.stack = program_state['stack']
+        self.assembly_dict = dict()
+        self.element_gid_mapping = dict()  # Element slno -> gid mapping
+        self.element_gid_mapping_inv = dict()  # Element gid -> slno mapping
+        self.gid = 0
         
         # Data
         self.fields = {'name':          misc.get_field_dict('str', 'Sheet Name', '', 'Sheet', status_inactivate=False),
@@ -88,6 +92,10 @@ class DrawingModel:
     def __getitem__(self, index):
         if len(self.elements) > index:
             return self.elements[index]
+        
+    def get_gid(self):
+        self.gid += 1
+        return self.gid
     
     def export_drawing(self, context):
         self.draw_model(context, select=False)
@@ -107,6 +115,8 @@ class DrawingModel:
         self.elements = []
         if model[0] == 'DrawingModel':
             if copy_elements:
+                
+                # Load elements
                 for base_model in model[1]['elements']:
                     code = base_model['code']
                     if code == 'element_assembly':
@@ -115,8 +125,18 @@ class DrawingModel:
                         element = Wire()
                     else:
                         element = self.program_state['element_models'][code]()
-                    element.set_model(base_model)
+                    element.set_model(base_model, self.get_gid())
                     self.elements.append(element)
+                    
+                # Update gid_assembly for elements
+                for el_no, element in enumerate(self.elements):
+                    if element.code == 'element_assembly':
+                        children_codes = element.get_children()
+                        gid_assembly = element.get_gid()
+                        for page, child_el_no in children_codes:
+                            child_element = self.elements[child_el_no]
+                            child_element.set_gid_assembly(gid_assembly)
+                    
             self.fields = model[1]['fields']
             if self.fields['page_size']['value'] != 'Custom':
                 (width, height) = misc.paper_sizes[self.fields['page_size']['value']]
@@ -133,22 +153,47 @@ class DrawingModel:
             self.selected_port_color = misc.COLOR_SELECTED
             self.models_drawn = False
             
+    def update_state_variables(self):
+        """Update state variables for elements"""
+        self.assembly_dict = dict()
+        self.element_gid_mapping = dict()
+        self.element_gid_mapping_inv = dict()
+        
+        # Populate state variables from elements
+        for el_no, element in enumerate(self.elements):
+            gid = element.get_gid()
+            gid_assembly = element.get_gid_assembly()
+            
+            if gid_assembly:
+                if gid_assembly in self.assembly_dict:
+                    self.assembly_dict[gid_assembly].append(gid)
+                else:
+                    self.assembly_dict[gid_assembly] = [gid]
+
+            self.element_gid_mapping[el_no] = gid
+            self.element_gid_mapping_inv[gid] = el_no
+            
     def update_elements(self):
         """Update elements after elements are drawn"""
-        if self.models_drawn:
-            page = self.parent.get_drawing_model_index(self)
-            for el_no, element in enumerate(self.elements):
-                code = element.code
-                if code == 'element_assembly':
-                    children_codes = element.get_children()
-                    children_codes_new = []
-                    children = []
-                    for k1, k2 in children_codes:
-                        if k2 < len(self.elements):
-                            child = self.elements[k2]
-                            children_codes_new.append((page, k2))
-                            children.append(child)
+        self.update_state_variables()
+        page = self.parent.get_drawing_model_index(self)
+        # Update elements from mapped data
+        for el_no, element in enumerate(self.elements):
+            code = element.code
+            if code == 'element_assembly':
+                children_codes_new = []
+                children = []
+                gid_assembly = self.element_gid_mapping[el_no]
+                if gid_assembly in self.assembly_dict:
+                    for gid in self.assembly_dict[gid_assembly]:
+                        child_el_no = self.element_gid_mapping_inv[gid]
+                        child = self.elements[child_el_no]
+                        children_codes_new.append((page, child_el_no))
+                        children.append(child)
+                if self.models_drawn:
                     element.set_children(children_codes_new, children)
+                else:
+                    element.set_children(children_codes_new)
         
     def set_sheet_name(self, sheet_name):
         self.fields['name']['value'] = sheet_name
@@ -231,10 +276,12 @@ class DrawingModel:
     def update_element_at_index(self, element, index):
         old_element = self.elements[index]
         self.elements[index] = element
+        self.update_elements()
             
         yield "Update draw element at '{}'".format(index)
         # Undo action
         self.update_element_at_index(old_element, index)
+        self.update_elements()
             
     @undoable            
     def insert_element_at_index(self, element, index=None):
@@ -244,10 +291,12 @@ class DrawingModel:
         else:
             self.elements.append(element)
             insert_index = len(self.elements) - 1
+        self.update_elements()
             
         yield "Add draw element at '{}'".format(insert_index)
         # Undo action
         self.delete_rows([insert_index])
+        self.update_elements()
                 
     @undoable
     def delete_rows(self, rows):
@@ -256,11 +305,14 @@ class DrawingModel:
         for index in rows:
             old_element = self.elements.pop(index)
             old_rows.append((index, old_element))
-            
+        self.update_elements()
+        
         yield "Delete draw elements at '{}'".format(rows)
         # Undo action
         for index, old_element in old_rows:
             self.insert_element_at_index(old_element, index)
+        self.update_elements()
+            
                 
     def add_element(self, x, y, code, grid_constraint=False, select=False):
         if code is not None:
@@ -341,10 +393,20 @@ class DrawingModel:
                     selected.remove(element)
                     element_codes.remove((drg_no,index))
                     assembly = ElementAssembly(element_codes, selected)
+                    gid_assembly = self.get_gid()
+                    assembly.set_gid(gid_assembly)
+                    # Update element assembly ids
+                    for element in selected:
+                        element.set_gid_assembly(gid_assembly)
                     self.update_element_at_index(assembly, index)
                     return
             # For new items
             assembly = ElementAssembly(element_codes, selected)
+            gid_assembly = self.get_gid()
+            assembly.set_gid(gid_assembly)
+            # Update element assembly ids
+            for element in selected:
+                element.set_gid_assembly(gid_assembly)
             self.insert_element_at_index(assembly)
         
     def delete_selected_rows(self):
@@ -358,6 +420,7 @@ class DrawingModel:
         if code is not None:
             model = self.element_models[code]
             element = model()
+            element.set_gid(self.get_gid())
             self.floating_model = ElementGroup()
             self.floating_model.add_elements([element])
         return element
@@ -385,11 +448,10 @@ class DrawingModel:
                 x = port[0]
                 y = port[1]
                 self.floating_model.set_coordinates(x,y)
-            k1 = self.parent.get_drawing_model_index(self)
-            k2 = len(self.elements)
-            self.floating_model.update_assembly(k1, k2)
             with group(self, 'Insert element(s) at ' + str(port)):
-                for element in self.floating_model.elements:
+                elements_copy = []
+                # Insert elements inside elementgroup
+                for el_no, element in enumerate(self.floating_model.elements):
                     element_model = element.get_model()
                     code = element.code
                     if code == 'element_assembly':
@@ -398,8 +460,17 @@ class DrawingModel:
                         element_copy = Wire()
                     else:
                         element_copy = self.element_models[code]()
-                    element_copy.set_model(element_model)
+                    element_copy.set_model(element_model, self.get_gid())
                     self.insert_element_at_index(element_copy)
+                    elements_copy.append(element_copy)
+                # Update gid_assembly for elements
+                for el_no, element in enumerate(elements_copy):
+                    if element.code == 'element_assembly':
+                        children_codes = self.floating_model.assembly_dict[el_no]
+                        gid_assembly = element.get_gid()
+                        for child_el_no in children_codes:
+                            child_element = elements_copy[child_el_no]
+                            child_element.set_gid_assembly(gid_assembly)
             
     ## Wire functions
     

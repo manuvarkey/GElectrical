@@ -48,6 +48,8 @@ class ElementModel:
         
         # State data
         self.res_fields = dict()
+        self.gid = None
+        self.gid_assembly = None
         
         # Model parameters
         self.name = ''
@@ -169,7 +171,7 @@ class ElementModel:
                 'ports': copy.deepcopy(self.ports),
                 'fields': copy.deepcopy(self.fields)}
     
-    def set_model(self, model):
+    def set_model(self, model, gid=None):
         """Set storage model"""
         if model['code'] == self.code:
             self.x = model['x']
@@ -177,6 +179,19 @@ class ElementModel:
             self.orientation = model['orientation']
             self.ports = copy.deepcopy(model['ports'])
             self.fields = copy.deepcopy(model['fields'])
+            self.gid = gid
+            
+    def set_gid(self, gid):
+        self.gid = gid
+    
+    def get_gid(self):
+        return self.gid
+    
+    def set_gid_assembly(self, gid):
+        self.gid_assembly = gid
+    
+    def get_gid_assembly(self):
+        return self.gid_assembly
             
     def get_selection(self):
         """Get selection"""
@@ -527,7 +542,7 @@ class ElementGroup:
         self.x = int(cordinates[0])
         self.y = int(cordinates[1])
         self.elements = []
-        self.assembly_dict = []
+        self.assembly_dict = dict()
         self.attachment_point_element = None
         self.attachment_point_port = None
         
@@ -543,14 +558,6 @@ class ElementGroup:
             for element in self.elements:
                 element.move(dx, dy)
             self.set_coordinates(self.x, self.y)
-            
-    def update_assembly(self, k1, k2):
-        for slno, assembly_list in self.assembly_dict.items():
-            assembly = self.elements[slno]
-            children_codes = []
-            for el_no in assembly_list:
-               children_codes.append((k1, k2 + el_no))
-            assembly.set_children(children_codes)
         
     def rotate_model(self):
         if len(self.elements) == 1:

@@ -84,7 +84,7 @@ class Load(ElementModel):
     def get_power_model(self, code):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
-        mode = 'ind' if self.fields['mode']['value'] else 'cap'
+        mode = 'underexcited' if self.fields['mode']['value'] else 'overexcited'
         power_model = (('load', (p0,), {'name': self.fields['ref']['value'],
                                        'sn_mva': self.fields['sn_mva']['value'],
                                        'cos_phi': self.fields['cos_phi']['value'],

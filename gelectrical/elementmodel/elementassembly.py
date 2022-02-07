@@ -109,7 +109,7 @@ class ElementAssembly(ElementModel):
                 'children_codes': self.element_rect_height,
                 'children_codes': self.children_codes}
     
-    def set_model(self, model):
+    def set_model(self, model, gid=None):
         """Set storage model"""
         if model['code'] == self.code:
             self.x = model['x']
@@ -120,10 +120,10 @@ class ElementAssembly(ElementModel):
             self.element_rect_width = model['element_rect_width']
             self.element_rect_height = model['element_rect_height']
             self.children_codes = model['children_codes']
+            self.gid = gid
         
     def set_children(self, children_codes, children=None):
         """Setup model"""
-        
         self.children_codes = children_codes
         if children:
             rects = []
@@ -135,6 +135,15 @@ class ElementAssembly(ElementModel):
             self.y = element_rect.y - 10
             self.element_rect_width = element_rect.width + 20
             self.element_rect_height = element_rect.height + 20
+            
+    def delete_child(self, child_code):
+        """Setup model"""
+        if child_code in self.children_codes:
+            self.children_codes.remove(child_code)
+            
+    def add_child(self, child_code):
+        """Setup model"""
+        self.children_codes.append(child_code)
         
     def get_children(self):
         return self.children_codes
