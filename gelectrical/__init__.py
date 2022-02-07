@@ -38,6 +38,7 @@ from .model.project import ProjectModel
 from .view.field import FieldView, FieldViewDialog
 from .view.message import MessageView
 from .view.database import DatabaseView
+from .view.analysis import AnalysisSettingsDialog
 
 # Add current path to sys for importing plugins
 sys.path.append(misc.abs_path(''))
@@ -422,7 +423,7 @@ class MainWindow():
     def on_run_analysis(self, widget):
         """Export project to spreadsheet"""
 
-        def exec_func(progress):
+        def exec_func(progress, settings):
             progress.add_message('Building Base Model...')
             progress.set_fraction(0)
             self.project.setup_base_model()
@@ -431,36 +432,45 @@ class MainWindow():
             progress.set_fraction(0.2)
             self.project.build_power_model()
             
-            progress.add_message('Running Diagnostics...')
-            progress.set_fraction(0.3)
-            ret_code = self.project.run_diagnostics()
+            if settings['diagnostics']:
+                progress.add_message('Running Diagnostics...')
+                progress.set_fraction(0.3)
+                ret_code = self.project.run_diagnostics()
+            else:
+                ret_code = misc.OK
             
             if ret_code != misc.ERROR:
-            
-                progress.add_message('Running Power Flow...')
-                progress.set_fraction(0.5)
-                #self.project.run_powerflow()
-                self.project.run_powerflow_timeseries()
                 
-                progress.add_message('Running Symmetric Short Circuit Calculation...')
-                progress.set_fraction(0.7)
-                self.project.run_sym_sccalc()
+                if settings['powerflow']:
+                    progress.add_message('Running Power Flow...')
+                    progress.set_fraction(0.5)
+                    #self.project.run_powerflow()
+                    self.project.run_powerflow_timeseries()
                 
-                progress.add_message('Running Line to Ground Short Circuit Calculation...')
-                progress.set_fraction(0.8)
-                self.project.run_linetoground_sccalc()
+                if settings['sc_sym']:
+                    progress.add_message('Running Symmetric Short Circuit Calculation...')
+                    progress.set_fraction(0.7)
+                    self.project.run_sym_sccalc()
+                    
+                if settings['sc_gf']:
+                    progress.add_message('Running Line to Ground Short Circuit Calculation...')
+                    progress.set_fraction(0.8)
+                    self.project.run_linetoground_sccalc()
                 
                 progress.add_message('Updating Results...')
                 progress.set_fraction(0.9)
                 self.project.update_results()
                 
-                #progress.add_message('Setting up HTML Report...')
-                #progress.set_fraction(0.9)
-                #self.project.export_html_report('network.html')  #TODO
-                
-                #progress.add_message('Exporting pandapower network to JSON...')
-                #progress.set_fraction(0.95)
-                #self.project.export_json('network.json')  #TODO
+                if settings['folder'] and settings['export']:
+                    progress.add_message('Setting up HTML Report...')
+                    progress.set_fraction(0.9)
+                    filename = misc.posix_path(settings['folder'], 'network.html')
+                    self.project.export_html_report(filename)
+                    
+                    progress.add_message('Exporting pandapower network to JSON...')
+                    progress.set_fraction(0.95)
+                    filename = misc.posix_path(settings['folder'], 'network.json')
+                    self.project.export_json(filename)
                 
                 progress.set_fraction(1)
                 progress.add_message('<b>Analysis run Successfully</b>')
@@ -468,9 +478,19 @@ class MainWindow():
                 
             else:
                 raise RuntimeError("Diagnostics run returned critical errors. Please see <i>Warnings</i> pane.")
-            
-        self.run_command(exec_func)
-        log.info('MainWindow - on_run_analysis - analysis run')
+        
+        if self.filename:
+            ana_folder_path = misc.posix_path(os.path.split(self.filename)[0])
+        else:
+            ana_folder_path = None
+        settings_dialog = AnalysisSettingsDialog(self.window, ana_folder_path)
+        settings = settings_dialog.run()
+        
+        if settings:
+            self.run_command(exec_func, data=settings)
+            log.info('MainWindow - on_run_analysis - analysis run')
+        else:
+            log.info('MainWindow - on_run_analysis - analysis cancelled by user')
     
     # Draw signal handler methods
         

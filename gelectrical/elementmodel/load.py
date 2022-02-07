@@ -59,7 +59,7 @@ class Load(ElementModel):
     def render_element(self, context):
         """Render element to context"""
         # Preprocessing
-        pftag = 'lead' if self.fields['mode']['value'] else 'lag'
+        pftag = 'lag' if self.fields['mode']['value'] else 'lead'
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${sn_mva}MVA", True],
                            [(3,None), "${cos_phi} pf " + pftag, True],

@@ -566,8 +566,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-in</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -583,8 +583,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-zoom-out</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -683,7 +683,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Analyse</property>
                         <property name="use_underline">True</property>
-                        <property name="icon_name">view-refresh</property>
+                        <property name="icon_name">system-run</property>
                         <signal name="clicked" handler="on_run_analysis" swapped="no"/>
                       </object>
                       <packing>
