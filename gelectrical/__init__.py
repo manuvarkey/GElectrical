@@ -33,7 +33,7 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 # local files import
 from . import misc, undo
 from .model import drawing
-from .elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator
+from .elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference
 from .model.project import ProjectModel
 from .view.field import FieldView, FieldViewDialog
 from .view.message import MessageView
@@ -678,7 +678,8 @@ class MainWindow():
         self.program_state['element_models'][switch.Contactor().code] = switch.Contactor
         self.program_state['element_models'][busbar.BusBar().code] = busbar.BusBar
         self.program_state['element_models'][grid.Grid().code] = grid.Grid
-        self.program_state['element_models'][drawing.Reference().code] = drawing.Reference
+        self.program_state['element_models'][reference.Reference().code] = reference.Reference
+        self.program_state['element_models'][reference.ReferenceBox().code] = reference.ReferenceBox
         self.program_state['element_models'][transformer.Transformer().code] = transformer.Transformer
         self.program_state['element_models'][transformer.Transformer3w().code] = transformer.Transformer3w
         self.program_state['element_models'][load.Load().code] = load.Load

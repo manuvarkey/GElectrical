@@ -9,7 +9,7 @@
    width="32"
    height="32"
    viewBox="0 0 32 32"
-   sodipodi:docname="reference.svg"
+   sodipodi:docname="reference_box.svg"
    inkscape:export-filename="/home/cpwd/Documents/electricdesign/electricdesign/element_library/1.svg.png"
    inkscape:export-xdpi="11.52"
    inkscape:export-ydpi="11.52"
@@ -82,10 +82,14 @@
                      inkscape:connector-curvature="0"
                      id="path42"
                      style="fill:none;stroke:#000000;stroke-width:26.1166458;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-                     d="m 1711.3258,452.27766 h 458.7304" /><path
-                     style="fill:none;stroke:#000000;stroke-width:26.1166458;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-                     d="M 1940.691,681.64287 1711.3258,452.27767 1940.691,222.91248 2170.0561,452.27767 Z"
-                     id="path1027" /></g></g></g></g></g></g></g><g
+                     d="m 1711.3258,452.27766 h 458.7304" /><rect
+                     style="fill:none;stroke:#080606;stroke-width:26.1166;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                     id="rect917"
+                     width="457.47849"
+                     height="459.51428"
+                     x="1711.9518"
+                     y="-682.03479"
+                     transform="scale(1,-1)" /></g></g></g></g></g></g></g><g
        id="g32"><g
          id="g34"
          clip-path="url(#clipPath36)"><g

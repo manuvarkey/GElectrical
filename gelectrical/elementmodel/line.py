@@ -54,7 +54,7 @@ class Line(ElementModel):
                        'phase_sc_current_rating': self.get_field_dict('float', 'Isc phase (1s)', 'kA', 0),
                        'cpe_sc_current_rating': self.get_field_dict('float', 'Isc cpe (1s)', 'kA', 0),
                        'df':            self.get_field_dict('float', 'DF', '', 1),
-                       'designation':   self.get_field_dict('str', 'Designation', '', '3x16'),
+                       'designation':   self.get_field_dict('str', 'Designation', '', '4x16'),
                        'type':          self.get_field_dict('str', 'Type of Line', '', 'Under Ground', selection_list=['Over Head','Under Ground']),
                        'parallel':      self.get_field_dict('int', '# Parallel Lines', '', 1),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
@@ -395,7 +395,7 @@ class LTCableIEC(Line):
                                                           alter_structure=True)
         self.fields['type_of_cable'] = self.get_field_dict('str', 'Type', '', '3ph', selection_list=['1ph','3ph'],
                                                            alter_structure=True)
-        self.fields['cpe'] = self.get_field_dict('str', 'CPE Conductor', '', self.cpe_list[0], 
+        self.fields['cpe'] = self.get_field_dict('str', 'CPE Conductor', '', self.cpe_list[1], 
                                                  selection_list=self.cpe_list,
                                                  alter_structure=True,)
         self.fields['armour_material'] = self.get_field_dict('str', 'Armour material', '', self.cpe_materials[0], 

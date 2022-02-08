@@ -45,15 +45,15 @@ class Reference(ElementModel):
         self.icon = misc.abs_path('icons', 'reference.svg')
         self.model_width = 0
         self.model_height = 0
-        self.ports = [(2.5,0), (2.5,5)]
+        self.ports = [(3,0), (3,6)]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference Code', '', '?'),
-                       'sheet':    self.get_field_dict('str', 'Sheet Reference', '', '1/A1'),
+                       'sheet':    self.get_field_dict('str', 'Sheet Reference', '', '1'),
                        'title':     self.get_field_dict('str', 'Title', '', ''),
                        'sub_title':     self.get_field_dict('str', 'Sub Title', '', ''),}
-        self.text_model = [[(2.5,2.5-misc.SCHEM_FONT_SPACING/misc.M), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(2.5,2.5+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sheet}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(6,2.5-misc.SCHEM_FONT_SPACING/misc.M), "${title}", True],
-                           [(6,2.5+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sub_title}", True]]
+        self.text_model = [[(3,3-misc.SCHEM_FONT_SPACING/misc.M), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
+                           [(3,3+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sheet}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
+                           [(7,3-misc.SCHEM_FONT_SPACING/misc.M), "${title}", True],
+                           [(7,3+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sub_title}", True]]
     
     def render_element(self, context):
         """Render element to context"""
@@ -61,9 +61,20 @@ class Reference(ElementModel):
         (tx1, ty1, tw1, th1) = self.text_extends[2]
         (tx2, ty2, tw2, th2) = self.text_extends[3]
         width = max(tw1, tw2)
+        #self.schem_model = [ 
+                             #['CIRCLE', (3,3), 3, False, []],
+                             #['LINE', (0,3),(7 + width/misc.M,3), []],
+                           #]
+        if self.fields['title']['value'] or self.fields['sub_title']['value']:
+            xe = 7 + width/misc.M
+        else:
+            xe = 6
         self.schem_model = [ 
-                             ['CIRCLE', (2.5,2.5), 2.5, False, []],
-                             ['LINE',(0,2.5),(6 + width/misc.M,2.5), []],
+                             ['LINE', (3,0),(6,3), []],
+                             ['LINE', (3,0),(0,3), []],
+                             ['LINE', (3,6),(0,3), []],
+                             ['LINE', (3,6),(6,3), []],
+                             ['LINE', (0,3),(xe,3), []],
                            ]
         self.render_model(context, self.schem_model)
         # Post processing
@@ -82,3 +93,56 @@ class Reference(ElementModel):
         power_model = tuple()
         return power_model
 
+
+class ReferenceBox(Reference):
+    """Class for rendering cross reference elements"""
+    def __init__(self):
+        # Global
+        Reference.__init__(self)
+        self.code = 'element_reference_box'
+        self.name = 'Cross Reference'
+        self.group = 'Miscellaneous'
+        self.icon = misc.abs_path('icons', 'reference_box.svg')
+        self.model_width = 0
+        self.model_height = 0
+        self.fields = {'ref':       self.get_field_dict('str', 'Reference Code', '', '?'),
+                       'sheet':     self.get_field_dict('str', 'Sheet Reference', '', '1'),
+                       'title':     self.get_field_dict('str', 'Title', '', ''),
+                       'sub_title': self.get_field_dict('str', 'Sub Title', '', ''),
+                       'width':   self.get_field_dict('int', 'Bay Width', 'pt', 12)}
+        self.set_model_from_param()
+        
+        
+    def render_element(self, context):
+        """Render element to context"""
+        self.set_model_from_param()
+        self.render_text(context, self.text_model)
+        self.render_model(context, self.schem_model)
+        # Post processing
+        self.modify_extends()
+        
+    # Private functions
+    
+    def set_model_from_param(self):
+        width = self.fields['width']['value']
+        h1 = 2
+        h2 = 0
+        h3 = 0
+        if self.fields['title']['value']:
+            h2 = h1
+        if self.fields['sub_title']['value']:
+            h2 = h1
+            h3 = h1
+        height = h1 + h2 + h3
+        self.ports = [(width/2,0), (width/2,height)]
+        self.schem_model = [['RECT', (0,0), width, height, False, []],
+                            ['LINE',(width/2, 0), (width/2, h1), []]]
+        self.text_model = [[(width/4, h1 - misc.SCHEM_FONT_SPACING/misc.M), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
+                           [(3*width/4, h1 - misc.SCHEM_FONT_SPACING/misc.M), "${sheet}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center']]
+        if self.fields['title']['value'] or self.fields['sub_title']['value']:
+            self.schem_model.append(['LINE',(0,h1), (width, h1), []])
+            self.text_model.append([(0.5, (h1+h2) - misc.SCHEM_FONT_SPACING/misc.M), "${title}", True])
+        if self.fields['sub_title']['value']:
+            self.schem_model.append(['LINE',(0, h1+h2), (width, h1+h2), []])
+            self.text_model.append([(0.5, height - misc.SCHEM_FONT_SPACING/misc.M), "${sub_title}", True])
+            

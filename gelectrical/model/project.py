@@ -426,7 +426,7 @@ class ProjectModel:
                 for drg_no, element_index in children:
                     prefix_codes[(drg_no, element_index)] = model.fields['ref']['value'] + '-'
         
-        excluded_codes = ('element_reference', 'element_wire', 'element_assembly')
+        excluded_codes = ('element_reference', 'element_reference_box', 'element_wire', 'element_assembly')
         
         # Update largest refs for elements
         if mode in ("New elements only", "Selected elements only"):
