@@ -153,6 +153,8 @@ class DrawingModel:
             self.selected_port_color = misc.COLOR_SELECTED
             self.models_drawn = False
             
+    ## Update functions
+            
     def update_state_variables(self):
         """Update state variables for elements"""
         self.assembly_dict = dict()
@@ -194,6 +196,12 @@ class DrawingModel:
                     element.set_children(children_codes_new, children)
                 else:
                     element.set_children(children_codes_new)
+                    
+            if code in misc.REFERENCE_CODES:
+                if element.fields['ref']['value'] in ('?', 'X?'):
+                    element.draw_schem_color = misc.COLOR_SELECTED_WARNING
+                else:
+                    element.draw_schem_color = misc.COLOR_NORMAL
         
     def set_sheet_name(self, sheet_name):
         self.fields['name']['value'] = sheet_name
