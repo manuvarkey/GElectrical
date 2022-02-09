@@ -70,7 +70,7 @@ class DrawingModel:
                        'page_height':   misc.get_field_dict('float', 'Page Height', 'points', 1000, status_inactivate=True, decimal=0),
                        'title':         misc.get_field_dict('str', 'Title', '', 'TITLE', status_inactivate=False),
                        'drawing_no':    misc.get_field_dict('str', 'Drawing Number', '', 'PROJECT/ELEC/SLD/1', status_inactivate=False),
-                       'sheet_no':      misc.get_field_dict('str', 'Sheet No.', '', '1/1', status_inactivate=False),
+                       'sheet_no':      misc.get_field_dict('str', 'Sheet No.', '', '1', status_inactivate=False),
                        'type':          misc.get_field_dict('str', 'Document Type', '', 'Electrical Schematic', status_inactivate=False),
                        'status':        misc.get_field_dict('str', 'Document Status.', '', 'DRAFT', status_inactivate=False),
                        'rev':           misc.get_field_dict('str', 'Revision', '', 'A', status_inactivate=False),
@@ -207,11 +207,12 @@ class DrawingModel:
         if code in self.fields:
             return self.fields[code]
     
-    def get_selected(self, assembly_info=False):
+    def get_selected(self, assembly_info=False, codes=None):
         selected = []
         for element in self.elements:
             if element.get_selection() is True:
-                selected.append(element)
+                if (codes and element.code in codes) or codes is None:
+                    selected.append(element)
         if assembly_info:
             assembly_dict = dict()
             for slno, element in enumerate(selected):
@@ -227,10 +228,18 @@ class DrawingModel:
         else:
             return selected
     
-    def get_selected_codes(self):
+    def get_selected_codes(self, codes=None):
         selected = []
         for slno, element in enumerate(self.elements):
             if element.get_selection() is True:
+                if (codes and element.code in codes) or codes is None:
+                    selected.append(slno)
+        return selected
+    
+    def get_element_codes(self, codes=None):
+        selected = []
+        for slno, element in enumerate(self.elements):
+            if (codes and element.code in codes) or codes is None:
                 selected.append(slno)
         return selected
     
@@ -339,25 +348,25 @@ class DrawingModel:
         self.selected_ports = nodes
         self.selected_port_color = color
             
-    def update_select(self, x, y, w=0, h=0, retain_selection=True):
+    def update_select(self, x, y, w=0, h=0, retain_selection=True, whitelist=None):
         selected = False
         x = int(x)
         y = int(y)
         w = int(w)
         h = int(h)
-        for element in self.elements:
-            # Form selection rectangle
-            rect = cairo.RectangleInt(x, y, w, h)
-            # Check for selection
-            if element.check_overlap(rect):
-                if element.get_selection() == True:
+        rect = cairo.RectangleInt(x, y, w, h)  # selection rectangle
+        for elno, element in enumerate(self.elements):
+            if (whitelist and (elno in whitelist)) or whitelist is None:
+                # Check for selection
+                if element.check_overlap(rect):
+                    if element.get_selection() == True:
+                        element.set_selection(False)
+                        selected = True
+                    else:
+                        element.set_selection(True)
+                        selected = True
+                elif retain_selection is False:
                     element.set_selection(False)
-                    selected = True
-                else:
-                    element.set_selection(True)
-                    selected = True
-            elif retain_selection is False:
-                element.set_selection(False)
         return selected
     
     def update_title_block(self):
@@ -514,12 +523,15 @@ class DrawingModel:
         context.stroke()
         context.restore()
         
-    def draw_model(self, context, select=False):
+    def draw_model(self, context, select=False, whitelist=None):
         """Draw the schematic model"""
         self.title_block.draw(context)
         self.template.draw(context)
-        for element in self.elements:
-            element.draw(context, select)
+        for elno, element in enumerate(self.elements):
+            if whitelist is not None and (elno not in whitelist):
+                element.draw(context, select, override_color=misc.COLOR_INACTIVE)
+            else:
+                element.draw(context, select)
         self.draw_selected_ports(context)
         self.models_drawn = True
             

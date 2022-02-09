@@ -32,9 +32,11 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 # local files import
 from . import misc, undo
+from .misc import group
 from .model import drawing
 from .elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference
 from .model.project import ProjectModel
+from .view.drawing import DrawingSelectionDialog
 from .view.field import FieldView, FieldViewDialog
 from .view.message import MessageView
 from .view.database import DatabaseView
@@ -549,6 +551,33 @@ class MainWindow():
             
         # Destroy dialog
         dialog_window.destroy()
+    
+    def on_draw_linkref(self, button):
+        """Link reference dialog"""
+        title = 'Select reference elements to be linked from the sheets below...'
+        selected_codes = self.project.drawing_model.get_selected_codes(codes=misc.REFERENCE_CODES)
+        if selected_codes:
+            selected_page = self.project.get_drawing_model_index(self.project.drawing_model)
+            selected_slno = selected_codes[0]
+            # Compile elements to be enabled in selection dialog
+            whitelist = dict()
+            for page, drawing_model in enumerate(self.project.drawing_models):
+                slnos = drawing_model.get_element_codes(codes=misc.REFERENCE_CODES)
+                if page == selected_page:
+                    slnos.remove(selected_slno)
+                whitelist[page] = slnos
+            # Prepare and run dialog
+            selection_dialog = DrawingSelectionDialog(self.window, 
+                                                    self.project.drawing_models, 
+                                                    self.program_settings,
+                                                    title=title,
+                                                    whitelist=whitelist)
+            selected_dict = selection_dialog.run()
+            if selected_dict:
+                self.project.link_references((selected_page, selected_slno), selected_dict)
+                self.display_status(misc.INFO, "References linked")
+        else:
+            self.display_status(misc.WARNING, "Invalid selection")
         
     def on_draw_drawwire(self, widget):
         """Start drawing wire"""

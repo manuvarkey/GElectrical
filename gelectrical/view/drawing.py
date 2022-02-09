@@ -43,7 +43,7 @@ class MouseButtons:
 class DrawingView:
     """Class for drawing onto Gtk.DrawingArea using cairo"""
     
-    def __init__(self, window, box, drawing_model, program_state, program_settings, properties_view, results_view, database_view):
+    def __init__(self, window, box, drawing_model, program_state, program_settings, properties_view, results_view, database_view, whitelist=None):
         self.window = window
         self.box = box
         self.drawing_area = Gtk.DrawingArea()
@@ -56,6 +56,7 @@ class DrawingView:
         self.properties_view = properties_view
         self.results_view = results_view
         self.database_view = database_view
+        self.whitelist = whitelist
         self.scale = 1.6
         
         self.select_x = 0
@@ -134,8 +135,10 @@ class DrawingView:
         def update_page_field(*data):
             self.drawing_model.update_page_field(*data)
             self.refresh() 
-        self.properties_view.update(self.drawing_model.fields, 'Sheet Properties', get_page_field, update_page_field)  # Update properties
-        self.database_view.update_from_database(None)
+        if self.properties_view:
+            self.properties_view.update(self.drawing_model.fields, 'Sheet Properties', get_page_field, update_page_field)  # Update properties
+        if self.database_view:
+            self.database_view.update_from_database(None)
         self.drawing_model.update_elements()
         
     def select_elements(self, elements):
@@ -167,9 +170,12 @@ class DrawingView:
                     self.refresh() 
             
             set_text_field = UndoableSetTextValue(self.program_state['stack'], self.refresh).set_text_field_value_undo
-            self.properties_view.update(element.fields, element.name, element.get_text_field, set_text_field)  # Update properties
-            self.results_view.update(element.res_fields, element.name, element.get_res_field, None)  # Update results
-            self.database_view.update_from_database(element.database_path)
+            if self.properties_view:
+                self.properties_view.update(element.fields, element.name, element.get_text_field, set_text_field)  # Update properties
+            if self.results_view:
+                self.results_view.update(element.res_fields, element.name, element.get_res_field, None)  # Update results
+            if self.database_view:
+                self.database_view.update_from_database(element.database_path)
         elif elements[0].code != 'element_wire':
             # Check if all items are similar
             code = elements[0].code
@@ -202,9 +208,12 @@ class DrawingView:
                         element.set_text_field_value(*data)
                     self.multiselect_fields[data[0]]['value'] = data[1]
                     self.refresh()
-                self.properties_view.update(self.multiselect_fields, elements[0].name + ' (Mutliple)', get_field, set_field)  # Update properties
-                self.database_view.update_from_database(elements[0].database_path)
-                self.results_view.clean()
+                if self.properties_view:
+                    self.properties_view.update(self.multiselect_fields, elements[0].name + ' (Mutliple)', get_field, set_field)  # Update properties
+                if self.database_view:
+                    self.database_view.update_from_database(elements[0].database_path)
+                if self.results_view:
+                    self.results_view.clean()
             
     ## Callbacks
         
@@ -236,7 +245,7 @@ class DrawingView:
             self.background_context = cairo.Context(self.background_surface)
             self.background_context.scale(self.scale, self.scale)
             self.drawing_model.draw_gridlines(self.background_context)
-            self.drawing_model.draw_model(self.background_context, select=True)
+            self.drawing_model.draw_model(self.background_context, select=True, whitelist=self.whitelist)
             # Draw background image
             draw_background()       
             self.dirty_draw = False
@@ -308,11 +317,13 @@ class DrawingView:
                 selected_initial = self.drawing_model.get_selected()
                 if not(e.state & Gdk.ModifierType.SHIFT_MASK):  # If shift not pressed, deselect all items
                     self.drawing_model.deselect_all()
-                selected = self.drawing_model.update_select(x=e.x/self.scale, y=e.y/self.scale)
+                selected = self.drawing_model.update_select(x=e.x/self.scale, y=e.y/self.scale, whitelist=self.whitelist)
                 selected_list = self.drawing_model.get_selected()
                 if selected is False:
-                    self.properties_view.clean()  # Clear properties
-                    self.results_view.clean()  # Clear results
+                    if self.properties_view:
+                        self.properties_view.clean()  # Clear properties
+                    if self.results_view:
+                        self.results_view.clean()  # Clear results
                     self.select_page()
                     if selected_initial:  # If existing selection, deselect all
                         self.drawing_model.deselect_all()
@@ -330,7 +341,7 @@ class DrawingView:
                 y = min(e.y/self.scale, self.select_y)
                 w = abs(e.x/self.scale - self.select_x)
                 h = abs(e.y/self.scale - self.select_y)
-                selected = self.drawing_model.update_select(x=x, y=y, w=w, h=h)
+                selected = self.drawing_model.update_select(x=x, y=y, w=w, h=h, whitelist=self.whitelist)
                 selected_list = self.drawing_model.get_selected()
                 self.set_mode(misc.MODE_DEFAULT)
                 if selected:
@@ -480,7 +491,60 @@ class DrawingView:
     def delete_selected(self, button=None):
         """Delete selected item"""
         self.drawing_model.delete_selected_rows()
-        self.properties_view.clean()  # Clear properties
-        self.results_view.clean()  # Clear properties
+        if self.properties_view:
+            self.properties_view.clean()  # Clear properties
+        if self.results_view:
+            self.results_view.clean()  # Clear properties
         self.refresh()
         log.info('DrawingView - delete_selected - Delete selected items')
+        
+        
+class DrawingSelectionDialog:
+    """Class for handling element selection from Drawing views"""
+    
+    def __init__(self, window, drawing_models, program_settings, title='', whitelist=None):
+        self.window = window
+        self.drawing_models = drawing_models
+        self.program_settings = program_settings
+        self.whitelist = whitelist
+        self.title = title
+        
+        self.drawing_views = []
+        self.state = dict()
+        self.global_scale = 1.6
+        
+        # Setup GUI objects
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file(misc.abs_path("interface", "drawingselectiondialog.glade"))
+        self.dialog = self.builder.get_object("selection_dialog")
+        self.label_title = self.builder.get_object("label_title")
+        self.dialog.set_transient_for(self.window)
+        self.dialog.set_modal(True)
+        self.builder.connect_signals(self)
+        self.drawing_notebook = self.builder.get_object('drawing_notebook')
+        self.label_title.set_text(self.title)
+        self.program_state = {'mode': misc.MODE_DEFAULT, 'stack': None}
+        for whitelist_page, drawing_model in enumerate(self.drawing_models):
+            drawing_model.deselect_all()
+            page = Gtk.Box()
+            sheet_name = drawing_model.fields['name']['value']
+            sheet_label = Gtk.Label(sheet_name)
+            self.drawing_notebook.insert_page(page, sheet_label, -1)
+            drawing_view = DrawingView(self.window, page, drawing_model, self.program_state, self.program_settings, 
+                                       None, None, None, whitelist=self.whitelist[whitelist_page])
+            drawing_view.scale = self.global_scale
+            self.drawing_views.append(drawing_view)
+        self.drawing_notebook.show_all()
+        
+    def run(self):
+        # Show settings dialog
+        response = self.dialog.run()
+        selected_dict = dict()
+        if response == 1:
+            # Set settings
+            for slno, drawing_model in enumerate(self.drawing_models):
+                selected = drawing_model.get_selected_codes()
+                selected_dict[slno] = selected
+            self.dialog.destroy()
+            return selected_dict
+        self.dialog.destroy()

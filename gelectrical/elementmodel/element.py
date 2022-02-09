@@ -77,9 +77,13 @@ class ElementModel:
         if self.res_fields and code in self.res_fields:
             return self.res_fields[code]
 
-    def draw(self, context, select=False):
+    def draw(self, context, select=False, override_color=None):
         """Draw the schematic model"""
+        default_color = self.draw_schem_color
+        if override_color:
+            self.draw_schem_color = override_color
         self.render_element(context)
+        self.draw_schem_color = default_color
         if select == True and self.selected == True:
             (x, y, width, height) = self.get_dimensions()
             misc.draw_rectangle(context,

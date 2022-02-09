@@ -97,7 +97,7 @@ GRAPH_FONT_FACE = 'Caviar Dreams'
 GRAPH_FONT_SIZE = 11
 GRAPH_LOAD_TIME_LIMITS = (0,23,1)
 GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
-
+REFERENCE_CODES = ('element_reference', 'element_reference_box')
 DEFAULT_LOAD_PROFILE = [['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
                         ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
                         ['80% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.8,0.8]}]],

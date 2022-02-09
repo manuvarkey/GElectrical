@@ -123,7 +123,8 @@ class ProjectModel:
         if slno > 0:
             base_model = self.drawing_models[0].get_model()
             model.set_model(base_model, copy_elements=False)
-        sheet_name = "Sheet " + str(self.get_page_nos())
+            model.fields['sheet_no']['value'] = str(slno + 1)
+        sheet_name = "Sheet " + str(self.get_page_nos() + 1)
         model.set_sheet_name(sheet_name)
         add_slno = self.add_page(slno, model)
     
@@ -140,7 +141,7 @@ class ProjectModel:
             self.drawing_model = model
         else:
             self.drawing_model = DrawingModel(self, self.program_state)
-            sheet_name = "Sheet " + str(self.get_page_nos())
+            sheet_name = "Sheet " + str(self.get_page_nos() + 1)
             self.drawing_model.set_sheet_name(sheet_name)
         if slno:
             # Setup model
@@ -169,7 +170,7 @@ class ProjectModel:
     @undoable
     def remove_page(self, slno):
         delete_slno = None
-        if self.get_page_nos() > 1 and slno and slno < self.get_page_nos():
+        if self.get_page_nos() > 1 and slno < self.get_page_nos():
             del_model = self.drawing_models.pop(slno)
             self.drawing_views.pop(slno)
             page = self.drawing_notebook.get_nth_page(slno)
@@ -192,6 +193,7 @@ class ProjectModel:
         # Clear first page model
         blank_model = DrawingModel(self, self.program_state).get_model()
         self.drawing_models[0].set_model(blank_model)
+        print(self.drawing_models)
         
     def get_page_nos(self):
         return len(self.drawing_models)
@@ -426,7 +428,7 @@ class ProjectModel:
                 for drg_no, element_index in children:
                     prefix_codes[(drg_no, element_index)] = model.fields['ref']['value'] + '-'
         
-        excluded_codes = ('element_reference', 'element_reference_box', 'element_wire', 'element_assembly')
+        excluded_codes = (*misc.REFERENCE_CODES, 'element_wire', 'element_assembly')
         
         # Update largest refs for elements
         if mode in ("New elements only", "Selected elements only"):
@@ -494,7 +496,58 @@ class ProjectModel:
         # Undo action
         for key, ref in changed:
             base_elements[key].set_text_field_value('ref', ref)
+            
+    def get_reference_code(self):
+        """Renumber drawing elements"""
         
+        # Setup network model
+        self.setup_base_model(elements=True, nodes=False)
+        base_elements = self.networkmodel.base_elements
+        # Setup local variables
+        counter = 1
+        # Update largest counter for reference elements
+        for key, model in base_elements.items():
+            code = model.code
+            if code in misc.REFERENCE_CODES:
+                ref = model.fields['ref']['value']
+                try:
+                    count = int(ref.lstrip('X'))
+                    counter = max(counter, count+1)
+                except:
+                    pass
+        return 'X' + str(counter)
+    
+    def link_references(self, base_ref, selected_dict):
+        """Link reference items"""
+        (selected_page, selected_slno) = base_ref
+        selected_element = copy.deepcopy(self.drawing_models[selected_page][selected_slno])
+        
+        reference = selected_element.fields['ref']['value']
+        if reference in ('X?','?'):
+            reference = self.get_reference_code()
+        sheet = str(selected_page + 1)
+        title = selected_element.fields['title']['value']
+        subtitle = selected_element.fields['sub_title']['value']
+        selected_sheets = [str(page+1) for page in selected_dict if selected_dict[page]]
+        if sheet not in selected_sheets:
+            selected_sheets.append(sheet)
+            
+        with group(self, "Link reference " + reference):
+            for page, el_nos in selected_dict.items():
+                if el_nos:
+                    for el_no in el_nos:
+                        element = copy.deepcopy(self.drawing_models[page][el_no])
+                        selected_sheets_element = [x for x in selected_sheets if x != str(page+1)] 
+                        element.fields['ref']['value'] = reference
+                        element.fields['sheet']['value'] =  ','.join(selected_sheets_element)
+                        element.fields['title']['value'] = title
+                        element.fields['sub_title']['value'] = subtitle
+                        self.drawing_models[page].update_element_at_index(element ,el_no)
+            selected_element.fields['ref']['value'] = reference
+            selected_sheets.remove(sheet)
+            selected_element.fields['sheet']['value'] =  ','.join(selected_sheets)
+            self.drawing_models[selected_page].update_element_at_index(selected_element ,selected_slno)
+    
     ## Export/Import functions
     
     def export_html_report(self, filename):
@@ -538,7 +591,7 @@ class ProjectModel:
             for slno, base_model in enumerate(model[1]['drawing_models']):
                 if slno > 0:
                     self.append_page()
-                self.drawing_model.set_model(base_model)
+                self.drawing_models[slno].set_model(base_model)
         else:
             return False
         # Switch to first page
