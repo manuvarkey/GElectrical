@@ -48,6 +48,7 @@ sys.path.append(misc.abs_path(''))
 # Get logger object
 log = logging.getLogger(__name__)
 
+
 class MainWindow():
     """Class handles main window"""
 
@@ -358,6 +359,13 @@ class MainWindow():
         fields = project_settings_dialog.run()
         if fields:
             self.project.update_project_fields(fields)
+            
+    def update_program_settings(self):
+        misc.SCHEM_FONT_FACE, misc.SCHEM_FONT_SIZE = misc.font_str_parse(self.program_settings['Interface']['drawing_font']['value'])
+        misc.TITLE_FONT_SIZE_SMALL = misc.SCHEM_FONT_SIZE - 1
+        misc.TITLE_FONT_SIZE = misc.SCHEM_FONT_SIZE + 1
+        misc.SCHEM_FONT_SPACING = int(misc.SCHEM_FONT_SIZE * 1.5)
+        misc.GRAPH_FONT_FACE, misc.GRAPH_FONT_SIZE = misc.font_str_parse(self.program_settings['Interface']['graph_font']['value'])
         
     def on_program_settings(self, button):
         """Display dialog to input program settings"""
@@ -372,7 +380,8 @@ class MainWindow():
         if fields:
             self.program_settings.update(fields)
             with open(self.settings_filename, 'w') as fp:
-                json.dump(self.program_settings, fp)
+                json.dump(self.program_settings, fp, indent = 4)
+                self.update_program_settings()
                 log.info('MainWindow - on_project_settings - Program settings saved at ' + str(self.settings_filename))
 
     def on_infobar_close(self, widget, response=0):
@@ -749,13 +758,15 @@ class MainWindow():
             else:
                 self.program_settings = copy.deepcopy(misc.default_program_settings)
                 with open(self.settings_filename, 'w') as fp:
-                    json.dump(self.program_settings, fp)
+                    json.dump(self.program_settings, fp, indent = 4)
                 log.info('Program settings saved at ' + str(self.settings_filename))
         except:
             # If an error load default program preference
             self.program_settings = copy.deepcopy(misc.default_program_settings)
             log.info('Program settings initialisation failed - falling back on default values')
         self.program_state['program_settings_main'] = self.program_settings['Defaults']
+        # Setup program settings
+        self.update_program_settings()
         log.info('Program settings initialised')
         
         # Setup main window

@@ -82,7 +82,7 @@ SCHEM_FONT_SPACING = 10
 SELECT_DRAW_PATTERN = (30,10)
 WIRE_ADD_DRAW_PATTERN = (5,5)
 GROUP_DRAW_PATTERN = (20,5,5,5)
-FIELD_CAPTION_WIDTH = 50
+FIELD_CAPTION_WIDTH = 100
 FIELD_UNIT_WIDTH = 25
 # Status codes
 MODE_DEFAULT = 0
@@ -93,8 +93,8 @@ MODE_ADD_WIRE = 3
 GRAPH_DATATYPE_FREE = 0
 GRAPH_DATATYPE_PROFILE = 1
 GRAPH_DATATYPE_POLYGON= 2
-GRAPH_FONT_FACE = 'Caviar Dreams'
-GRAPH_FONT_SIZE = 11
+GRAPH_FONT_FACE = 'monospace'
+GRAPH_FONT_SIZE = 10
 GRAPH_LOAD_TIME_LIMITS = (0,23,1)
 GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
@@ -986,6 +986,20 @@ def clean_markup(text):
         text = text.replace(splchar, replspelchar)
     return text
 
+def font_str_parse(string):
+    pango_font = Pango.FontDescription.from_string(string)
+    family = pango_font.get_family()
+    size = pango_font.get_size()/Pango.SCALE
+    return (family, size)
+
+def font_str_encode(family, size):
+    pango_font = Pango.FontDescription()
+    pango_font.set_family(family)
+    pango_font.set_family(size)
+    string = pango_font.to_string()
+    return string
+    
+
 def get_field_dict(field_type, caption, unit, value, max_chars=None, 
                        validation_func=None, selection_list=None, decimal=6,
                        status_enable=True,
@@ -1013,7 +1027,9 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'drawing_field_created': get_field_dict('str', 'Created by', '', '', status_inactivate=False),
                             'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
-                            'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)}}
+                            'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
+                            'Interface':{'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
+                                         'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False)}}
 
 # Cairo drawing functions
 

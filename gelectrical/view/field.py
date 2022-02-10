@@ -125,6 +125,13 @@ class FieldView:
             if field['alter_structure'] == True:
                 self.update_widgets()
                 
+        def activate_callback_font(widget, get_field, set_field, code):
+            field = get_field(code)
+            font = widget.get_font()
+            set_field(code, font)  # set value
+            if field['alter_structure'] == True:
+                self.update_widgets()
+                
         def activate_callback_graphtitle(widget, get_field, set_field, code):
             field = get_field(code)
             text = widget.get_text()
@@ -236,6 +243,13 @@ class FieldView:
                     # Pack
                     hbox.pack_start(caption_widget, False, False, 0)
                     hbox.pack_start(data_widget, False, False, 0)
+                    
+                elif field['type'] in ('font'):
+                    data_widget = Gtk.FontButton.new_with_font(field['value'])
+                    data_widget.connect("font-set", activate_callback_font, get_field, set_field, code)
+                    # Pack
+                    hbox.pack_start(caption_widget, False, False, 0)
+                    hbox.pack_start(data_widget, True, True, 0)
                     
                 elif field['type'] in ('graph'):
                     data_widget = Gtk.Box()
@@ -386,6 +400,7 @@ class FieldViewDialog():
                 
             scrolled_window = Gtk.ScrolledWindow()
             listbox = Gtk.ListBox()
+            listbox.props.margin_top = 6
             scrolled_window.add_with_viewport(listbox)
             tab_label = Gtk.Label(title)
             self.notebook.append_page(scrolled_window, tab_label)

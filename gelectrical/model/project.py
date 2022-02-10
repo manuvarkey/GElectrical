@@ -124,6 +124,7 @@ class ProjectModel:
             base_model = self.drawing_models[0].get_model()
             model.set_model(base_model, copy_elements=False)
             model.fields['sheet_no']['value'] = str(slno + 1)
+            model.fields['date_of_issue']['value'] = datetime.datetime.today().strftime('%Y-%m-%d')
         sheet_name = "Sheet " + str(self.get_page_nos() + 1)
         model.set_sheet_name(sheet_name)
         add_slno = self.add_page(slno, model)
@@ -143,6 +144,8 @@ class ProjectModel:
             self.drawing_model = DrawingModel(self, self.program_state)
             sheet_name = "Sheet " + str(self.get_page_nos() + 1)
             self.drawing_model.set_sheet_name(sheet_name)
+            self.drawing_model.fields['date_of_issue']['value'] = datetime.datetime.today().strftime('%Y-%m-%d')
+            
         if slno:
             # Setup model
             self.drawing_models.insert(slno, self.drawing_model)
