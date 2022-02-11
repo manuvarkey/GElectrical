@@ -575,6 +575,11 @@ class ProjectModel:
             surface.show_page()
         surface.finish()
         
+    def print_drawing(self, context, page_nr):
+        if page_nr < len(self.drawing_models):
+            drawing_model = self.drawing_models[page_nr]
+            drawing_model.export_drawing(context)
+        
     def get_model(self):
         """Get storage model"""
         drawing_models = []

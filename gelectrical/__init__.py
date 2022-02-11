@@ -261,6 +261,20 @@ class MainWindow():
             self.window.set_title(self.filename + ' - ' + misc.PROGRAM_NAME)
             # Save point in stack for checking change state
             self.stack.savepoint()
+            
+    def on_print(self, button):
+        """Implement printing support"""
+        
+        def print_callback(print_operation, context, page_nr):
+            cr = context.get_cairo_context()
+            self.project.print_drawing(cr, page_nr)
+            
+        print_operation = Gtk.PrintOperation()
+        print_operation.connect("draw_page", print_callback)
+        print_operation.set_n_pages(self.project.get_page_nos())
+        print_operation.set_use_full_page(True)
+        print_operation.set_embed_page_setup(True)
+        print_operation.run(Gtk.PrintOperationAction.PRINT_DIALOG, self.window)
 
     def on_saveas(self, button):
         """Save project to file selected by the user"""
@@ -512,7 +526,6 @@ class MainWindow():
             self.project.drawing_view.drawing_area.queue_draw()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached maximum scale).")
-        print(self.project.drawing_models)
         
     def on_draw_zoomout(self, button):
         """Zoom out draw view"""
