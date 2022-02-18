@@ -272,6 +272,8 @@ class MainWindow():
         print_operation = Gtk.PrintOperation()
         print_operation.connect("draw_page", print_callback)
         print_operation.set_n_pages(self.project.get_page_nos())
+        cur_page = self.project.get_drawing_model_index(self.project.drawing_model)
+        print_operation.set_current_page(cur_page)
         print_operation.set_use_full_page(True)
         print_operation.set_embed_page_setup(True)
         print_operation.run(Gtk.PrintOperationAction.PRINT_DIALOG, self.window)
@@ -305,6 +307,8 @@ class MainWindow():
         if response_id == Gtk.ResponseType.ACCEPT:
             # Get filename and set project as active
             self.filename = open_dialog.get_filename()
+            if not self.filename.endswith('.gepro'):
+                self.filename += '.gepro'
             self.project_active = True
             # Call save project
             self.on_save(button)
@@ -333,6 +337,7 @@ class MainWindow():
                                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                                             Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
         file_filter = Gtk.FileFilter()
+        file_filter.set_name('PDF file')
         file_filter.add_pattern("*.pdf")
         file_filter.set_name("PDF")
         
@@ -352,6 +357,8 @@ class MainWindow():
         response = dialog.run()
         if response == Gtk.ResponseType.ACCEPT:
             filename = dialog.get_filename()
+            if not filename.endswith('.pdf'):
+                filename += '.pdf'
             dialog.destroy()
             self.project.export_drawing(filename)
             self.display_status(misc.INFO, "Project report exported")

@@ -22,7 +22,7 @@
 #  
 # 
 
-import logging, copy, pickle, codecs, bisect, math
+import platform, logging, copy, pickle, codecs, bisect, math
 from gi.repository import Gtk, Gdk, GLib
 import cairo
 
@@ -64,6 +64,23 @@ class GraphView():
         
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.hbox_int = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        
+        self.overlay_box = Gtk.Overlay()
+        self.overlay = Gtk.Box()
+        self.overlay.set_halign(Gtk.Align.END)
+        self.overlay.set_valign(Gtk.Align.START)
+        style_ctx = self.overlay.get_style_context()
+        style_ctx.add_class('linked')
+        self.zoom_in_button = Gtk.Button.new_from_icon_name('zoom-in-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
+        self.zoom_in_button.set_tooltip_text('Zoom in')
+        self.zoom_in_button.connect('button_press_event', self.on_click_zoomin)
+        self.zoom_out_button = Gtk.Button.new_from_icon_name('zoom-out-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
+        self.zoom_out_button.set_tooltip_text('Zoom out')
+        self.zoom_out_button.connect('button_press_event', self.on_click_zoomout)
+        self.save_button = Gtk.Button.new_from_icon_name('document-save-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
+        self.save_button.set_tooltip_text('Export graph')
+        self.save_button.connect('button_press_event', self.on_click_save)
+        
         self.scrolled_window = Gtk.ScrolledWindow()
         self.figure = Figure(figsize=(1, 1))
         self.canvas = FigureCanvas(self.figure)  # a Gtk.DrawingArea
@@ -82,10 +99,17 @@ class GraphView():
             self.vbox.pack_start(self.name_widget, False, False, 0)
         if ylabel:
             self.hbox_int.pack_start(self.ylabel_widget, False, False, 0)
-        self.hbox_int.pack_start(self.scrolled_window, True, True, 0)
+        self.hbox_int.pack_start(self.overlay_box, True, True, 0)
         self.vbox.pack_start(self.hbox_int, True, True, 0)
         if xlabel:
             self.vbox.pack_start(self.xlabel_widget, False, False, 0)
+            
+        self.overlay_box.add_overlay(self.scrolled_window)
+        self.overlay_box.add_overlay(self.overlay)
+        self.overlay.pack_start(self.zoom_in_button, True, True, 0)
+        self.overlay.pack_start(self.zoom_out_button, True, True, 0)
+        self.overlay.pack_start(self.save_button, True, True, 0)
+        
         self.scrolled_window.add(self.canvas)
         self.plot = self.figure.add_subplot(111)
         self.plot_curves()
@@ -121,6 +145,9 @@ class GraphView():
         if self.inactivate == False:
             self.signal1_id = self.box.connect('button_press_event', self.on_click_box)
             self.signal2_id = self.canvas.mpl_connect('button_press_event', self.on_click)
+            self.zoom_in_button.set_sensitive(False)
+            self.zoom_out_button.set_sensitive(False)
+            self.save_button.set_sensitive(False)
         else:
             if self.signal1_id:
                 self.box.disconnect(self.signal1_id)
@@ -128,6 +155,9 @@ class GraphView():
             if self.signal2_id:
                 self.canvas.mpl_disconnect(self.signal2_id)
                 self.signal2_id = None
+            self.zoom_in_button.set_sensitive(True)
+            self.zoom_out_button.set_sensitive(True)
+            self.save_button.set_sensitive(True)
             
         self.plot.clear()
         for tick in self.plot.get_xticklabels():
@@ -163,6 +193,53 @@ class GraphView():
     
     def on_click_box(self, widget, event):
         self.canvas.grab_focus()
+        
+    def on_click_save(self, widget, event):
+        # Create a filechooserdialog to open:
+        # The arguments are: title of the window, parent_window, action,
+        # (buttons, response)
+        if platform.system() == 'Linux':
+            open_dialog = Gtk.FileChooserNative.new("Save graph image...", self.box.get_toplevel(),
+                                                    Gtk.FileChooserAction.SAVE,
+                                                    "Save", "Cancel")
+        elif platform.system() == 'Windows':
+            open_dialog = Gtk.FileChooserDialog("Save graph image...", self.box.get_toplevel(),
+                                            Gtk.FileChooserAction.SAVE,
+                                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                             Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
+        # Remote files can be selected in the file selector
+        open_dialog.set_local_only(False)
+        # Dialog always on top of the textview window
+        open_dialog.set_modal(True)
+        # Set filters
+        file_filter_pdf = Gtk.FileFilter()
+        file_filter_pdf.set_name('PDF file')
+        file_filter_pdf.add_mime_type('application/pdf')
+        file_filter_pdf.add_pattern('*.pdf')
+        open_dialog.add_filter(file_filter_pdf)
+        open_dialog.set_filter(file_filter_pdf)
+        # Set overwrite confirmation
+        open_dialog.set_do_overwrite_confirmation(True)
+        # Set default name
+        open_dialog.set_current_name("graph.pdf")
+        response_id = open_dialog.run()
+        # If response is "ACCEPT" (the button "Save" has been clicked)
+        if response_id == Gtk.ResponseType.ACCEPT:
+            # Get filename
+            filename = open_dialog.get_filename()
+            if not filename.endswith('.pdf'):
+                filename += '.pdf'
+            self.figure.savefig(filename)
+        # Destroy dialog
+        open_dialog.destroy()
+    
+    def on_click_zoomin(self, widget, event):
+        self.plot.xaxis.zoom(1)
+        self.plot.yaxis.zoom(1)
+    
+    def on_click_zoomout(self, widget, event):
+        self.plot.xaxis.zoom(-1)
+        self.plot.yaxis.zoom(-1)
     
     def on_click(self, event):
         if self.model and event.xdata and event.ydata:
