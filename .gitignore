@@ -2,3 +2,4 @@
 *.pyc
 old/*
 reference/*
+*.glade~
