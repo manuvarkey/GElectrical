@@ -126,29 +126,6 @@ paper_sizes = {'A4 Landscape': (297, 210),
                'A1': (841, 594),
                'A0': (1189, 841), }
 
-# Item codes for project global variables
-global_vars = ['$cmbnameofwork$',
-               '$cmbagency$',
-               '$cmbagmntno$', 
-               '$cmbsituation$',
-               '$cmbdateofstart$',
-               '$cmbdateofstartasperagmnt$',
-               '$cmbissuedto$',
-               '$cmbvarifyingauthority$',
-               '$cmbvarifyingauthorityoffice$',
-               '$cmbissuingauthority$',
-               '$cmbissuingauthorityoffice$']
-global_vars_captions = ['Name of Work', 
-                        'Agency',
-                        'Agreement Number',
-                        'Situation',
-                        'Date of Start',
-                        'Date of start as per Agmnt.',
-                        'CMB Issued to',
-                        'Varifying Authority',
-                        'Varifying Authority Office',
-                        'Issuing Authority',
-                        'Issuing Authority Office']
                
 ## UNDO MANAGEMENT
     
