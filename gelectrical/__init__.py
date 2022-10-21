@@ -475,34 +475,44 @@ class MainWindow():
                 
                 if settings['powerflow']:
                     progress.add_message('Running Power Flow...')
-                    progress.set_fraction(0.5)
+                    progress.set_fraction(0.4)
                     #self.project.run_powerflow()
                     self.project.run_powerflow_timeseries()
                 
                 if settings['sc_sym']:
                     progress.add_message('Running Symmetric Short Circuit Calculation...')
-                    progress.set_fraction(0.7)
+                    progress.set_fraction(0.5)
                     self.project.run_sym_sccalc()
                     
                 if settings['sc_gf']:
                     progress.add_message('Running Line to Ground Short Circuit Calculation...')
-                    progress.set_fraction(0.8)
+                    progress.set_fraction(0.6)
                     self.project.run_linetoground_sccalc()
                 
                 progress.add_message('Updating Results...')
-                progress.set_fraction(0.9)
+                progress.set_fraction(0.7)
                 self.project.update_results()
                 
                 if settings['folder'] and settings['export']:
-                    progress.add_message('Setting up HTML Report...')
-                    progress.set_fraction(0.9)
+                    progress.add_message('Setting up Pandapower HTML Report...')
+                    progress.set_fraction(0.8)
                     filename = misc.posix_path(settings['folder'], 'network.html')
                     self.project.export_html_report(filename)
                     
                     progress.add_message('Exporting pandapower network to JSON...')
-                    progress.set_fraction(0.95)
+                    progress.set_fraction(0.85)
                     filename = misc.posix_path(settings['folder'], 'network.json')
                     self.project.export_json(filename)
+                    
+                    progress.add_message('Setting up PDF Report...')
+                    progress.set_fraction(0.90)
+                    filename = misc.posix_path(settings['folder'], 'report.pdf')
+                    self.project.export_pdf_report(filename, settings)
+                    
+                    progress.add_message('Exporting drawing...')
+                    progress.set_fraction(0.95)
+                    filename_drg = misc.posix_path(settings['folder'], 'drawing.pdf')
+                    self.project.export_drawing(filename_drg)
                 
                 progress.set_fraction(1)
                 progress.add_message('<b>Analysis run Successfully</b>')

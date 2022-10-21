@@ -25,6 +25,9 @@
 import logging, copy, datetime
 from gi.repository import Gtk, Gdk
 import cairo
+from jinja2 import Environment, FileSystemLoader
+from tabulate import tabulate
+from weasyprint import HTML
 
 # local files import
 from .. import misc
@@ -558,6 +561,41 @@ class ProjectModel:
         
     def export_json(self, filename):
         self.powermodel.export_json(filename)
+        
+    def export_pdf_report(self, filename, settings):
+        template_path = misc.abs_path("templates")
+        css_template_path = misc.abs_path("templates", "report.css")
+        
+        #switch_tb = pd.read_csv('data.csv', sep=';')
+        #switch_tb_html = switch_tb.to_html(index=False, justify='left')
+        #switch_tb_html = tabulate(switch_tb, switch_tb.columns, showindex=False, tablefmt="html")
+        #boq_tables = {'switches': switch_tb_html, 'trafo': switch_tb_html}
+        #boq_captions = {'switches': 'Switches', 'trafo': 'Transformers'}
+        #ana_opt_captions = {'ana_opt_pf': 'Power flow', 'ana_opt_sc3ph': 'Short circuit 3ph'}
+        #ana_res_captions = {'ana_switches': 'Switches', 'ana_trafo': 'Transformers'}
+        #ana_opt_tables = {'ana_opt_pf': switch_tb_html, 'ana_opt_sc3ph': switch_tb_html}
+        #ana_res_tables = {'ana_switches': switch_tb_html, 'ana_trafo': switch_tb_html}
+        program_version = 'v' + misc.PROGRAM_VER
+        
+        if settings['powerflow'] or settings['sc_sym'] or settings['sc_gf']:
+            analysis_flag = True
+        else: 
+            analysis_flag = False
+            
+        env = Environment(loader=FileSystemLoader(template_path))
+        template = env.get_template("report.html")
+        template_vars = {'program_settings': self.program_settings, 
+                        'project_settings': self.fields,
+                        #'boq_tables': boq_tables,
+                        #'boq_captions': boq_captions,
+                        #'ana_opt_tables': ana_opt_tables,
+                        #'ana_opt_captions': ana_opt_captions,
+                        #'ana_res_tables': ana_res_tables,
+                        #'ana_res_captions': ana_res_captions,
+                        'program_version': program_version,
+                        'analysis_flag': analysis_flag}
+        html_out = template.render(template_vars)
+        HTML(string=html_out).write_pdf(filename, stylesheets=[css_template_path])
         
     def export_drawing(self, filename):
         surface = cairo.PDFSurface(filename, 0, 0)
