@@ -388,15 +388,18 @@ class FieldViewDialog():
         action_area.props.margin_top = 12
         action_area.props.margin_bottom = 6
         
-        
         for title, fields in self.fields_dict.items():
             # Setup fieldview
             
-            def get_field(code):
-                return fields[code]
+            def get_field_func(title):
+                def get_field(code):
+                    return self.fields_dict[title][code]
+                return get_field
             
-            def set_field(code, value):
-                fields[code]['value'] = value
+            def get_set_field(title):
+                def set_field(code, value):
+                    self.fields_dict[title][code]['value'] = value
+                return set_field
                 
             scrolled_window = Gtk.ScrolledWindow()
             listbox = Gtk.ListBox()
@@ -405,7 +408,7 @@ class FieldViewDialog():
             tab_label = Gtk.Label(title)
             self.notebook.append_page(scrolled_window, tab_label)
             field_view = FieldView(self.toplevel, listbox, 'status_enable', 'status_inactivate')
-            field_view.update(fields, None, get_field, set_field)
+            field_view.update(fields, None, get_field_func(title), get_set_field(title))
             self.fieldviews.append(field_view)
 
     def run(self):
