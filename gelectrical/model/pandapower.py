@@ -32,6 +32,7 @@ import pandapower.plotting as pplot
 import pandapower.control as control
 import pandapower.networks as nw
 import pandapower.timeseries as timeseries
+import pandapower.shortcircuit as sc
 from pandapower.timeseries import OutputWriter
 from pandapower.timeseries.data_sources.frame_data import DFData
 import networkx as nx
@@ -107,6 +108,8 @@ class PandaPowerModel:
                     element = pp.create_ext_grid(self.power_model, bus=node, **model)
                     self.power_model.ext_grid.at[element, 'x0x_max'] = model['x0x_max']
                     self.power_model.ext_grid.at[element, 'r0x0_max'] = model['r0x0_max']
+                    self.power_model.ext_grid.at[element, 'x0x_min'] = model['x0x_min']
+                    self.power_model.ext_grid.at[element, 'r0x0_min'] = model['r0x0_min']
                     self.power_elements[e_code] = (elementcode, element)
                     self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'trafo':
@@ -677,9 +680,9 @@ class PandaPowerModel:
     def run_sym_sccalc(self):
         """Run symmetric short circuit calculation"""
 
-        pp.shortcircuit.calc_sc(self.power_model, fault='3ph', case='max', lv_tol_percent=6, branch_results=True, check_connectivity=True)
+        sc.calc_sc(self.power_model, fault='3ph', case='max', lv_tol_percent=6, check_connectivity=True)
         res_3ph_max = self.power_model.res_bus_sc.to_dict()
-        pp.shortcircuit.calc_sc(self.power_model, fault='3ph', case='min', lv_tol_percent=6, branch_results=True, check_connectivity=True)
+        sc.calc_sc(self.power_model, fault='3ph', case='min', lv_tol_percent=6, check_connectivity=True)
         res_3ph_min = self.power_model.res_bus_sc.to_dict()
                 
         # Update nodes
@@ -698,10 +701,10 @@ class PandaPowerModel:
     def run_linetoground_sccalc(self):
         """Run line to ground short circuit calculation"""
 
-        pp.shortcircuit.calc_sc(self.power_model, fault='1ph', case='max', lv_tol_percent=6, branch_results=True, check_connectivity=True)
+        sc.calc_sc(self.power_model, fault='1ph', case='max', lv_tol_percent=6, check_connectivity=True)
         res_1ph_max = self.power_model.res_bus_sc.to_dict()
-        #pp.shortcircuit.calc_sc(self.power_model, fault='1ph', case='min', lv_tol_percent=6, branch_results=True, check_connectivity=True)
-        #res_1ph_min = self.power_model.res_bus_sc.to_dict()
+        sc.calc_sc(self.power_model, fault='1ph', case='min', lv_tol_percent=6, check_connectivity=True)
+        res_1ph_min = self.power_model.res_bus_sc.to_dict()
                 
         # Update nodes
         for bus in res_1ph_max['ikss_ka']:
@@ -712,7 +715,7 @@ class PandaPowerModel:
                 node_result = dict()
                 self.node_results[node] = node_result
             node_result['ikss_ka_1ph_max'] = misc.get_field_dict('float', 'Isc (L-G, max)', 'kA', res_1ph_max['ikss_ka'][bus], decimal=2)
-            # node_result['ikss_ka_1ph_min'] = misc.get_field_dict('float', 'Isc (L-G, min)', 'kA', res_1ph_min['ikss_ka'][bus], decimal=2)
+            node_result['ikss_ka_1ph_min'] = misc.get_field_dict('float', 'Isc (L-G, min)', 'kA', res_1ph_min['ikss_ka'][bus], decimal=2)
                     
         log.info('PandaPowerModel - run_linetoground_sccalc - calculation run')
         

@@ -45,10 +45,12 @@ class Grid(ElementModel):
                        'vn_kv':    self.get_field_dict('float', 'Vn', 'kv', 11),
                        's_sc_max_mva':      self.get_field_dict('float', 'Ssc_max', 'MVA', 500),
                        's_sc_min_mva':      self.get_field_dict('float', 'Ssc_min', 'MVA', 100),
-                       'rx_max':  self.get_field_dict('float', 'R/X max', '', 0.1),
-                       'rx_min':      self.get_field_dict('float', 'R/X min', '',0.2),
-                       'r0x0_max':  self.get_field_dict('float', 'R₀/X₀ max', '', 0.1),
+                       'rx_max':  self.get_field_dict('float', 'R/X max', '', 0.2),
+                       'rx_min':      self.get_field_dict('float', 'R/X min', '',0.05),
+                       'r0x0_max':  self.get_field_dict('float', 'R₀/X₀ max', '', 0.2),
+                       'r0x0_min':  self.get_field_dict('float', 'R₀/X₀ min', '', 0.1),
                        'x0x_max':  self.get_field_dict('float', 'X₀/X max', '', 3),
+                       'x0x_min':  self.get_field_dict('float', 'X₀/X min', '', 1),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = [[(5,0.5), "${name}, ${ref}", True],
                            [(5,None), "${vm_pu}∠${va_degree}, ${vn_kv}kV", True]]
@@ -98,6 +100,8 @@ class Grid(ElementModel):
                                        'rx_min': self.fields['rx_min']['value'],
                                        'r0x0_max': self.fields['r0x0_max']['value'],
                                        'x0x_max': self.fields['x0x_max']['value'],
+                                       'r0x0_min': self.fields['r0x0_min']['value'],
+                                       'x0x_min': self.fields['x0x_min']['value'],
                                        'in_service': self.fields['in_service']['value'],}),)
         return power_model
 
