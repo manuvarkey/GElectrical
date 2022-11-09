@@ -536,11 +536,19 @@ class MainWindow():
             ana_folder_path = misc.posix_path(os.path.split(self.filename)[0])
         else:
             ana_folder_path = None
-        settings_dialog = AnalysisSettingsDialog(self.window, ana_folder_path)
-        settings = settings_dialog.run()
+        sim_settings = self.project.get_project_fields(page='Simulation')
+        settings_dialog = AnalysisSettingsDialog(self.window, sim_settings, ana_folder_path)
+        ana_settings = settings_dialog.run()
         
-        if settings:
-            self.run_command(exec_func, data=settings)
+        if ana_settings:
+            # Update project settings
+            sim_settings['run_diagnostics']['value'] = ana_settings['diagnostics']
+            sim_settings['run_powerflow']['value'] = ana_settings['powerflow']
+            sim_settings['run_sc_sym']['value'] = ana_settings['sc_sym']
+            sim_settings['run_sc_gf']['value'] = ana_settings['sc_gf']
+            sim_settings['export_results']['value'] = ana_settings['export']
+            # Run analysis
+            self.run_command(exec_func, data=ana_settings)
             log.info('MainWindow - on_run_analysis - analysis run')
         else:
             log.info('MainWindow - on_run_analysis - analysis cancelled by user')

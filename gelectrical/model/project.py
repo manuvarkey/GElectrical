@@ -334,7 +334,10 @@ class ProjectModel:
     def run_sym_sccalc(self):
         """Run symmetric short circuit calculation"""
         if self.status['power_model']:
-            self.powermodel.run_sym_sccalc()
+            sim_settings = self.get_project_fields(page='Simulation')
+            self.powermodel.run_sym_sccalc(lv_tol_percent=sim_settings['lv_tol_percent']['value'], 
+                                           r_fault_ohm=sim_settings['r_fault_ohm']['value'], 
+                                           x_fault_ohm=sim_settings['x_fault_ohm']['value'])
             self.status['power_analysis'] = True
             log.info('ProjectModel - run_sym_sccalc - calculation run')
         else:
@@ -343,7 +346,10 @@ class ProjectModel:
     def run_linetoground_sccalc(self):
         """Run line to ground short circuit calculation"""
         if self.status['power_model']:
-            self.powermodel.run_linetoground_sccalc()
+            sim_settings = self.get_project_fields(page='Simulation')
+            self.powermodel.run_linetoground_sccalc(lv_tol_percent=sim_settings['lv_tol_percent']['value'], 
+                                                    r_fault_ohm=sim_settings['r_fault_ohm']['value'], 
+                                                    x_fault_ohm=sim_settings['x_fault_ohm']['value'])
             self.status['power_analysis'] = True
             log.info('ProjectModel - run_linetoground_sccalc - calculation run')
         else:

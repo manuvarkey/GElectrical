@@ -83,6 +83,7 @@ SELECT_DRAW_PATTERN = (30,10)
 WIRE_ADD_DRAW_PATTERN = (5,5)
 GROUP_DRAW_PATTERN = (20,5,5,5)
 FIELD_CAPTION_WIDTH = 100
+FIELD_DIALOG_CAPTION_WIDTH = 300
 FIELD_UNIT_WIDTH = 25
 # Status codes
 MODE_DEFAULT = 0
@@ -1045,7 +1046,12 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                             'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
-                             'Simulation':{'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
+                             'Simulation':{'run_diagnostics' : get_field_dict('bool', 'Run Diagnostics', '', True, status_inactivate=False),
+                             'run_powerflow' : get_field_dict('bool', 'Run Time Series Power Flow', '', False, status_inactivate=False),
+                             'run_sc_sym' : get_field_dict('bool', 'Run Symmetric Short Circuit Calculation', '', False, status_inactivate=False),
+                             'run_sc_gf' : get_field_dict('bool', 'Run Line to Ground Short Circuit Calculation', '', False, status_inactivate=False),
+                             'export_results' : get_field_dict('bool', 'Export results of simulation', '', False, status_inactivate=False),
+                             'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
                              'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),
                              'x_fault_ohm': get_field_dict('float', 'Fault reactance', 'Ohm', 0, status_inactivate=False)}}
 

@@ -35,7 +35,7 @@ log = logging.getLogger(__name__)
 class FieldView:
     """Class for drawing onto Gtk.DrawingArea using cairo"""
     
-    def __init__(self, window, listbox, enable_code, inactivate_code):
+    def __init__(self, window, listbox, enable_code, inactivate_code, caption_width=misc.FIELD_CAPTION_WIDTH):
         self.window = window
         self.listbox = listbox
         self.fields = None
@@ -44,6 +44,7 @@ class FieldView:
         self.set_field = None
         self.enable_code = enable_code
         self.inactivate_code = inactivate_code
+        self.caption_width = caption_width
         
         self.field_rows = []
         self.name_row = None
@@ -171,7 +172,7 @@ class FieldView:
                 caption_widget = Gtk.Label('', xalign=0)
                 caption_widget.set_markup(field['caption'])
                 caption_widget.set_use_markup(True)
-                caption_widget.set_size_request(misc.FIELD_CAPTION_WIDTH, -1)
+                caption_widget.set_size_request(self.caption_width, -1)
                 
                 if field['type'] in ('str', 'int', 'float'):
                     
@@ -318,7 +319,7 @@ class FieldView:
                     caption = Gtk.Label('', xalign=0)
                     caption.set_markup(field['caption'])
                     caption.set_use_markup(True)
-                    caption.set_size_request(misc.FIELD_CAPTION_WIDTH, -1)
+                    caption.set_size_request(self.caption_width, -1)
                     label = Gtk.Label('', xalign=0.5)
                     label.set_use_markup(True)
                     label.set_markup(field['click_to_edit_message'])
@@ -407,7 +408,9 @@ class FieldViewDialog():
             scrolled_window.add_with_viewport(listbox)
             tab_label = Gtk.Label(title)
             self.notebook.append_page(scrolled_window, tab_label)
-            field_view = FieldView(self.toplevel, listbox, 'status_enable', 'status_inactivate')
+            field_view = FieldView(self.toplevel, listbox, 
+                                   'status_enable', 'status_inactivate',
+                                   caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
             field_view.update(fields, None, get_field_func(title), get_set_field(title))
             self.fieldviews.append(field_view)
 

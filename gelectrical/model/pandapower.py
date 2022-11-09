@@ -677,12 +677,12 @@ class PandaPowerModel:
                 
         log.info('PandaPowerModel - run_powerflow - calculation run')
     
-    def run_sym_sccalc(self):
+    def run_sym_sccalc(self, lv_tol_percent=6, r_fault_ohm=0.0, x_fault_ohm=0.0):
         """Run symmetric short circuit calculation"""
 
-        sc.calc_sc(self.power_model, fault='3ph', case='max', lv_tol_percent=6, check_connectivity=True)
+        sc.calc_sc(self.power_model, fault='3ph', case='max', lv_tol_percent=lv_tol_percent, check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
         res_3ph_max = self.power_model.res_bus_sc.to_dict()
-        sc.calc_sc(self.power_model, fault='3ph', case='min', lv_tol_percent=6, check_connectivity=True)
+        sc.calc_sc(self.power_model, fault='3ph', case='min', lv_tol_percent=lv_tol_percent, check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
         res_3ph_min = self.power_model.res_bus_sc.to_dict()
                 
         # Update nodes
@@ -698,12 +698,12 @@ class PandaPowerModel:
                     
         log.info('PandaPowerModel - run_sym_sccalc - calculation run')
     
-    def run_linetoground_sccalc(self):
+    def run_linetoground_sccalc(self, lv_tol_percent=6, r_fault_ohm=0.0, x_fault_ohm=0.0):
         """Run line to ground short circuit calculation"""
 
-        sc.calc_sc(self.power_model, fault='1ph', case='max', lv_tol_percent=6, check_connectivity=True)
+        sc.calc_sc(self.power_model, fault='1ph', case='max', lv_tol_percent=lv_tol_percent, check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
         res_1ph_max = self.power_model.res_bus_sc.to_dict()
-        sc.calc_sc(self.power_model, fault='1ph', case='min', lv_tol_percent=6, check_connectivity=True)
+        sc.calc_sc(self.power_model, fault='1ph', case='min', lv_tol_percent=lv_tol_percent, check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
         res_1ph_min = self.power_model.res_bus_sc.to_dict()
                 
         # Update nodes

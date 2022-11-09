@@ -34,7 +34,7 @@ log = logging.getLogger(__name__)
   
 class AnalysisSettingsDialog:
     
-    def __init__(self, parent, library_dir):
+    def __init__(self, parent, ana_settings, library_dir):
 
         self.builder = Gtk.Builder()
         self.builder.add_from_file(misc.abs_path("interface", "analysissettings.glade"))
@@ -50,6 +50,13 @@ class AnalysisSettingsDialog:
         self.switch_sc_gf = self.builder.get_object('switch_sc_gf')
         self.switch_export = self.builder.get_object('switch_export')
         self.filechooser_export = self.builder.get_object('filechooser_export')
+        
+        # Set values
+        self.switch_diagnostics.set_state(ana_settings['run_diagnostics']['value'])
+        self.switch_powerflow.set_state(ana_settings['run_powerflow']['value'])
+        self.switch_sc_sym.set_state(ana_settings['run_sc_sym']['value'])
+        self.switch_sc_gf.set_state(ana_settings['run_sc_gf']['value'])
+        self.switch_export.set_state(ana_settings['export_results']['value'])
         
         # Set existing values
         if library_dir:
