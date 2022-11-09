@@ -106,7 +106,7 @@ class DrawingModel:
         for element in self.elements:
             element_models.append(element.get_model())
         model = dict()
-        model['fields'] = copy.deepcopy(self.fields)
+        model['fields'] = misc.get_fields_trunc(self.fields)
         model['elements'] = element_models
         return ['DrawingModel', model]
             
@@ -115,7 +115,6 @@ class DrawingModel:
         self.elements = []
         if model[0] == 'DrawingModel':
             if copy_elements:
-                
                 # Load elements
                 for base_model in model[1]['elements']:
                     code = base_model['code']
@@ -137,7 +136,7 @@ class DrawingModel:
                             child_element = self.elements[child_el_no]
                             child_element.set_gid_assembly(gid_assembly)
                     
-            self.fields = model[1]['fields']
+            self.fields = misc.update_fields(self.fields, model[1]['fields'])
             if self.fields['page_size']['value'] != 'Custom':
                 (width, height) = misc.paper_sizes[self.fields['page_size']['value']]
                 self.fields['page_width']['value'] = width/misc.POINT_TO_MM

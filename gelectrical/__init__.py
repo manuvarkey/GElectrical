@@ -22,7 +22,9 @@
 #  
 # 
 
-import os, platform, sys, queue, threading, logging, traceback, json, pickle, codecs, importlib, copy, gi
+import os, platform, sys, queue, threading, logging, traceback, json, pickle
+import io, codecs, importlib, copy, gi
+from zipfile import ZipFile
 import appdirs
 
 gi.require_version('Gtk', '3.0')
@@ -137,11 +139,16 @@ class MainWindow():
         # get filename and set project as active
         self.filename = filename
         
-        with open(self.filename, 'r') as fileobj:
+        with ZipFile(self.filename, 'r') as projzip:
             try:
-                data = json.load(fileobj)  # load data structure
-                if data[0] == misc.PROJECT_FILE_VER:
-                    self.project.set_model(data[1])
+                with projzip.open('document.json') as document_file:
+                    document = json.load(document_file)  # load data structure
+                if document['_file_version'] == misc.PROJECT_FILE_VER:
+                    files = dict()
+                    for file_name in document['_files']:
+                        with projzip.open(file_name) as file_file:
+                            files[file_name] = json.load(file_file)  # load data structure
+                    self.project.set_model(document, files)
 
                     self.display_status(misc.INFO, "Project successfully opened")
                     log.info('MainWindow - open_project - Project successfully opened - ' +self.filename)
@@ -244,18 +251,22 @@ class MainWindow():
         if self.project_active is False:
             self.on_saveas(button)
         else:
-            # Parse data into object
-            data = []
-            data.append(misc.PROJECT_FILE_VER)
-            data.append(self.project.get_model())
-            # Try to open file
-            with open(self.filename, 'w') as fileobj:
-                try:
-                    json.dump(data, fileobj)
-                except:
-                    log.error("MainWindow - on_save - Error opening file - " + self.filename)
-                    self.display_status(misc.ERROR, "Project file could not be opened for saving")
-                    return
+            # Parse required data objects
+            document = dict()
+            document_pages = []
+            document['_file_version'] = misc.PROJECT_FILE_VER
+            document['_files'] = []
+            
+            [proj_settings, proj_pages] = self.project.get_model()
+            document.update(proj_settings)
+            document_pages.extend(proj_pages)
+            
+            # Write project file
+            with ZipFile(self.filename, 'w') as projzip:
+                for page_name, page in document_pages:
+                    projzip.writestr(page_name, json.dumps(page, indent=2))
+                    document['_files'].append(page_name)
+                projzip.writestr('document.json', json.dumps(document, indent=2))
             self.display_status(misc.INFO, "Project successfully saved")
             log.info('MainWindow - on_save -  Project successfully saved')
             self.window.set_title(self.filename + ' - ' + misc.PROGRAM_NAME)

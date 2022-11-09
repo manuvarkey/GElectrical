@@ -173,7 +173,7 @@ class ElementModel:
                 'y': self.y,
                 'orientation': self.orientation,
                 'ports': copy.deepcopy(self.ports),
-                'fields': copy.deepcopy(self.fields)}
+                'fields': misc.get_fields_trunc(self.fields)}
     
     def set_model(self, model, gid=None):
         """Set storage model"""
@@ -182,7 +182,7 @@ class ElementModel:
             self.y = model['y']
             self.orientation = model['orientation']
             self.ports = copy.deepcopy(model['ports'])
-            self.fields = copy.deepcopy(model['fields'])
+            self.fields = misc.update_fields(self.fields, model['fields'])
             self.gid = gid
             
     def set_gid(self, gid):

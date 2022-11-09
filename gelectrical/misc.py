@@ -22,7 +22,7 @@
 #  
 #  
 
-import subprocess, threading, os, posixpath, platform, logging, math, cairo
+import subprocess, threading, os, posixpath, platform, logging, math, cairo, copy
 from urllib.parse import urlparse
 from urllib.request import url2pathname
 
@@ -983,22 +983,52 @@ def get_field_dict(field_type, caption, unit, value, max_chars=None,
                        status_inactivate=True,
                        click_to_edit_message=None,
                        alter_structure=False):
-        field_dict = dict()
-        field_dict['type'] = field_type
-        field_dict['caption'] = caption
-        field_dict['unit'] = unit
-        field_dict['value'] = value
-        field_dict['max_chars'] = max_chars
-        field_dict['validation_func'] = validation_func
-        field_dict['selection_list'] = selection_list
-        field_dict['decimal'] = decimal
-        field_dict['status_enable'] = status_enable
-        field_dict['status_inactivate'] = status_inactivate
-        field_dict['click_to_edit_message'] = click_to_edit_message
-        field_dict['alter_structure'] = alter_structure
-        return field_dict
+    field_dict = dict()
+    field_dict['type'] = field_type
+    field_dict['caption'] = caption
+    field_dict['unit'] = unit
+    field_dict['value'] = value
+    field_dict['max_chars'] = max_chars
+    field_dict['validation_func'] = validation_func
+    field_dict['selection_list'] = selection_list
+    field_dict['decimal'] = decimal
+    field_dict['status_enable'] = status_enable
+    field_dict['status_inactivate'] = status_inactivate
+    field_dict['click_to_edit_message'] = click_to_edit_message
+    field_dict['alter_structure'] = alter_structure
+    return field_dict
+
+def get_fields_trunc(fields):
+    updated_fields = dict()
+    for key, field in fields.items():
+        updated_field = {'value': field['value'],
+                         'type' : field['type']}
+        updated_fields[key] = updated_field
+    return updated_fields
+
+def update_fields(reffields, newfields):
+    updated = copy.deepcopy(reffields)
+    for key in newfields:
+        if key in reffields and updated[key]['type'] == newfields[key]['type']:
+            updated[key]['value'] = newfields[key]['value']
+    return updated
+    
+def get_fields_dict_trunc(fields_dict):
+    updated_fields_dict = dict()
+    for key, fields in fields_dict.items():
+        updated_fields_dict[key] = get_fields_trunc(fields)
+    return updated_fields_dict
+
+def update_fields_dict(reffields_dict, newfields_dict):
+    updated = copy.deepcopy(reffields_dict)
+    for key in newfields_dict:
+        if key in reffields_dict:
+            updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
+    return updated
+    
 
 # Default settings
+
 default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict('str', 'Responsible department', '', '', status_inactivate=False),
                             'drawing_field_techref': get_field_dict('str', 'Technical reference', '', '', status_inactivate=False),
                             'drawing_field_created': get_field_dict('str', 'Created by', '', '', status_inactivate=False),
@@ -1007,6 +1037,17 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
                             'Interface':{'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
                                          'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False)}}
+                                         
+default_project_settings = {'Information': {'project_name': get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
+                            'drawing_field_dept':    get_field_dict('str', 'Responsible department', '', '', status_inactivate=False),
+                            'drawing_field_techref': get_field_dict('str', 'Technical reference', '', '', status_inactivate=False),
+                            'drawing_field_created': get_field_dict('str', 'Created by', '', '', status_inactivate=False),
+                            'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
+                            'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
+                            'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
+                             'Simulation':{'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
+                             'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),
+                             'x_fault_ohm': get_field_dict('float', 'Fault reactance', 'Ohm', 0, status_inactivate=False)}}
 
 # Cairo drawing functions
 

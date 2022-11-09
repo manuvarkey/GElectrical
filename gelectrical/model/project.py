@@ -50,13 +50,13 @@ class ProjectModel:
         # Data
         self.drawing_models = []
         program_settings = program_state['program_settings_main']
-        self.fields = {'Information': {'project_name':          misc.get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
-                       'drawing_field_dept':    program_settings['drawing_field_dept'],
-                       'drawing_field_techref': program_settings['drawing_field_techref'],
-                       'drawing_field_created': program_settings['drawing_field_created'],
-                       'drawing_field_approved':program_settings['drawing_field_approved'],
-                       'drawing_field_lang':    program_settings['drawing_field_lang'],
-                       'drawing_field_address': program_settings['drawing_field_address']}}
+        self.fields = misc.default_project_settings
+        self.fields['Information']['drawing_field_dept']['value'] = program_settings['drawing_field_dept']['value']
+        self.fields['Information']['drawing_field_techref']['value'] =  program_settings['drawing_field_techref']['value']
+        self.fields['Information']['drawing_field_created']['value'] =  program_settings['drawing_field_created']['value']
+        self.fields['Information']['drawing_field_approved']['value'] = program_settings['drawing_field_approved']['value']
+        self.fields['Information']['drawing_field_lang']['value'] = program_settings['drawing_field_lang']['value']
+        self.fields['Information']['drawing_field_address']['value'] = program_settings['drawing_field_address']['value']
         program_state['project_settings_main'] = self.fields['Information']
         self.loadprofiles = misc.DEFAULT_LOAD_PROFILE
         
@@ -199,7 +199,6 @@ class ProjectModel:
         # Clear first page model
         blank_model = DrawingModel(self, self.program_state).get_model()
         self.drawing_models[0].set_model(blank_model)
-        print(self.drawing_models)
         
     def get_page_nos(self):
         return len(self.drawing_models)
@@ -620,24 +619,34 @@ class ProjectModel:
         
     def get_model(self):
         """Get storage model"""
-        drawing_models = []
-        for drawing_model in self.drawing_models:
-            drawing_models.append(drawing_model.get_model())
-        model = {'drawing_models': drawing_models, 
-                 'fields': self.fields,
-                 'loadprofiles':self.loadprofiles}
-        return ['ProjectModel', model]
+        proj_pages = []
+        drawing_names = []
+        for slno, drawing_model in enumerate(self.drawing_models):
+            page_name = 'proj_drawing_page_' + str(slno)+'.json'
+            proj_pages.append((page_name, drawing_model.get_model()))
+            drawing_names.append(page_name)
+        proj_pages.append(('proj_loadprofiles.json', self.loadprofiles))
+        proj_settings = {'proj_drawing_names'  : drawing_names,
+                         'proj_fields'         : misc.get_fields_dict_trunc(self.fields)}
+        return [proj_settings, proj_pages]
             
-    def set_model(self, model):
+    def set_model(self, document, pages):
         """Set storage model"""
         self.clear_all()
-        if model[0] == 'ProjectModel':
-            self.fields = model[1]['fields']
-            self.loadprofiles = model[1]['loadprofiles']
-            for slno, base_model in enumerate(model[1]['drawing_models']):
-                if slno > 0:
-                    self.append_page()
-                self.drawing_models[slno].set_model(base_model)
+        if ('proj_drawing_names' in document and 
+            'proj_fields' in document and 
+            'proj_loadprofiles.json' in pages):
+            self.fields = misc.update_fields_dict(self.fields, document['proj_fields'])
+            #self.fields = document['proj_fields']
+            self.program_state['project_settings_main'] = self.fields['Information']
+            self.loadprofiles = pages['proj_loadprofiles.json']
+            slno = 0
+            for page_name, page in pages.items():
+                if page_name.startswith('proj_drawing_page_'):
+                    if slno > 0:
+                        self.append_page()
+                    self.drawing_models[slno].set_model(page)
+                    slno += 1
         else:
             return False
         # Switch to first page
