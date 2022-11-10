@@ -53,7 +53,7 @@
       {% for element_caption in element_captions %}
       <h3 id="{{element_caption}}">{{element_captions[element_caption]}}</h3>
       <section>
-        {{element_captions[element_caption]}}
+        {{element_tables[element_caption]}}
       </section>
       {% endfor %}
     </article>
@@ -72,12 +72,9 @@
     <article id="boq">
       <h2>Analysis</h2>
       <h3 id="analysis-options">Analysis options</h3>
-      {% for ana_caption in ana_opt_captions %}
-      <h4 id="{{ana_caption}}">{{ana_opt_captions[ana_caption]}}</h4>
       <section>
-      {{ana_opt_tables[ana_caption]}}
+      {{ana_opt_table}}
       </section>
-      {% endfor %}
       
       <h3 id="analysis-results">Analysis results</h3>
       {% for ana_caption in ana_res_captions %}

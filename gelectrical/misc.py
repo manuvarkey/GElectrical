@@ -26,6 +26,7 @@ import subprocess, threading, os, posixpath, platform, logging, math, cairo, cop
 from uuid import uuid4 as uuid
 from urllib.parse import urlparse
 from urllib.request import url2pathname
+import pandas as pd
 
 from gi.repository import Gtk, Gdk, GLib, Pango, PangoCairo
 import openpyxl
@@ -1028,6 +1029,17 @@ def update_fields_dict(reffields_dict, newfields_dict):
         if key in reffields_dict:
             updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
     return updated
+    
+def fields_to_table(fields):
+    table = {'Sl.No.':[], 'Description': [], 'Value': [], 'Unit': []}
+    for index, field in enumerate(fields.values()):
+        if ('caption' in field) and ('value' in field) and ('unit' in field):
+            table['Sl.No.'].append(index+1)
+            table['Description'].append(field['caption'])
+            table['Value'].append(field['value'])
+            table['Unit'].append(field['unit'])
+    return pd.DataFrame(table).to_html(index=False)
+        
 
 def get_uid():
     """Get unique id as identifier"""

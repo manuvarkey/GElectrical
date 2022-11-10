@@ -576,9 +576,21 @@ class ProjectModel:
         #switch_tb_html = tabulate(switch_tb, switch_tb.columns, showindex=False, tablefmt="html")
         #boq_tables = {'switches': switch_tb_html, 'trafo': switch_tb_html}
         #boq_captions = {'switches': 'Switches', 'trafo': 'Transformers'}
-        #ana_opt_captions = {'ana_opt_pf': 'Power flow', 'ana_opt_sc3ph': 'Short circuit 3ph'}
+        
+        
+        element_captions = dict()
+        element_tables = dict()
+        base_elements = self.networkmodel.base_elements
+        for key, model in base_elements.items():
+            if 'ref' in model.fields:
+                element_captions[key] = model.fields['ref']['value']
+                element_tables[key] = misc.fields_to_table(model.fields)
+                        
+        #table = misc.fields_to_table(self.get_project_fields(page='Simulation'))
+        #ana_opt_table = str(tabulate(table, headers=ana_opt_captions, tablefmt="html"))
+        ana_opt_table = misc.fields_to_table(self.get_project_fields(page='Simulation'))
+        
         #ana_res_captions = {'ana_switches': 'Switches', 'ana_trafo': 'Transformers'}
-        #ana_opt_tables = {'ana_opt_pf': switch_tb_html, 'ana_opt_sc3ph': switch_tb_html}
         #ana_res_tables = {'ana_switches': switch_tb_html, 'ana_trafo': switch_tb_html}
         program_version = 'v' + misc.PROGRAM_VER
         
@@ -591,10 +603,11 @@ class ProjectModel:
         template = env.get_template("report.html")
         template_vars = {'program_settings': self.program_settings, 
                         'project_settings': self.fields,
+                        'ana_opt_table': ana_opt_table,
                         #'boq_tables': boq_tables,
                         #'boq_captions': boq_captions,
-                        #'ana_opt_tables': ana_opt_tables,
-                        #'ana_opt_captions': ana_opt_captions,
+                        'element_captions': element_captions,
+                        'element_tables': element_tables,
                         #'ana_res_tables': ana_res_tables,
                         #'ana_res_captions': ana_res_captions,
                         'program_version': program_version,

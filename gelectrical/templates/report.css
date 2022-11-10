@@ -11,7 +11,7 @@ html {
 /* PAGES */
 
 @page {
-  size: A4 landscape;
+  size: A4 portrait;
   margin: 2.5cm;
   padding-top: 1cm;
   @top-left {
@@ -141,19 +141,23 @@ thead {
 }
 
 thead th:nth-child(1) {
-  width: 30%;
+  text-align: left;
+  width: 10%;
 }
 
 thead th:nth-child(2) {
-  width: 20%;
+  text-align: left;
+  width: 50%;
 }
 
 thead th:nth-child(3) {
+  text-align: left;
   width: 20%;
 }
 
 thead th:nth-child(4) {
-  width: 30%;
+  text-align: left;
+  width: 20%;
 }
 
 tbody tr:nth-child(odd) {
