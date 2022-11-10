@@ -103,10 +103,9 @@ class ElementAssembly(ElementModel):
                 'y': self.y,
                 'orientation': self.orientation,
                 'ports': copy.deepcopy(self.ports),
-                'fields': copy.deepcopy(self.fields),
+                'fields': misc.get_fields_trunc(self.fields),
                 'element_rect_width': self.element_rect_width,
                 'element_rect_height': self.element_rect_height,
-                'children_codes': self.element_rect_height,
                 'children_codes': self.children_codes}
     
     def set_model(self, model, gid=None):
@@ -116,7 +115,7 @@ class ElementAssembly(ElementModel):
             self.y = model['y']
             self.orientation = model['orientation']
             self.ports = copy.deepcopy(model['ports'])
-            self.fields = copy.deepcopy(model['fields'])
+            self.fields = misc.update_fields(self.fields, model['fields'])
             self.element_rect_width = model['element_rect_width']
             self.element_rect_height = model['element_rect_height']
             self.children_codes = model['children_codes']
