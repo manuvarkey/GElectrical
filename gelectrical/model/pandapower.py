@@ -482,7 +482,10 @@ class PandaPowerModel:
             p_mw = values['p_mw']
             q_mvar = values['q_mvar']
             e_code = self.power_elements_inverted['sgen', gen_index]
-            load_profile = self.loadprofiles[self.base_elements[e_code].fields['load_profile']['value']][1][0]
+            graph_uid = self.base_elements[e_code].fields['load_profile']['value'] 
+            if graph_uid not in self.loadprofiles:
+                graph_uid = list(self.loadprofiles.keys())[0]
+            load_profile = self.loadprofiles[graph_uid][1][0]
             load_profile_func = GraphModel(load_profile).get_value_func()
             for time_index in range(n_ts):
                 col_p.append(load_profile_func(time_index)*p_mw)
@@ -505,7 +508,10 @@ class PandaPowerModel:
             p_mw = values['p_mw']
             q_mvar = values['q_mvar']
             e_code = self.power_elements_inverted['load', load_index]
-            load_profile = self.loadprofiles[self.base_elements[e_code].fields['load_profile']['value']][1][0]
+            graph_uid = self.base_elements[e_code].fields['load_profile']['value']
+            if graph_uid not in self.loadprofiles:
+                graph_uid = list(self.loadprofiles.keys())[0]
+            load_profile = self.loadprofiles[graph_uid][1][0]
             load_profile_func = GraphModel(load_profile).get_value_func()
             for time_index in range(n_ts):
                 col_p.append(load_profile_func(time_index)*p_mw)
