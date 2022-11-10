@@ -259,23 +259,30 @@ class FieldView:
                                           inactivate=field[self.inactivate_code])
                         
                     if field['selection_list']:
-                        index = field['value']
                         title_widget = Gtk.ComboBoxText.new()
-                        for (text, models) in field['selection_list']:
+                        cur_uid = field['value']
+                        # Find index and populate graph_uids
+                        graph_uids = list(field['selection_list'].keys())
+                        index = None
+                        for slno, (graph_uid, (text, models)) in enumerate(field['selection_list'].items()):
+                            if cur_uid == graph_uid:
+                                index = slno
                             title_widget.append_text(str(text))
-                        title_widget.set_active(index)
-                        if index < len(self.fields[code]['selection_list']):
-                            (title, models) = self.fields[code]['selection_list'][index]
-                        else:
-                            (title, models) = self.fields[code]['selection_list'][0]
+                        # If index not found reset to 0
+                        if index is None:
                             index = 0
+                            cur_uid = graph_uids[0]
+                        # Update graph
+                        title_widget.set_active(index)
+                        (title, models) = self.fields[code]['selection_list'][cur_uid]
                         graphview.clear_plots()
                         for model in models:
                             graphview.add_plot(model)
                         
                         def set_field(code, graphview, index):
-                            self.set_field(code, index)
-                            (title, models) = self.fields[code]['selection_list'][index]
+                            graph_uid = graph_uids[index]
+                            (title, models) = self.fields[code]['selection_list'][graph_uid]
+                            self.set_field(code, graph_uid)
                             graphview.clear_plots()
                             for model in models:
                                 graphview.add_plot(model)
@@ -283,7 +290,7 @@ class FieldView:
                             
                         title_widget.connect("changed", activate_callback_graphlist, set_field, graphview, code)
                     else:
-                        (title, models) = field['value']
+                        title, models = field['value']
                         for model in models:
                             graphview.add_plot(model)
                         text_buffer = Gtk.TextBuffer()

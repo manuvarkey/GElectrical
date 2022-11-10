@@ -23,6 +23,7 @@
 #  
 
 import subprocess, threading, os, posixpath, platform, logging, math, cairo, copy
+from uuid import uuid4 as uuid
 from urllib.parse import urlparse
 from urllib.request import url2pathname
 
@@ -99,22 +100,22 @@ GRAPH_FONT_SIZE = 10
 GRAPH_LOAD_TIME_LIMITS = (0,23,1)
 GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
-DEFAULT_LOAD_PROFILE = [['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
-                        ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
-                        ['80% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.8,0.8]}]],
-                        ['70% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.7,0.7]}]],
-                        ['60% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.6,0.6]}]],
-                        ['50% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.5,0.5]}]],
-                        ['40% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.4,0.4]}]],
-                        ['30% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.3,0.3]}]],
-                        ['20% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.2,0.2]}]],
-                        ['10% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.1,0.1]}]],
-                        ['Office load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,6,7,19,20,23], 'yval':[0.1,0.1,1,1,0.1,0.1]}]],
-                        ['Residential load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,4,8,16,20,23], 'yval':[0.4,0.3,0.65,0.65,1,0.4]}]],
-                        ['Hostel load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,9,10,17,18,23], 'yval':[1,1,0.1,0.1,1,1]}]],
-                        ['Night lighting load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,6,7,17,18,23], 'yval':[1,1,0,0,1,1]}]],
-                        ['Solar Generation', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,7,8,9,10,11,12,13,14,15,16,17,23], 'yval':[0,0,0.25,0.55,0.7,0.75,0.8,0.75,0.7,0.55,0.25,0,0]}]],
-                       ]
+DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
+                        'load_prof_2': ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
+                        'load_prof_3': ['80% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.8,0.8]}]],
+                        'load_prof_4': ['70% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.7,0.7]}]],
+                        'load_prof_5': ['60% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.6,0.6]}]],
+                        'load_prof_6': ['50% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.5,0.5]}]],
+                        'load_prof_7': ['40% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.4,0.4]}]],
+                        'load_prof_8': ['30% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.3,0.3]}]],
+                        'load_prof_9': ['20% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.2,0.2]}]],
+                        'load_prof_10': ['10% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.1,0.1]}]],
+                        'load_prof_11': ['Office load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,6,7,19,20,23], 'yval':[0.1,0.1,1,1,0.1,0.1]}]],
+                        'load_prof_12': ['Residential load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,4,8,16,20,23], 'yval':[0.4,0.3,0.65,0.65,1,0.4]}]],
+                        'load_prof_13': ['Hostel load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,9,10,17,18,23], 'yval':[1,1,0.1,0.1,1,1]}]],
+                        'load_prof_14': ['Night lighting load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,6,7,17,18,23], 'yval':[1,1,0,0,1,1]}]],
+                        'load_prof_15': ['Solar Generation', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,7,8,9,10,11,12,13,14,15,16,17,23], 'yval':[0,0,0.25,0.55,0.7,0.75,0.8,0.75,0.7,0.55,0.25,0,0]}]],
+                       }
 # Constants
 PI = 3.141593
 M = 8  # Multiplier to be used in drawings
@@ -976,7 +977,8 @@ def font_str_encode(family, size):
     pango_font.set_family(size)
     string = pango_font.to_string()
     return string
-    
+
+# Field handling functions
 
 def get_field_dict(field_type, caption, unit, value, max_chars=None, 
                        validation_func=None, selection_list=None, decimal=6,
@@ -1026,7 +1028,10 @@ def update_fields_dict(reffields_dict, newfields_dict):
         if key in reffields_dict:
             updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
     return updated
-    
+
+def get_uid():
+    """Get unique id as identifier"""
+    return str(uuid())
 
 # Default settings
 

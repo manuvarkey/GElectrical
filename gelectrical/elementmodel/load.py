@@ -46,7 +46,7 @@ class Load(ElementModel):
                        'scaling':          self.get_field_dict('float', 'DF', '', 1),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
-                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 0, inactivate=True ) }
+                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', inactivate=True ) }
         self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
         self.text_model = []
         self.schem_model = [ 

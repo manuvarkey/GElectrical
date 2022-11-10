@@ -207,6 +207,7 @@ class GraphViewDialog():
         self.ylabel = ylabel
         self.temp_graph = None
         self.mode = 'DEFAULT'
+        self.graph_uids = []
         
         # Setup widgets
         self.builder = Gtk.Builder()
@@ -223,11 +224,10 @@ class GraphViewDialog():
         self.graph_view = GraphView(self.graph_box, xlim, ylim, xlabel=xlabel, ylabel=ylabel, inactivate=True)
         
         # Populate database
-        for (title, graph_model) in self.graph_database:
-            self.combobox_title.append_text(title)
+        self.repopulate_combo()
             
         if self.graph_database:
-            self.graph_view.add_plots(self.graph_database[0][1])
+            self.graph_view.add_plots(self.graph_database[self.graph_uids[0]][1])
             self.combobox_title.set_active(0)
         
     # Callbacks
@@ -235,10 +235,15 @@ class GraphViewDialog():
     def graph_database_changed(self, combo_box):
         index = combo_box.get_active()
         self.graph_view.clear_plots()
-        self.graph_view.add_plots(self.graph_database[index][1])
+        self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
         
     def add_profile(self, button):
-        self.temp_graph =  ['Untitled', [{'mode':misc.GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[], 'yval':[]}]]
+        # Get current graph data
+        cur_index = self.combobox_title.get_active()
+        cur_graph = self.graph_database[self.graph_uids[cur_index]]
+        cur_graph_data = copy.deepcopy(cur_graph[1])
+        # Create new graph from data
+        self.temp_graph =  ['Untitled', cur_graph_data]
         self.graph_view.clear_plots()
         self.graph_view.add_plots(self.temp_graph[1])
         self.graph_view.inactivate = False
@@ -250,21 +255,21 @@ class GraphViewDialog():
     def delete_profile(self, button):
         index = self.combobox_title.get_active()
         if index is not None and len(self.graph_database) > 1:
-            self.graph_database.pop(index)
-            self.combobox_title.remove(index)
+            self.graph_database.pop(self.graph_uids[index])
+            self.repopulate_combo()
             if index != 0:
                 self.combobox_title.set_active(index-1)
                 self.graph_view.clear_plots()
-                self.graph_view.add_plots(self.graph_database[index-1][1])
+                self.graph_view.add_plots(self.graph_database[self.graph_uids[index-1]][1])
             else:
                 self.combobox_title.set_active(0)
                 self.graph_view.clear_plots()
-                self.graph_view.add_plots(self.graph_database[0][1])
+                self.graph_view.add_plots(self.graph_database[self.graph_uids[0]][1])
             
     def edit_profile(self, button):
         index = self.combobox_title.get_active()
         if index is not None:
-            self.temp_graph = copy.deepcopy(self.graph_database[index])
+            self.temp_graph = copy.deepcopy(self.graph_database[self.graph_uids[index]])
             self.graph_view.clear_plots()
             self.graph_view.add_plots(self.temp_graph[1])
             self.graph_view.inactivate = False
@@ -276,26 +281,28 @@ class GraphViewDialog():
     def accept_modification(self, button):
         title = self.textbox_title.get_text()
         if self.mode == 'ADD':
-            self.graph_database.append(self.temp_graph)
+            cur_uid = misc.get_uid()
+            self.graph_database[cur_uid] = self.temp_graph
             index = len(self.graph_database)-1
         else:
             index = self.combobox_title.get_active()
-            self.graph_database[index] = self.temp_graph
+            cur_uid = self.graph_uids[index]
+            self.graph_database[cur_uid] = self.temp_graph
             
-        self.graph_view.clear_plots()
-        self.graph_view.add_plots(self.graph_database[index][1])
-        self.graph_view.inactivate = True
-        self.graph_view.plot_curves()
-        self.graph_database[index][0] = title
+        self.graph_database[cur_uid][0] = title
         self.repopulate_combo()
         self.combobox_title.set_active(index)
+        self.graph_view.clear_plots()
+        self.graph_view.add_plots(self.graph_database[cur_uid][1])
+        self.graph_view.inactivate = True
+        self.graph_view.plot_curves()
         self.stack_switcher.set_visible_child_name('default')
         self.mode = 'DEFAULT'
         
     def cancel_modification(self, button):
         index = self.combobox_title.get_active()
         self.graph_view.clear_plots()
-        self.graph_view.add_plots(self.graph_database[index][1])
+        self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
         self.graph_view.inactivate = True
         self.graph_view.plot_curves()
         self.stack_switcher.set_visible_child_name('default')
@@ -305,8 +312,10 @@ class GraphViewDialog():
     
     def repopulate_combo(self):
         self.combobox_title.remove_all()
-        for (title, graph_model) in self.graph_database:
+        self.graph_uids = []
+        for graph_uid, (title, graph_model) in self.graph_database.items():
             self.combobox_title.append_text(title)
+            self.graph_uids.append(graph_uid)
                 
     def run(self):
         """Display dialog box and modify graph in place
@@ -323,7 +332,7 @@ class GraphViewDialog():
             # Get formated text and update item_values
             index = self.combobox_title.get_active()
             self.dialog_window.destroy()
-            return self.graph_database[index]
+            return self.graph_database[self.graph_uids[index]]
         else:
             self.dialog_window.destroy()
             return None
