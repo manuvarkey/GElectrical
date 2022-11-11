@@ -1044,13 +1044,17 @@ def fields_to_table(fields):
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
                 if field['type'] == 'float':
-                    table['Value'].append(str(round(field['value'], 5)))
+                    table['Value'].append(str(round(field['value'], 4)))
                 else:
                     table['Value'].append(clean(field['value']))
                 table['Unit'].append(field['unit'])
                 index += 1
             else:
-                pass
+                table['Sl.No.'].append(index)
+                table['Description'].append(clean(field['caption']))
+                table['Value'].append(field['value'][0].replace('\n','</br>'))
+                table['Unit'].append(field['unit'])
+                index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False)
     
         

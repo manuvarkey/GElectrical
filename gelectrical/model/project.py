@@ -586,6 +586,7 @@ class ProjectModel:
         element_captions = dict()
         element_refs = dict()
         element_tables = dict()
+        loadprofile_captions_used = set()
         base_elements = self.networkmodel.base_elements
         # First pass add all required elements
         for key, model in base_elements.items():
@@ -593,6 +594,8 @@ class ProjectModel:
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)
+            if model.code == 'element_load' and model.fields['load_profile']['value'] in self.loadprofiles:
+                loadprofile_captions_used.add(model.fields['load_profile']['value'])
         # Second pass for adding assmebly details
         for key, model in base_elements.items():
             if model.code == 'element_assembly':
@@ -621,7 +624,9 @@ class ProjectModel:
         #boq_captions = {'switches': 'Switches', 'trafo': 'Transformers'}
         
         # Load profiles
-        loadprofile_captions = {key:self.loadprofiles[key][0] for key in self.loadprofiles}
+        loadprofile_captions = {key:self.loadprofiles[key][0] for key in loadprofile_captions_used}
+        # Sort
+        loadprofile_captions = dict(sorted(loadprofile_captions.items(), key=lambda item:item[1]))
                  
         # Analysis options
         if settings['powerflow'] or settings['sc_sym'] or settings['sc_gf']:
