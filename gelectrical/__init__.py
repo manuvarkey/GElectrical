@@ -398,6 +398,7 @@ class MainWindow():
         misc.TITLE_FONT_SIZE = misc.SCHEM_FONT_SIZE + 1
         misc.SCHEM_FONT_SPACING = int(misc.SCHEM_FONT_SIZE * 1.5)
         misc.GRAPH_FONT_FACE, misc.GRAPH_FONT_SIZE = misc.font_str_parse(self.program_settings['Interface']['graph_font']['value'])
+        misc.REPORT_FONT_FACE, misc.REPORT_FONT_SIZE = misc.font_str_parse(self.program_settings['Interface']['report_font']['value'])
         
     def on_program_settings(self, button):
         """Display dialog to input program settings"""
@@ -802,10 +803,11 @@ class MainWindow():
         try:
             if os.path.exists(self.settings_filename):
                 with open(self.settings_filename, 'r') as fp:
-                    self.program_settings = json.load(fp)
+                    program_settings = json.load(fp)
+                    self.program_settings = misc.update_fields_dict(misc.default_program_settings, program_settings)
                     log.info('Program settings opened at ' + str(self.settings_filename))
             else:
-                self.program_settings = copy.deepcopy(misc.default_program_settings)
+                self.program_settings = copy.deepcopy(misc.default_program_settings, )
                 with open(self.settings_filename, 'w') as fp:
                     json.dump(self.program_settings, fp, indent = 4)
                 log.info('Program settings saved at ' + str(self.settings_filename))

@@ -38,8 +38,8 @@ log = logging.getLogger(__name__)
 ## GLOBAL CONSTANTS
 
 # Program name
-PROGRAM_NAME = 'gElectrical'
-PROGRAM_AUTHOR = 'CPWD'
+PROGRAM_NAME = 'GElectrical'
+PROGRAM_AUTHOR = 'kavilgroup'
 PROGRAM_VER = '1'
 APPID = "com.kavilgroup.gelectrical"
 # CMB error codes used for displaying info in main window
@@ -100,6 +100,10 @@ GRAPH_FONT_FACE = 'monospace'
 GRAPH_FONT_SIZE = 10
 GRAPH_LOAD_TIME_LIMITS = (0,23,1)
 GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
+# Report parameters
+REPORT_FONT_FACE = 'monospace'
+REPORT_FONT_SIZE = 10
+
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
                         'load_prof_2': ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
@@ -1054,7 +1058,8 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
                             'Interface':{'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
-                                         'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False)}}
+                                         'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False),
+                                         'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)}}
                                          
 default_project_settings = {'Information': {'project_name': get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
                             'drawing_field_dept':    get_field_dict('str', 'Responsible department', '', '', status_inactivate=False),

@@ -22,12 +22,12 @@
 #  
 # 
 
-import logging, copy, datetime
+import logging, copy, datetime, io
 from gi.repository import Gtk, Gdk
 import cairo
 from jinja2 import Environment, FileSystemLoader
 from tabulate import tabulate
-from weasyprint import HTML
+from weasyprint import HTML, CSS
 
 # local files import
 from .. import misc
@@ -569,11 +569,9 @@ class ProjectModel:
         
     def export_pdf_report(self, filename, settings):
         template_path = misc.abs_path("templates")
-        css_template_path = misc.abs_path("templates", "report.css")
+        env = Environment(loader=FileSystemLoader(template_path))
         
-        #switch_tb = pd.read_csv('data.csv', sep=';')
-        #switch_tb_html = switch_tb.to_html(index=False, justify='left')
-        #switch_tb_html = tabulate(switch_tb, switch_tb.columns, showindex=False, tablefmt="html")
+        # Setup tables
         #boq_tables = {'switches': switch_tb_html, 'trafo': switch_tb_html}
         #boq_captions = {'switches': 'Switches', 'trafo': 'Transformers'}
         
@@ -598,32 +596,40 @@ class ProjectModel:
             analysis_flag = True
         else: 
             analysis_flag = False
-            
-        env = Environment(loader=FileSystemLoader(template_path))
+        
+        # Load HTML file    
         template = env.get_template("report.html")
         template_vars = {'program_settings': self.program_settings, 
-                        'project_settings': self.fields,
-                        'ana_opt_table': ana_opt_table,
-                        #'boq_tables': boq_tables,
-                        #'boq_captions': boq_captions,
-                        'element_captions': element_captions,
-                        'element_tables': element_tables,
-                        #'ana_res_tables': ana_res_tables,
-                        #'ana_res_captions': ana_res_captions,
-                        'program_version': program_version,
-                        'analysis_flag': analysis_flag}
+                         'project_settings': self.fields,
+                         'ana_opt_table': ana_opt_table,
+                         #'boq_tables': boq_tables,
+                         #'boq_captions': boq_captions,
+                         'element_captions': element_captions,
+                         'element_tables': element_tables,
+                         #'ana_res_tables': ana_res_tables,
+                         #'ana_res_captions': ana_res_captions,
+                         'program_version': program_version,
+                         'analysis_flag': analysis_flag}
         html_out = template.render(template_vars)
-        HTML(string=html_out).write_pdf(filename, stylesheets=[css_template_path])
+        
+        # Load CSS file
+        template_css = env.get_template("report.css")
+        template_vars_css = {'report_font': misc.REPORT_FONT_FACE}
+        css_out = template_css.render(template_vars_css)
+        css_obj = io.BytesIO(bytes(css_out, 'utf-8'))
+        
+        # Render PDF
+        HTML(string=html_out).write_pdf(filename, stylesheets=[css_obj])
         
     def export_drawing(self, filename):
         surface = cairo.PDFSurface(filename, 0, 0)
         proj_fields = self.get_project_fields()
-        #surface.set_metadata(PDFMetadata.TITLE, proj_fields['project_name'])
-        #surface.set_metadata(PDFMetadata.AUTHOR, proj_fields['drawing_field_approved'])
-        #surface.set_metadata(PDFMetadata.SUBJECT, 'Electrical schematic drawing')
-        #surface.set_metadata(PDFMetadata.CREATOR, misc.PROGRAM_NAME)
-        #surface.set_metadata(PDFMetadata.CREATE_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
-        #surface.set_metadata(PDFMetadata.MOD_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
+        surface.set_metadata(cairo.PDFMetadata.TITLE, proj_fields['project_name']['value'])
+        surface.set_metadata(cairo.PDFMetadata.AUTHOR, proj_fields['drawing_field_approved']['value'])
+        surface.set_metadata(cairo.PDFMetadata.SUBJECT, 'Electrical schematic drawing')
+        surface.set_metadata(cairo.PDFMetadata.CREATOR, misc.PROGRAM_NAME + ' v' + misc.PROGRAM_VER)
+        surface.set_metadata(cairo.PDFMetadata.CREATE_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
+        surface.set_metadata(cairo.PDFMetadata.MOD_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
         context = cairo.Context(surface)
         for drawing_model in self.drawing_models:
             surface.set_size(drawing_model.fields['page_width']['value'], drawing_model.fields['page_height']['value'])
