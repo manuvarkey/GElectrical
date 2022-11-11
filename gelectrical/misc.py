@@ -1037,12 +1037,20 @@ def update_fields_dict(reffields_dict, newfields_dict):
 def fields_to_table(fields):
     table = {'Sl.No.':[], 'Description': [], 'Value': [], 'Unit': []}
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
-    for index, field in enumerate(fields.values()):
+    index = 1
+    for field in fields.values():
         if ('caption' in field) and ('value' in field) and ('unit' in field):
-            table['Sl.No.'].append(index+1)
-            table['Description'].append(clean(field['caption']))
-            table['Value'].append(clean(field['value']))
-            table['Unit'].append(field['unit'])
+            if field['type'] != 'graph':
+                table['Sl.No.'].append(index)
+                table['Description'].append(clean(field['caption']))
+                if field['type'] == 'float':
+                    table['Value'].append(str(round(field['value'], 5)))
+                else:
+                    table['Value'].append(clean(field['value']))
+                table['Unit'].append(field['unit'])
+                index += 1
+            else:
+                pass
     return pd.DataFrame(table).to_html(index=False, escape=False)
     
         

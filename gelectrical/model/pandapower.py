@@ -746,7 +746,7 @@ class PandaPowerModel:
                     for code, field in node_result.items():
                         code = 'port_' + str(port_no) + code
                         element_result[code] = copy.deepcopy(field)
-                        element_result[code]['caption'] = '<i>[' + str(port_no) + ']: ' + element_result[code]['caption'] + '</i>'
+                        element_result[code]['caption'] = '[' + str(port_no) + ']: ' + element_result[code]['caption']
             
             elif element.code == 'element_busbar':
                 # Create/get element dict
