@@ -195,12 +195,6 @@ class DrawingModel:
                     element.set_children(children_codes_new, children)
                 else:
                     element.set_children(children_codes_new)
-                    
-            if code in misc.REFERENCE_CODES:
-                if element.fields['ref']['value'] in ('?', 'X?'):
-                    element.draw_schem_color = misc.COLOR_SELECTED_WARNING
-                else:
-                    element.draw_schem_color = misc.COLOR_NORMAL
         
     def set_sheet_name(self, sheet_name):
         self.fields['name']['value'] = sheet_name
@@ -535,6 +529,13 @@ class DrawingModel:
         self.title_block.draw(context)
         self.template.draw(context)
         for elno, element in enumerate(self.elements):
+            # If reference not linked display error
+            if element.code in misc.REFERENCE_CODES:
+                if element.fields['ref']['value'] in ('?', 'X?'):
+                    element.draw_schem_color = misc.COLOR_SELECTED_WARNING
+                else:
+                    element.draw_schem_color = misc.COLOR_NORMAL
+            # Draw considering whitelist
             if whitelist is not None and (elno not in whitelist):
                 element.draw(context, select, override_color=misc.COLOR_INACTIVE)
             else:
