@@ -1036,13 +1036,15 @@ def update_fields_dict(reffields_dict, newfields_dict):
     
 def fields_to_table(fields):
     table = {'Sl.No.':[], 'Description': [], 'Value': [], 'Unit': []}
+    clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     for index, field in enumerate(fields.values()):
         if ('caption' in field) and ('value' in field) and ('unit' in field):
             table['Sl.No.'].append(index+1)
-            table['Description'].append(field['caption'])
-            table['Value'].append(field['value'])
+            table['Description'].append(clean(field['caption']))
+            table['Value'].append(clean(field['value']))
             table['Unit'].append(field['unit'])
-    return pd.DataFrame(table).to_html(index=False)
+    return pd.DataFrame(table).to_html(index=False, escape=False)
+    
         
 
 def get_uid():

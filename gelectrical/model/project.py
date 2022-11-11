@@ -572,25 +572,42 @@ class ProjectModel:
         env = Environment(loader=FileSystemLoader(template_path))
         
         # Setup tables
-        #boq_tables = {'switches': switch_tb_html, 'trafo': switch_tb_html}
-        #boq_captions = {'switches': 'Switches', 'trafo': 'Transformers'}
         
+        # General variables
+        program_version = 'v' + misc.PROGRAM_VER
+        project_settings = self.get_project_fields()
+        gen_variables = {'program_version'        : 'v' + misc.PROGRAM_VER,
+                         'project_name'           : project_settings['project_name']['value'],
+                         'drawing_field_approved' : project_settings['drawing_field_approved']['value'],
+                         'drawing_field_dept'     : project_settings['drawing_field_dept']['value'],
+                         'drawing_field_address'  : project_settings['drawing_field_address']['value'].replace('\n','</br>')}
         
+        # Elements
         element_captions = dict()
         element_tables = dict()
         base_elements = self.networkmodel.base_elements
         for key, model in base_elements.items():
-            if 'ref' in model.fields:
+            if 'ref' in model.fields and model.code not in misc.REFERENCE_CODES:
                 element_captions[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)
-                        
-        #table = misc.fields_to_table(self.get_project_fields(page='Simulation'))
-        #ana_opt_table = str(tabulate(table, headers=ana_opt_captions, tablefmt="html"))
+        # Sort by reference
+        element_captions = dict(sorted(element_captions.items(), key=lambda item:item[1]))
+        element_tables = {key:element_tables[key] for key in element_captions}
+        
+                                 
+        # BOQ
+        #boq_tables = {'switches': switch_tb_html, 'trafo': switch_tb_html}
+        #boq_captions = {'switches': 'Switches', 'trafo': 'Transformers'}
+        
+        # Load profiles
+        loadprofile_captions = {key:self.loadprofiles[key][0] for key in self.loadprofiles}
+                 
+        # Analysis options
         ana_opt_table = misc.fields_to_table(self.get_project_fields(page='Simulation'))
         
+        # Analysis results
         #ana_res_captions = {'ana_switches': 'Switches', 'ana_trafo': 'Transformers'}
         #ana_res_tables = {'ana_switches': switch_tb_html, 'ana_trafo': switch_tb_html}
-        program_version = 'v' + misc.PROGRAM_VER
         
         if settings['powerflow'] or settings['sc_sym'] or settings['sc_gf']:
             analysis_flag = True
@@ -599,17 +616,17 @@ class ProjectModel:
         
         # Load HTML file    
         template = env.get_template("report.html")
-        template_vars = {'program_settings': self.program_settings, 
-                         'project_settings': self.fields,
-                         'ana_opt_table': ana_opt_table,
-                         #'boq_tables': boq_tables,
-                         #'boq_captions': boq_captions,
+        template_vars = {'gen_variables': gen_variables,
                          'element_captions': element_captions,
                          'element_tables': element_tables,
+                         #'boq_tables': boq_tables,
+                         #'boq_captions': boq_captions,
+                         'loadprofile_captions': loadprofile_captions,
+                         'analysis_flag': analysis_flag,
+                         'ana_opt_table': ana_opt_table,
                          #'ana_res_tables': ana_res_tables,
-                         #'ana_res_captions': ana_res_captions,
-                         'program_version': program_version,
-                         'analysis_flag': analysis_flag}
+                         #'ana_res_captions': ana_res_captions
+                        }
         html_out = template.render(template_vars)
         
         # Load CSS file

@@ -170,7 +170,7 @@ class FieldView:
                 # Create widgets
                 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                 caption_widget = Gtk.Label('', xalign=0)
-                caption_widget.set_markup(field['caption'])
+                caption_widget.set_markup(misc.clean_markup(field['caption']))
                 caption_widget.set_use_markup(True)
                 caption_widget.set_size_request(self.caption_width, -1)
                 
