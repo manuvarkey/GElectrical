@@ -713,7 +713,6 @@ class ProjectModel:
             'proj_fields' in document and 
             'proj_loadprofiles.json' in pages):
             self.fields = misc.update_fields_dict(self.fields, document['proj_fields'])
-            #self.fields = document['proj_fields']
             self.program_state['project_settings_main'] = self.fields['Information']
             self.loadprofiles = pages['proj_loadprofiles.json']
             slno = 0

@@ -124,6 +124,8 @@ class DrawingModel:
                         element = Wire()
                     else:
                         element = self.program_state['element_models'][code]()
+                        if code in misc.LOADPROFILE_CODES:
+                            element.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     element.set_model(base_model, self.get_gid())
                     self.elements.append(element)
                     
@@ -471,6 +473,8 @@ class DrawingModel:
                     else:
                         element_copy = self.element_models[code]()
                     element_copy.set_model(element_model, self.get_gid())
+                    if element_copy.code in misc.LOADPROFILE_CODES:
+                        element_copy.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     self.insert_element_at_index(element_copy)
                     elements_copy.append(element_copy)
                 # Update gid_assembly for elements

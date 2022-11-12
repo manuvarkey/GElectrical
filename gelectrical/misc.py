@@ -105,6 +105,7 @@ REPORT_FONT_FACE = 'monospace'
 REPORT_FONT_SIZE = 10
 
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
+LOADPROFILE_CODES = ('element_load', 'element_staticgenerator', 'element_async_motor')
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
                         'load_prof_2': ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
                         'load_prof_3': ['80% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.8,0.8]}]],
@@ -1043,17 +1044,20 @@ def fields_to_table(fields):
             if field['type'] != 'graph':
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
+                table['Unit'].append(field['unit'])
                 if field['type'] == 'float':
                     table['Value'].append(str(round(field['value'], 4)))
                 else:
                     table['Value'].append(clean(field['value']))
-                table['Unit'].append(field['unit'])
                 index += 1
             else:
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
-                table['Value'].append(field['value'][0].replace('\n','</br>'))
                 table['Unit'].append(field['unit'])
+                if field['selection_list']:
+                    table['Value'].append(field['value'])
+                else:
+                    table['Value'].append(field['value'][0].replace('\n','</br>'))
                 index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False)
     

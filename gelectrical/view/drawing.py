@@ -150,7 +150,7 @@ class DrawingView:
                 self.refresh() 
                 
             # Element specific items
-            if element.code in ('element_load', 'element_staticgenerator', 'element_async_motor'):
+            if element.code in misc.LOADPROFILE_CODES:
                 element.fields['load_profile']['selection_list'] = self.drawing_model.parent.loadprofiles
             
             # Special class implementing undo for set text function
@@ -188,7 +188,7 @@ class DrawingView:
                 for element in elements:
                         
                     # Element specific items
-                    if element.code in ('element_load', 'element_staticgenerator', 'element_async_motor'):
+                    if element.code in misc.LOADPROFILE_CODES:
                         element.fields['load_profile']['selection_list'] = self.drawing_model.parent.loadprofiles
                         
                     for field_code, field in element.fields.items():
