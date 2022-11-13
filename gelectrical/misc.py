@@ -1055,7 +1055,7 @@ def fields_to_table(fields):
                 table['Description'].append(clean(field['caption']))
                 table['Unit'].append(field['unit'])
                 if field['selection_list']:
-                    table['Value'].append(field['value'])
+                    table['Value'].append(field['selection_list'][field['value']][0])
                 else:
                     table['Value'].append(field['value'][0].replace('\n','</br>'))
                 index += 1
