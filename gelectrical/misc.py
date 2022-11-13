@@ -1034,35 +1034,75 @@ def update_fields_dict(reffields_dict, newfields_dict):
         if key in reffields_dict:
             updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
     return updated
+
+ELEMENT_FIELD = 0
+ELEMENT_RESULT = 1
+
+def elements_to_table(elements, col_codes, col_captions, code_sources):
+    table = dict()
+    clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
+    # Add unit line
+    table['Sl.No.'] = ['']
+    for col_caption in col_captions:
+        table[col_caption] = ['']
+    table['Type'] = ['']
+    # Add elements
+    index = 1
+    for element in elements:
+        table['Sl.No.'].append(index)
+        table['Type'].append(element.name)
+        for col_code, col_caption, code_source in zip(col_codes, col_captions, code_sources):
+            # Select table
+            if code_source == ELEMENT_FIELD:
+                fields = element.fields
+            elif code_source == ELEMENT_RESULT:
+                fields = element.res_fields
+            else:
+                table[col_caption].append('')
+                continue
+            # Set value
+            if col_code in fields:
+                field = fields[col_code]
+                table[col_caption][0] = field['unit']
+                if field['type'] == 'graph':
+                    if field['selection_list']:
+                        table[col_caption].append(field['selection_list'][field['value']][0])
+                    else:
+                        table[col_caption].append(field['value'][0].replace('\n','</br>'))
+                elif field['type'] == 'float':
+                    table[col_caption].append(str(round(field['value'], 4)))
+                else:
+                    table[col_caption].append(clean(field['value']))
+            else:
+                table[col_caption].append('')
+        index += 1
+    print(table)
+    return pd.DataFrame(table).to_html(index=False, escape=False)
     
 def fields_to_table(fields):
     table = {'Sl.No.':[], 'Description': [], 'Value': [], 'Unit': []}
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     index = 1
     for field in fields.values():
-        if ('caption' in field) and ('value' in field) and ('unit' in field):
-            if field['type'] != 'graph':
-                table['Sl.No.'].append(index)
-                table['Description'].append(clean(field['caption']))
-                table['Unit'].append(field['unit'])
-                if field['type'] == 'float':
-                    table['Value'].append(str(round(field['value'], 4)))
-                else:
-                    table['Value'].append(clean(field['value']))
-                index += 1
+        if field['type'] != 'graph':
+            table['Sl.No.'].append(index)
+            table['Description'].append(clean(field['caption']))
+            table['Unit'].append(field['unit'])
+            if field['type'] == 'float':
+                table['Value'].append(str(round(field['value'], 4)))
             else:
-                table['Sl.No.'].append(index)
-                table['Description'].append(clean(field['caption']))
-                table['Unit'].append(field['unit'])
-                if field['selection_list']:
-                    table['Value'].append(field['selection_list'][field['value']][0])
-                else:
-                    table['Value'].append(field['value'][0].replace('\n','</br>'))
-                index += 1
+                table['Value'].append(clean(field['value']))
+        else:
+            table['Sl.No.'].append(index)
+            table['Description'].append(clean(field['caption']))
+            table['Unit'].append(field['unit'])
+            if field['selection_list']:
+                table['Value'].append(field['selection_list'][field['value']][0])
+            else:
+                table['Value'].append(field['value'][0].replace('\n','</br>'))
+        index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False)
     
-        
-
 def get_uid():
     """Get unique id as identifier"""
     return str(uuid())

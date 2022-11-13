@@ -584,6 +584,7 @@ class ProjectModel:
         element_captions = dict()
         element_refs = dict()
         element_tables = dict()
+        element_lines = []
         loadprofile_captions_used = set()
         base_elements = self.networkmodel.base_elements
         # First pass add all required elements
@@ -592,6 +593,14 @@ class ProjectModel:
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)
+                
+                
+                
+            if model.code in ['element_line', 'element_line_cable']: #TODO
+                element_lines.append(model)
+                
+                
+                
             if model.code == 'element_load' and model.fields['load_profile']['value'] in self.loadprofiles:
                 loadprofile_captions_used.add(model.fields['load_profile']['value'])
         # Second pass for adding assmebly details
@@ -618,8 +627,14 @@ class ProjectModel:
         element_tables = {key:element_tables[key] for key in element_captions}
                                  
         # BOQ
-        #boq_tables = {'switches': switch_tb_html, 'trafo': switch_tb_html}
-        #boq_captions = {'switches': 'Switches', 'trafo': 'Transformers'}
+        E = misc.ELEMENT_FIELD
+        R = misc.ELEMENT_RESULT
+        col_codes = ['ref', 'name', 'designation', 'length_km', 'loading_percent']
+        col_captions = ['Reference', 'Name', 'Designation',  'Length', '% Loading']
+        code_sources = [E,E,E,E,R]
+        boq_lines_table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources)
+        boq_tables = {'boq_lines': boq_lines_table}
+        boq_captions = {'boq_lines': 'Lines and series impedences'}
         
         # Load profiles
         loadprofile_captions = {key:self.loadprofiles[key][0] for key in loadprofile_captions_used}
@@ -663,8 +678,8 @@ class ProjectModel:
         template_vars = {'gen_variables': gen_variables,
                          'element_captions': element_captions,
                          'element_tables': element_tables,
-                         #'boq_tables': boq_tables,
-                         #'boq_captions': boq_captions,
+                         'boq_tables': boq_tables,
+                         'boq_captions': boq_captions,
                          'loadprofile_captions': loadprofile_captions,
                          'loadprofile_images': loadprofile_images,
                          'analysis_flag': analysis_flag,

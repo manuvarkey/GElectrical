@@ -32,7 +32,7 @@
         {% endfor %}
       </ul>
       
-      <h3><a href="#boq">Bill of quantity</a></h3>
+      <h3><a href="#boq">Bill of quantities</a></h3>
       <ul>
         {% for boq_caption in boq_captions %}
         <li><a href="#{{boq_caption|e}}"></a></li>
@@ -73,7 +73,7 @@
     </article>
     
     <article id="boq">
-      <h2>Bill of Quantity</h2>
+      <h2>Bill of Quantities</h2>
       {% for boq_caption in boq_captions %}
       <h3 id="{{boq_caption}}">{{boq_captions[boq_caption]}}</h3>
       <section>
