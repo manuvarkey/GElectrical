@@ -34,7 +34,7 @@ from .. import misc
 from ..misc import undoable, group
 from .drawing import DrawingModel
 from ..view.drawing import DrawingView
-from ..view.graph import GraphViewDialog
+from ..view.graph import GraphViewDialog, GraphImage
 from ..model.graph import GraphModel
 from .networkmodel import NetworkModel
 from .pandapower import PandaPowerModel
@@ -115,7 +115,7 @@ class ProjectModel:
         xlim = misc.GRAPH_LOAD_TIME_LIMITS
         ylim = misc.GRAPH_LOAD_CURRENT_LIMITS
         xlabel = 'Time (Hr)'
-        ylabel = 'DF'
+        ylabel = 'Diversity Factor'
         dialog = GraphViewDialog(self.window, self.loadprofiles, xlim, ylim, xlabel, ylabel)
         dialog.run()
     
@@ -571,8 +571,6 @@ class ProjectModel:
         template_path = misc.abs_path("templates")
         env = Environment(loader=FileSystemLoader(template_path))
         
-        # Setup tables
-        
         # General variables
         program_version = 'v' + misc.PROGRAM_VER
         project_settings = self.get_project_fields()
@@ -627,7 +625,19 @@ class ProjectModel:
         loadprofile_captions = {key:self.loadprofiles[key][0] for key in loadprofile_captions_used}
         # Sort
         loadprofile_captions = dict(sorted(loadprofile_captions.items(), key=lambda item:item[1]))
-                 
+        # Add images
+        loadprofile_images = dict()
+        xlim = misc.GRAPH_LOAD_TIME_LIMITS
+        ylim = misc.GRAPH_LOAD_CURRENT_LIMITS
+        xlabel = 'Time (Hr)'
+        ylabel = 'Diversity Factor'
+        for loadprofile_caption in loadprofile_captions:
+            title, graph_model = self.loadprofiles[loadprofile_caption]
+            graph_image = GraphImage(xlim, ylim, '', xlabel, ylabel)
+            graph_image.add_plots(graph_model)
+            emb_image = graph_image.get_embedded_html_image(figsize=(500, 175))
+            loadprofile_images[loadprofile_caption] = emb_image
+            
         # Analysis options
         if settings['powerflow'] or settings['sc_sym'] or settings['sc_gf']:
             analysis_flag = True
@@ -656,6 +666,7 @@ class ProjectModel:
                          #'boq_tables': boq_tables,
                          #'boq_captions': boq_captions,
                          'loadprofile_captions': loadprofile_captions,
+                         'loadprofile_images': loadprofile_images,
                          'analysis_flag': analysis_flag,
                          'ana_opt_table': ana_opt_table,
                          'ana_res_tables': ana_res_tables,

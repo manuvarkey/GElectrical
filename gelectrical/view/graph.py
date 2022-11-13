@@ -22,7 +22,8 @@
 #  
 # 
 
-import platform, logging, copy, pickle, codecs, bisect, math
+import platform, logging, copy, pickle, codecs, bisect, math, base64
+from io import BytesIO
 from gi.repository import Gtk, Gdk, GLib
 import cairo
 
@@ -40,11 +41,83 @@ mplstyle.use('fast')
 # Get logger object
 log = logging.getLogger(__name__)
 
+
+class GraphImage():
+    """Class for handling graph image"""
+    
+    def __init__(self, xlim, ylim, title='', xlabel='', ylabel='', inactivate=False):
+        self.xlim = xlim
+        self.ylim = ylim
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.models = []
+        self.colors = ('#3465a4', '#cc0000', '#73d216', '#f57900', '#75507b', '#edd400', '#555753', '#c17d11')
+        # Plot
+        self.figure = Figure()
+        self.plot = self.figure.add_subplot(111)
+        
+    def add_plot(self, graph_model):
+        self.models.append(GraphModel(graph_model))
+        
+    def add_plots(self, graph_models):
+        for model in graph_models:
+            self.add_plot(model)
+        
+    def clear_plots(self):
+        self.models.clear()
+        self.model = None
+    
+    def plot_graph(self):
+        self.plot.clear()
+        for tick in self.plot.get_xticklabels():
+            tick.set_fontname(misc.GRAPH_FONT_FACE)
+            tick.set_fontsize(misc.GRAPH_FONT_SIZE)
+        for tick in self.plot.get_yticklabels():
+            tick.set_fontname(misc.GRAPH_FONT_FACE)
+            tick.set_fontsize(misc.GRAPH_FONT_SIZE)
+        self.plot.set_xlim(self.xlim[0], self.xlim[1])
+        if len(self.xlim) == 4 and self.xlim[3] == 'log':
+            self.plot.set_xscale('log')
+            
+        if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])):
+            self.plot.set_ylim(self.ylim[0], self.ylim[1])
+            
+        self.plot.grid(True, which='major')
+        self.plot.minorticks_on()
+        self.plot.grid(True, which='minor', alpha=0.2)
+        for slno, model in enumerate(self.models):
+            color = self.colors[slno % len(self.colors)]
+            line = self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+        self.plot.set_title(self.title, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
+        self.plot.set_xlabel(self.xlabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
+        self.plot.set_ylabel(self.ylabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
+
+        if len(self.models) > 1:
+            self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
+    
+    def save_image(self, filename, figsize=(512, 384), file_format='svg'):
+        self.figure.set_figwidth(figsize[0]/80)
+        self.figure.set_figheight(figsize[1]/80)
+        self.plot_graph()
+        with open(filename, 'wb') as fp:
+            self.figure.savefig(fp, format=file_format, bbox_inches='tight')
+    
+    def get_embedded_html_image(self, figsize=(512, 384), file_format='svg'):
+        self.figure.set_figwidth(figsize[0]/80)
+        self.figure.set_figheight(figsize[1]/80)
+        self.plot_graph()
+        buf = BytesIO()
+        self.figure.savefig(buf, format=file_format, bbox_inches='tight')
+        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+        return f"<img src='data:image/png;base64,{data}'/>"
+        
+
 class MouseButtons:
     LEFT_BUTTON = 1
     MIDDLE_BUTTON = 2
     RIGHT_BUTTON = 3
-
+    
        
 class GraphView():
     """Class for displaying graph"""
