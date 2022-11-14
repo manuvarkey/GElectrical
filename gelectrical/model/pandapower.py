@@ -583,6 +583,7 @@ class PandaPowerModel:
             model = []
             maintitle = ''
             maincaption = ''
+            maincode = ''
             mainunit = ''
             ylimits_min = []
             ylimits_max = []
@@ -599,7 +600,7 @@ class PandaPowerModel:
                 val_max = round(max(values), decimal)
                 val_min = round(min(values), decimal)
                 delta = (val_max - val_min)*0.1
-                title = caption + ': (max: {}, min: {}, avg: {})'.format(val_max, val_min, val_avg)
+                title = caption + ': max: {}, min: {}, avg: {}'.format(val_max, val_min, val_avg)
                 ylimits_min.append(val_min - delta)
                 ylimits_max.append(val_max + delta)
                 
@@ -607,14 +608,16 @@ class PandaPowerModel:
                 maintitle += title + '\n'
                 maincaption += caption + ', '
                 mainunit += unit + ', '
+                maincode += code + ','
             
-            maintitle = maintitle.strip('\n') if len(data) > 1 else '(max: {}, min: {}, avg: {})'.format(val_max, val_min, val_avg)
-            maincaption =maincaption.strip(', ')
+            maintitle = maintitle.strip('\n') if len(data) > 1 else 'max: {}, min: {}, avg: {}'.format(val_max, val_min, val_avg)
+            maincaption = maincaption.strip(', ')
             mainunit = mainunit.strip(', ')
+            maincode = maincode.strip(',')
             ylimits = (min(ylimits_min), max(ylimits_max), 0.1)    
             graph_model = [maintitle, model]
-            result[code] = misc.get_field_dict('graph', maincaption, mainunit, graph_model, decimal=decimal)
-            result[code]['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', maincaption + ' (' + mainunit + ')')
+            result[maincode] = misc.get_field_dict('graph', maincaption, mainunit, graph_model, decimal=decimal)
+            result[maincode]['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', maincaption + ' (' + mainunit + ')')
         
         # Update nodes
         for bus, node in self.power_nodes_inverted.items():

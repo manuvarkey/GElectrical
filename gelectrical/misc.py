@@ -826,6 +826,11 @@ class ReferenceCounter:
 
 ## GLOBAL METHODS
 
+def pprint(variable):
+    """Pretty print for debug purposes"""
+    import json
+    print(json.dumps(variable, indent=2))
+
 def get_user_input_text(parent, message, title='', oldval=None, multiline=False):
     '''Gets a single user input by diplaying a dialog box
     
@@ -1038,19 +1043,19 @@ def update_fields_dict(reffields_dict, newfields_dict):
 ELEMENT_FIELD = 0
 ELEMENT_RESULT = 1
 
-def elements_to_table(elements, col_codes, col_captions, code_sources):
+def elements_to_table(elements, col_codes, col_captions, code_sources, table_class=None):
     table = dict()
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     # Add unit line
     table['Sl.No.'] = ['']
     for col_caption in col_captions:
         table[col_caption] = ['']
-    table['Type'] = ['']
+    table['Item Class'] = ['']
     # Add elements
     index = 1
     for element in elements:
         table['Sl.No.'].append(index)
-        table['Type'].append(element.name)
+        table['Item Class'].append(element.name)
         for col_code, col_caption, code_source in zip(col_codes, col_captions, code_sources):
             # Select table
             if code_source == ELEMENT_FIELD:
@@ -1076,8 +1081,7 @@ def elements_to_table(elements, col_codes, col_captions, code_sources):
             else:
                 table[col_caption].append('')
         index += 1
-    print(table)
-    return pd.DataFrame(table).to_html(index=False, escape=False)
+    return pd.DataFrame(table).to_html(index=False, escape=False, classes=table_class)
     
 def fields_to_table(fields):
     table = {'Sl.No.':[], 'Description': [], 'Value': [], 'Unit': []}
@@ -1101,7 +1105,7 @@ def fields_to_table(fields):
             else:
                 table['Value'].append(field['value'][0].replace('\n','</br>'))
         index += 1
-    return pd.DataFrame(table).to_html(index=False, escape=False)
+    return pd.DataFrame(table).to_html(index=False, escape=False, classes='element_fields')
     
 def get_uid():
     """Get unique id as identifier"""

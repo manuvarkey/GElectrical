@@ -585,6 +585,8 @@ class ProjectModel:
         element_refs = dict()
         element_tables = dict()
         element_lines = []
+        element_loads = []
+        element_switches = []
         loadprofile_captions_used = set()
         base_elements = self.networkmodel.base_elements
         # First pass add all required elements
@@ -594,13 +596,16 @@ class ProjectModel:
                 element_refs[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)
                 
-                
-                
-            if model.code in ['element_line', 'element_line_cable']: #TODO
+            # Lines
+            if model.code in ['element_line', 'element_line_cable']:
                 element_lines.append(model)
-                
-                
-                
+            # Loads
+            if model.code in ['element_load']:
+                element_loads.append(model)
+            # Switches
+            if model.code in ['element_switch', 'element_circuitbreaker']:
+                element_switches.append(model)
+            
             if model.code == 'element_load' and model.fields['load_profile']['value'] in self.loadprofiles:
                 loadprofile_captions_used.add(model.fields['load_profile']['value'])
         # Second pass for adding assmebly details
@@ -627,14 +632,34 @@ class ProjectModel:
         element_tables = {key:element_tables[key] for key in element_captions}
                                  
         # BOQ
+        boq_tables = dict()
+        boq_captions = dict()
         E = misc.ELEMENT_FIELD
         R = misc.ELEMENT_RESULT
-        col_codes = ['ref', 'name', 'designation', 'length_km', 'loading_percent']
-        col_captions = ['Reference', 'Name', 'Designation',  'Length', '% Loading']
-        code_sources = [E,E,E,E,R]
-        boq_lines_table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources)
-        boq_tables = {'boq_lines': boq_lines_table}
-        boq_captions = {'boq_lines': 'Lines and series impedences'}
+        # Lines
+        if element_lines:
+            col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent', 'pl_mw,ql_mvar']
+            col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', 'P loss, Q loss']
+            code_sources = [E,E,E,E,E,E,E,E,E,R,R]
+            table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines')
+            boq_tables['boq_lines'] = table
+            boq_captions['boq_lines'] = 'Lines'
+        # Loads
+        if element_loads:
+            col_codes = ['ref', 'name', 'sn_mva', 'cos_phi', 'mode', 'in_service', 'load_profile']
+            col_captions = ['Reference', 'Name', 'Rated power', 'PF', 'Inductive ?', 'In Service ?', 'Load Profile']
+            code_sources = [E,E,E,E,E,E,E]
+            table = misc.elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads')
+            boq_tables['element_loads'] = table
+            boq_captions['element_loads'] = 'Loads'
+        # Switches
+        if element_switches:
+            col_codes = ['ref', 'type', 'poles', 'Un', 'In', 'closed']
+            col_captions = ['Reference', 'Type', 'Poles', 'Un', 'In', 'Closed']
+            code_sources = [E,E,E,E,E,E]
+            table = misc.elements_to_table(element_switches, col_codes, col_captions, code_sources, 'boq_switches')
+            boq_tables['element_switches'] = table
+            boq_captions['element_switches'] = 'Switches'
         
         # Load profiles
         loadprofile_captions = {key:self.loadprofiles[key][0] for key in loadprofile_captions_used}
