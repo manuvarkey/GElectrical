@@ -46,7 +46,7 @@ class Reference(ElementModel):
         self.model_width = 0
         self.model_height = 0
         self.ports = [(3,0), (3,6)]
-        self.fields = {'ref':     self.get_field_dict('str', 'Reference Code', '', 'X?'),
+        self.fields = {'ref':     self.get_field_dict('str', 'Reference Code', '', 'CR?'),
                        'sheet':    self.get_field_dict('str', 'Sheet Reference', '', '1'),
                        'title':     self.get_field_dict('str', 'Title', '', ''),
                        'sub_title':     self.get_field_dict('str', 'Sub Title', '', ''),}
@@ -105,7 +105,7 @@ class ReferenceBox(Reference):
         self.icon = misc.abs_path('icons', 'reference_box.svg')
         self.model_width = 0
         self.model_height = 0
-        self.fields = {'ref':       self.get_field_dict('str', 'Reference Code', '', 'X?'),
+        self.fields = {'ref':       self.get_field_dict('str', 'Reference Code', '', 'CR?'),
                        'sheet':     self.get_field_dict('str', 'Sheet Reference', '', '1'),
                        'title':     self.get_field_dict('str', 'Title', '', ''),
                        'sub_title': self.get_field_dict('str', 'Sub Title', '', ''),

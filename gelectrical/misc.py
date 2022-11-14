@@ -22,7 +22,7 @@
 #  
 #  
 
-import subprocess, threading, os, posixpath, platform, logging, math, cairo, copy
+import subprocess, threading, os, posixpath, platform, logging, math, cairo, copy, time, pathlib
 from uuid import uuid4 as uuid
 from urllib.parse import urlparse
 from urllib.request import url2pathname
@@ -309,7 +309,7 @@ class SpreadsheetDialog:
         column_row.set_min_width(50)
         column_row.set_fixed_width(50)
         cell_row.props.wrap_width = 50
-        cell_row.props.background = MEAS_COLOR_LOCKED
+        cell_row.props.background = COLOR_INACTIVE
         self.cells.append(cell_row)
         self.columns.append(column_row)
         self.tree.append_column(column_row)

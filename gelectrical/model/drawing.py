@@ -535,7 +535,7 @@ class DrawingModel:
         for elno, element in enumerate(self.elements):
             # If reference not linked display error
             if element.code in misc.REFERENCE_CODES:
-                if element.fields['ref']['value'] in ('?', 'X?'):
+                if element.fields['ref']['value'] in ('', '?', 'CR?'):
                     element.draw_schem_color = misc.COLOR_SELECTED_WARNING
                 else:
                     element.draw_schem_color = misc.COLOR_NORMAL

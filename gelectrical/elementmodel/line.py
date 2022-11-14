@@ -18,7 +18,7 @@
 #  
 # 
 
-import os, cairo, math
+import os, cairo, math, copy
 from gi.repository import PangoCairo
 
 # local files import
@@ -753,3 +753,14 @@ class LTCableIEC(Line):
         self.fields['armour_sc_current_rating']['value'] = round(armour_sc_current_rating/1000, 3)
         self.fields['ext_cpe_sc_current_rating']['value'] = round(ext_cpe_sc_current_rating/1000, 3)
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000,3)
+
+    def set_model(self, model, gid=None):
+            """Set storage model"""
+            if model['code'] == self.code:
+                self.x = model['x']
+                self.y = model['y']
+                self.orientation = model['orientation']
+                self.ports = copy.deepcopy(model['ports'])
+                for code in self.fields:
+                    self.set_text_field_value(code, model['fields'][code]['value'])
+                self.gid = gid

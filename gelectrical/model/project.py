@@ -522,11 +522,11 @@ class ProjectModel:
             if code in misc.REFERENCE_CODES:
                 ref = model.fields['ref']['value']
                 try:
-                    count = int(ref.lstrip('X'))
+                    count = int(ref.lstrip('CR'))
                     counter = max(counter, count+1)
                 except:
                     pass
-        return 'X' + str(counter)
+        return 'CR' + str(counter)
     
     def link_references(self, base_ref, selected_dict):
         """Link reference items"""
@@ -534,7 +534,7 @@ class ProjectModel:
         selected_element = copy.deepcopy(self.drawing_models[selected_page][selected_slno])
         
         reference = selected_element.fields['ref']['value']
-        if reference in ('X?','?'):
+        if reference in ('', '?', 'CR?'):
             reference = self.get_reference_code()
         sheet = str(selected_page + 1)
         title = selected_element.fields['title']['value']
