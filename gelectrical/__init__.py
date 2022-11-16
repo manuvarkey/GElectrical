@@ -1014,7 +1014,7 @@ class MainApp(Gtk.Application):
     def on_help(self, action, param):
         """Launch help file"""
         log.info('onHelpClick - Launch Help file')
-        misc.open_file('https://kavilgroup.com/', abs=False)
+        misc.open_file('https://github.com/manuvarkey/GElectrical', abs=False)
         
     def on_new(self, action, param):
         log.info('MainApp - Raise new window')

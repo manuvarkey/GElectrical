@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>com.kavilgroup.gelectrical.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>GEstimator</name>
+  <summary>Civil Estimation Software</summary>
+  <description>
+    <p>
+      GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Program is in early development with following features currently implemented/ in active developmnet.
+    * Schematic capture.
+    * Network generation from schematic.
+    * Power flow analysis.
+    * Voltage drop analysis.
+    * Short circuit analysis.
+    * Print and export of drawings to pdf.
+    * Generation of analysis reports.
+    </p>
+  </description>
+  <url type="homepage">https://github.com/manuvarkey/GElectrical</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1-beta-1.png</image>
+    </screenshot>
+    <screenshot type="source">
+      <image>https://raw.githubusercontent.com/manuvarkey/GEstimator/master/screenshots/1-beta-2.png</image>
+    </screenshot>
+  </screenshots>
+  <update_contact>manuvarkey@gmail.com</update_contact>
+  <project_group>Office</project_group>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release date="2022-11-16" version="1-beta-1" />
+  </releases>
+</component>
