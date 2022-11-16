@@ -26,7 +26,6 @@ import logging, copy, datetime, io
 from gi.repository import Gtk, Gdk
 import cairo
 from jinja2 import Environment, FileSystemLoader
-from tabulate import tabulate
 from weasyprint import HTML, CSS
 
 # local files import
