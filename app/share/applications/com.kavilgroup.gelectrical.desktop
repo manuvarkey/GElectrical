@@ -2,7 +2,7 @@
 Type=Application
 Name=GElectrical
 Comment=GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.
-Exec=/app/bin/gelectrical.py %U
+Exec=/app/bin/gelectrical_launcher.py %U
 StartupNotify=true
 Icon=com.kavilgroup.gelectrical
 MimeType=application/gepro;

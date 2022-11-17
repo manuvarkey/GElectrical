@@ -3,8 +3,8 @@
   <id>com.kavilgroup.gelectrical.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
-  <name>GEstimator</name>
-  <summary>Civil Estimation Software</summary>
+  <name>GElectrical</name>
+  <summary>Electrical distribution network design and analysis</summary>
   <description>
     <p>
       GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Program is in early development with following features currently implemented/ in active developmnet.
@@ -23,7 +23,7 @@
       <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1-beta-1.png</image>
     </screenshot>
     <screenshot type="source">
-      <image>https://raw.githubusercontent.com/manuvarkey/GEstimator/master/screenshots/1-beta-2.png</image>
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1-beta-2.png</image>
     </screenshot>
   </screenshots>
   <update_contact>manuvarkey@gmail.com</update_contact>

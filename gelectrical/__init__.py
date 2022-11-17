@@ -33,7 +33,7 @@ gi.require_version('PangoCairo', '1.0')
 from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 
 # local files import
-from . import misc, undo
+from . import undo, misc, model, view, elementmodel
 from .misc import group
 from .model import drawing
 from .elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference

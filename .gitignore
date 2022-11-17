@@ -1,5 +1,10 @@
 
 *.pyc
+*.glade~
 old/*
 reference/*
-*.glade~
+.flatpak-builder/*
+build-dir/*
+repo/*
+gelectrical.flatpak
+

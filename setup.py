@@ -12,7 +12,7 @@ setup(
     author_email="manuvarkey@gmail.com",
 
     # Packages
-    packages = ['gelectrical']
+    packages = ['gelectrical'],
     include_package_data = True, # Include additional files into the package
 
     # Details
