@@ -925,6 +925,10 @@ def uri_to_file(uri):
 def abs_path(*args):
     """Returns absolute path to the relative path provided"""
     return os.path.join(os.path.split(__file__)[0],*args)
+    
+def dir_from_path(path):
+    """Returns directory path from file path"""
+    return os.path.dirname(path)
 
 def posix_path(*args):
     """Returns platform independent filename"""

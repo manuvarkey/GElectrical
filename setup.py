@@ -12,7 +12,7 @@ setup(
     author_email="manuvarkey@gmail.com",
 
     # Packages
-    packages = ['gelectrical'],
+    packages = ['gelectrical', 'gelectrical.model', 'gelectrical.view', 'gelectrical.elementmodel'],
     include_package_data = True, # Include additional files into the package
 
     # Details
@@ -24,7 +24,7 @@ setup(
 
     long_description= 'GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.',
     
-    install_requires=["appdirs", "openpyxl", "pandapower", "pandas", "matplotlib", "jinja2", "weasyprint", "pycairo", "PyGObject"],
+    install_requires=["appdirs", "openpyxl", "numpy", "numba", "networkx", "pandapower", "pandas", "matplotlib", "jinja2", "weasyprint", "pycairo", "PyGObject"],
     
     classifiers=[
           'Development Status :: 4 - Beta',

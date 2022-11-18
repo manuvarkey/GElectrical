@@ -529,12 +529,11 @@ class MainWindow():
                 progress.set_fraction(1)
                 progress.add_message('<b>Analysis run Successfully</b>')
                 progress.pulse(end=True)
-                
             else:
                 raise RuntimeError("Diagnostics run returned critical errors. Please see <i>Warnings</i> pane.")
         
         if self.filename:
-            ana_folder_path = misc.posix_path(os.path.split(self.filename)[0])
+            ana_folder_path = misc.dir_from_path(self.filename)
         else:
             ana_folder_path = None
         sim_settings = self.project.get_project_fields(page='Simulation')

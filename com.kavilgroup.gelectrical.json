@@ -7,7 +7,8 @@
     "finish-args": [
            "--socket=wayland",
            "--socket=fallback-x11",
-           "--share=ipc"
+           "--share=ipc",
+           "--filesystem=host"
     ],
     "modules": [
         {
@@ -121,7 +122,17 @@
                     "only-arches": [
                         "x86_64"
                     ]
-                }
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/14/27/1468111538f33bd9fb13c0b2c1534c7a487cec8fadf14e318d73be18e4e1/llvmlite-0.39.1.tar.gz",
+                    "sha256": "b43abd7c82e805261c425d50335be9a6c4f84264e34d6d6e475207300005d572"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/e2/1e/de917b683bb5f0b6078fb1397293eab84c4eaa825fbf94d73d6488eb354f/numba-0.56.4.tar.gz",
+                    "sha256": "32d9fef412c81483d7efe0ceb6cf4d3310fde8b624a9cecca00f790573ac96ee"
+                }  
             ]
         },
         {

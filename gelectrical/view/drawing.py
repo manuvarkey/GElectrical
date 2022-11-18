@@ -96,7 +96,7 @@ class DrawingView:
             self.program_state['mode'] = misc.MODE_DEFAULT
             if self.on_end_callback:
                 self.on_end_callback()
-            self.drawing_area.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
+            self.drawing_area.get_window().set_cursor(None)
             
         elif mode == misc.MODE_SELECTION:
             self.program_state['mode'] = misc.MODE_SELECTION
@@ -290,8 +290,9 @@ class DrawingView:
     def on_button_press(self, w, e):
         """Handle button press events"""
         self.drawing_area.grab_focus()  # Grab focus
-        if e.type == Gdk.EventType.BUTTON_PRESS \
-            and e.button == MouseButtons.MIDDLE_BUTTON:
+        if (e.type == Gdk.EventType.BUTTON_PRESS \
+            and e.button == MouseButtons.MIDDLE_BUTTON) \
+            or e.type == Gdk.EventType._2BUTTON_PRESS :
             
             if self.get_mode() == misc.MODE_ADD_WIRE:
                 # Check for any nearby port
@@ -309,6 +310,8 @@ class DrawingView:
                 else:
                     self.drawing_model.reset_wire_points()
                     self.set_mode(misc.MODE_DEFAULT)  # End wire
+            else:
+                self.set_mode(misc.MODE_DEFAULT)
                     
         elif e.type == Gdk.EventType.BUTTON_PRESS \
             and e.button == MouseButtons.LEFT_BUTTON:
