@@ -7,14 +7,16 @@
   <summary>Electrical distribution network design and analysis</summary>
   <description>
     <p>
-      GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Program is in early development with following features currently implemented/ in active developmnet.
-    * Schematic capture.
-    * Network generation from schematic.
-    * Power flow analysis.
-    * Voltage drop analysis.
-    * Short circuit analysis.
-    * Print and export of drawings to pdf.
-    * Generation of analysis reports.
+      GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Program is in early development with following features currently implemented in active developmnet.
+      <ul>
+        <li>Schematic capture.</li>
+        <li>Network generation from schematic.</li>
+        <li>Power flow analysis.</li>
+        <li>Voltage drop analysis.</li>
+        <li>Short circuit analysis.</li>
+        <li>Print and export of drawings to pdf.</li>
+        <li>Generation of analysis reports.</li>
+      </ul>
     </p>
   </description>
   <url type="homepage">https://github.com/manuvarkey/GElectrical</url>
