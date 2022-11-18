@@ -15,7 +15,7 @@
 !define UPDATEURL "http://github.com/manuvarkey/GElectrical/" # "Product Updates" link
 !define ABOUTURL "http://kavilgroup.com" # "Publisher" link
 # This is the size (in kB) of all the files copied into "Program Files"
-!define INSTALLSIZE 100000
+!define INSTALLSIZE 321000
  
 # RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
  
