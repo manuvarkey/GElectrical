@@ -26,6 +26,8 @@ Python Modules:
 * undo - Included along with distribution.
 * appdirs (v1.4.4) - Not included
 * openpyxl - Not included
+* mako - Not included
+* numba - Not included
 * pandapower (v2.10.1) - Not included
 * numpy - Not included
 * pandas - Not included

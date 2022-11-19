@@ -50,6 +50,7 @@ INFO = 0
 # Defalt colors for models
 COLOR_NORMAL = '#000000'
 COLOR_INACTIVE = '#888a85'
+COLOR_OVERLAY = '#ad7fa8AA'
 COLOR_GRID = '#e9b96e80'
 COLOR_SELECTED = '#729fcf'
 COLOR_SELECTED_WARNING = '#cc0000'
@@ -106,6 +107,7 @@ REPORT_FONT_SIZE = 10
 
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
 LOADPROFILE_CODES = ('element_load', 'element_staticgenerator', 'element_async_motor')
+DISPLAY_ELEMENT_CODES = ('element_display_node', )
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
                         'load_prof_2': ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
                         'load_prof_3': ['80% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.8,0.8]}]],

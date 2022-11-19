@@ -36,7 +36,7 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 from . import undo, misc, model, view, elementmodel
 from .misc import group
 from .model import drawing
-from .elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference
+from .elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference, displayelements
 from .model.project import ProjectModel
 from .view.drawing import DrawingSelectionDialog
 from .view.field import FieldView, FieldViewDialog
@@ -443,7 +443,7 @@ class MainWindow():
         self.project.edit_loadprofiles()
         
     def on_run_analysis(self, widget):
-        """Export project to spreadsheet"""
+        """Export project data"""
 
         def exec_func(progress, settings):
             progress.add_message('Building Base Model...')
@@ -759,6 +759,7 @@ class MainWindow():
         self.program_state['element_models'][generator.Generator().code] = generator.Generator
         self.program_state['element_models'][generator.StaticGenerator().code] = generator.StaticGenerator
         self.program_state['element_models'][generator.Motor().code] = generator.Motor
+        self.program_state['element_models'][displayelements.DisplayElementNode().code] = displayelements.DisplayElementNode
                 
         # Fill in default values
         self.program_state['mode'] = misc.MODE_DEFAULT
@@ -823,19 +824,20 @@ class MainWindow():
             name = model_obj.name
             group = model_obj.group
             icon_path = model_obj.icon
-            icon = Gtk.Image.new_from_file(icon_path)
-            icon.set_size_request(40, 40)
-            caption = Gtk.Label(name, xalign=0)
-            hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-            hbox.pack_start(icon, False, False, 12)
-            hbox.pack_start(caption, True, True, 12)
-            row = Gtk.ListBoxRow()
-            row.props.name = code
-            row.set_activatable(True)
-            row.add(hbox)
-            self.draw_element_groups[code] = group
-            self.draw_element_names[code] = name
-            self.draw_element_listbox.add(row)
+            if group and name and icon_path:
+                icon = Gtk.Image.new_from_file(icon_path)
+                icon.set_size_request(40, 40)
+                caption = Gtk.Label(name, xalign=0)
+                hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+                hbox.pack_start(icon, False, False, 12)
+                hbox.pack_start(caption, True, True, 12)
+                row = Gtk.ListBoxRow()
+                row.props.name = code
+                row.set_activatable(True)
+                row.add(hbox)
+                self.draw_element_groups[code] = group
+                self.draw_element_names[code] = name
+                self.draw_element_listbox.add(row)
         self.draw_element_listbox.show_all()
         
         # Setup field views
@@ -939,7 +941,7 @@ class MainApp(Gtk.Application):
         if len(files) > 0:
             filename = files[0].get_path()
             self.window.open_project(filename)
-            log.info('MainApp - do_open - call_open - opened file ' + filename)
+            log.info('MainApp - do_open - opened file ' + filename)
         log.info('MainApp - do_open  - End')
         return 0
     
@@ -950,6 +952,7 @@ class MainApp(Gtk.Application):
         if len(options) > 1:
             filename = misc.uri_to_file(options[1])
             self.window.open_project(filename)
+            log.info('MainApp - do_command_line - opened file ' + filename)
         log.info('MainApp - do_command_line - End')
         return 0
         

@@ -420,8 +420,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-in-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -437,8 +437,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-out-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1206,17 +1206,6 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
           <packing>
             <property name="pack-type">end</property>
             <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkStackSwitcher" id="stack_switcher">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="stack">stack_draw</property>
-          </object>
-          <packing>
-            <property name="pack-type">end</property>
-            <property name="position">4</property>
           </packing>
         </child>
         <child>

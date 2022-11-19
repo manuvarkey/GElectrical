@@ -20,4 +20,4 @@
 #  
 #  
 
-from . import element, elementassembly, template, switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference
+from . import element, elementassembly, template, switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference, displayelements
