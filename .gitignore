@@ -7,4 +7,6 @@ reference/*
 build-dir/*
 repo/*
 gelectrical.flatpak
+build/*
+dist/*
 
