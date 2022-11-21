@@ -52,10 +52,8 @@ class DisplayElementNode(ElementModel):
     
     def render_element(self, context):
         """Render element to context"""
-        self.draw_schem_color = misc.COLOR_OVERLAY
-        self.render_model(context, self.schem_model)
-        self.draw_schem_color = misc.COLOR_NORMAL
-        self.render_text(context, self.text_model)
+        self.render_model(context, self.schem_model, color=misc.COLOR_OVERLAY_BG)
+        self.render_text(context, self.text_model, color=misc.COLOR_OVERLAY_TEXT)
         # Post processing
         self.modify_extends()
         

@@ -435,6 +435,12 @@ class MainWindow():
     def on_draw_delete(self, button=None):
         """Delete selected item"""
         self.project.drawing_view.delete_selected()
+
+    def on_draw_clear_results(self, button=None):
+        """Clear project results"""
+        self.project.clear_results()
+        self.update()
+        self.display_status(misc.INFO, "Analysis results cleared.")
     
     def on_new_tab(self, button):
         self.project.append_page()

@@ -587,7 +587,7 @@ class PandaPowerModel:
             mainunit = ''
             ylimits_min = []
             ylimits_max = []
-            for code, element_id, caption, unit, decimal, modfunc in data:
+            for code, element_id, caption, unit, decimal, modfunc, modcode in data:
                 values = []
                 table_code = 'res_' + table + '.' + code
                 for time_index in time_steps:
@@ -608,7 +608,7 @@ class PandaPowerModel:
                 maintitle += title + '\n'
                 maincaption += caption + ', '
                 mainunit += unit + ', '
-                maincode += code + ','
+                maincode += modcode + ','
             
             maintitle = maintitle.strip('\n') if len(data) > 1 else 'max: {}, min: {}, avg: {}'.format(val_max, val_min, val_avg)
             maincaption = maincaption.strip(', ')
@@ -619,6 +619,34 @@ class PandaPowerModel:
             result[maincode] = misc.get_field_dict('graph', maincaption, mainunit, graph_model, decimal=decimal)
             result[maincode]['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', maincaption + ' (' + mainunit + ')')
         
+        def set_graph_data_stats(result, table, data, fields=['avg']):
+            model = []
+            for (code, element_id, caption, unit, decimal, modfunc, modcode) in data:
+                values = []
+                table_code = 'res_' + table + '.' + code
+                for time_index in time_steps:
+                    if modfunc:
+                        value = modfunc(ow.np_results[table_code][time_index][element_id])
+                    else:
+                        value = ow.np_results[table_code][time_index][element_id]
+                    values.append(value)
+                
+                if 'avg' in fields:
+                    val_avg = round(sum(values)/len(values), decimal)
+                    subcode = modcode + ':avg'
+                    subcaption = caption + ' (avg)'
+                    result[subcode] = misc.get_field_dict('float', subcaption, unit, val_avg, decimal=decimal)
+                if 'max' in fields:
+                    val_max = round(max(values), decimal)
+                    subcode = modcode + ':max'
+                    subcaption = caption + ' (max)'
+                    result[subcode] = misc.get_field_dict('float', subcaption, unit, val_max, decimal=decimal)
+                if 'min' in fields:
+                    val_min = round(min(values), decimal)
+                    subcode = modcode + ':min'
+                    subcaption = caption + ' (min)'
+                    result[subcode] = misc.get_field_dict('float', subcaption, unit, val_min, decimal=decimal)
+
         # Update nodes
         for bus, node in self.power_nodes_inverted.items():
             if node in self.node_results:
@@ -627,7 +655,8 @@ class PandaPowerModel:
                 node_result = dict()
                 self.node_results[node] = node_result
             modfunc = lambda x: 100-x*100
-            set_graphdata(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc]])
+            set_graphdata(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']])
+            set_graph_data_stats(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']], fields=['max', 'avg'])
             
         # Update elements
         for e_code, element in self.base_elements.items():
@@ -643,46 +672,46 @@ class PandaPowerModel:
                 
                 # Populate element results
                 if elementcode in ['ext_grid','load','sgen','shunt','ward','sward','storage']:
-                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None],
-                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
+                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
                 elif elementcode == 'trafo':
-                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None],
-                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None],
-                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
+                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
+                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                 elif elementcode == 'trafo3w':
-                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None],
-                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['p_mv_mw', element_id, 'P MV', 'MW', 4, None],
-                                                                ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None],
-                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
+                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
+                    set_graphdata(element_result, elementcode, [['p_mv_mw', element_id, 'P MV', 'MW', 4, None, 'p_mv_mw'],
+                                                                ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
+                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                 elif elementcode == 'gen':
-                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None],
-                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['vm_pu', element_id, 'V', 'pu', 3, None]])
-                    set_graphdata(element_result, elementcode, [['va_degree', element_id, 'V angle', 'degree', 1, None]])
+                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
+                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
+                    set_graphdata(element_result, elementcode, [['vm_pu', element_id, 'V', 'pu', 3, None, 'vm_pu']])
+                    set_graphdata(element_result, elementcode, [['va_degree', element_id, 'V angle', 'degree', 1, None, 'va_degree']])
                 elif elementcode in ['impedence','dcline']:
-                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None],
-                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None],
-                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
+                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
+                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
+                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
+                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
                 elif elementcode in ['line']:
-                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None],
-                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None],
-                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None]])
-                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None]])
+                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
+                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
+                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
+                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
+                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                    set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                 
         log.info('PandaPowerModel - run_powerflow - calculation run')
     
