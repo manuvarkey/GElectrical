@@ -704,7 +704,8 @@ class ProjectModel:
             col_codes = ['ref', 'name', 'sn_mva', 'cos_phi', 'mode', 'in_service', 'load_profile']
             col_captions = ['Reference', 'Name', 'Rated power', 'PF', 'Inductive ?', 'In Service ?', 'Load Profile']
             code_sources = [E,E,E,E,E,E,E]
-            table = misc.elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads')
+            table = misc.elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads',
+                                           show_element_class=False)
             boq_tables['element_loads'] = table
             boq_captions['element_loads'] = 'Loads'
         # Switches
@@ -712,9 +713,19 @@ class ProjectModel:
             col_codes = ['ref', 'type', 'poles', 'Un', 'In', 'closed']
             col_captions = ['Reference', 'Type', 'Poles', 'Un', 'In', 'Closed']
             code_sources = [E,E,E,E,E,E]
-            table = misc.elements_to_table(element_switches, col_codes, col_captions, code_sources, 'boq_switches')
+            table = misc.elements_to_table(element_switches, col_codes, col_captions, code_sources, 'boq_switches',
+                                           show_element_class=False)
             boq_tables['element_switches'] = table
             boq_captions['element_switches'] = 'Switches'
+         # Nodes
+        if element_nodes:
+            col_codes = ['ref', 'vn_kv', 'delv_perc:max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
+            col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (L-G, max)', 'Isc (L-G, min)']
+            code_sources = [E,R,R,R,R,R,R]
+            table = misc.elements_to_table(element_nodes, col_codes, col_captions, code_sources, 'boq_nodes',
+                                           show_slno=False, show_element_class=False)
+            boq_tables['element_nodes'] = table
+            boq_captions['element_nodes'] = 'Nodes'
         
         # Load profiles
         loadprofile_captions = {key:self.loadprofiles[key][0] for key in loadprofile_captions_used}

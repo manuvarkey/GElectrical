@@ -1050,19 +1050,24 @@ def update_fields_dict(reffields_dict, newfields_dict):
 ELEMENT_FIELD = 0
 ELEMENT_RESULT = 1
 
-def elements_to_table(elements, col_codes, col_captions, code_sources, table_class=None):
+def elements_to_table(elements, col_codes, col_captions, code_sources, table_class=None, 
+                      show_slno=True, show_element_class=True):
     table = dict()
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     # Add unit line
-    table['Sl.No.'] = ['']
+    if show_slno:
+        table['Sl.No.'] = ['']
     for col_caption in col_captions:
         table[col_caption] = ['']
-    table['Item Class'] = ['']
+    if show_element_class:
+        table['Item Class'] = ['']
     # Add elements
     index = 1
     for element in elements:
-        table['Sl.No.'].append(index)
-        table['Item Class'].append(element.name)
+        if show_slno:
+            table['Sl.No.'].append(index)
+        if show_element_class:
+            table['Item Class'].append(element.name)
         for col_code, col_caption, code_source in zip(col_codes, col_captions, code_sources):
             # Select table
             if code_source == ELEMENT_FIELD:
