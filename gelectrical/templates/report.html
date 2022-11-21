@@ -1,8 +1,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Report</title>
-    <meta name="description" content="Report">
+    <title>{{gen_variables['doc_title']|e}}</title>
+    <meta name=author content="{{gen_variables['doc_author']|e}}">
+    <meta name=description content="{{gen_variables['doc_subject']|e}}">
+    <meta name=dcterms.created content="{{gen_variables['doc_create_date']}}">
+    <meta name=dcterms.modified content="{{gen_variables['doc_mod_date']}}">
+    <meta name=generator content="{{gen_variables['doc_creator']|e}}">
+    <html lang=lang content="{{gen_variables['doc_lang']|e}}">
   </head>
 
   <body>

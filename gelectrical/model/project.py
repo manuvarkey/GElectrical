@@ -614,13 +614,19 @@ class ProjectModel:
         env = Environment(loader=FileSystemLoader(template_path))
         
         # General variables
-        program_version = 'v' + misc.PROGRAM_VER
         project_settings = self.get_project_fields()
         gen_variables = {'program_version'        : 'v' + misc.PROGRAM_VER,
                          'project_name'           : project_settings['project_name']['value'],
                          'drawing_field_approved' : project_settings['drawing_field_approved']['value'],
                          'drawing_field_dept'     : project_settings['drawing_field_dept']['value'],
-                         'drawing_field_address'  : project_settings['drawing_field_address']['value'].replace('\n','</br>')}
+                         'drawing_field_address'  : project_settings['drawing_field_address']['value'].replace('\n','</br>'),
+                         'doc_title': project_settings['project_name']['value'],
+                         'doc_author': project_settings['drawing_field_approved']['value'],
+                         'doc_subject': "Project Report",
+                         'doc_lang': project_settings['drawing_field_lang']['value'],
+                         'doc_creator':misc.PROGRAM_NAME + ' v' + misc.PROGRAM_VER,
+                         'doc_create_date': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
+                         'doc_mod_date': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()}
         
         # Elements
         element_captions = dict()
@@ -629,15 +635,18 @@ class ProjectModel:
         element_lines = []
         element_loads = []
         element_switches = []
+        element_nodes = []
         loadprofile_captions_used = set()
+        self.networkmodel.setup_base_elements()
         base_elements = self.networkmodel.base_elements
         # First pass add all required elements
         for key, model in base_elements.items():
-            if 'ref' in model.fields and (model.code not in misc.REFERENCE_CODES) and (model.code != 'element_assembly'):
+            if 'ref' in model.fields and (model.code not in misc.REFERENCE_CODES)\
+                 and (model.code not in misc.DISPLAY_ELEMENT_CODES)\
+                 and (model.code != 'element_assembly'):
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)
-                
             # Lines
             if model.code in ['element_line', 'element_line_cable']:
                 element_lines.append(model)
@@ -647,9 +656,13 @@ class ProjectModel:
             # Switches
             if model.code in ['element_switch', 'element_circuitbreaker']:
                 element_switches.append(model)
-            
-            if model.code == 'element_load' and model.fields['load_profile']['value'] in self.loadprofiles:
+            # Nodes
+            if model.code in misc.DISPLAY_ELEMENT_CODES:
+                element_nodes.append(model)
+            # Loads
+            if model.code in misc.LOADPROFILE_CODES and model.fields['load_profile']['value'] in self.loadprofiles:
                 loadprofile_captions_used.add(model.fields['load_profile']['value'])
+
         # Second pass for adding assmebly details
         for key, model in base_elements.items():
             if model.code == 'element_assembly':
@@ -734,8 +747,10 @@ class ProjectModel:
         # First pass add all required elements
         for key, model in base_elements.items():
             if 'ref' in model.fields and (model.code not in misc.REFERENCE_CODES) and (model.code != 'element_assembly'):
-                ana_res_captions[str(key)+'_res'] = model.fields['ref']['value'] + ' - ' + model.name
-                ana_res_tables[str(key)+'_res'] = misc.fields_to_table(model.res_fields)
+                if model.res_fields:
+                    table = misc.fields_to_table(model.res_fields)
+                    ana_res_captions[str(key)+'_res'] = model.fields['ref']['value'] + ' - ' + model.name
+                    ana_res_tables[str(key)+'_res'] = misc.fields_to_table(model.res_fields)
         # Sort by reference
         ana_res_captions = dict(sorted(ana_res_captions.items(), key=lambda item:item[1]))
         ana_res_tables = {key:ana_res_tables[key] for key in ana_res_captions}
@@ -770,7 +785,7 @@ class ProjectModel:
         proj_fields = self.get_project_fields()
         surface.set_metadata(cairo.PDFMetadata.TITLE, proj_fields['project_name']['value'])
         surface.set_metadata(cairo.PDFMetadata.AUTHOR, proj_fields['drawing_field_approved']['value'])
-        surface.set_metadata(cairo.PDFMetadata.SUBJECT, 'Electrical schematic drawing')
+        surface.set_metadata(cairo.PDFMetadata.SUBJECT, 'Electrical Schematic Drawing')
         surface.set_metadata(cairo.PDFMetadata.CREATOR, misc.PROGRAM_NAME + ' v' + misc.PROGRAM_VER)
         surface.set_metadata(cairo.PDFMetadata.CREATE_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
         surface.set_metadata(cairo.PDFMetadata.MOD_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())

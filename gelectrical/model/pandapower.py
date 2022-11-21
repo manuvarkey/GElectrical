@@ -656,7 +656,7 @@ class PandaPowerModel:
                 self.node_results[node] = node_result
             modfunc = lambda x: 100-x*100
             set_graphdata(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']])
-            set_graph_data_stats(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']], fields=['max', 'avg'])
+            set_graph_data_stats(node_result, 'bus', [['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']], fields=['max'])
             
         # Update elements
         for e_code, element in self.base_elements.items():
