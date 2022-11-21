@@ -50,6 +50,7 @@ class NetworkModel:
         self.gnode_element_mapping_inverted = dict()  # Maps element -> [global_node1, ..]
         self.node_mapping = dict()  # Maps local_node -> global_node i.e. ('(page,element):port') -> global_node
         self.port_mapping = dict()  # Maps (page,x,y) -> global_node
+        self.port_mapping_inverted = dict()  # Maps global_node -> (page,x,y)
         
         # Graph variables
         self.graph = None
@@ -68,13 +69,14 @@ class NetworkModel:
         duplicate_ports_list = []
         cur_gnode_num = 0
         
-        # Populate self.port_mapping, self.virtual_global_nodes
+        # Populate self.port_mapping, self.port_mapping_inverted, self.virtual_global_nodes
         for k1, drawing_model in enumerate(self.drawing_models):
             for k2, element in enumerate(drawing_model.elements):
                 code = str((k1,k2))
                 nodes = element.get_nodes(code)
                 for (p0, ports) in nodes:
                     gnode = cur_gnode_num
+                    self.port_mapping_inverted[gnode] = set()
                     duplicate_ports = set()
                     if ports:
                         for port in ports:
@@ -85,6 +87,7 @@ class NetworkModel:
                                 map_port = port
                             # Populate data
                             self.port_mapping[map_port] = gnode
+                            self.port_mapping_inverted[gnode].add(map_port)
                             if len(ports) > 1:
                                 duplicate_ports.add(map_port)
                         if len(ports) > 1:
@@ -97,8 +100,10 @@ class NetworkModel:
         duplicate_ports_list_comb = self.combine_connected_nodes(duplicate_ports_list)
         for duplicate_ports in duplicate_ports_list_comb:
             gnode = cur_gnode_num
+            self.port_mapping_inverted[gnode] = set()
             for port in duplicate_ports:
                 self.port_mapping[port] = gnode
+                self.port_mapping_inverted[gnode].add(port)
             cur_gnode_num += 1
             
         # Populate self.node_mapping, self.global_nodes, self.gnode_element_mapping, self.gnode_element_mapping_inverted

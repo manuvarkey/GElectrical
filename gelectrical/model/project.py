@@ -80,7 +80,8 @@ class ProjectModel:
         # Initialise tab
         self.add_page_vanilla()
         self.drawing_notebook.connect("switch-page", self.on_switch_tab)
-        
+
+
     ## Functions
     
     def clear_status(self):
@@ -355,12 +356,54 @@ class ProjectModel:
             raise RuntimeError('ProjectModel - run_linetoground_sccalc - Power model not built')
         
     def update_results(self):
-        # Copy node data to element power model
+        """ Update analysis results"""
+
         if self.status['power_analysis']:
-            self.powermodel.update_results()
+            with group(self, "Update analysis results"):
+                # Clear results
+                self.clear_results()
+                # Update element results
+                self.powermodel.update_results()
+                # Add new node elements
+                ref_counter = 1
+                gid_ref_dict = dict()  # gid -> ref mapping
+                for k1, drawing_model in enumerate(self.drawing_models):
+                    page_gnodes = set()
+                    node_elements = []
+                    # Prepare node elements
+                    for k2, element in enumerate(drawing_model.elements):
+                        gnodes = self.networkmodel.gnode_element_mapping_inverted[(k1,k2)]
+                        for gnode in gnodes:
+                            if gnode not in page_gnodes and gnode in self.powermodel.node_results:
+                                if gnode in gid_ref_dict:
+                                    ref = str(gid_ref_dict[gnode])
+                                else:
+                                    gid_ref_dict[gnode] = ref_counter
+                                    ref = str(ref_counter)
+                                    ref_counter += 1
+                                # Select a port with coordinates (i.e. exclude reference ports)
+                                port = None
+                                for eport in self.networkmodel.port_mapping_inverted[gnode]:
+                                    if len(eport) == 3 and eport[0] == k1:
+                                        port = eport
+                                        break
+                                if port:
+                                    node_element = self.program_state['element_models']['element_display_node'](port[1:], ref)
+                                    node_element.res_fields = copy.deepcopy(self.powermodel.node_results[gnode])
+                                    node_elements.append(node_element)
+                                    page_gnodes.add(gnode)
+                    # Add node elements
+                    for element in node_elements:
+                        drawing_model.insert_element_at_index(element)
             log.info('ProjectModel - update_results - results updated')
+            self.drawing_view.refresh()
         else:
             log.info('ProjectModel - update_results - no results to update')
+
+    def clear_results(self):
+        """ Clear analysis results"""
+        for drawing_model in self.drawing_models:
+            drawing_model.clear_results()
         
     ## Model functions
     

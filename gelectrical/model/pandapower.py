@@ -741,16 +741,6 @@ class PandaPowerModel:
                     self.element_results[e_code] = element_result
                 (elementcode, element_id) = self.power_elements[e_code]
                 
-                # Add node related data to elements
-                for port_no, port_model in enumerate(element.get_nodes(str(e_code))):
-                    lnode = port_model[0]
-                    gnode = self.node_mapping[lnode]
-                    node_result = self.node_results[gnode]
-                    for code, field in node_result.items():
-                        code = 'port_' + str(port_no) + code
-                        element_result[code] = copy.deepcopy(field)
-                        element_result[code]['caption'] = '[' + str(port_no) + ']: ' + element_result[code]['caption']
-            
             elif element.code == 'element_busbar':
                 # Create/get element dict
                 if e_code in self.element_results:

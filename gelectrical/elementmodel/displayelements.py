@@ -36,17 +36,17 @@ log = logging.getLogger(__name__)
 
 class DisplayElementNode(ElementModel):
     """Class for rendering cross reference elements"""
-    def __init__(self, cordinates=(0,0)):
+    def __init__(self, cordinates=(0,0), ref=''):
         # Global
         ElementModel.__init__(self, cordinates)
         self.code = 'element_display_node'
-        self.name = 'Node Display Element'
+        self.name = 'Network Node'
         self.group = ''
         self.icon = ''
         self.model_width = 0
         self.model_height = 0
         self.ports = [(1,1)]
-        self.fields = {'ref':     self.get_field_dict('str', 'Reference Code', '', '45')}
+        self.fields = {'ref':     self.get_field_dict('str', 'Node ID', '', ref, inactivate=True)}
         self.text_model = [[(1,1-misc.SCHEM_FONT_SPACING/misc.M/2), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],]
         self.schem_model = [['RECT', (0,0), 2,2, True, []],]
     

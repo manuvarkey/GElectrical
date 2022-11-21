@@ -104,7 +104,8 @@ class DrawingModel:
         """Get storage model"""
         element_models = []
         for element in self.elements:
-            element_models.append(element.get_model())
+            if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                element_models.append(element.get_model())
         model = dict()
         model['fields'] = misc.get_fields_trunc(self.fields)
         model['elements'] = element_models
@@ -424,6 +425,17 @@ class DrawingModel:
     def delete_selected_rows(self):
         selected = self.get_selected_codes()
         self.delete_rows(selected)
+
+    def clear_results(self):
+        rows = []
+        for el_no, element in enumerate(self.elements):
+            # If display element, delete element
+            if element.code in misc.DISPLAY_ELEMENT_CODES:
+                rows.append(el_no)
+            # Else clear results
+            else:
+                element.res_fields = dict()
+        self.delete_rows(rows)
             
     ## Floating model functions
     
