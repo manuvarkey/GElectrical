@@ -94,7 +94,7 @@ class FieldView:
                         validated = 0
                     widget.set_text(str(validated))
             set_field(code, validated)  # set value
-            widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-ok')
+            widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             if field['alter_structure'] == True:
                 self.update_widgets()
             
@@ -137,7 +137,7 @@ class FieldView:
             field = get_field(code)
             text = widget.get_text()
             set_field(code, text)  # set value
-            widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-ok')
+            widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             if field['alter_structure'] == True:
                 self.update_widgets()
                 
@@ -148,19 +148,19 @@ class FieldView:
                 self.update_widgets()
                             
         def changed_callback(widget):
-            widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-cancel')
+            widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-error')
             
         def activate_callback_multiline(button, textbuffer, get_field, set_field, code):
             field = get_field(code)
             start, end =  textbuffer.get_bounds()
             text = textbuffer.get_text(start, end, False)
             set_field(code, text)  # set value
-            button.props.image.set_from_icon_name('dialog-ok', Gtk.IconSize.BUTTON)
+            button.props.image.set_from_icon_name(None, Gtk.IconSize.BUTTON)
             if field['alter_structure'] == True:
                 self.update_widgets()
             
         def changed_callback_multiline(textbuffer, textview, button):
-            button.props.image.set_from_icon_name('dialog-cancel', Gtk.IconSize.BUTTON)
+            button.props.image.set_from_icon_name('dialog-error', Gtk.IconSize.BUTTON)
                         
         # Add fields
         for code, field in self.fields.items():
@@ -201,7 +201,7 @@ class FieldView:
                         if field['max_chars']:
                             data_widget.set_max_length(field['max_chars'])
                         if field[self.inactivate_code] == False:
-                            data_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-ok')
+                            data_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
                             data_widget.connect("activate", activate_callback, get_field, set_field, code)
                             data_widget.connect("changed", changed_callback)
                         else:
@@ -221,7 +221,7 @@ class FieldView:
                     data_widget.props.editable = True
                     data_widget.props.cursor_visible = True
                     data_widget.set_size_request(-1,50)
-                    set_button = Gtk.Button.new_from_icon_name('dialog-ok', Gtk.IconSize.BUTTON)
+                    set_button = Gtk.Button.new_from_icon_name(None, Gtk.IconSize.BUTTON)
                     if field[self.inactivate_code] == False:
                         set_button.connect("clicked", activate_callback_multiline, text_buffer, get_field, set_field, code)
                         text_buffer.connect("changed", changed_callback_multiline, data_widget, set_button)
@@ -304,7 +304,7 @@ class FieldView:
                                 graphview.model.title = text
                             title_widget = Gtk.Entry()
                             title_widget.set_text(title)
-                            title_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-ok')
+                            title_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
                             title_widget.connect("activate", activate_callback_graphtitle, get_field, set_title, code)
                             title_widget.connect("changed", changed_callback)
                         else:
