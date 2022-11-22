@@ -297,14 +297,14 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkToolbar" id="on_run_analysis">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="toolbar-style">both-horiz</property>
+                    <property name="icon_size">4</property>
                     <child>
                       <object class="GtkToolButton" id="toolbutton_draw_add_tab">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Open &lt;u&gt;N&lt;/u&gt;ew Sheet</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes">Undo</property>
+                        <property name="label" translatable="yes">New Tab</property>
                         <property name="use-underline">True</property>
                         <property name="icon-name">tab-new-symbolic</property>
                         <signal name="clicked" handler="on_new_tab" swapped="no"/>
