@@ -42,7 +42,7 @@ class Grid(ElementModel):
                        'name':     self.get_field_dict('str', 'Name', '', 'EXTERNAL GRID'),
                        'vm_pu':    self.get_field_dict('float', 'Vm', 'pu', 1),
                        'va_degree':    self.get_field_dict('float', 'Vm<', 'degree', 0),
-                       'vn_kv':    self.get_field_dict('float', 'Vn', 'kv', 11),
+                       'vn_kv':    self.get_field_dict('float', 'Vn', 'kV', 11),
                        's_sc_max_mva':      self.get_field_dict('float', 'Ssc_max', 'MVA', 500),
                        's_sc_min_mva':      self.get_field_dict('float', 'Ssc_min', 'MVA', 100),
                        'rx_max':  self.get_field_dict('float', 'R/X max', '', 0.1),
