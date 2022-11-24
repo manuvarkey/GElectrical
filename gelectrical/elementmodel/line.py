@@ -529,7 +529,7 @@ class LTCableIEC(Line):
         Sph = self.fields['conductor_cross_section']['value']
         L = self.fields['length_km']['value']
         x_1 = self.fields['x_ohm_per_km']['value']
-        r_open = 1000
+        open_imp_value = 10000
         
         phase_material = self.fields['conductor_material']['value']
         phase_insulation = self.fields['insulation_material']['value']
@@ -564,20 +564,20 @@ class LTCableIEC(Line):
         # Impedence
         
         # Positive sequence
-        r_ph = r_open if Sph == 0 else resistivity_working_ph*10**6/Sph
+        r_ph = open_imp_value if Sph == 0 else resistivity_working_ph*10**6/Sph
         r_1 = b*r_ph
         
         # Zero sequence
         if code_cpe == 0:
-            r_0 = 0
-            x_0 = 0
+            r_0 = open_imp_value
+            x_0 = open_imp_value
             self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
                            [(3,None), "${int(length_km*1000)}m", True],
                            [(3,None), "${name}", True]]
         elif code_cpe == 1:
-            r_0 = r_ph + r_ph*neutral_xsec_times
-            x_0 = 0.08
+            r_0 = r_ph + 3*r_ph*neutral_xsec_times
+            x_0 = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
             self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
                            [(3,None), "PEN", True],
@@ -587,8 +587,8 @@ class LTCableIEC(Line):
             B_cpe = self.conductor_B_dict[cpe_material]
             resistivity_20_cpe = self.conductor_delta20_dict[cpe_material]
             resistivity_working_cpe = resistivity_20_cpe*(1+1/B_cpe*(phase_working_temp-20))
-            r_0 = r_open if cpe_cross_section == 0 else r_ph + resistivity_working_cpe*10**6/cpe_cross_section
-            x_0 = 0.08
+            r_0 = open_imp_value if cpe_cross_section == 0 else r_ph + 3*resistivity_working_cpe*10**6/cpe_cross_section
+            x_0 = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
             mat_code = self.material_code[cpe_material]
             ins_code = self.insulation_code[cpe_insulation]
             self.text_model = [[(3,1), "${ref}", True],
@@ -601,8 +601,8 @@ class LTCableIEC(Line):
             resistivity_20_ar = self.conductor_delta20_dict[armour_material]
             resistivity_working_ar = resistivity_20_ar*(1+1/B_ar*(phase_working_temp-20))
             magnetic_effect = 1.1 if armour_material == 'Steel' else 1
-            r_0 = r_open if armour_cross_section == 0 else r_ph + magnetic_effect*resistivity_working_ar*10**6/armour_cross_section  # IEE Guidance notes 6, 6.3.1, 6.3.3
-            x_0 = 0.3 if armour_material == 'Steel' else x_1  # IEE Guidance notes 6, 6.3.1, 6.3.3
+            r_0 = open_imp_value if armour_cross_section == 0 else r_ph + 3*magnetic_effect*resistivity_working_ar*10**6/armour_cross_section  # IEE Guidance notes 6, 6.3.1, 6.3.3
+            x_0 = x_1 + 3*(0.3 - x_1) if armour_material == 'Steel' else x_1  # IEE Guidance notes 6, 6.3.1, 6.3.3
             mat_code = self.material_code[armour_material]
             self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
@@ -613,8 +613,8 @@ class LTCableIEC(Line):
             B_cpe = self.conductor_B_dict[cpe_material]
             resistivity_20_cpe = self.conductor_delta20_dict[cpe_material]
             resistivity_working_cpe = resistivity_20_cpe*(1+1/B_cpe*(ambient_temp-20))
-            r_0 = r_open if cpe_cross_section == 0 else r_ph + resistivity_working_cpe*10**6/cpe_cross_section
-            x_0 = 0.08  # IEC 60364-5, G.1
+            r_0 = open_imp_value if cpe_cross_section == 0 else r_ph + 3*resistivity_working_cpe*10**6/cpe_cross_section
+            x_0 = x_1 + 3*0.08  # IS 732 Annex Y
             mat_code = self.material_code[cpe_material]
             ins_code = self.insulation_code[cpe_insulation]
             self.text_model = [[(3,1), "${ref}", True],
@@ -630,16 +630,16 @@ class LTCableIEC(Line):
             resistivity_20_ar = self.conductor_delta20_dict[phase_material]
             resistivity_working_ar = resistivity_20_ar*(1+1/B_ph*(phase_working_temp-20))
             magnetic_effect = 1.1 if armour_material == 'Steel' else 1
-            r_ar = r_open if armour_cross_section == 0 else magnetic_effect*resistivity_working_ar*10**6/armour_cross_section
-            r_cpe = r_open if cpe_cross_section == 0 else resistivity_working_cpe*10**6/cpe_cross_section
-            r_0 = r_ph + 1/(1/r_ar + 1/r_cpe)  # Appendix 16 – Electrical Research Association Report (ERA) report on armoured cables with external CPCs
+            r_ar = open_imp_value if armour_cross_section == 0 else magnetic_effect*resistivity_working_ar*10**6/armour_cross_section
+            r_cpe = open_imp_value if cpe_cross_section == 0 else resistivity_working_cpe*10**6/cpe_cross_section
+            r_0 = r_ph + 3*(1/(1/r_ar + 1/r_cpe))  # Appendix 16 – Electrical Research Association Report (ERA) report on armoured cables with external CPCs
             x_0 = 0.4 if armour_material == 'Steel' else x_1 # Appendix 16 – Electrical Research Association Report (ERA) report on armoured cables with external CPCs
             ar_mat_code = self.material_code[armour_material]
             mat_code = self.material_code[cpe_material]
             ins_code = self.insulation_code[cpe_insulation]
             self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code + ", Ar/" + mat_code, True],
+                           [(3,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code + ", Ar/" + ar_mat_code, True],
                            [(3,None), "${int(length_km*1000)}m", True],
                            [(3,None), "${name}", True]]
         
