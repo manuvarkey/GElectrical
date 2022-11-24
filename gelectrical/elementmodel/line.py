@@ -633,7 +633,7 @@ class LTCableIEC(Line):
             r_ar = open_imp_value if armour_cross_section == 0 else magnetic_effect*resistivity_working_ar*10**6/armour_cross_section
             r_cpe = open_imp_value if cpe_cross_section == 0 else resistivity_working_cpe*10**6/cpe_cross_section
             r_0 = r_ph + 3*(1/(1/r_ar + 1/r_cpe))  # Appendix 16 – Electrical Research Association Report (ERA) report on armoured cables with external CPCs
-            x_0 = 0.4 if armour_material == 'Steel' else x_1 # Appendix 16 – Electrical Research Association Report (ERA) report on armoured cables with external CPCs
+            x_0 = x_1 + 3*(0.4 - x_1) if armour_material == 'Steel' else x_1 # Appendix 16 – Electrical Research Association Report (ERA) report on armoured cables with external CPCs
             ar_mat_code = self.material_code[armour_material]
             mat_code = self.material_code[cpe_material]
             ins_code = self.insulation_code[cpe_insulation]
