@@ -42,7 +42,7 @@ PROGRAM_NAME = 'GElectrical'
 PROGRAM_AUTHOR = 'kavilgroup'
 PROGRAM_VER = '1'
 APPID = "com.kavilgroup.gelectrical"
-# CMB error codes used for displaying info in main window
+# Error codes used for displaying info in main window
 ERROR = -1
 WARNING = -2
 OK = 0
@@ -89,15 +89,17 @@ GROUP_DRAW_PATTERN = (20,5,5,5)
 FIELD_CAPTION_WIDTH = 100
 FIELD_DIALOG_CAPTION_WIDTH = 300
 FIELD_UNIT_WIDTH = 25
-# Status codes
+# Status codes for drawing view
 MODE_DEFAULT = 0
 MODE_SELECTION = 1
 MODE_INSERT = 2
 MODE_ADD_WIRE = 3
 # Graph codes
+## graph types
 GRAPH_DATATYPE_FREE = 0
 GRAPH_DATATYPE_PROFILE = 1
 GRAPH_DATATYPE_POLYGON= 2
+## graph settings
 GRAPH_FONT_FACE = 'monospace'
 GRAPH_FONT_SIZE = 10
 GRAPH_LOAD_TIME_LIMITS = (0,23,1)
@@ -105,10 +107,14 @@ GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
 # Report parameters
 REPORT_FONT_FACE = 'monospace'
 REPORT_FONT_SIZE = 10
-
+# Power model types
+POWER_MODEL_POWERFLOW = 0
+POWER_MODEL_GROUNDFAULT = 1
+# Classification of elements
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
 LOADPROFILE_CODES = ('element_load', 'element_staticgenerator', 'element_async_motor')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
+# Defaults
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
                         'load_prof_2': ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
                         'load_prof_3': ['80% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.8,0.8]}]],

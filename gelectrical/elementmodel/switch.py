@@ -71,7 +71,7 @@ class Switch(ElementModel):
                  (p1, (ports[1],)))
         return nodes
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p1 = code + ':1'

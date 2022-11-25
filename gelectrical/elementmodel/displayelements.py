@@ -56,14 +56,6 @@ class DisplayElementNode(ElementModel):
         self.render_text(context, self.text_model, color=misc.COLOR_OVERLAY_TEXT)
         # Post processing
         self.modify_extends()
-        
-    def get_nodes(self, code):
-        """Return nodes for analysis"""
-        nodes = tuple()
-        return nodes
-        
-    def get_power_model(self, code):
-        """Return pandapower model for analysis"""
-        power_model = tuple()
-        return power_model
+
+
         

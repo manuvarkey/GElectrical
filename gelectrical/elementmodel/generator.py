@@ -82,7 +82,7 @@ class Generator(ElementModel):
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('gen', (p0,), {'name': self.fields['ref']['value'],
@@ -150,7 +150,7 @@ class StaticGenerator(ElementModel):
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p_mw = self.fields['p_mw']['value']
@@ -201,7 +201,7 @@ class Motor(StaticGenerator):
                              ['LINE',(2,0),(2,2), []],
                            ]
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p_mw = self.fields['p_kw']['value']/1000

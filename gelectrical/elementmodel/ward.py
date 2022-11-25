@@ -80,7 +80,7 @@ class Ward(ElementModel):
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('ward', (p0,), {'name': self.fields['ref']['value'],
@@ -150,7 +150,7 @@ class XWard(ElementModel):
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('xward', (p0,), {'name': self.fields['ref']['value'],

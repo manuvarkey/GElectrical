@@ -295,7 +295,8 @@ class ProjectModel:
     def build_power_model(self):
         if self.status['net_model']:
             self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles)
-            self.powermodel.build_power_model()
+            self.powermodel.build_power_model(mode=misc.POWER_MODEL_POWERFLOW)
+            self.powermodel.build_power_model(mode=misc.POWER_MODEL_GROUNDFAULT)
             self.status['power_model'] = True
             log.info('ProjectModel - build_power_model - model generated')
         else:

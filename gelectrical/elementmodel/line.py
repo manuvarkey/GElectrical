@@ -46,9 +46,12 @@ class Line(ElementModel):
                        'x_ohm_per_km':  self.get_field_dict('float', 'X', 'Ohm/km', 0.1),
                        'c_nf_per_km':   self.get_field_dict('float', 'C', 'nF/km', 0),
                        'g_us_per_km':   self.get_field_dict('float', 'G', 'uS/km', 0),
-                       'r0_ohm_per_km': self.get_field_dict('float', 'R0', 'Ohm/km', 0),
-                       'x0_ohm_per_km': self.get_field_dict('float', 'X0', 'Ohm/km', 0),
-                       'c0_nf_per_km':  self.get_field_dict('float', 'C0', 'nF/km', 0),
+                       'r0n_ohm_per_km': self.get_field_dict('float', 'R0n', 'Ohm/km', 0),
+                       'x0n_ohm_per_km': self.get_field_dict('float', 'X0n', 'Ohm/km', 0),
+                       'c0n_nf_per_km':  self.get_field_dict('float', 'C0n', 'nF/km', 0),
+                       'r0g_ohm_per_km': self.get_field_dict('float', 'R0g', 'Ohm/km', 0),
+                       'x0g_ohm_per_km': self.get_field_dict('float', 'X0g', 'Ohm/km', 0),
+                       'c0g_nf_per_km':  self.get_field_dict('float', 'C0g', 'nF/km', 0),
                        'endtemp_degree':self.get_field_dict('float', 'Tf', 'degC', 70),
                        'max_i_ka':      self.get_field_dict('float', 'Imax', 'kA', 1),
                        'phase_sc_current_rating': self.get_field_dict('float', 'Isc phase (1s)', 'kA', 0),
@@ -98,7 +101,7 @@ class Line(ElementModel):
         nodes = ((p0, (ports[0],)),(p1, (ports[1],)))
         return nodes
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         line_type = self.fields['r_ohm_per_km']['value']
         if line_type == 'Over Head':
@@ -107,21 +110,39 @@ class Line(ElementModel):
             line_type_code = 'cs'
         p0 = code + ':0'
         p1 = code + ':1'
-        power_model = (('line', (p0,p1), {'name': self.fields['ref']['value'],
-                                       'length_km': self.fields['length_km']['value'],
-                                       'r_ohm_per_km': self.fields['r_ohm_per_km']['value'],
-                                       'x_ohm_per_km': self.fields['x_ohm_per_km']['value'],
-                                       'c_nf_per_km': self.fields['c_nf_per_km']['value'],
-                                       'r0_ohm_per_km': self.fields['r0_ohm_per_km']['value'],
-                                       'x0_ohm_per_km': self.fields['x0_ohm_per_km']['value'],
-                                       'c0_nf_per_km': self.fields['c0_nf_per_km']['value'],
-                                       'g_us_per_km': self.fields['g_us_per_km']['value'],
-                                       'endtemp_degree': self.fields['endtemp_degree']['value'],
-                                       'max_i_ka': self.fields['max_i_ka']['value'],
-                                       'df': self.fields['df']['value'],
-                                       'type': line_type_code,
-                                       'parallel': self.fields['parallel']['value'],
-                                       'in_service': self.fields['in_service']['value'],}),)
+        if mode == misc.POWER_MODEL_POWERFLOW:
+            power_model = (('line', (p0,p1), {'name': self.fields['ref']['value'],
+                                        'length_km': self.fields['length_km']['value'],
+                                        'r_ohm_per_km': self.fields['r_ohm_per_km']['value'],
+                                        'x_ohm_per_km': self.fields['x_ohm_per_km']['value'],
+                                        'c_nf_per_km': self.fields['c_nf_per_km']['value'],
+                                        'r0_ohm_per_km': self.fields['r0n_ohm_per_km']['value'],
+                                        'x0_ohm_per_km': self.fields['x0n_ohm_per_km']['value'],
+                                        'c0_nf_per_km': self.fields['c0n_nf_per_km']['value'],
+                                        'g_us_per_km': self.fields['g_us_per_km']['value'],
+                                        'endtemp_degree': self.fields['endtemp_degree']['value'],
+                                        'max_i_ka': self.fields['max_i_ka']['value'],
+                                        'df': self.fields['df']['value'],
+                                        'type': line_type_code,
+                                        'parallel': self.fields['parallel']['value'],
+                                        'in_service': self.fields['in_service']['value'],}),)
+        elif mode == misc.POWER_MODEL_GROUNDFAULT:
+            power_model = (('line', (p0,p1), {'name': self.fields['ref']['value'],
+                                        'length_km': self.fields['length_km']['value'],
+                                        'r_ohm_per_km': self.fields['r_ohm_per_km']['value'],
+                                        'x_ohm_per_km': self.fields['x_ohm_per_km']['value'],
+                                        'c_nf_per_km': self.fields['c_nf_per_km']['value'],
+                                        'r0_ohm_per_km': self.fields['r0g_ohm_per_km']['value'],
+                                        'x0_ohm_per_km': self.fields['x0g_ohm_per_km']['value'],
+                                        'c0_nf_per_km': self.fields['c0g_nf_per_km']['value'],
+                                        'g_us_per_km': self.fields['g_us_per_km']['value'],
+                                        'endtemp_degree': self.fields['endtemp_degree']['value'],
+                                        'max_i_ka': self.fields['max_i_ka']['value'],
+                                        'df': self.fields['df']['value'],
+                                        'type': line_type_code,
+                                        'parallel': self.fields['parallel']['value'],
+                                        'in_service': self.fields['in_service']['value'],}),)
+            
         return power_model
 
 
@@ -369,9 +390,12 @@ class LTCableIEC(Line):
         # Modify existing fields
         self.fields['r_ohm_per_km']['status_inactivate'] = True
         self.fields['g_us_per_km']['status_enable'] = False
-        self.fields['r0_ohm_per_km']['status_inactivate'] = True
-        self.fields['x0_ohm_per_km']['status_inactivate'] = True
-        self.fields['c0_nf_per_km']['status_enable'] = False
+        self.fields['r0g_ohm_per_km']['status_inactivate'] = True
+        self.fields['x0g_ohm_per_km']['status_inactivate'] = True
+        self.fields['r0n_ohm_per_km']['status_inactivate'] = True
+        self.fields['x0n_ohm_per_km']['status_inactivate'] = True
+        self.fields['c0g_nf_per_km']['status_enable'] = False
+        self.fields['c0n_nf_per_km']['status_enable'] = False
         self.fields['endtemp_degree']['status_inactivate'] = True
         self.fields['max_i_ka']['status_inactivate'] = True
         self.fields['type']['status_enable'] = False
@@ -556,18 +580,17 @@ class LTCableIEC(Line):
         resistivity_20_ph = self.conductor_delta20_dict[phase_material]
         resistivity_working_ph = resistivity_20_ph*(1+1/B_ph*(phase_working_temp-20))
         
-        if self.fields['type_of_cable']['value'] == '1ph':
-            b = 2
-        else:
-            b = 1
-        
         # Impedence
         
         # Positive sequence
         r_ph = open_imp_value if Sph == 0 else resistivity_working_ph*10**6/Sph
-        r_1 = b*r_ph
+        r_1 = r_ph
+
+        # Zero sequence for neutral return
+        r_0n = r_ph + 3*r_ph*neutral_xsec_times
+        x_0n = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
         
-        # Zero sequence
+        # Zero sequence for ground return
         if code_cpe == 0:
             r_0 = open_imp_value
             x_0 = open_imp_value
@@ -742,8 +765,10 @@ class LTCableIEC(Line):
         # Update fields
         
         self.fields['r_ohm_per_km']['value'] = round(r_1, 3)
-        self.fields['r0_ohm_per_km']['value'] = round(r_0, 3)
-        self.fields['x0_ohm_per_km']['value'] = round(x_0, 3)
+        self.fields['r0n_ohm_per_km']['value'] = round(r_0n, 3)
+        self.fields['x0n_ohm_per_km']['value'] = round(x_0n, 3)
+        self.fields['r0g_ohm_per_km']['value'] = round(r_0, 3)
+        self.fields['x0g_ohm_per_km']['value'] = round(x_0, 3)
 
         self.fields['endtemp_degree']['value'] = phase_working_temp
         self.fields['max_i_ka']['value'] = Imax/1000
@@ -755,12 +780,13 @@ class LTCableIEC(Line):
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000,3)
 
     def set_model(self, model, gid=None):
-            """Set storage model"""
-            if model['code'] == self.code:
-                self.x = model['x']
-                self.y = model['y']
-                self.orientation = model['orientation']
-                self.ports = copy.deepcopy(model['ports'])
-                for code in self.fields:
+        """Set storage model"""
+        if model['code'] == self.code:
+            self.x = model['x']
+            self.y = model['y']
+            self.orientation = model['orientation']
+            self.ports = copy.deepcopy(model['ports'])
+            for code in self.fields:
+                if code in model['fields']:
                     self.set_text_field_value(code, model['fields'][code]['value'])
-                self.gid = gid
+            self.gid = gid

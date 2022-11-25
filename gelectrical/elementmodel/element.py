@@ -175,6 +175,11 @@ class ElementModel:
                 'ports': copy.deepcopy(self.ports),
                 'fields': misc.get_fields_trunc(self.fields)}
     
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+        """Return pandapower model for analysis"""
+        power_model = tuple()
+        return power_model
+    
     def set_model(self, model, gid=None):
         """Set storage model"""
         if model['code'] == self.code:
@@ -522,7 +527,7 @@ class ElementModel:
         sysdesign_model = tuple()
         return sysdesign_model
         
-    def get_power_model(self, code):
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         #
         # Powermodel tuple definition reference

@@ -88,10 +88,6 @@ class Reference(ElementModel):
         nodes = ((p0, ports),)
         return nodes
         
-    def get_power_model(self, code):
-        """Return pandapower model for analysis"""
-        power_model = tuple()
-        return power_model
 
 
 class ReferenceBox(Reference):
