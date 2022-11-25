@@ -80,7 +80,7 @@ class GraphImage():
         if len(self.xlim) == 4 and self.xlim[3] == 'log':
             self.plot.set_xscale('log')
             
-        if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])):
+        if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])) and self.ylim[0] != self.ylim[1]:
             self.plot.set_ylim(self.ylim[0], self.ylim[1])
             
         self.plot.grid(True, which='major')
@@ -224,7 +224,7 @@ class GraphView():
         if len(self.xlim) == 4 and self.xlim[3] == 'log':
             self.plot.set_xscale('log')
             
-        if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])):
+        if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])) and self.ylim[0] != self.ylim[1]:
             self.plot.set_ylim(self.ylim[0], self.ylim[1])
             
         self.plot.grid(True, which='major')
