@@ -1045,7 +1045,7 @@ class PandaPowerModel:
                         ['vm_b_pu', bus, 'ΔVb', '%', 2, modfunc, 'delv_perc_b'],
                         ['vm_c_pu', bus, 'ΔVc', '%', 2, modfunc, 'delv_perc_c']])
                 combine_graphdata(node_result, 'bus',
-                    ['vm_pu', bus, 'ΔV', '%', 2, modfunc],
+                    ['delv_perc', bus, 'ΔV', '%', 2, modfunc],
                     ['vm_a_pu', 'vm_b_pu', 'vm_c_pu'], maxfunc, stat_fields=['max'])
             else:
                 set_graphdata(node_result, 'bus', [

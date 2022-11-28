@@ -1059,9 +1059,10 @@ def update_fields_dict(reffields_dict, newfields_dict):
 
 ELEMENT_FIELD = 0
 ELEMENT_RESULT = 1
+ELEMENT_PLACEHOLDER = 2
 
 def elements_to_table(elements, col_codes, col_captions, code_sources, table_class=None, 
-                      show_slno=True, show_element_class=True):
+                      show_slno=True, show_element_class=True, modifyfunc=None):
     table = dict()
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     # Add unit line
@@ -1103,6 +1104,8 @@ def elements_to_table(elements, col_codes, col_captions, code_sources, table_cla
             else:
                 table[col_caption].append('')
         index += 1
+    if modifyfunc:
+        modifyfunc(table)
     return pd.DataFrame(table).to_html(index=False, escape=False, classes=table_class)
     
 def fields_to_table(fields):

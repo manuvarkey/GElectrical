@@ -22,7 +22,7 @@
 #  
 # 
 
-import logging, copy, datetime, io
+import logging, copy, datetime, io, math
 from gi.repository import Gtk, Gdk
 import cairo
 from jinja2 import Environment, FileSystemLoader
@@ -641,7 +641,7 @@ class ProjectModel:
         element_lines = []
         element_loads = []
         element_switches = []
-        element_nodes = []
+        element_nodes = dict()
         loadprofile_captions_used = set()
         self.networkmodel.setup_base_elements()
         base_elements = self.networkmodel.base_elements
@@ -657,14 +657,14 @@ class ProjectModel:
             if model.code in ['element_line', 'element_line_cable']:
                 element_lines.append(model)
             # Loads
-            if model.code in ['element_load']:
+            if model.code in ['element_load', 'element_asymmetric_load', 'element_single_phase_load']:
                 element_loads.append(model)
             # Switches
             if model.code in ['element_switch', 'element_circuitbreaker']:
                 element_switches.append(model)
             # Nodes
             if model.code in misc.DISPLAY_ELEMENT_CODES:
-                element_nodes.append(model)
+                element_nodes[model.fields['ref']['value']] = model
             # Loads
             if model.code in misc.LOADPROFILE_CODES and model.fields['load_profile']['value'] in self.loadprofiles:
                 loadprofile_captions_used.add(model.fields['load_profile']['value'])
@@ -697,6 +697,7 @@ class ProjectModel:
         boq_captions = dict()
         E = misc.ELEMENT_FIELD
         R = misc.ELEMENT_RESULT
+        P = misc.ELEMENT_PLACEHOLDER
         # Lines
         if element_lines:
             col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent:max', 'pl_mw:max']
@@ -707,11 +708,40 @@ class ProjectModel:
             boq_captions['boq_lines'] = 'Lines'
         # Loads
         if element_loads:
-            col_codes = ['ref', 'name', 'sn_mva', 'cos_phi', 'mode', 'in_service', 'load_profile']
-            col_captions = ['Reference', 'Name', 'Rated power', 'PF', 'Inductive ?', 'In Service ?', 'Load Profile']
-            code_sources = [E,E,E,E,E,E,E]
+
+            def modifyfunc_load(table):
+                table['Rated power'][0] = 'kVA'
+                table['Sa'][0] = 'kVA'
+                table['Sb'][0] = 'kVA'
+                table['Sc'][0] = 'kVA'
+                for slno, element in enumerate(element_loads):
+                    scaling = element.fields['scaling']['value']
+                    if element.code == 'element_load':
+                        s_kva = round(element.fields['sn_kva']['value']*scaling, 4)
+                        pf = str(round(element.fields['cos_phi']['value'], 2)) + (' lag' if element.fields['mode']['value'] else ' lead')
+                    else:
+                        fields = element.get_power_model('')[0][2]
+                        p_a_kw = round(fields['p_a_mw']*1000*scaling, 4)
+                        p_b_kw = round(fields['p_b_mw']*1000*scaling, 4)
+                        p_c_kw = round(fields['p_c_mw']*1000*scaling, 4)
+                        q_a_kvar = round(fields['q_a_mvar']*1000*scaling, 4)
+                        q_b_kvar = round(fields['q_b_mvar']*1000*scaling, 4)
+                        q_c_kvar = round(fields['q_c_mvar']*1000*scaling, 4)
+                        p_kw = p_a_kw + p_b_kw + p_c_kw
+                        q_kvar = q_a_kvar + q_b_kvar + q_c_kvar
+                        table['Sa'][slno+1] = str(p_a_kw) + '+j' + str(q_a_kvar)
+                        table['Sb'][slno+1] = str(p_b_kw) + '+j' + str(q_b_kvar)
+                        table['Sc'][slno+1] = str(p_c_kw) + '+j' + str(q_c_kvar)
+                        s_kva = math.sqrt(p_kw**2 + q_kvar**2)
+                        pf = str(round((p_kw/s_kva),2)) + (' lag' if q_kvar > 0 else ' lead')
+                    table['Rated power'][slno+1] = str(s_kva)
+                    table['PF'][slno+1] = pf
+                    
+            col_codes = ['ref', 'name', 'sn_kva', 'cos_phi', 'sa', 'sb', 'sc', 'in_service', 'load_profile']
+            col_captions = ['Reference', 'Name', 'Rated power', 'PF', 'Sa', 'Sb', 'Sc', 'In Service ?', 'Load Profile']
+            code_sources = [E,E,P,P,P,P,P,E,E]
             table = misc.elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads',
-                                           show_element_class=False)
+                                           show_element_class=True, modifyfunc=modifyfunc_load)
             boq_tables['element_loads'] = table
             boq_captions['element_loads'] = 'Loads'
         # Switches
@@ -728,7 +758,7 @@ class ProjectModel:
             col_codes = ['ref', 'vn_kv', 'delv_perc:max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
             col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (L-G, max)', 'Isc (L-G, min)']
             code_sources = [E,R,R,R,R,R,R]
-            table = misc.elements_to_table(element_nodes, col_codes, col_captions, code_sources, 'boq_nodes',
+            table = misc.elements_to_table(element_nodes.values(), col_codes, col_captions, code_sources, 'boq_nodes',
                                            show_slno=False, show_element_class=False)
             boq_tables['element_nodes'] = table
             boq_captions['element_nodes'] = 'Nodes'
