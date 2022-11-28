@@ -176,7 +176,7 @@ class DrawingView:
                 self.results_view.update(element.res_fields, element.name, element.get_res_field, None)  # Update results
             if self.database_view:
                 self.database_view.update_from_database(element.database_path)
-        elif elements[0].code != 'element_wire':
+        elif elements and elements[0].code != 'element_wire':
             # Check if all items are similar
             code = elements[0].code
             for element in elements:
