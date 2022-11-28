@@ -1019,6 +1019,25 @@ class PandaPowerModel:
                 values_arr = np.array(list(value_dict.values()))
                 result = np.max(np.abs(values_arr), axis=0)
                 return list(result)
+            
+            def sumfunc(value_dict): 
+                values_arr = np.array(list(value_dict.values()))
+                result = np.sum(values_arr, axis=0)
+                return list(result)
+            
+            def percentage_1_1_func(value_dict): 
+                values = np.array(list(value_dict.values()))
+                values1 = values[0:1,:]
+                values2 = values[1:2,:]
+                result = np.sum(values1, axis=0)/np.sum(values2, axis=0)*100
+                return list(result)
+            
+            def percentage_3_3_func(value_dict): 
+                values = np.array(list(value_dict.values()))
+                values1 = values[0:3,:]
+                values2 = values[3:6,:]
+                result = np.sum(values1, axis=0)/np.sum(values2, axis=0)*100
+                return list(result)
 
             if runpp_3ph:
                 set_graphdata(node_result, 'bus', [
@@ -1059,26 +1078,24 @@ class PandaPowerModel:
                                                                     ['q_b_mvar', element_id, 'Qb', 'MVAr', 4, None, 'q_mvar'],
                                                                     ['q_c_mvar', element_id, 'Qc', 'MVAr', 4, None, 'q_mvar']])
                     elif elementcode == 'trafo':
-                        set_graphdata(element_result, elementcode, [['p_a_hv_mw', element_id, 'Pa HV', 'MW', 4, None, 'p_hv_mw'],
-                                                                    ['q_a_hv_mvar', element_id, 'Qa HV', 'MVAr', 4, None, 'q_hv_mvar'],
-                                                                    ['p_b_hv_mw', element_id, 'Pb HV', 'MW', 4, None, 'p_hv_mw'],
-                                                                    ['q_b_hv_mvar', element_id, 'Qb HV', 'MVAr', 4, None, 'q_hv_mvar'],
-                                                                    ['p_c_hv_mw', element_id, 'Pc HV', 'MW', 4, None, 'p_hv_mw'],
-                                                                    ['q_c_hv_mvar', element_id, 'Qc HV', 'MVAr', 4, None, 'q_hv_mvar'],])
-                        set_graphdata(element_result, elementcode, [['p_a_lv_mw', element_id, 'Pa LV', 'MW', 4, None, 'p_lv_mw'],
-                                                                    ['q_a_lv_mvar', element_id, 'Qa LV', 'MVAr', 4, None, 'q_lv_mvar'],
-                                                                    ['p_b_lv_mw', element_id, 'Pb LV', 'MW', 4, None, 'p_lv_mw'],
-                                                                    ['q_b_lv_mvar', element_id, 'Qb LV', 'MVAr', 4, None, 'q_lv_mvar'],
-                                                                    ['p_a_lv_mw', element_id, 'Pc LV', 'MW', 4, None, 'p_lv_mw'],
-                                                                    ['q_a_lv_mvar', element_id, 'Qc LV', 'MVAr', 4, None, 'q_lv_mvar'],])
-                        set_graphdata(element_result, elementcode, [['p_a_l_mw', element_id, 'Pa loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['q_a_l_mvar', element_id, 'Qa loss', 'MVAr', 4, None, 'ql_mvar'],
-                                                                    ['p_b_l_mw', element_id, 'Pb loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['q_b_l_mvar', element_id, 'Qb loss', 'MVAr', 4, None, 'ql_mvar'],
-                                                                    ['p_c_l_mw', element_id, 'Pc loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['q_c_l_mvar', element_id, 'Qc loss', 'MVAr', 4, None, 'ql_mvar'],])
+                        set_graphdata(element_result, elementcode, [['p_a_hv_mw', element_id, 'Pa HV', 'MW', 4, None, 'p_a_hv_mw'],
+                                                                    ['q_a_hv_mvar', element_id, 'Qa HV', 'MVAr', 4, None, 'q_a_hv_mvar'],
+                                                                    ['p_b_hv_mw', element_id, 'Pb HV', 'MW', 4, None, 'p_b_hv_mw'],
+                                                                    ['q_b_hv_mvar', element_id, 'Qb HV', 'MVAr', 4, None, 'q_b_hv_mvar'],
+                                                                    ['p_c_hv_mw', element_id, 'Pc HV', 'MW', 4, None, 'p_c_hv_mw'],
+                                                                    ['q_c_hv_mvar', element_id, 'Qc HV', 'MVAr', 4, None, 'q_c_hv_mvar'],])
+                        set_graphdata(element_result, elementcode, [['p_a_lv_mw', element_id, 'Pa LV', 'MW', 4, None, 'p_a_lv_mw'],
+                                                                    ['q_a_lv_mvar', element_id, 'Qa LV', 'MVAr', 4, None, 'q_a_lv_mvar'],
+                                                                    ['p_b_lv_mw', element_id, 'Pb LV', 'MW', 4, None, 'p_b_lv_mw'],
+                                                                    ['q_b_lv_mvar', element_id, 'Qb LV', 'MVAr', 4, None, 'q_b_lv_mvar'],
+                                                                    ['p_a_lv_mw', element_id, 'Pc LV', 'MW', 4, None, 'p_c_lv_mw'],
+                                                                    ['q_a_lv_mvar', element_id, 'Qc LV', 'MVAr', 4, None, 'q_c_lv_mvar'],])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 4, None],
+                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'], sumfunc, stat_fields=['max'])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent_max']], fields=['max'])
                     elif elementcode == 'trafo3w':
                         set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
                                                                     ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
@@ -1090,6 +1107,8 @@ class PandaPowerModel:
                                                                     ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent_max']], fields=['max'])
                     elif elementcode == 'gen':
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
@@ -1111,20 +1130,12 @@ class PandaPowerModel:
                                                                     ['q_b_from_mvar', element_id, 'Qb from', 'MVAr', 4, None, 'q_from_mvar'],
                                                                     ['p_b_from_mw', element_id, 'Pc from', 'MW', 4, None, 'p_from_mw'],
                                                                     ['q_b_from_mvar', element_id, 'Qc from', 'MVAr', 4, None, 'q_from_mvar']])
-                        set_graphdata(element_result, elementcode, [['p_a_to_mw', element_id, 'Pa to', 'MW', 4, None, 'p_to_mw'],
-                                                                    ['q_a_to_mvar', element_id, 'Qa to', 'MVAr', 4, None, 'q_to_mvar'],
-                                                                    ['p_b_to_mw', element_id, 'Pb to', 'MW', 4, None, 'p_to_mw'],
-                                                                    ['q_b_to_mvar', element_id, 'Qb to', 'MVAr', 4, None, 'q_to_mvar'],
-                                                                    ['p_c_to_mw', element_id, 'Pc to', 'MW', 4, None, 'p_to_mw'],
-                                                                    ['q_c_to_mvar', element_id, 'Qc to', 'MVAr', 4, None, 'q_to_mvar']])
-                        set_graphdata(element_result, elementcode, [['p_a_l_mw', element_id, 'Pa loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['q_a_l_mvar', element_id, 'Qa loss', 'MVAr', 4, None, 'ql_mvar'],
-                                                                    ['p_b_l_mw', element_id, 'Pb loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['q_b_l_mvar', element_id, 'Qb loss', 'MVAr', 4, None, 'ql_mvar'],
-                                                                    ['p_c_l_mw', element_id, 'Pc loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['q_c_l_mvar', element_id, 'Qc loss', 'MVAr', 4, None, 'ql_mvar']])
                         set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
-
+                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, '% P Loss', '%', 1, None],
+                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw', 'p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'], 
+                            percentage_3_3_func, stat_fields=['max'])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent']], fields=['max'])
                 else:
                     if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
@@ -1138,6 +1149,8 @@ class PandaPowerModel:
                                                                     ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent_max']], fields=['max'])
                     elif elementcode == 'trafo3w':
                         set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
                                                                     ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
@@ -1149,6 +1162,8 @@ class PandaPowerModel:
                                                                     ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent_max']], fields=['max'])
                     elif elementcode == 'gen':
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
@@ -1166,12 +1181,12 @@ class PandaPowerModel:
                     elif elementcode in ['line']:
                         set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
                                                                     ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
-                        set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
-                                                                    ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, '% P Loss', '%', 1, None],
+                            ['pl_mw', 'p_from_mw'], percentage_1_1_func, stat_fields=['max'])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent']], fields=['max'])
 
         log.info('PandaPowerModel - run_powerflow - calculation run')
 

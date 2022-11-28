@@ -699,8 +699,8 @@ class ProjectModel:
         R = misc.ELEMENT_RESULT
         # Lines
         if element_lines:
-            col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent', 'pl_mw,ql_mvar']
-            col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', 'P loss, Q loss']
+            col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent:max', 'pl_mw:max']
+            col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', '% P loss']
             code_sources = [E,E,E,E,E,E,E,E,E,R,R]
             table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines')
             boq_tables['boq_lines'] = table
