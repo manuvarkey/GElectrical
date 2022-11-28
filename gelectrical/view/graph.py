@@ -52,7 +52,7 @@ class GraphImage():
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.models = []
-        self.colors = ('#3465a4', '#cc0000', '#73d216', '#f57900', '#75507b', '#edd400', '#555753', '#c17d11')
+        self.colors = misc.GRAPH_COLORS
         # Plot
         self.figure = Figure()
         self.plot = self.figure.add_subplot(111)
@@ -133,7 +133,7 @@ class GraphView():
         self.inactivate = inactivate
         self.models = []
         self.model = None
-        self.colors = ('#3465a4', '#cc0000', '#73d216', '#f57900', '#75507b', '#edd400', '#555753', '#c17d11')
+        self.colors = misc.GRAPH_COLORS
         self.signal1_id = None
         self.signal2_id = None
         
@@ -153,8 +153,10 @@ class GraphView():
         self.name_widget.props.margin_bottom = 6
         self.xlabel_widget = Gtk.Label('<i>' + self.xlabel + '</i>', xalign=0.5)
         self.xlabel_widget.set_use_markup(True)
+        self.xlabel_widget.set_line_wrap(True)
         self.ylabel_widget = Gtk.Label('<i>' + self.ylabel + '</i>', xalign=0.5)
         self.ylabel_widget.set_use_markup(True)
+        self.ylabel_widget.set_line_wrap(True)
         self.ylabel_widget.set_angle(90)
         
         # Start packing
