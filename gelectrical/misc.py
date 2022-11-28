@@ -112,8 +112,11 @@ REPORT_FONT_SIZE = 10
 POWER_MODEL_POWERFLOW = 0
 POWER_MODEL_GROUNDFAULT = 1
 # Classification of elements
+ADVANCED_ELEMENTS = ('element_asymmetric_load', 'element_ward', 'element_xward',
+                     'element_transformer3w', 'element_impedance', 'element_shunt')
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
-LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_staticgenerator', 'element_async_motor')
+LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 
+                     'element_staticgenerator', 'element_async_motor')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
 # Defaults
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
@@ -1138,7 +1141,8 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
-                            'Interface':{'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
+                            'Interface':{'advanced_mode' : get_field_dict('bool', 'Enable adavanced mode', '', True, status_inactivate=False),
+                                         'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
                                          'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False),
                                          'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)}}
                                          
@@ -1149,10 +1153,11 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                             'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
-                             'Simulation':{'run_diagnostics' : get_field_dict('bool', 'Run Diagnostics', '', True, status_inactivate=False),
-                             'run_powerflow' : get_field_dict('bool', 'Run Time Series Power Flow', '', False, status_inactivate=False),
-                             'run_sc_sym' : get_field_dict('bool', 'Run Symmetric Short Circuit Calculation', '', False, status_inactivate=False),
-                             'run_sc_gf' : get_field_dict('bool', 'Run Line to Ground Short Circuit Calculation', '', False, status_inactivate=False),
+                             'Simulation':{'run_diagnostics' : get_field_dict('bool', 'Run diagnostics', '', True, status_inactivate=False),
+                             'power_flow_3ph' : get_field_dict('bool', 'Enable assymetric power flow calculation', '', True, status_inactivate=False),
+                             'run_powerflow' : get_field_dict('bool', 'Run time series power flow', '', False, status_inactivate=False),
+                             'run_sc_sym' : get_field_dict('bool', 'Run symmetric short circuit calculation', '', False, status_inactivate=False),
+                             'run_sc_gf' : get_field_dict('bool', 'Run line to ground short circuit calculation', '', False, status_inactivate=False),
                              'export_results' : get_field_dict('bool', 'Export results of simulation', '', False, status_inactivate=False),
                              'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
                              'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),

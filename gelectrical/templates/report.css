@@ -163,8 +163,8 @@ caption {
 table.element_fields {table-layout: fixed; width: 100%;}
 table.element_fields thead th:nth-child(1) {width: 10%;}
 table.element_fields thead th:nth-child(2) {width: 40%;}
-table.element_fields thead th:nth-child(3) {width: 30%;}
-table.element_fields thead th:nth-child(4) {width: 20%;}
+table.element_fields thead th:nth-child(3) {width: 40%;}
+table.element_fields thead th:nth-child(4) {width: 10%;}
 
 table.boq_lines {table-layout: fixed; width: 100%;}
 table.boq_lines thead th:nth-child(1) {width: 5%;}

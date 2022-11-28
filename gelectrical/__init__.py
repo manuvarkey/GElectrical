@@ -559,6 +559,7 @@ class MainWindow():
         if ana_settings:
             # Update project settings
             sim_settings['run_diagnostics']['value'] = ana_settings['diagnostics']
+            sim_settings['power_flow_3ph']['value'] = ana_settings['3ph']
             sim_settings['run_powerflow']['value'] = ana_settings['powerflow']
             sim_settings['run_sc_sym']['value'] = ana_settings['sc_sym']
             sim_settings['run_sc_gf']['value'] = ana_settings['sc_gf']
@@ -773,33 +774,7 @@ class MainWindow():
                 #log.info('Model loaded - ' + module_name)
             #except ImportError:
                 #log.error('Error Loading model - ' + module_name)
-        
-        # Setup elements
-        self.program_state['element_models'] = dict()
-        self.program_state['element_models'][switch.Switch().code] = switch.Switch
-        self.program_state['element_models'][switch.CircuitBreaker().code] = switch.CircuitBreaker
-        self.program_state['element_models'][switch.Contactor().code] = switch.Contactor
-        self.program_state['element_models'][busbar.BusBar().code] = busbar.BusBar
-        self.program_state['element_models'][grid.Grid().code] = grid.Grid
-        self.program_state['element_models'][reference.Reference().code] = reference.Reference
-        self.program_state['element_models'][reference.ReferenceBox().code] = reference.ReferenceBox
-        self.program_state['element_models'][transformer.Transformer().code] = transformer.Transformer
-        self.program_state['element_models'][transformer.Transformer3w().code] = transformer.Transformer3w
-        self.program_state['element_models'][load.Load().code] = load.Load
-        self.program_state['element_models'][load.AsymmetricLoad().code] = load.AsymmetricLoad
-        self.program_state['element_models'][line.Line().code] = line.Line
-        self.program_state['element_models'][line.LTCableIEC().code] = line.LTCableIEC
-        self.program_state['element_models'][impedance.Impedance().code] = impedance.Impedance
-        self.program_state['element_models'][impedance.Inductance().code] = impedance.Inductance
-        self.program_state['element_models'][shunt.Shunt().code] = shunt.Shunt
-        self.program_state['element_models'][shunt.ShuntCapacitor().code] = shunt.ShuntCapacitor
-        self.program_state['element_models'][ward.Ward().code] = ward.Ward
-        self.program_state['element_models'][ward.XWard().code] = ward.XWard
-        self.program_state['element_models'][generator.Generator().code] = generator.Generator
-        self.program_state['element_models'][generator.StaticGenerator().code] = generator.StaticGenerator
-        self.program_state['element_models'][generator.Motor().code] = generator.Motor
-        self.program_state['element_models'][displayelements.DisplayElementNode().code] = displayelements.DisplayElementNode
-                
+
         # Fill in default values
         self.program_state['mode'] = misc.MODE_DEFAULT
         self.program_state['stack'] = self.stack
@@ -836,7 +811,33 @@ class MainWindow():
         # Setup program settings
         self.update_program_settings()
         log.info('Program settings initialised')
-        
+            
+        # Setup elements
+        self.program_state['element_models'] = dict()
+        self.program_state['element_models'][switch.Switch().code] = switch.Switch
+        self.program_state['element_models'][switch.CircuitBreaker().code] = switch.CircuitBreaker
+        self.program_state['element_models'][switch.Contactor().code] = switch.Contactor
+        self.program_state['element_models'][busbar.BusBar().code] = busbar.BusBar
+        self.program_state['element_models'][grid.Grid().code] = grid.Grid
+        self.program_state['element_models'][reference.Reference().code] = reference.Reference
+        self.program_state['element_models'][reference.ReferenceBox().code] = reference.ReferenceBox
+        self.program_state['element_models'][transformer.Transformer().code] = transformer.Transformer
+        self.program_state['element_models'][transformer.Transformer3w().code] = transformer.Transformer3w
+        self.program_state['element_models'][load.Load().code] = load.Load
+        self.program_state['element_models'][load.AsymmetricLoad().code] = load.AsymmetricLoad
+        self.program_state['element_models'][load.SinglePhaseLoad().code] = load.SinglePhaseLoad
+        self.program_state['element_models'][line.Line().code] = line.Line
+        self.program_state['element_models'][line.LTCableIEC().code] = line.LTCableIEC
+        self.program_state['element_models'][impedance.Impedance().code] = impedance.Impedance
+        self.program_state['element_models'][impedance.Inductance().code] = impedance.Inductance
+        self.program_state['element_models'][shunt.ShuntCapacitor().code] = shunt.ShuntCapacitor
+        self.program_state['element_models'][generator.Generator().code] = generator.Generator
+        self.program_state['element_models'][generator.Motor().code] = generator.Motor
+        self.program_state['element_models'][displayelements.DisplayElementNode().code] = displayelements.DisplayElementNode
+        self.program_state['element_models'][generator.StaticGenerator().code] = generator.StaticGenerator
+        self.program_state['element_models'][ward.Ward().code] = ward.Ward
+        self.program_state['element_models'][ward.XWard().code] = ward.XWard
+        self.program_state['element_models'][shunt.Shunt().code] = shunt.Shunt
         # Setup main window
         self.builder = Gtk.Builder()
         self.builder.add_from_file(misc.abs_path("interface", "mainwindow.glade"))
@@ -859,6 +860,9 @@ class MainWindow():
         self.draw_element_listbox.connect("row_activated", self.on_draw_element_add)
         self.draw_element_searchbox.connect("search-changed", self.on_draw_element_search_changed)
         for code, model in self.program_state['element_models'].items():
+            # Dont add advanced elements to toolbar if advanced mode enabled
+            if self.program_settings['Interface']['advanced_mode']['value'] is False and code in misc.ADVANCED_ELEMENTS:
+                continue
             model_obj = model()
             name = model_obj.name
             group = model_obj.group

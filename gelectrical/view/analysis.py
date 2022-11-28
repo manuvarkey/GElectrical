@@ -45,6 +45,7 @@ class AnalysisSettingsDialog:
         
         # Get objects
         self.switch_diagnostics = self.builder.get_object('switch_diagnostics')
+        self.switch_3ph = self.builder.get_object('switch_3ph')
         self.switch_powerflow = self.builder.get_object('switch_powerflow')
         self.switch_sc_sym = self.builder.get_object('switch_sc_sym')
         self.switch_sc_gf = self.builder.get_object('switch_sc_gf')
@@ -53,6 +54,7 @@ class AnalysisSettingsDialog:
         
         # Set values
         self.switch_diagnostics.set_state(ana_settings['run_diagnostics']['value'])
+        self.switch_3ph.set_state(ana_settings['power_flow_3ph']['value'])
         self.switch_powerflow.set_state(ana_settings['run_powerflow']['value'])
         self.switch_sc_sym.set_state(ana_settings['run_sc_sym']['value'])
         self.switch_sc_gf.set_state(ana_settings['run_sc_gf']['value'])
@@ -70,6 +72,7 @@ class AnalysisSettingsDialog:
             # Set settings
             settings = dict()
             settings['diagnostics'] = self.switch_diagnostics.get_state()
+            settings['3ph'] = self.switch_3ph.get_state()
             settings['powerflow'] = self.switch_powerflow.get_state()
             settings['sc_sym'] = self.switch_sc_sym.get_state()
             settings['sc_gf'] = self.switch_sc_gf.get_state()

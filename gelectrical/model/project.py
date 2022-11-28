@@ -317,7 +317,7 @@ class ProjectModel:
     def run_powerflow(self):
         """Run power flow"""
         if self.status['power_model']:
-            self.powermodel.run_powerflow()
+            self.powermodel.run_powerflow(runpp_3ph=False)
             self.status['power_analysis'] = True
             log.info('ProjectModel - run_powerflow - calculation run')
         else:
@@ -326,9 +326,14 @@ class ProjectModel:
     def run_powerflow_timeseries(self):
         """Run power flow"""
         if self.status['power_model']:
-            self.powermodel.run_powerflow_timeseries()
+            sim_settings = self.get_project_fields(page='Simulation')
+            if sim_settings['power_flow_3ph']['value']:
+                self.powermodel.run_powerflow_timeseries(runpp_3ph=True)
+                log.info('ProjectModel - run_powerflow_timeseries (3ph) - calculation run')
+            else:
+                self.powermodel.run_powerflow_timeseries(runpp_3ph=False)
+                log.info('ProjectModel - run_powerflow_timeseries - calculation run')
             self.status['power_analysis'] = True
-            log.info('ProjectModel - run_powerflow_timeseries - calculation run')
         else:
             raise RuntimeError('ProjectModel - run_powerflow_timeseries - Power model not built')
     
