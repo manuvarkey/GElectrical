@@ -786,6 +786,7 @@ class MainWindow():
         self.program_state['element_models'][transformer.Transformer().code] = transformer.Transformer
         self.program_state['element_models'][transformer.Transformer3w().code] = transformer.Transformer3w
         self.program_state['element_models'][load.Load().code] = load.Load
+        self.program_state['element_models'][load.AsymmetricLoad().code] = load.AsymmetricLoad
         self.program_state['element_models'][line.Line().code] = line.Line
         self.program_state['element_models'][line.LTCableIEC().code] = line.LTCableIEC
         self.program_state['element_models'][impedance.Impedance().code] = impedance.Impedance

@@ -104,6 +104,7 @@ GRAPH_FONT_FACE = 'monospace'
 GRAPH_FONT_SIZE = 10
 GRAPH_LOAD_TIME_LIMITS = (0,23,1)
 GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
+GRAPH_COLORS = ('#ef2929', '#fce94f', '#729fcf', '#a40000', '#c4a000', '#204a87', '#4e9a06', '#ce5c00')
 # Report parameters
 REPORT_FONT_FACE = 'monospace'
 REPORT_FONT_SIZE = 10
@@ -112,7 +113,7 @@ POWER_MODEL_POWERFLOW = 0
 POWER_MODEL_GROUNDFAULT = 1
 # Classification of elements
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
-LOADPROFILE_CODES = ('element_load', 'element_staticgenerator', 'element_async_motor')
+LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_staticgenerator', 'element_async_motor')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
 # Defaults
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],

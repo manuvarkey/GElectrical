@@ -93,3 +93,80 @@ class Load(ElementModel):
                                        'mode': mode}),)
         return power_model
 
+    
+class AsymmetricLoad(ElementModel):
+    
+    def __init__(self, cordinates=(0,0)):
+        # Global
+        ElementModel.__init__(self, cordinates)
+        self.code = 'element_asymmetric_load'
+        self.name = 'Asymmetric Load'
+        self.group = 'Loads'
+        self.icon = misc.abs_path('icons', 'load.svg')
+        self.model_width = 0
+        self.model_height = 0
+        self.ports = [[1, 0]]
+                      
+        self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'X?'),
+                       'name':          self.get_field_dict('str', 'Name', '', ''),
+                       'sn_mva':        self.get_field_dict('float', 'Rated power', 'MW', 0),
+                       'p_a_mw':       self.get_field_dict('float', 'Pa', 'MW', 0),
+                       'p_b_mw':       self.get_field_dict('float', 'Pb', 'MW', 0),
+                       'p_c_mw':       self.get_field_dict('float', 'Pc', 'MW', 0),
+                       'q_a_mvar':       self.get_field_dict('float', 'Qa', 'MVAr', 0),
+                       'q_b_mvar':       self.get_field_dict('float', 'Qb', 'MVAr', 0),
+                       'q_c_mvar':       self.get_field_dict('float', 'Qc', 'MVAr', 0),
+                       'scaling':          self.get_field_dict('float', 'DF', '', 1),
+                       'type':          self.get_field_dict('str', 'Connection Type', '', 'wye', selection_list=['wye','delta']),
+                       'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
+                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', inactivate=True )}
+        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
+        self.text_model = []
+        self.schem_model = [ 
+                             ['LINE',(1,0),(1,5), []],
+                             ['LINE',(0.5,5),(1.5,5), []],
+                             ['LINE',(0.5,5),(1,8), []],
+                             ['LINE',(1.5,5),(1,8), []]
+                           ]
+    
+    def render_element(self, context):
+        """Render element to context"""
+        # Preprocessing
+        self.text_model = [[(3,1), "${ref}", True],
+                           [(3,None), "${sn_mva}MVA", True],
+                           [(3,None), "R:(${p_a_mw}+j${q_a_mvar})", True],
+                           [(3,None), "Y:(${p_b_mw}+j${q_b_mvar})", True],
+                           [(3,None), "B:(${p_c_mw}+j${q_c_mvar})", True],
+                           [(3,None), "${name}", True]]
+        # Render
+        if self.fields['in_service']['value']:
+            self.render_model(context, self.schem_model)
+            self.render_text(context, self.text_model)
+        else:
+            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+        # Post processing
+        self.modify_extends()
+        
+    def get_nodes(self, code):
+        """Return nodes for analysis"""
+        ports = tuple(tuple(x) for x in self.get_ports_global())
+        p0 = code + ':0'
+        nodes = ((p0, (ports[0],)),)
+        return nodes
+        
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+        """Return pandapower model for analysis"""
+        p0 = code + ':0'
+        power_model = (('asymmetric_load', (p0,), {'name': self.fields['ref']['value'],
+                                       'sn_mva': self.fields['sn_mva']['value'],
+                                       'p_a_mw': self.fields['p_a_mw']['value'],
+                                       'p_b_mw': self.fields['p_b_mw']['value'],
+                                       'p_c_mw': self.fields['p_c_mw']['value'],
+                                       'q_a_mvar': self.fields['q_a_mvar']['value'],
+                                       'q_b_mvar': self.fields['q_b_mvar']['value'],
+                                       'q_c_mvar': self.fields['q_c_mvar']['value'],
+                                       'type': self.fields['type']['value'],
+                                       'scaling': self.fields['scaling']['value'],
+                                       'in_service': self.fields['in_service']['value']}),)
+        return power_model

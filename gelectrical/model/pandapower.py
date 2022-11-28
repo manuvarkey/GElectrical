@@ -217,6 +217,12 @@ class PandaPowerModel:
                         power_model, bus=node, **model)
                     self.power_elements[e_code] = (elementcode, element)
                     self.power_elements_inverted[elementcode, element] = e_code
+                elif elementcode == 'asymmetric_load':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_asymmetric_load(
+                        power_model, bus=node, **model)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'shunt':
                     node = get_node(local_nodes[0])
                     element = pp.create_shunt(
@@ -461,8 +467,8 @@ class PandaPowerModel:
         log.info('PandaPowerModel - run_diagnostics - diagnostic run')
         return self.diagnostic_results, ret_code
 
-    def run_powerflow(self):
-        """Run power flow"""
+    def run_powerflow_sym(self):
+        """Run symmetric power flow"""
 
         pp.runpp(self.power_model)
 
@@ -574,14 +580,21 @@ class PandaPowerModel:
 
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
-    def run_powerflow_timeseries(self):
+    def run_powerflow_timeseries(self, runpp_3ph=False):
         """Run power flow time series simulation"""
-
+    
         sgens = self.power_model.sgen.to_dict(orient='records')
         loads = self.power_model.load.to_dict(orient='records')
+        asymmetric_loads = self.power_model.asymmetric_load.to_dict(orient='records')
         dfdata_load = dict()
         dfdata_p = dict()
         dfdata_q = dict()
+        dfdata_pa = dict()
+        dfdata_pb = dict()
+        dfdata_pc = dict()
+        dfdata_qa = dict()
+        dfdata_qb = dict()
+        dfdata_qc = dict()
         n_ts = 24
 
         # Sgen controller
@@ -640,64 +653,273 @@ class PandaPowerModel:
         const_load_q = control.ConstControl(self.power_model, element='load', element_index=self.power_model.load.index,
                                             variable='q_mvar', data_source=ds_q, profile_name=self.power_model.load.index)
 
+        # Asymmetric Load controller
+        for load_index, values in enumerate(asymmetric_loads):
+            col_pa = []
+            col_pb = []
+            col_pc = []
+            col_qa = []
+            col_qb = []
+            col_qc = []
+            dfdata_pa[load_index] = col_pa
+            dfdata_pb[load_index] = col_pb
+            dfdata_pc[load_index] = col_pc
+            dfdata_qa[load_index] = col_qa
+            dfdata_qb[load_index] = col_qb
+            dfdata_qc[load_index] = col_qc
+            pa_mw = values['p_a_mw']
+            pb_mw = values['p_b_mw']
+            pc_mw = values['p_c_mw']
+            qa_mvar = values['q_a_mvar']
+            qb_mvar = values['q_b_mvar']
+            qc_mvar = values['q_c_mvar']
+            e_code = self.power_elements_inverted['asymmetric_load', load_index]
+            graph_uid = self.base_elements[e_code].fields['load_profile']['value']
+            if graph_uid not in self.loadprofiles:
+                graph_uid = list(self.loadprofiles.keys())[0]
+            load_profile = self.loadprofiles[graph_uid][1][0]
+            load_profile_func = GraphModel(load_profile).get_value_func()
+            for time_index in range(n_ts):
+                col_pa.append(load_profile_func(time_index)*pa_mw)
+                col_pb.append(load_profile_func(time_index)*pb_mw)
+                col_pc.append(load_profile_func(time_index)*pc_mw)
+                col_qa.append(load_profile_func(time_index)*qa_mvar)
+                col_qb.append(load_profile_func(time_index)*qb_mvar)
+                col_qc.append(load_profile_func(time_index)*qc_mvar)
+        df_pa = pd.DataFrame(data=dfdata_pa, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_load.index)
+        df_pb = pd.DataFrame(data=dfdata_pb, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_load.index)
+        df_pc = pd.DataFrame(data=dfdata_pc, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_load.index)
+        df_qa = pd.DataFrame(data=dfdata_qa, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_load.index)
+        df_qb = pd.DataFrame(data=dfdata_qb, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_load.index)
+        df_qc = pd.DataFrame(data=dfdata_qc, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_load.index)
+        ds_pa = DFData(df_pa)
+        ds_pb = DFData(df_pb)
+        ds_pc = DFData(df_pc)
+        ds_qa = DFData(df_qa)
+        ds_qb = DFData(df_qb)
+        ds_qc = DFData(df_qc)
+        const_load_pa = control.ConstControl(self.power_model, element='asymmetric_load', 
+                                            element_index=self.power_model.asymmetric_load.index,
+                                            variable='p_a_mw', data_source=ds_pa, 
+                                            profile_name=self.power_model.asymmetric_load.index)
+        const_load_pb = control.ConstControl(self.power_model, element='asymmetric_load', 
+                                            element_index=self.power_model.asymmetric_load.index,
+                                            variable='p_b_mw', data_source=ds_pb, 
+                                            profile_name=self.power_model.asymmetric_load.index)
+        const_load_pc = control.ConstControl(self.power_model, element='asymmetric_load', 
+                                            element_index=self.power_model.asymmetric_load.index,
+                                            variable='p_c_mw', data_source=ds_pc, 
+                                            profile_name=self.power_model.asymmetric_load.index)
+        const_load_qa = control.ConstControl(self.power_model, element='asymmetric_load', 
+                                            element_index=self.power_model.asymmetric_load.index,
+                                            variable='q_a_mvar', data_source=ds_qa, 
+                                            profile_name=self.power_model.asymmetric_load.index)
+        const_load_qb = control.ConstControl(self.power_model, element='asymmetric_load', 
+                                            element_index=self.power_model.asymmetric_load.index,
+                                            variable='q_b_mvar', data_source=ds_qb, 
+                                            profile_name=self.power_model.asymmetric_load.index)
+        const_load_qc = control.ConstControl(self.power_model, element='asymmetric_load', 
+                                            element_index=self.power_model.asymmetric_load.index,
+                                            variable='q_c_mvar', data_source=ds_qc, 
+                                            profile_name=self.power_model.asymmetric_load.index)
+        
         # Output writer
+        # Elements
         time_steps = range(n_ts)
         log_variables = []
-        log_variables.append(('res_bus', 'vm_pu'))
+        if runpp_3ph:
+            log_variables.append(('res_bus_3ph', 'vm_a_pu'))
+            log_variables.append(('res_bus_3ph', 'vm_b_pu'))
+            log_variables.append(('res_bus_3ph', 'vm_c_pu'))
+        else:
+            log_variables.append(('res_bus', 'vm_pu'))
         for e_code, element in self.base_elements.items():
             if e_code in self.power_elements:
                 (elementcode, element_id) = self.power_elements[e_code]
-                if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
-                    log_variables.append(('res_'+elementcode, 'p_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_mvar'))
-                elif elementcode == 'trafo':
-                    log_variables.append(('res_'+elementcode, 'p_hv_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
-                    log_variables.append(('res_'+elementcode, 'p_lv_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
-                    log_variables.append(('res_'+elementcode, 'pl_mw'))
-                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                    log_variables.append(
-                        ('res_'+elementcode, 'loading_percent'))
-                elif elementcode == 'trafo3w':
-                    log_variables.append(('res_'+elementcode, 'p_hv_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
-                    log_variables.append(('res_'+elementcode, 'p_mv_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_mv_mvar'))
-                    log_variables.append(('res_'+elementcode, 'p_lv_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
-                    log_variables.append(('res_'+elementcode, 'pl_mw'))
-                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                    log_variables.append(
-                        ('res_'+elementcode, 'loading_percent'))
-                elif elementcode == 'gen':
-                    log_variables.append(('res_'+elementcode, 'p_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_mvar'))
-                    log_variables.append(('res_'+elementcode, 'vm_pu'))
-                    log_variables.append(('res_'+elementcode, 'va_degree'))
-                elif elementcode in ['impedence', 'dcline']:
-                    log_variables.append(('res_'+elementcode, 'p_from_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_from_mvar'))
-                    log_variables.append(('res_'+elementcode, 'p_to_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_to_mvar'))
-                    log_variables.append(('res_'+elementcode, 'pl_mw'))
-                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                elif elementcode in ['line']:
-                    log_variables.append(('res_'+elementcode, 'p_from_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_from_mvar'))
-                    log_variables.append(('res_'+elementcode, 'p_to_mw'))
-                    log_variables.append(('res_'+elementcode, 'q_to_mvar'))
-                    log_variables.append(('res_'+elementcode, 'pl_mw'))
-                    log_variables.append(('res_'+elementcode, 'ql_mvar'))
-                    log_variables.append(
-                        ('res_'+elementcode, 'loading_percent'))
+                if runpp_3ph:
+                    if elementcode in ['load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_mvar'))
+                    elif elementcode in ['ext_grid', 'asymmetric_load']:
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_mvar'))
+                    elif elementcode == 'trafo':
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_hv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_hv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_hv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_hv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_hv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_hv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_lv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_lv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_lv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_lv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_lv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_lv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_l_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_l_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_l_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
+                    elif elementcode == 'trafo3w':
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_hv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_hv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_mv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_mv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_lv_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_lv_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
+                    elif elementcode == 'gen':
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'vm_pu'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'va_degree'))
+                    elif elementcode in ['impedence', 'dcline']:
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_from_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_from_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_to_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_to_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_mvar'))
+                    elif elementcode in ['line']:
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_from_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_from_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_to_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_to_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_l_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_from_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_from_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_to_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_to_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_l_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_from_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_from_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_to_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_to_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_l_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
+                else:
+                    if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                        log_variables.append(('res_'+elementcode, 'p_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_mvar'))
+                    elif elementcode == 'trafo':
+                        log_variables.append(('res_'+elementcode, 'p_hv_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
+                        log_variables.append(('res_'+elementcode, 'p_lv_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
+                        log_variables.append(('res_'+elementcode, 'pl_mw'))
+                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                        log_variables.append(
+                            ('res_'+elementcode, 'loading_percent'))
+                    elif elementcode == 'trafo3w':
+                        log_variables.append(('res_'+elementcode, 'p_hv_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_hv_mvar'))
+                        log_variables.append(('res_'+elementcode, 'p_mv_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_mv_mvar'))
+                        log_variables.append(('res_'+elementcode, 'p_lv_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_lv_mvar'))
+                        log_variables.append(('res_'+elementcode, 'pl_mw'))
+                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                        log_variables.append(
+                            ('res_'+elementcode, 'loading_percent'))
+                    elif elementcode == 'gen':
+                        log_variables.append(('res_'+elementcode, 'p_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_mvar'))
+                        log_variables.append(('res_'+elementcode, 'vm_pu'))
+                        log_variables.append(('res_'+elementcode, 'va_degree'))
+                    elif elementcode in ['impedence', 'dcline']:
+                        log_variables.append(('res_'+elementcode, 'p_from_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_from_mvar'))
+                        log_variables.append(('res_'+elementcode, 'p_to_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_to_mvar'))
+                        log_variables.append(('res_'+elementcode, 'pl_mw'))
+                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                    elif elementcode in ['line']:
+                        log_variables.append(('res_'+elementcode, 'p_from_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_from_mvar'))
+                        log_variables.append(('res_'+elementcode, 'p_to_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_to_mvar'))
+                        log_variables.append(('res_'+elementcode, 'pl_mw'))
+                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                        log_variables.append(('res_'+elementcode, 'loading_percent'))
 
         ow = OutputWriter(self.power_model, time_steps,
                           output_path=None, log_variables=log_variables)
 
         # Starting the timeseries simulation
-        timeseries.run_timeseries(self.power_model, time_steps=time_steps)
+        if runpp_3ph:
+            timeseries.run_timeseries(self.power_model, time_steps=time_steps, run=pp.runpp_3ph)
+        else:
+            timeseries.run_timeseries(self.power_model, time_steps=time_steps)
 
+        def combine_graphdata(result, table, data, codes, combfunc, stat_fields):
+            codes_dict = dict()
+            dst_code, element_id, caption, unit, decimal, modfunc = data
+            for code in codes:
+                values = []
+                if runpp_3ph:
+                    table_code = 'res_' + table + '_3ph.' + code
+                else:
+                    table_code = 'res_' + table + '.' + code
+                for time_index in time_steps:
+                    if modfunc:
+                        value = modfunc(
+                            ow.np_results[table_code][time_index][element_id])
+                    else:
+                        value = ow.np_results[table_code][time_index][element_id]
+                    values.append(value)
+                codes_dict[code] = values
+            values_combined = combfunc(codes_dict)
+            val_avg = round(sum(values_combined)/len(values_combined), decimal)
+            val_max = round(max(values_combined), decimal)
+            val_min = round(min(values_combined), decimal)
+            delta = (val_max - val_min)*0.1
+            ylimits = (val_min - delta, val_max + delta)
+            title = caption + \
+                ': max: {}, min: {}, avg: {}'.format(
+                    val_max, val_min, val_avg)
+            model = [{'mode': misc.GRAPH_DATATYPE_PROFILE,
+                              'title': caption, 'xval': time_steps, 'yval': values_combined},]
+            # Add combined graph
+            graph_model = [title, model]
+            result[dst_code] = misc.get_field_dict(
+                'graph', caption, unit, graph_model, decimal=decimal)
+            result[dst_code]['graph_options'] = (
+                misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', caption + ' (' + unit + ')')
+            # Add stats
+            if 'avg' in stat_fields:
+                subcode = dst_code + ':avg'
+                subcaption = caption + ' (avg)'
+                result[subcode] = misc.get_field_dict(
+                    'float', subcaption, unit, val_avg, decimal=decimal)
+            if 'max' in stat_fields:
+                subcode = dst_code + ':max'
+                subcaption = caption + ' (max)'
+                result[subcode] = misc.get_field_dict(
+                    'float', subcaption, unit, val_max, decimal=decimal)
+            if 'min' in stat_fields:
+                subcode = dst_code + ':min'
+                subcaption = caption + ' (min)'
+                result[subcode] = misc.get_field_dict(
+                    'float', subcaption, unit, val_min, decimal=decimal)
+        
         def set_graphdata(result, table, data):
             model = []
             maintitle = ''
@@ -708,7 +930,10 @@ class PandaPowerModel:
             ylimits_max = []
             for code, element_id, caption, unit, decimal, modfunc, modcode in data:
                 values = []
-                table_code = 'res_' + table + '.' + code
+                if runpp_3ph:
+                    table_code = 'res_' + table + '_3ph.' + code
+                else:
+                    table_code = 'res_' + table + '.' + code
                 for time_index in time_steps:
                     if modfunc:
                         value = modfunc(
@@ -749,7 +974,10 @@ class PandaPowerModel:
             model = []
             for (code, element_id, caption, unit, decimal, modfunc, modcode) in data:
                 values = []
-                table_code = 'res_' + table + '.' + code
+                if runpp_3ph:
+                    table_code = 'res_' + table + '_3ph.' + code
+                else:
+                    table_code = 'res_' + table + '.' + code
                 for time_index in time_steps:
                     if modfunc:
                         value = modfunc(
@@ -786,10 +1014,25 @@ class PandaPowerModel:
                 self.node_results[node] = node_result
 
             def modfunc(x): return 100-x*100
-            set_graphdata(node_result, 'bus', [
-                          ['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']])
-            set_graph_data_stats(node_result, 'bus', [
-                                 ['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']], fields=['max'])
+
+            def maxfunc(value_dict): 
+                values_arr = np.array(list(value_dict.values()))
+                result = np.max(np.abs(values_arr), axis=0)
+                return list(result)
+
+            if runpp_3ph:
+                set_graphdata(node_result, 'bus', [
+                        ['vm_a_pu', bus, 'ΔVa', '%', 2, modfunc, 'delv_perc_a'],
+                        ['vm_b_pu', bus, 'ΔVb', '%', 2, modfunc, 'delv_perc_b'],
+                        ['vm_c_pu', bus, 'ΔVc', '%', 2, modfunc, 'delv_perc_c']])
+                combine_graphdata(node_result, 'bus',
+                    ['vm_pu', bus, 'ΔV', '%', 2, modfunc],
+                    ['vm_a_pu', 'vm_b_pu', 'vm_c_pu'], maxfunc, stat_fields=['max'])
+            else:
+                set_graphdata(node_result, 'bus', [
+                    ['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']])
+                set_graph_data_stats(node_result, 'bus', [
+                    ['vm_pu', bus, 'ΔV', '%', 2, modfunc, 'delv_perc']], fields=['max'])
 
         # Update elements
         for e_code, element in self.base_elements.items():
@@ -804,52 +1047,131 @@ class PandaPowerModel:
                 (elementcode, element_id) = self.power_elements[e_code]
 
                 # Populate element results
-                if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
-                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
-                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
-                elif elementcode == 'trafo':
-                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
-                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
-                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
-                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
-                    set_graphdata(element_result, elementcode, [
-                                  ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
-                elif elementcode == 'trafo3w':
-                    set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
-                                                                ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
-                    set_graphdata(element_result, elementcode, [['p_mv_mw', element_id, 'P MV', 'MW', 4, None, 'p_mv_mw'],
-                                                                ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
-                    set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
-                                                                ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
-                    set_graphdata(element_result, elementcode, [
-                                  ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
-                elif elementcode == 'gen':
-                    set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
-                                                                ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
-                    set_graphdata(element_result, elementcode, [
-                                  ['vm_pu', element_id, 'V', 'pu', 3, None, 'vm_pu']])
-                    set_graphdata(element_result, elementcode, [
-                                  ['va_degree', element_id, 'V angle', 'degree', 1, None, 'va_degree']])
-                elif elementcode in ['impedence', 'dcline']:
-                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
-                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
-                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
-                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
-                elif elementcode in ['line']:
-                    set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
-                                                                ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
-                    set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
-                                                                ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
-                    set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
-                                                                ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
-                    set_graphdata(element_result, elementcode, [
-                                  ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                if runpp_3ph:
+                    if elementcode in ['load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                        set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
+                                                                    ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
+                    elif elementcode in ['ext_grid', 'asymmetric_load']:
+                        set_graphdata(element_result, elementcode, [['p_a_mw', element_id, 'Pa', 'MW', 4, None, 'p_mw'],
+                                                                    ['p_b_mw', element_id, 'Pb', 'MW', 4, None, 'p_mw'],
+                                                                    ['p_c_mw', element_id, 'Pc', 'MW', 4, None, 'p_mw'],
+                                                                    ['q_a_mvar', element_id, 'Qa', 'MVAr', 4, None, 'q_mvar'],
+                                                                    ['q_b_mvar', element_id, 'Qb', 'MVAr', 4, None, 'q_mvar'],
+                                                                    ['q_c_mvar', element_id, 'Qc', 'MVAr', 4, None, 'q_mvar']])
+                    elif elementcode == 'trafo':
+                        set_graphdata(element_result, elementcode, [['p_a_hv_mw', element_id, 'Pa HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                    ['q_a_hv_mvar', element_id, 'Qa HV', 'MVAr', 4, None, 'q_hv_mvar'],
+                                                                    ['p_b_hv_mw', element_id, 'Pb HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                    ['q_b_hv_mvar', element_id, 'Qb HV', 'MVAr', 4, None, 'q_hv_mvar'],
+                                                                    ['p_c_hv_mw', element_id, 'Pc HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                    ['q_c_hv_mvar', element_id, 'Qc HV', 'MVAr', 4, None, 'q_hv_mvar'],])
+                        set_graphdata(element_result, elementcode, [['p_a_lv_mw', element_id, 'Pa LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                    ['q_a_lv_mvar', element_id, 'Qa LV', 'MVAr', 4, None, 'q_lv_mvar'],
+                                                                    ['p_b_lv_mw', element_id, 'Pb LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                    ['q_b_lv_mvar', element_id, 'Qb LV', 'MVAr', 4, None, 'q_lv_mvar'],
+                                                                    ['p_a_lv_mw', element_id, 'Pc LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                    ['q_a_lv_mvar', element_id, 'Qc LV', 'MVAr', 4, None, 'q_lv_mvar'],])
+                        set_graphdata(element_result, elementcode, [['p_a_l_mw', element_id, 'Pa loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['q_a_l_mvar', element_id, 'Qa loss', 'MVAr', 4, None, 'ql_mvar'],
+                                                                    ['p_b_l_mw', element_id, 'Pb loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['q_b_l_mvar', element_id, 'Qb loss', 'MVAr', 4, None, 'ql_mvar'],
+                                                                    ['p_c_l_mw', element_id, 'Pc loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['q_c_l_mvar', element_id, 'Qc loss', 'MVAr', 4, None, 'ql_mvar'],])
+                        set_graphdata(element_result, elementcode, [
+                                    ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                    elif elementcode == 'trafo3w':
+                        set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                    ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_mv_mw', element_id, 'P MV', 'MW', 4, None, 'p_mv_mw'],
+                                                                    ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                    ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                    elif elementcode == 'gen':
+                        set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
+                                                                    ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['vm_pu', element_id, 'V', 'pu', 3, None, 'vm_pu']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['va_degree', element_id, 'V angle', 'degree', 1, None, 'va_degree']])
+                    elif elementcode in ['impedence', 'dcline']:
+                        set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
+                                                                    ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
+                                                                    ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                    elif elementcode in ['line']:
+                        set_graphdata(element_result, elementcode, [['p_a_from_mw', element_id, 'Pa from', 'MW', 4, None, 'p_from_mw'],
+                                                                    ['q_a_from_mvar', element_id, 'Qa from', 'MVAr', 4, None, 'q_from_mvar'],
+                                                                    ['p_b_from_mw', element_id, 'Pb from', 'MW', 4, None, 'p_from_mw'],
+                                                                    ['q_b_from_mvar', element_id, 'Qb from', 'MVAr', 4, None, 'q_from_mvar'],
+                                                                    ['p_b_from_mw', element_id, 'Pc from', 'MW', 4, None, 'p_from_mw'],
+                                                                    ['q_b_from_mvar', element_id, 'Qc from', 'MVAr', 4, None, 'q_from_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_a_to_mw', element_id, 'Pa to', 'MW', 4, None, 'p_to_mw'],
+                                                                    ['q_a_to_mvar', element_id, 'Qa to', 'MVAr', 4, None, 'q_to_mvar'],
+                                                                    ['p_b_to_mw', element_id, 'Pb to', 'MW', 4, None, 'p_to_mw'],
+                                                                    ['q_b_to_mvar', element_id, 'Qb to', 'MVAr', 4, None, 'q_to_mvar'],
+                                                                    ['p_c_to_mw', element_id, 'Pc to', 'MW', 4, None, 'p_to_mw'],
+                                                                    ['q_c_to_mvar', element_id, 'Qc to', 'MVAr', 4, None, 'q_to_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_a_l_mw', element_id, 'Pa loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['q_a_l_mvar', element_id, 'Qa loss', 'MVAr', 4, None, 'ql_mvar'],
+                                                                    ['p_b_l_mw', element_id, 'Pb loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['q_b_l_mvar', element_id, 'Qb loss', 'MVAr', 4, None, 'ql_mvar'],
+                                                                    ['p_c_l_mw', element_id, 'Pc loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['q_c_l_mvar', element_id, 'Qc loss', 'MVAr', 4, None, 'ql_mvar']])
+                        set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+
+                else:
+                    if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                        set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
+                                                                    ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
+                    elif elementcode == 'trafo':
+                        set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                    ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                    ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                    elif elementcode == 'trafo3w':
+                        set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
+                                                                    ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_mv_mw', element_id, 'P MV', 'MW', 4, None, 'p_mv_mw'],
+                                                                    ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
+                                                                    ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
+                    elif elementcode == 'gen':
+                        set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
+                                                                    ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['vm_pu', element_id, 'V', 'pu', 3, None, 'vm_pu']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['va_degree', element_id, 'V angle', 'degree', 1, None, 'va_degree']])
+                    elif elementcode in ['impedence', 'dcline']:
+                        set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
+                                                                    ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
+                                                                    ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                    elif elementcode in ['line']:
+                        set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P from', 'MW', 4, None, 'p_from_mw'],
+                                                                    ['q_from_mvar', element_id, 'Q from', 'MVAr', 4, None, 'q_from_mvar']])
+                        set_graphdata(element_result, elementcode, [['p_to_mw', element_id, 'P to', 'MW', 4, None, 'p_to_mw'],
+                                                                    ['q_to_mvar', element_id, 'Q to', 'MVAr', 4, None, 'q_to_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
+                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                        set_graphdata(element_result, elementcode, [
+                                    ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
 
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
