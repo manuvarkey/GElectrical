@@ -164,6 +164,20 @@ class FieldView:
             
         def changed_callback_multiline(textbuffer, textview, button):
             button.props.image.set_from_icon_name('dialog-error', Gtk.IconSize.BUTTON)
+
+        def show_image_tooltip_callback(combo, x, y, keyboard_mode, tooltip):
+            tree_iter = combo.get_active_iter()
+            if tree_iter is not None:
+                model = combo.get_model()
+                image_file_name = model[tree_iter][2]
+                if image_file_name:
+                    pixbuf =  GdkPixbuf.Pixbuf.new_from_file_at_scale(image_file_name, -1,400,True)
+                    pixbuf =  pixbuf.add_alpha(True,255,255,255)
+                    width = pixbuf.get_width()
+                    pixbuf =  pixbuf.composite_color_simple(width, 400, GdkPixbuf.InterpType.NEAREST, 255, 64, 0xFFFFFF, 0xFFFFFF)
+                    tooltip.set_icon(pixbuf)
+                    return True
+            return False
                         
         # Add fields
         for code, field in self.fields.items():
@@ -181,7 +195,7 @@ class FieldView:
                 if field['type'] in ('str', 'int', 'float'):
                     
                     if field['selection_list']:
-                        name_store = Gtk.ListStore(str, GdkPixbuf.Pixbuf)
+                        name_store = Gtk.ListStore(str, GdkPixbuf.Pixbuf, str)
                         data_widget = Gtk.ComboBox.new_with_model(name_store)
                         if field['selection_image_list']:
                             renderer_image = Gtk.CellRendererPixbuf()
@@ -195,20 +209,25 @@ class FieldView:
                             if field['selection_image_list']:
                                 image_file_name = field['selection_image_list'][slno]
                                 if image_file_name:
-                                    pixbuf =  GdkPixbuf.Pixbuf.new_from_file(misc.abs_path('icons', image_file_name))
+                                    image_file_name_abs = misc.abs_path('icons', image_file_name)
+                                    pixbuf =  GdkPixbuf.Pixbuf.new_from_file(image_file_name_abs)
                                     pixbuf =  pixbuf.add_alpha(True,255,255,255)
                                 else:
                                     pixbuf = None
-                                name_store.append([str(text), pixbuf])
+                                    image_file_name_abs = None
+                                name_store.append([str(text), pixbuf, image_file_name_abs])
                             else:
-                                name_store.append([str(text), None])
+                                name_store.append([str(text), None, ''])
                         # Set value
                         if field['value'] in field['selection_list']: 
                             index = field['selection_list'].index(field['value'])
                         else:
                             index = 0
                         data_widget.set_active(index)
-                        
+                        # Set callbacks
+                        if field['selection_image_list']:
+                            data_widget.set_has_tooltip(True)
+                            data_widget.connect('query-tooltip', show_image_tooltip_callback)
                         if field[self.inactivate_code] == False:
                             data_widget.connect("changed", activate_callback_list, get_field, set_field, code)
                         else:
