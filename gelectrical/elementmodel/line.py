@@ -170,6 +170,14 @@ class LTCableIEC(Line):
                         'Reference method D1 - \nMulti-core cable\nin the ground',
                         'Reference method D2 - \nMulti-core cable in ducts \nin the ground',
                         'Reference method E - \nMulti-core cable \nin free air',]
+        self.laying_types_images = ['cable_iec_a1.svg',
+                                    'cable_iec_a2.svg',
+                                    'cable_iec_b1.svg',
+                                    'cable_iec_b2.svg',
+                                    'cable_iec_c.svg',
+                                    'cable_iec_d1.svg',
+                                    'cable_iec_d2.svg',
+                                    'cable_iec_e.svg']
         self.conductor_materials = ['Copper','Aluminium']
         self.insulation_materials = ['PVC', 'XLPE/EPR']
         self.cpe_list = ['None', 'Neutral', 'As an additional core\nin cable/ conduit', 
@@ -442,6 +450,7 @@ class LTCableIEC(Line):
                                                                status_live=False)
         self.fields['laying_type'] = self.get_field_dict('str', 'Laying type', '', self.laying_types[0], 
                                                          selection_list=self.laying_types,
+                                                         selection_image_list=self.laying_types_images,
                                                          alter_structure=True)
         self.fields['laying_type_sub'] = self.get_field_dict('str', 'Laying arrangement', '', 'Bunched', 
                                                              selection_list=['Bunched'],

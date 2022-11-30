@@ -21,7 +21,7 @@
 # 
 
 import logging, copy, pickle, codecs, bisect
-from gi.repository import Gtk, Gdk, GLib
+from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 import cairo
 
 # local files import
@@ -100,25 +100,28 @@ class FieldView:
             
         def activate_callback_list(widget, get_field, set_field, code):
             field = get_field(code)
-            text = widget.get_active_text()
-            if field['validation_func']:
-                validated = field['validation_func'](text)
-            else:
-                if field['type'] == 'str':
-                    validated = text
-                elif field['type'] == 'float':
-                    try:
-                        validated = round(float(eval(text)), field['decimal'])
-                    except:
-                        validated = 0
-                elif field['type'] == 'int':
-                    try:
-                        validated = int(eval(text))
-                    except:
-                        validated = 0
-            set_field(code, validated)  # set value
-            if field['alter_structure'] == True:
-                self.update_widgets()
+            tree_iter = widget.get_active_iter()
+            if tree_iter is not None:
+                model = widget.get_model()
+                text = model[tree_iter][0]
+                if field['validation_func']:
+                    validated = field['validation_func'](text)
+                else:
+                    if field['type'] == 'str':
+                        validated = text
+                    elif field['type'] == 'float':
+                        try:
+                            validated = round(float(eval(text)), field['decimal'])
+                        except:
+                            validated = 0
+                    elif field['type'] == 'int':
+                        try:
+                            validated = int(eval(text))
+                        except:
+                            validated = 0
+                set_field(code, validated)  # set value
+                if field['alter_structure'] == True:
+                    self.update_widgets()
         
         def activate_callback_bool(widget, state, get_field, set_field, code):
             field = get_field(code)
@@ -178,10 +181,27 @@ class FieldView:
                 if field['type'] in ('str', 'int', 'float'):
                     
                     if field['selection_list']:
-                        data_widget = Gtk.ComboBoxText.new()
+                        name_store = Gtk.ListStore(str, GdkPixbuf.Pixbuf)
+                        data_widget = Gtk.ComboBox.new_with_model(name_store)
+                        if field['selection_image_list']:
+                            renderer_image = Gtk.CellRendererPixbuf()
+                            data_widget.pack_start(renderer_image, False)
+                            data_widget.add_attribute(renderer_image, 'pixbuf', 1)
+                        renderer_text = Gtk.CellRendererText()
+                        data_widget.pack_start(renderer_text, True)
+                        data_widget.add_attribute(renderer_text, 'text', 0)
                         # Populate
-                        for text in field['selection_list']:
-                            data_widget.append_text(str(text))
+                        for slno, text in enumerate(field['selection_list']):
+                            if field['selection_image_list']:
+                                image_file_name = field['selection_image_list'][slno]
+                                if image_file_name:
+                                    pixbuf =  GdkPixbuf.Pixbuf.new_from_file(misc.abs_path('icons', image_file_name))
+                                    pixbuf =  pixbuf.add_alpha(True,255,255,255)
+                                else:
+                                    pixbuf = None
+                                name_store.append([str(text), pixbuf])
+                            else:
+                                name_store.append([str(text), None])
                         # Set value
                         if field['value'] in field['selection_list']: 
                             index = field['selection_list'].index(field['value'])

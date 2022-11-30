@@ -221,7 +221,8 @@ class ElementModel:
     ## Private Functions
     
     def get_field_dict(self, field_type, caption, unit, value, max_chars=None, 
-                       validation_func=None, selection_list=None, decimal=6, 
+                       validation_func=None, selection_list=None, 
+                       selection_image_list=None, decimal=6, 
                        status_floating=False, status_live=True,
                        inactivate=False,
                        click_to_edit_message=None,
@@ -234,6 +235,7 @@ class ElementModel:
         field_dict['max_chars'] = max_chars
         field_dict['validation_func'] = validation_func
         field_dict['selection_list'] = selection_list
+        field_dict['selection_image_list'] = selection_image_list
         field_dict['decimal'] = decimal
         field_dict['status_floating'] = status_floating
         field_dict['status_enable'] = status_live

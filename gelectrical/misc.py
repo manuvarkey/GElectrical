@@ -1009,7 +1009,10 @@ def font_str_encode(family, size):
 # Field handling functions
 
 def get_field_dict(field_type, caption, unit, value, max_chars=None, 
-                       validation_func=None, selection_list=None, decimal=6,
+                       validation_func=None, 
+                       selection_list=None, 
+                       selection_image_list=None, 
+                       decimal=6,
                        status_enable=True,
                        status_inactivate=True,
                        click_to_edit_message=None,
@@ -1022,6 +1025,7 @@ def get_field_dict(field_type, caption, unit, value, max_chars=None,
     field_dict['max_chars'] = max_chars
     field_dict['validation_func'] = validation_func
     field_dict['selection_list'] = selection_list
+    field_dict['selection_image_list'] = selection_image_list
     field_dict['decimal'] = decimal
     field_dict['status_enable'] = status_enable
     field_dict['status_inactivate'] = status_inactivate
