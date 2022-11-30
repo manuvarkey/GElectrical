@@ -609,13 +609,17 @@ class ProjectModel:
     
     ## Export/Import functions
     
-    def export_html_report(self, filename):
+    def export_html_report(self, filename, call_at_exit=None):
         self.powermodel.export_html_report(filename)
+        if call_at_exit:
+            call_at_exit()
         
-    def export_json(self, filename):
+    def export_json(self, filename, call_at_exit=None):
         self.powermodel.export_json(filename)
+        if call_at_exit:
+            call_at_exit()
         
-    def export_pdf_report(self, filename, settings):
+    def export_pdf_report(self, filename, settings, call_at_exit=None):
         template_path = misc.abs_path("templates")
         env = Environment(loader=FileSystemLoader(template_path))
         
@@ -827,7 +831,10 @@ class ProjectModel:
         # Render PDF
         HTML(string=html_out).write_pdf(filename, stylesheets=[css_obj])
         
-    def export_drawing(self, filename):
+        if call_at_exit:
+            call_at_exit()
+        
+    def export_drawing(self, filename, call_at_exit=None):
         surface = cairo.PDFSurface(filename, 0, 0)
         proj_fields = self.get_project_fields()
         surface.set_metadata(cairo.PDFMetadata.TITLE, proj_fields['project_name']['value'])
@@ -842,6 +849,8 @@ class ProjectModel:
             drawing_model.export_drawing(context)
             surface.show_page()
         surface.finish()
+        if call_at_exit:
+            call_at_exit()
         
     def print_drawing(self, context, page_nr):
         if page_nr < len(self.drawing_models):

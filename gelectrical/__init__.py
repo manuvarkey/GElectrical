@@ -23,7 +23,7 @@
 # 
 
 import os, platform, sys, queue, threading, logging, traceback, json, pickle
-import io, codecs, importlib, copy, gi
+import io, codecs, importlib, copy, gi, concurrent.futures
 from zipfile import ZipFile
 import appdirs
 
@@ -489,12 +489,12 @@ class MainWindow():
             self.project.setup_base_model()
             
             progress.add_message('Building Power Model...')
-            progress.set_fraction(0.2)
+            progress.set_fraction(0.1)
             self.project.build_power_model()
             
             if settings['diagnostics']:
                 progress.add_message('Running Diagnostics...')
-                progress.set_fraction(0.3)
+                progress.set_fraction(0.2)
                 ret_code = self.project.run_diagnostics()
             else:
                 ret_code = misc.OK
@@ -503,44 +503,50 @@ class MainWindow():
                 
                 if settings['powerflow']:
                     progress.add_message('Running Power Flow...')
-                    progress.set_fraction(0.4)
+                    progress.set_fraction(0.3)
                     #self.project.run_powerflow()
                     self.project.run_powerflow_timeseries()
                 
                 if settings['sc_sym']:
                     progress.add_message('Running Symmetric Short Circuit Calculation...')
-                    progress.set_fraction(0.5)
+                    progress.set_fraction(0.4)
                     self.project.run_sym_sccalc()
                     
                 if settings['sc_gf']:
                     progress.add_message('Running Line to Ground Short Circuit Calculation...')
-                    progress.set_fraction(0.6)
+                    progress.set_fraction(0.5)
                     self.project.run_linetoground_sccalc()
                 
                 progress.add_message('Updating Results...')
-                progress.set_fraction(0.7)
+                progress.set_fraction(0.6)
                 self.project.update_results()
                 
                 if settings['folder'] and settings['export']:
-                    progress.add_message('Setting up Pandapower HTML Report...')
-                    progress.set_fraction(0.8)
-                    filename = misc.posix_path(settings['folder'], 'network.html')
-                    self.project.export_html_report(filename)
-                    
-                    progress.add_message('Exporting pandapower network to JSON...')
-                    progress.set_fraction(0.85)
-                    filename = misc.posix_path(settings['folder'], 'network.json')
-                    self.project.export_json(filename)
-                    
-                    progress.add_message('Setting up PDF Report...')
-                    progress.set_fraction(0.90)
-                    filename = misc.posix_path(settings['folder'], 'report.pdf')
-                    self.project.export_pdf_report(filename, settings)
-                    
-                    progress.add_message('Exporting drawing...')
-                    progress.set_fraction(0.95)
-                    filename_drg = misc.posix_path(settings['folder'], 'drawing.pdf')
-                    self.project.export_drawing(filename_drg)
+                    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+                        
+                        def call_at_exit():
+                            progress.add_message('Set up Pandapower HTML Report.')
+                            progress.set_fraction(progress.get_fraction() + 0.05)
+                        filename = misc.posix_path(settings['folder'], 'network.html')
+                        executor.submit(self.project.export_html_report, filename, call_at_exit)
+                        
+                        def call_at_exit():
+                            progress.add_message('Exported pandapower network to JSON.')
+                            progress.set_fraction(progress.get_fraction() + 0.05)
+                        filename = misc.posix_path(settings['folder'], 'network.json')
+                        executor.submit(self.project.export_json, filename, call_at_exit)
+                        
+                        def call_at_exit():
+                            progress.add_message('Set up PDF Report.')
+                            progress.set_fraction(progress.get_fraction() + 0.2)
+                        filename = misc.posix_path(settings['folder'], 'report.pdf')
+                        executor.submit(self.project.export_pdf_report, filename, settings, call_at_exit)
+                        
+                        def call_at_exit():
+                            progress.add_message('Exported drawing.')
+                            progress.set_fraction(progress.get_fraction() + 0.1)
+                        filename_drg = misc.posix_path(settings['folder'], 'drawing.pdf')
+                        executor.submit(self.project.export_drawing, filename_drg, call_at_exit)
                 
                 progress.set_fraction(1)
                 progress.add_message('<b>Analysis run Successfully</b>')
