@@ -294,7 +294,9 @@ class ProjectModel:
         
     def build_power_model(self):
         if self.status['net_model']:
-            self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles)
+            sim_settings = self.get_project_fields(page='Simulation')
+            f_hz = sim_settings['grid_frequency']
+            self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles, f_hz)
             self.powermodel.build_power_model(mode=misc.POWER_MODEL_POWERFLOW)
             self.powermodel.build_power_model(mode=misc.POWER_MODEL_GROUNDFAULT)
             self.status['power_model'] = True

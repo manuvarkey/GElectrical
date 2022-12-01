@@ -1167,6 +1167,7 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                              'run_sc_gf' : get_field_dict('bool', 'Run line to ground short circuit calculation', '', False, status_inactivate=False),
                              'export_results' : get_field_dict('bool', 'Export results of simulation', '', False, status_inactivate=False),
                              'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
+                             'grid_frequency': get_field_dict('float', 'Grid Frequency', 'Hz', 50, selection_list=[50,60], status_inactivate=False),
                              'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),
                              'x_fault_ohm': get_field_dict('float', 'Fault reactance', 'Ohm', 0, status_inactivate=False)}}
 

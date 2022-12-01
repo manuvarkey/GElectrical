@@ -51,7 +51,7 @@ log = logging.getLogger(__name__)
 class PandaPowerModel:
     """Class for modelling a Panda Power Project"""
 
-    def __init__(self, network_model, loadprofiles):
+    def __init__(self, network_model, loadprofiles, f_hz=50):
 
         # Data
         self.network_model = network_model
@@ -64,8 +64,8 @@ class PandaPowerModel:
         self.gnode_element_mapping = self.network_model.gnode_element_mapping
 
         # Power variables
-        self.power_model = pp.create_empty_network()
-        self.power_model_gf = pp.create_empty_network()
+        self.power_model = pp.create_empty_network(name='Project power model', f_hz=f_hz)
+        self.power_model_gf = pp.create_empty_network(name='Ground fault power model', f_hz=f_hz)
         self.power_nodes = dict()  # Maps global_node -> power_node
         self.power_nodes_inverted = dict()  # Maps power_node -> global_node
         self.power_elements = dict()  # Maps element_code -> (table_code, slno)
