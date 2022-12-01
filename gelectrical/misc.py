@@ -23,6 +23,7 @@
 #  
 
 import subprocess, threading, os, posixpath, platform, logging, math, cairo, copy, time, pathlib
+import base64
 from uuid import uuid4 as uuid
 from urllib.parse import urlparse
 from urllib.request import url2pathname
@@ -752,6 +753,9 @@ class ProgressRevealer:
             self.show()
             return False
         GLib.idle_add(callback)
+
+    def get_fraction(self):
+        return self.progress.get_fraction()
         
     def pulse(self, end=False):
         def callback():
@@ -1112,7 +1116,7 @@ def elements_to_table(elements, col_codes, col_captions, code_sources, table_cla
         modifyfunc(table)
     return pd.DataFrame(table).to_html(index=False, escape=False, classes=table_class)
     
-def fields_to_table(fields):
+def fields_to_table(fields, insert_image=True):
     table = {'Sl.No.':[], 'Description': [], 'Value': [], 'Unit': []}
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     index = 1
@@ -1122,9 +1126,21 @@ def fields_to_table(fields):
             table['Description'].append(clean(field['caption']))
             table['Unit'].append(field['unit'])
             if field['type'] == 'float':
-                table['Value'].append(str(round(field['value'], 4)))
+                value = str(round(field['value'], 4))
             else:
-                table['Value'].append(clean(field['value']))
+                value = clean(field['value'])
+            if field['selection_list'] and field['selection_image_list'] and insert_image:
+                index = field['selection_list'].index(field['value'])
+                image_path = field['selection_image_list'][index]
+                if image_path:
+                    image_file = abs_path('icons', image_path)
+                    data_uri = base64.b64encode(open(image_file, 'rb').read()).decode('utf-8')
+                    img_tag = "<div class='parent flex-parent'><div class='child flex-left'><img src='data:image/svg;base64,{0}'></div><div class='child flex-right'>{1}</div></div>".format(data_uri, value)
+                    table['Value'].append(img_tag)
+                else:
+                    table['Value'].append(value)
+            else:
+                table['Value'].append(value)
         else:
             table['Sl.No.'].append(index)
             table['Description'].append(clean(field['caption']))

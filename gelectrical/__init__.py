@@ -528,25 +528,31 @@ class MainWindow():
                             progress.add_message('Set up Pandapower HTML Report.')
                             progress.set_fraction(progress.get_fraction() + 0.05)
                         filename = misc.posix_path(settings['folder'], 'network.html')
-                        executor.submit(self.project.export_html_report, filename, call_at_exit)
+                        call_1 = executor.submit(self.project.export_html_report, filename, call_at_exit)
                         
                         def call_at_exit():
                             progress.add_message('Exported pandapower network to JSON.')
                             progress.set_fraction(progress.get_fraction() + 0.05)
                         filename = misc.posix_path(settings['folder'], 'network.json')
-                        executor.submit(self.project.export_json, filename, call_at_exit)
+                        call_2 = executor.submit(self.project.export_json, filename, call_at_exit)
                         
                         def call_at_exit():
                             progress.add_message('Set up PDF Report.')
                             progress.set_fraction(progress.get_fraction() + 0.2)
                         filename = misc.posix_path(settings['folder'], 'report.pdf')
-                        executor.submit(self.project.export_pdf_report, filename, settings, call_at_exit)
+                        call_3 = executor.submit(self.project.export_pdf_report, filename, settings, call_at_exit)
                         
                         def call_at_exit():
                             progress.add_message('Exported drawing.')
                             progress.set_fraction(progress.get_fraction() + 0.1)
                         filename_drg = misc.posix_path(settings['folder'], 'drawing.pdf')
-                        executor.submit(self.project.export_drawing, filename_drg, call_at_exit)
+                        call_4 = executor.submit(self.project.export_drawing, filename_drg, call_at_exit)
+
+                        # Print results
+                        call_1.result()
+                        call_2.result()
+                        call_3.result()
+                        call_4.result()
                 
                 progress.set_fraction(1)
                 progress.add_message('<b>Analysis run Successfully</b>')

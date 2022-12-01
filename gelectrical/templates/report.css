@@ -227,9 +227,22 @@ dt {
 }
 /* GRAPHIC CONTENTS */
   
-  img {
-    page-break-inside: avoid;
-  }
+img{
+  width: 1.8cm;
+  page-break-inside: avoid;
+}
+
+.flex-parent {
+  display: flex;
+  align-items: flex-start;
+}
+.flex-left {
+  flex: 0.3;
+}
+
+.flex-right {
+  flex: 0.7;
+}
   
 /* GENERAL OUTLINE */
 
