@@ -28,13 +28,14 @@ from .element import ElementModel
 
 class Line(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_line'
+    name = 'Line'
+    group = 'Components'
+    icon = misc.abs_path('icons', 'line.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_line'
-        self.name = 'Line'
-        self.group = 'Components'
-        self.icon = misc.abs_path('icons', 'line.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.database_path = misc.abs_path('database', 'line.csv')
         self.model_width = 0
         self.model_height = 0
@@ -52,12 +53,12 @@ class Line(ElementModel):
                        'r0g_ohm_per_km': self.get_field_dict('float', 'R0g', 'Ohm/km', 0),
                        'x0g_ohm_per_km': self.get_field_dict('float', 'X0g', 'Ohm/km', 0),
                        'c0g_nf_per_km':  self.get_field_dict('float', 'C0g', 'nF/km', 0),
-                       'endtemp_degree':self.get_field_dict('float', 'Tf', 'degC', 70),
+                       'endtemp_degree':self.get_field_dict('float', 'Tf', 'degC', 160),
                        'max_i_ka':      self.get_field_dict('float', 'Imax', 'kA', 1),
                        'phase_sc_current_rating': self.get_field_dict('float', 'Isc phase (1s)', 'kA', 0),
                        'cpe_sc_current_rating': self.get_field_dict('float', 'Isc cpe (1s)', 'kA', 0),
                        'df':            self.get_field_dict('float', 'DF', '', 1),
-                       'designation':   self.get_field_dict('str', 'Designation', '', '4x16'),
+                       'designation':   self.get_field_dict('str', 'Designation', '', ''),
                        'type':          self.get_field_dict('str', 'Type of Line', '', 'Under Ground', selection_list=['Over Head','Under Ground']),
                        'parallel':      self.get_field_dict('int', '# Parallel Lines', '', 1),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
@@ -148,13 +149,15 @@ class Line(ElementModel):
 
 class LTCableIEC(Line):
     """Cable element"""
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_line_cable'
+    name = 'LV Cable (IEC)'
+    group = 'Components'
+    icon = misc.abs_path('icons', 'line.svg')
+        
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        Line.__init__(self, cordinates)
-        self.code = 'element_line_cable'
-        self.name = 'LV Cable (IEC)'
-        self.group = 'Components'
-        self.icon = misc.abs_path('icons', 'line.svg')
+        Line.__init__(self, cordinates, **kwargs)
         self.database_path = misc.abs_path('database', 'cable_iec.csv')
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
@@ -167,8 +170,8 @@ class LTCableIEC(Line):
                         'Reference method B1 - \nInsulated conductors in conduit \non a wooden wall', 
                         'Reference method B2 - \nMulti-core cable in conduit \non a wooden wall',
                         'Reference method C - \nMulti-core cable \non a wooden wall',
-                        'Reference method D1 - \nMulti-core cable\nin the ground',
-                        'Reference method D2 - \nMulti-core cable in ducts \nin the ground',
+                        'Reference method D1 - \nMulti-core cable in ducts \nin the ground',
+                        'Reference method D2 - \nMulti-core cable\nin the ground',
                         'Reference method E - \nMulti-core cable \nin free air',]
         self.laying_types_images = ['cable_iec_a1.svg',
                                     'cable_iec_a2.svg',
@@ -193,8 +196,8 @@ class LTCableIEC(Line):
         self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}
         self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}
         self.conductor_delta20_dict = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}
-        ground_arrangements_1 = ['Cables touching', 'Spaced one cable dia', 'Spaced 0.125m', 'Spaced 0.25m', 'Spaced 0.5m']
-        ground_arrangements_2 = ['Ducts touching', 'Spaced 0.25m', 'Spaced 0.5m', 'Spaced 1.0m']
+        ground_arrangements_1 = ['Ducts touching', 'Spaced 0.25m', 'Spaced 0.5m', 'Spaced 1.0m']
+        ground_arrangements_2 = ['Cables touching', 'Spaced one cable dia', 'Spaced 0.125m', 'Spaced 0.25m', 'Spaced 0.5m']
         surface_arrangements = ['Bunched', 'Single layer on wall, floor',  'Single layer fixed directly\nunder a wooden ceiling']
         air_arrangements = ['Perforated cable tray\n(Touching)', 
                             'Perforated cable tray\n(Spaced)',
@@ -235,11 +238,11 @@ class LTCableIEC(Line):
                                (5,1) : no_groups_d,
                                (5,2) : no_groups_d,
                                (5,3) : no_groups_d,
-                               (5,4) : no_groups_d,
                                (6,0) : no_groups_d,
                                (6,1) : no_groups_d,
                                (6,2) : no_groups_d,
                                (6,3) : no_groups_d,
+                               (6,4) : no_groups_d,
                                (7,0) : no_groups_e_1,
                                (7,1) : no_groups_e_2,
                                (7,2) : no_groups_e_1,
@@ -258,11 +261,11 @@ class LTCableIEC(Line):
                                (5,1) : ['1'],
                                (5,2) : ['1'],
                                (5,3) : ['1'],
-                               (5,4) : ['1'],
                                (6,0) : ['1'],
                                (6,1) : ['1'],
                                (6,2) : ['1'],
                                (6,3) : ['1'],
+                               (6,4) : ['1'],
                                (7,0) : ['1', '2', '3', '6'],
                                (7,1) : ['1', '2', '3'],
                                (7,2) : ['1', '2'],
@@ -284,8 +287,8 @@ class LTCableIEC(Line):
                                             [ [[0,300,10.51,0.6254]], [[0,300,13.95,0.627]] ],
                                             [ [[0,300,10.24,0.5994]], [[0,300,13.5,0.603]] ],
                                             [ [[0,16,11.6,0.625],[16,300,10.55,0.640]], [[0,16,14.8,0.625],[16,300,12.6,0.648]] ],
-                                            [ [[0,300,1.1*13.6,0.540]], [[0,300,1.1*15.82,0.541]] ],
                                             [ [[0,300,13.6,0.540]], [[0,300,15.82,0.541]] ],
+                                            [ [[0,300,1.1*13.6,0.540]], [[0,300,1.1*15.82,0.541]] ],
                                             [ [[0,16,12.8,0.627],[16,300,11.4,0.64]], [[0,16,16.0,0.625],[16,300,13.4,0.649]] ],
                                            ]
         self.current_rating_table_al_3ph = [[ [[0,300,7.94,0.612]], [[0,300,10.9,0.605]] ],
@@ -293,8 +296,8 @@ class LTCableIEC(Line):
                                             [ [[0,300,9.265,0.627]], [[0,300,12.3,0.630]] ],
                                             [ [[0,300,9.03,0.601]], [[0,300,11.95,0.605]] ],
                                             [ [[0,16,10.5,0.625],[16,300,9.536,0.6324]], [[0,16,13.5,0.625],[16,300,11.5,0.639]] ],
-                                            [ [[0,300,1.1*11.2,0.542]], [[0,300,1.1*13.2,0.539]] ],
                                             [ [[0,300,11.2,0.542]], [[0,300,13.2,0.539]] ],
+                                            [ [[0,300,1.1*11.2,0.542]], [[0,300,1.1*13.2,0.539]] ],
                                             [ [[0,16,11.0,0.62],[16,300,9.9,0.64]], [[0,16,13.7,0.623],[16,300,12.6,0.635]] ],
                                            ]
         self.current_rating_table_cu_1ph = [[ [[0,300,11.2,0.6118]], [[0,300,14.9,0.611]] ],
@@ -302,8 +305,8 @@ class LTCableIEC(Line):
                                             [ [[0,300,13.5,0.625]], [[0,300,17.76,0.6250]] ],
                                             [ [[0,300,13.1,0.600]], [[0,300,17.25,0.600]] ],
                                             [ [[0,16,15.0,0.625],[16,300,15.0,0.625]], [[0,16,18.77,0.628],[16,300,17.0,0.650]] ],
-                                            [ [[0,300,1.1*17.42,0.540]], [[0,300,1.1*20.25,0.542]] ],
                                             [ [[0,300,17.42,0.540]], [[0,300,20.25,0.542]] ],
+                                            [ [[0,300,1.1*17.42,0.540]], [[0,300,1.1*20.25,0.542]] ],
                                             [ [[0,16,16.8,0.62],[16,300,14.9,0.646]], [[0,16,20.5,0.623],[16,300,18.6,0.646]] ],
                                            ]
         self.current_rating_table_cu_3ph = [[ [[0,300,10.4,0.605]], [[0,300,13.34,0.611]] ],
@@ -311,8 +314,8 @@ class LTCableIEC(Line):
                                             [ [[0,300,11.84,0.628]], [[0,300,15.62,0.6252]] ],
                                             [ [[0,300,11.65,0.6005]], [[0,300,15.17,0.6]] ],
                                             [ [[0,16,13.5,0.625],[16,300,12.4,0.635]], [[0,16,17,0.623],[16,300,15.4,0.635]] ],
-                                            [ [[0,300,1.1*14.34,0.542]], [[0,300,1.1*16.88,0.539]] ],
                                             [ [[0,300,14.34,0.542]], [[0,300,16.88,0.539]] ],
+                                            [ [[0,300,1.1*14.34,0.542]], [[0,300,1.1*16.88,0.539]] ],
                                             [ [[0,16,14.3,0.62],[16,300,12.9,0.64]], [[0,16,17.8,0.623],[16,300,16.4,0.637]] ],
                                            ]
                                                                                       
@@ -338,28 +341,28 @@ class LTCableIEC(Line):
         df_e_6 = [[1,0.87,0.82,0.8,0.79,0.78],[1,0.86,0.8,0.78,0.76,0.73],[1,0.85,0.79,0.76,0.73,0.7],[1,0.84,0.77,0.73,0.68,0.64]]
         df_e_7 = [[1,1,1,1,1],[1,0.99,0.98,0.97,0.96],[1,0.98,0.97,0.96,0.93]]
         self.df_dict = {(0,0) : df_ab_1,
-                           (1,0) : df_ab_1,
-                           (2,0) : df_ab_1,
-                           (3,0) : df_ab_1,
-                           (4,0) : df_c_1,
-                           (4,1) : df_c_2,
-                           (4,2) : df_c_3,
-                           (5,0) : df_d_11,
-                           (5,1) : df_d_12,
-                           (5,2) : df_d_13,
-                           (5,3) : df_d_14,
-                           (5,4) : df_d_15,
-                           (6,0) : df_d_21,
-                           (6,1) : df_d_22,
-                           (6,2) : df_d_23,
-                           (6,3) : df_d_24,
-                           (7,0) : df_e_1,
-                           (7,1) : df_e_2,
-                           (7,2) : df_e_3,
-                           (7,3) : df_e_4,
-                           (7,4) : df_e_5,
-                           (7,5) : df_e_6,
-                           (7,6) : df_e_7}
+                        (1,0) : df_ab_1,
+                        (2,0) : df_ab_1,
+                        (3,0) : df_ab_1,
+                        (4,0) : df_c_1,
+                        (4,1) : df_c_2,
+                        (4,2) : df_c_3,
+                        (5,0) : df_d_21,
+                        (5,1) : df_d_22,
+                        (5,2) : df_d_23,
+                        (5,3) : df_d_24,
+                        (6,0) : df_d_11,
+                        (6,1) : df_d_12,
+                        (6,2) : df_d_13,
+                        (6,3) : df_d_14,
+                        (6,4) : df_d_15,
+                        (7,0) : df_e_1,
+                        (7,1) : df_e_2,
+                        (7,2) : df_e_3,
+                        (7,3) : df_e_4,
+                        (7,4) : df_e_5,
+                        (7,5) : df_e_6,
+                        (7,6) : df_e_7}
         self.ambient_temp_pvc_df = [1.22,1.17,1.12,1.06,1,0.94,0.87,0.79,0.71,0.61,0.5]
         self.ambient_temp_xlpe_df = [1.15,1.12,1.08,1.04,1,0.96,0.91,0.87,0.82,0.76,0.71,0.65,0.58,0.5,0.41]
         self.ground_temp_pvc_df = [1.1,1.05,1,0.95,0.89,0.84,0.77,0.71,0.63,0.55,0.45]
@@ -433,21 +436,21 @@ class LTCableIEC(Line):
         self.fields['armour_material'] = self.get_field_dict('str', 'Armour material', '', self.cpe_materials[0], 
                                                                 selection_list=self.cpe_materials,
                                                                 alter_structure=True,
-                                                                status_live=False)
+                                                                status_enable=False)
         self.fields['armour_cross_section'] = self.get_field_dict('float', 'Armour nominal\ncross-sectional area', 'sq.mm.', 
                                                                   0, alter_structure=True,
-                                                                  status_live=False)
+                                                                  status_enable=False)
         self.fields['cpe_material'] = self.get_field_dict('str', 'CPE material', '', self.cpe_materials[0], 
                                                                 selection_list=self.cpe_materials,
                                                                 alter_structure=True,
-                                                                status_live=False)
+                                                                status_enable=False)
         self.fields['cpe_insulation'] = self.get_field_dict('str', 'CPE insulation', '', self.cpe_insulation[0], 
                                                                 selection_list=self.cpe_insulation,
                                                                 alter_structure=True,
-                                                                status_live=False)
+                                                                status_enable=False)
         self.fields['cpe_cross_section'] = self.get_field_dict('float', 'CPE nominal\ncross-sectional area', 'sq.mm.', 
                                                                0, alter_structure=True,
-                                                               status_live=False)
+                                                               status_enable=False)
         self.fields['laying_type'] = self.get_field_dict('str', 'Laying type', '', self.laying_types[0], 
                                                          selection_list=self.laying_types,
                                                          selection_image_list=self.laying_types_images,
@@ -462,15 +465,15 @@ class LTCableIEC(Line):
         self.fields['ambient_temp'] = self.get_field_dict('int', 'Ambient temperature', 'degC', 30, selection_list=ambient_temps_pvc,
                                                           alter_structure=True)
         self.fields['ground_temp'] = self.get_field_dict('int', 'Ground temperature', 'degC', 20, selection_list=ambient_temps_pvc,
-                                                         status_live=False,
+                                                         status_enable=False,
                                                          alter_structure=True)
         self.fields['soil_thermal_resistivity'] = self.get_field_dict('float', 'Soil thermal resistivity', 'K·m/W', 2.5, 
                                                                       selection_list=self.soil_thermal_resistivities, 
-                                                                      status_live=False,
+                                                                      status_enable=False,
                                                                       alter_structure=True)
         self.fields['user_df'] = self.get_field_dict('float', 'Additional DF', '', 1, alter_structure=True)
-        self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, inactivate=True, status_live=False)
-        self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, inactivate=True, status_live=False)
+        self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, inactivate=True, status_enable=False)
+        self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, inactivate=True, status_enable=False)
         self.calculate_parameters()
         
     def render_element(self, context):
@@ -701,9 +704,9 @@ class LTCableIEC(Line):
         Cg = self.df_dict[code_laying_type, code_laying_sub_type][code_no_of_layers][code_no_in_group]
         
         if code_laying_type == 5:
-            Ci = self.soil_resistivity_direct_df[code_soil_thermal_resistivity]
-        elif code_laying_type == 6:
             Ci = self.soil_resistivity_duct_df[code_soil_thermal_resistivity]
+        elif code_laying_type == 6:
+            Ci = self.soil_resistivity_direct_df[code_soil_thermal_resistivity]
         else:
             Ci = 1
         
@@ -779,7 +782,7 @@ class LTCableIEC(Line):
         self.fields['r0g_ohm_per_km']['value'] = round(r_0, 3)
         self.fields['x0g_ohm_per_km']['value'] = round(x_0, 3)
 
-        self.fields['endtemp_degree']['value'] = phase_working_temp
+        self.fields['endtemp_degree']['value'] = phase_ultimate_temp
         self.fields['max_i_ka']['value'] = Imax/1000
         self.fields['df']['value'] = round(self.fields['user_df']['value']*Ci*Cg*Ca, 3)
         
@@ -787,6 +790,174 @@ class LTCableIEC(Line):
         self.fields['armour_sc_current_rating']['value'] = round(armour_sc_current_rating/1000, 3)
         self.fields['ext_cpe_sc_current_rating']['value'] = round(ext_cpe_sc_current_rating/1000, 3)
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000,3)
+
+    def set_model(self, model, gid=None):
+        """Set storage model"""
+        if model['code'] == self.code:
+            self.x = model['x']
+            self.y = model['y']
+            self.orientation = model['orientation']
+            self.ports = copy.deepcopy(model['ports'])
+            for code in self.fields:
+                if code in model['fields']:
+                    self.set_text_field_value(code, model['fields'][code]['value'])
+            self.gid = gid
+
+
+class LTCableCustom(Line):
+    """Cable element"""
+
+    code = 'element_line_custom'
+    name = 'Line (Custom Geometry)'
+    group = 'Components'
+    icon = misc.abs_path('icons', 'line.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        Line.__init__(self, cordinates, **kwargs)
+        self.database_path = misc.abs_path('database', 'line_custom.csv')
+        
+        # Data dropdowns
+        self.laying_types = ['OH Line - \n3 phase with earth return\nGeneral geometry', 
+                             'OH Line - \n3 phase with earth return\nTriangular arrangement',
+                             'OH Line - \n3 phase with earth return\nFlat arrangement']
+        self.laying_types_images = ['line_custom_oh1.svg',
+                                    'line_custom_oh2.svg',
+                                    'line_custom_oh3.svg']
+        self.conductor_materials = ['Copper','Aluminium','Steel']
+        self.material_code = {'Copper':'Cu','Aluminium':'Al','Steel':'Fe'}
+        self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}
+        self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}
+        self.conductor_delta20_dict = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}
+                                                                                       
+        # Modify existing fields
+        self.fields['r_ohm_per_km']['status_inactivate'] = True
+        self.fields['x_ohm_per_km']['status_inactivate'] = True
+        self.fields['c_nf_per_km']['status_inactivate'] = True
+        self.fields['g_us_per_km']['status_enable'] = False
+        self.fields['r0g_ohm_per_km']['status_inactivate'] = True
+        self.fields['x0g_ohm_per_km']['status_inactivate'] = True
+        self.fields['r0n_ohm_per_km']['status_inactivate'] = True
+        self.fields['x0n_ohm_per_km']['status_inactivate'] = True
+        self.fields['c0g_nf_per_km']['status_enable'] = False
+        self.fields['c0n_nf_per_km']['status_enable'] = False
+        self.fields['type']['status_enable'] = False
+        self.fields['type']['value'] = 'Over Head'
+        self.fields['phase_sc_current_rating']['status_inactivate'] = True
+        self.fields['cpe_sc_current_rating']['status_inactivate'] = True
+        self.fields['df']['status_inactivate'] = True
+        self.fields['length_km']['alter_structure'] = True
+        
+        # Add new fields
+        self.fields['laying_type'] = self.get_field_dict('str', 'Line type', '', self.laying_types[0],
+                                                         selection_list=self.laying_types,
+                                                         selection_image_list=self.laying_types_images,
+                                                         alter_structure=True)
+        self.fields['conductor_material'] = self.get_field_dict('str', 'Conductor material', '', 
+                                                                self.conductor_materials[1],
+                                                                selection_list=self.conductor_materials,
+                                                                alter_structure=True)
+        self.fields['conductor_cross_section'] = self.get_field_dict('float', 'Phase nominal\ncross-sectional area', 
+                                                                    'sq.mm.', 50, alter_structure=True)
+        self.fields['dims_d'] = self.get_field_dict('float', 'D', 'm', 1, status_enable=False, alter_structure=True)
+        self.fields['dims_dia'] = self.get_field_dict('float', 'Conductor Diameter', 'mm', 1, alter_structure=True)
+        self.fields['dims_d1'] = self.get_field_dict('float', 'D1', 'm', 1, alter_structure=True)
+        self.fields['dims_d2'] = self.get_field_dict('float', 'D2', 'm', 1, alter_structure=True)
+        self.fields['dims_d3'] = self.get_field_dict('float', 'D3', 'm', 1, alter_structure=True)
+        self.fields['soil_resistivity'] = self.get_field_dict('float', 'Soil resistivity', 'Ohm.m', 100,
+                                                              alter_structure=True)
+        self.fields['working_temp_degree'] = self.get_field_dict(
+            'float', 'Line Working Temperature', 'degC', 70, alter_structure=True)
+        self.fields['user_df'] = self.get_field_dict(
+            'float', 'Additional DF', '', 1, alter_structure=True)
+        self.calculate_parameters()
+        
+    def set_text_field_value(self, code, value):
+        if self.fields and code in self.fields:
+            self.fields[code]['value'] = value
+            # Modify variables based on selection
+            if code == 'laying_type':
+                if value == self.laying_types[0]:
+                    self.fields['dims_d']['status_enable'] = False
+                    self.fields['dims_d1']['status_enable'] = True
+                    self.fields['dims_d2']['status_enable'] = True
+                    self.fields['dims_d3']['status_enable'] = True
+                elif value in self.laying_types[1:2]:
+                    self.fields['dims_d']['status_enable'] = True
+                    self.fields['dims_d1']['status_enable'] = False
+                    self.fields['dims_d2']['status_enable'] = False
+                    self.fields['dims_d3']['status_enable'] = False
+            self.calculate_parameters()
+
+    def conductor_k_value(self, conductor, t0, tf):
+        B = self.conductor_B_dict[conductor]
+        Qc = self.conductor_Qc_dict[conductor]
+        delta20 = self.conductor_delta20_dict[conductor]
+        k = math.sqrt(Qc*(B+20)/delta20*math.log((B+tf)/(B+t0)))
+        return k
+            
+    def calculate_parameters(self):
+        open_imp_value = 10000
+        f_hz = self.kwargs['project_settings']['Simulation']['grid_frequency']['value']
+        Sph = self.fields['conductor_cross_section']['value']
+        L = self.fields['length_km']['value']
+        phase_material = self.fields['conductor_material']['value']
+        code_laying_type = self.fields['laying_type']['selection_list'].index(self.fields['laying_type']['value'])
+        phase_working_temp = self.fields['working_temp_degree']['value']
+        B_ph = self.conductor_B_dict[phase_material]
+        resistivity_20_ph = self.conductor_delta20_dict[phase_material]
+        resistivity_working_ph = resistivity_20_ph*(1+1/B_ph*(phase_working_temp-20))
+        r_ph = open_imp_value if Sph == 0 else resistivity_working_ph*10**6/Sph
+        mu_0 = 4*math.pi*10**-7
+        omega = 2*math.pi*f_hz
+        rho = self.fields['soil_resistivity']['value']
+        delta = 1.85/math.sqrt(omega*mu_0/rho)  # As per IEC 60909-3 eq.(35)
+
+        if code_laying_type in (0,):
+            r = self.fields['dims_dia']['value']/1000/2
+            d1 = self.fields['dims_d1']['value']
+            d2 = self.fields['dims_d2']['value']
+            d3 = self.fields['dims_d3']['value']
+            d = (d1*d2*d3)**(1/3)
+            # Positive sequence
+            r_1 = r_ph
+            x_1 = omega*mu_0/(2*math.pi)*(1/4+math.log(d/r))*1000  # As per IEC 60909-2 eq.(1)
+            # Zero sequence
+            r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+            x_0 = x_0n = omega*mu_0/(2*math.pi)*(1/4+3*math.log(delta/(r*d**2)**(1/3)))*1000  # As per IEC 60909-2 eq.(3)
+        elif code_laying_type == 1:
+            r = self.fields['dims_dia']['value']/1000/2
+            d = self.fields['dims_d']['value']
+            # Positive sequence
+            r_1 = r_ph
+            x_1 = omega*mu_0/(2*math.pi)*(1/4+math.log(d/r))*1000  # As per IEC 60909-2 eq.(1)
+            # Zero sequence
+            r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+            x_0 = x_0n = omega*mu_0/(2*math.pi)*(1/4+3*math.log(delta/(r*d**2)**(1/3)))*1000  # As per IEC 60909-2 eq.(3)
+        elif code_laying_type == 2:
+            r = self.fields['dims_dia']['value']/1000/2
+            d = (self.fields['dims_d']['value']**3*2)**(1/3)
+            # Positive sequence
+            r_1 = r_ph
+            x_1 = omega*mu_0/(2*math.pi)*(1/4+math.log(d/r))*1000  # As per IEC 60909-2 eq.(1)
+            # Zero sequence
+            r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+            x_0 = x_0n = omega*mu_0/(2*math.pi)*(1/4+3*math.log(delta/(r*d**2)**(1/3)))*1000  # As per IEC 60909-2 eq.(3)
+
+        # Short circuit ratings
+        phase_ultimate_temp = self.fields['endtemp_degree']['value']
+        k_ph = self.conductor_k_value(phase_material, phase_working_temp, phase_ultimate_temp)
+        phase_sc_current_rating = k_ph*Sph
+
+        # Update fields
+        self.fields['r_ohm_per_km']['value'] = round(r_1, 3)
+        self.fields['x_ohm_per_km']['value'] = round(x_1, 3)
+        self.fields['r0n_ohm_per_km']['value'] = round(r_0n, 3)
+        self.fields['x0n_ohm_per_km']['value'] = round(x_0n, 3)
+        self.fields['r0g_ohm_per_km']['value'] = round(r_0, 3)
+        self.fields['x0g_ohm_per_km']['value'] = round(x_0, 3)
+        self.fields['df']['value'] = round(self.fields['user_df']['value'], 3)
+        self.fields['phase_sc_current_rating']['value'] = round(phase_sc_current_rating/1000, 3)
 
     def set_model(self, model, gid=None):
         """Set storage model"""
