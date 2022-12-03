@@ -125,7 +125,7 @@ class DrawingModel:
                     elif code == 'element_wire':
                         element = Wire()
                     else:
-                        element = self.program_state['element_models'][code]()
+                        element = self.program_state['element_models'][code](project_settings=self.project_settings)
                         if code in misc.LOADPROFILE_CODES:
                             element.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     element.set_model(base_model, self.get_gid())

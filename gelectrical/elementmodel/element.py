@@ -223,7 +223,7 @@ class ElementModel:
     def get_field_dict(self, field_type, caption, unit, value, max_chars=None, 
                        validation_func=None, selection_list=None, 
                        selection_image_list=None, decimal=6, 
-                       status_floating=False, status_live=True,
+                       status_floating=False, status_enable=True,
                        inactivate=False,
                        click_to_edit_message=None,
                        alter_structure=False):
@@ -238,7 +238,7 @@ class ElementModel:
         field_dict['selection_image_list'] = selection_image_list
         field_dict['decimal'] = decimal
         field_dict['status_floating'] = status_floating
-        field_dict['status_enable'] = status_live
+        field_dict['status_enable'] = status_enable
         field_dict['status_inactivate'] = inactivate
         field_dict['click_to_edit_message'] = click_to_edit_message
         field_dict['alter_structure'] = alter_structure

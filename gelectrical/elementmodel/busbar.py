@@ -44,8 +44,8 @@ class BusBar(ElementModel):
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'B?'),
                        'In':      self.get_field_dict('int', 'In', 'A', 200),
                        'Isc':     self.get_field_dict('float', 'Isc', 'kA', 16),
-                       'n_top':   self.get_field_dict('int', '#P(T)', '', 1, status_floating=True, status_live=True, max_chars=2),
-                       'n_btm':   self.get_field_dict('int', '#P(B)', '', 3, status_floating=True, status_live=True, max_chars=2),
+                       'n_top':   self.get_field_dict('int', '#P(T)', '', 1, status_floating=True, status_enable=True, max_chars=2),
+                       'n_btm':   self.get_field_dict('int', '#P(B)', '', 3, status_floating=True, status_enable=True, max_chars=2),
                        'width':   self.get_field_dict('int', 'Bay Width', 'pt', 12),}
         self.widths = []
         # Set parameters
