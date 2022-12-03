@@ -843,6 +843,7 @@ class LTCableCustom(Line):
         self.fields['c0n_nf_per_km']['status_enable'] = False
         self.fields['type']['status_enable'] = False
         self.fields['type']['value'] = 'Over Head'
+        self.fields['endtemp_degree']['value'] = 250
         self.fields['phase_sc_current_rating']['status_inactivate'] = True
         self.fields['cpe_sc_current_rating']['status_inactivate'] = True
         self.fields['df']['status_inactivate'] = True
@@ -859,11 +860,11 @@ class LTCableCustom(Line):
                                                                 alter_structure=True)
         self.fields['conductor_cross_section'] = self.get_field_dict('float', 'Phase nominal\ncross-sectional area', 
                                                                     'sq.mm.', 50, alter_structure=True)
-        self.fields['dims_d'] = self.get_field_dict('float', 'D', 'm', 1, status_enable=False, alter_structure=True)
-        self.fields['dims_dia'] = self.get_field_dict('float', 'Conductor Diameter', 'mm', 1, alter_structure=True)
-        self.fields['dims_d1'] = self.get_field_dict('float', 'D1', 'm', 1, alter_structure=True)
-        self.fields['dims_d2'] = self.get_field_dict('float', 'D2', 'm', 1, alter_structure=True)
-        self.fields['dims_d3'] = self.get_field_dict('float', 'D3', 'm', 1, alter_structure=True)
+        self.fields['dims_d'] = self.get_field_dict('float', 'D', 'm', 0.76, status_enable=False, alter_structure=True)
+        self.fields['dims_dia'] = self.get_field_dict('float', 'Conductor Diameter', 'mm', 10, alter_structure=True)
+        self.fields['dims_d1'] = self.get_field_dict('float', 'D1', 'm', 0.7, alter_structure=True)
+        self.fields['dims_d2'] = self.get_field_dict('float', 'D2', 'm', 0.7, alter_structure=True)
+        self.fields['dims_d3'] = self.get_field_dict('float', 'D3', 'm', 0.9, alter_structure=True)
         self.fields['soil_resistivity'] = self.get_field_dict('float', 'Soil resistivity', 'Ohm.m', 100,
                                                               alter_structure=True)
         self.fields['working_temp_degree'] = self.get_field_dict(

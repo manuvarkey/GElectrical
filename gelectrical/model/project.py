@@ -661,7 +661,7 @@ class ProjectModel:
                 element_refs[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)
             # Lines
-            if model.code in ['element_line', 'element_line_cable']:
+            if model.code in ['element_line', 'element_line_cable', 'element_line_custom']:
                 element_lines.append(model)
             # Loads
             if model.code in ['element_load', 'element_asymmetric_load', 'element_single_phase_load']:
@@ -710,7 +710,8 @@ class ProjectModel:
             col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent:max', 'pl_mw:max']
             col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', '% P loss']
             code_sources = [E,E,E,E,E,E,E,E,E,R,R]
-            table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines')
+            table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines',
+                                           show_element_class=True)
             boq_tables['boq_lines'] = table
             boq_captions['boq_lines'] = 'Lines'
         # Loads

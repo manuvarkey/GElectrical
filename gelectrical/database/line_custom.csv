@@ -1,1 +1,12 @@
-item_name;item_category;designation;max_i_ka
+item_name;item_category;designation;max_i_ka;conductor_material;conductor_cross_section;dims_dia
+ACSR Mole (10);ACSR;ACSR Mole (10);0.09;Aluminium;10;4.5
+ACSR Rose (18);ACSR;ACSR Rose (18);0.1;Aluminium;18;5.88
+ACSR Squirrel (20);ACSR;ACSR Squirrel (20);0.13;Aluminium;20;6.33
+ACSR Weasel (30);ACSR;ACSR Weasel (30);0.17;Aluminium;30;7.77
+ACSR Rabbit (50);ACSR;ACSR Rabbit (50);0.24;Aluminium;50;10.05
+ACSR Raccoon (80);ACSR;ACSR Raccoon (80);0.3;Aluminium;80;12.27
+ACSR Dog (100);ACSR;ACSR Dog (100);0.36;Aluminium;100;14.15
+ACSR Wolf (150);ACSR;ACSR Wolf (150);0.47;Aluminium;150;18.13
+ACSR Panther (200);ACSR;ACSR Panther (200);0.56;Aluminium;200;21
+ACSR Zebra (420);ACSR;ACSR Zebra (420);0.86;Aluminium;420;28.62
+ACSR Moose (520);ACSR;ACSR Moose (520);0.98;Aluminium;520;31.77

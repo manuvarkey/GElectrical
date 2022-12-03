@@ -228,6 +228,10 @@ dt {
 /* GRAPHIC CONTENTS */
   
 img{
+  page-break-inside: avoid;
+}
+
+.img_table{
   width: 1.8cm;
   page-break-inside: avoid;
 }
@@ -246,18 +250,17 @@ img{
   
 /* GENERAL OUTLINE */
 
-  h1 {
-    padding-bottom: 0.25cm;
-    border-bottom: 5pt solid #729fcf;
-  }
+h1 {
+  padding-bottom: 0.25cm;
+  border-bottom: 5pt solid #729fcf;
+}
 
-  h2 { 
-    string-set: heading content() 
-  }
-  h3 {
-    orphans: 3;
-    widows: 3;
-    page-break-after: avoid;
-  }
+h2 { 
+  string-set: heading content() 
+}
+h3 {
+  orphans: 3;
+  widows: 3;
+  page-break-after: avoid;
 }
 

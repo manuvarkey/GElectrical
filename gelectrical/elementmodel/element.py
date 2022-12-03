@@ -52,8 +52,6 @@ class ElementModel:
         self.gid_assembly = None
         
         # Model parameters
-        self.name = ''
-        self.icon = ''
         self.text_model = None
         self.schem_model = None
         self.model_width = 0
