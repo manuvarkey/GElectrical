@@ -36,13 +36,15 @@ log = logging.getLogger(__name__)
 
 class Template(ElementModel):
     """Class for rendering cross reference elements"""
-    def __init__(self, width=misc.PAGE_WIDTH, height=misc.PAGE_HEIGHT):
+
+    code = 'element_template'
+    name = 'Template'
+    group = 'Miscellaneous'
+    icon = None
+
+    def __init__(self, width=misc.PAGE_WIDTH, height=misc.PAGE_HEIGHT, **kwargs):
         # Global
-        ElementModel.__init__(self, (0,0))
-        self.code = 'element_template'
-        self.name = 'Template'
-        self.group = 'Miscellaneous'
-        self.icon = None
+        ElementModel.__init__(self, (0,0), **kwargs)
         self.ports = []
         self.fields = dict()
         
@@ -133,13 +135,15 @@ class Template(ElementModel):
             
 class TitleBlock(ElementModel):
     """Class for rendering cross reference elements"""
-    def __init__(self):
+
+    code = 'element_template'
+    name = 'Template'
+    group = 'Miscellaneous'
+    icon = None
+
+    def __init__(self, **kwargs):
         # Global
-        ElementModel.__init__(self, (0,0))
-        self.code = 'element_template'
-        self.name = 'Template'
-        self.group = 'Miscellaneous'
-        self.icon = None
+        ElementModel.__init__(self, (0,0), **kwargs)
         self.ports = []
         self.fields = dict()
         

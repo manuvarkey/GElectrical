@@ -826,30 +826,31 @@ class MainWindow():
             
         # Setup elements
         self.program_state['element_models'] = dict()
-        self.program_state['element_models'][switch.Switch().code] = switch.Switch
-        self.program_state['element_models'][switch.CircuitBreaker().code] = switch.CircuitBreaker
-        self.program_state['element_models'][switch.Contactor().code] = switch.Contactor
-        self.program_state['element_models'][busbar.BusBar().code] = busbar.BusBar
-        self.program_state['element_models'][grid.Grid().code] = grid.Grid
-        self.program_state['element_models'][reference.Reference().code] = reference.Reference
-        self.program_state['element_models'][reference.ReferenceBox().code] = reference.ReferenceBox
-        self.program_state['element_models'][transformer.Transformer().code] = transformer.Transformer
-        self.program_state['element_models'][transformer.Transformer3w().code] = transformer.Transformer3w
-        self.program_state['element_models'][load.Load().code] = load.Load
-        self.program_state['element_models'][load.AsymmetricLoad().code] = load.AsymmetricLoad
-        self.program_state['element_models'][load.SinglePhaseLoad().code] = load.SinglePhaseLoad
-        self.program_state['element_models'][line.Line().code] = line.Line
-        self.program_state['element_models'][line.LTCableIEC().code] = line.LTCableIEC
-        self.program_state['element_models'][impedance.Impedance().code] = impedance.Impedance
-        self.program_state['element_models'][impedance.Inductance().code] = impedance.Inductance
-        self.program_state['element_models'][shunt.ShuntCapacitor().code] = shunt.ShuntCapacitor
-        self.program_state['element_models'][generator.Generator().code] = generator.Generator
-        self.program_state['element_models'][generator.Motor().code] = generator.Motor
-        self.program_state['element_models'][displayelements.DisplayElementNode().code] = displayelements.DisplayElementNode
-        self.program_state['element_models'][generator.StaticGenerator().code] = generator.StaticGenerator
-        self.program_state['element_models'][ward.Ward().code] = ward.Ward
-        self.program_state['element_models'][ward.XWard().code] = ward.XWard
-        self.program_state['element_models'][shunt.Shunt().code] = shunt.Shunt
+        self.program_state['element_models'][switch.Switch.code] = switch.Switch
+        self.program_state['element_models'][switch.CircuitBreaker.code] = switch.CircuitBreaker
+        self.program_state['element_models'][switch.Contactor.code] = switch.Contactor
+        self.program_state['element_models'][busbar.BusBar.code] = busbar.BusBar
+        self.program_state['element_models'][grid.Grid.code] = grid.Grid
+        self.program_state['element_models'][reference.Reference.code] = reference.Reference
+        self.program_state['element_models'][reference.ReferenceBox.code] = reference.ReferenceBox
+        self.program_state['element_models'][transformer.Transformer.code] = transformer.Transformer
+        self.program_state['element_models'][transformer.Transformer3w.code] = transformer.Transformer3w
+        self.program_state['element_models'][load.Load.code] = load.Load
+        self.program_state['element_models'][load.AsymmetricLoad.code] = load.AsymmetricLoad
+        self.program_state['element_models'][load.SinglePhaseLoad.code] = load.SinglePhaseLoad
+        self.program_state['element_models'][line.Line.code] = line.Line
+        self.program_state['element_models'][line.LTCableIEC.code] = line.LTCableIEC
+        self.program_state['element_models'][line.LTCableCustom.code] = line.LTCableCustom
+        self.program_state['element_models'][impedance.Impedance.code] = impedance.Impedance
+        self.program_state['element_models'][impedance.Inductance.code] = impedance.Inductance
+        self.program_state['element_models'][shunt.ShuntCapacitor.code] = shunt.ShuntCapacitor
+        self.program_state['element_models'][generator.Generator.code] = generator.Generator
+        self.program_state['element_models'][generator.Motor.code] = generator.Motor
+        self.program_state['element_models'][displayelements.DisplayElementNode.code] = displayelements.DisplayElementNode
+        self.program_state['element_models'][generator.StaticGenerator.code] = generator.StaticGenerator
+        self.program_state['element_models'][ward.Ward.code] = ward.Ward
+        self.program_state['element_models'][ward.XWard.code] = ward.XWard
+        self.program_state['element_models'][shunt.Shunt.code] = shunt.Shunt
         # Setup main window
         self.builder = Gtk.Builder()
         self.builder.add_from_file(misc.abs_path("interface", "mainwindow.glade"))
@@ -875,10 +876,9 @@ class MainWindow():
             # Dont add advanced elements to toolbar if advanced mode enabled
             if self.program_settings['Interface']['advanced_mode']['value'] is False and code in misc.ADVANCED_ELEMENTS:
                 continue
-            model_obj = model()
-            name = model_obj.name
-            group = model_obj.group
-            icon_path = model_obj.icon
+            name = model.name
+            group = model.group
+            icon_path = model.icon
             if group and name and icon_path:
                 icon = Gtk.Image.new_from_file(icon_path)
                 icon.set_size_request(40, 40)
@@ -922,6 +922,7 @@ class MainWindow():
         
         # Setup ProjectView
         self.program_state['project_settings_main'] = None  # Updated inside ProjectModel constructor
+        self.program_state['project_settings'] = None  # Updated inside ProjectModel constructor
         self.project = ProjectModel(self.window, self.program_state)
         self.program_state['project'] = self.project
         

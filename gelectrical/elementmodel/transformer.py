@@ -27,14 +27,15 @@ from .element import ElementModel
 
 
 class Transformer(ElementModel):
-    
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_transformer'
+    name = 'Transformer'
+    group = 'Transformers'
+    icon = misc.abs_path('icons', 'transformer.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_transformer'
-        self.name = 'Transformer'
-        self.group = 'Transformers'
-        self.icon = misc.abs_path('icons', 'transformer.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.database_path = misc.abs_path('database', 'transformer.csv')
         self.model_width = 0
         self.model_height = 0
@@ -115,13 +116,14 @@ class Transformer(ElementModel):
 
 class Transformer3w(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_transformer3w'
+    name = '3W Transformer'
+    group = 'Transformers'
+    icon = misc.abs_path('icons', 'transformer3w.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_transformer3w'
-        self.name = '3W Transformer'
-        self.group = 'Transformers'
-        self.icon = misc.abs_path('icons', 'transformer3w.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.database_path = misc.abs_path('database', 'transformer3w.csv')
         self.model_width = 0
         self.model_height = 0

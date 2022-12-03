@@ -28,13 +28,14 @@ from .element import ElementModel
 
 class BusBar(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_busbar'
+    name = 'Bus Bar'
+    group = 'Components'
+    icon = misc.abs_path('icons', 'busbar.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_busbar'
-        self.name = 'Bus Bar'
-        self.group = 'Components'
-        self.icon = misc.abs_path('icons', 'busbar.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = []

@@ -36,13 +36,15 @@ log = logging.getLogger(__name__)
 
 class DisplayElementNode(ElementModel):
     """Class for rendering cross reference elements"""
-    def __init__(self, cordinates=(0,0), ref=''):
+
+    code = 'element_display_node'
+    name = 'Network Node'
+    group = ''
+    icon = ''
+    
+    def __init__(self, cordinates=(0,0), ref='', **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_display_node'
-        self.name = 'Network Node'
-        self.group = ''
-        self.icon = ''
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [(1,1)]

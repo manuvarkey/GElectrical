@@ -36,12 +36,15 @@ log = logging.getLogger(__name__)
 
 class Wire(ElementModel):
     """Class for rendering wire elements"""
-    def __init__(self, points=None):
+
+    code = 'element_wire'
+    name = 'Wire'
+    group = ''
+    icon = misc.abs_path('icons', 'wire.svg')
+
+    def __init__(self, points=None, **kwargs):
         # Global
-        ElementModel.__init__(self, (0,0))
-        self.code = 'element_wire'
-        self.name = 'Wire'
-        self.icon = misc.abs_path('icons', 'wire.svg')
+        ElementModel.__init__(self, (0,0), **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = []

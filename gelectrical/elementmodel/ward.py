@@ -28,13 +28,14 @@ from .element import ElementModel
 
 class Ward(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_ward'
+    name = 'Ward Equivalent'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'ward.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_ward'
-        self.name = 'Ward Equivalent'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'ward.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0]]
@@ -94,13 +95,14 @@ class Ward(ElementModel):
 
 class XWard(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_xward'
+    name = 'XWard Equivalent'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'ward.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_xward'
-        self.name = 'XWard Equivalent'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'ward.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0]]

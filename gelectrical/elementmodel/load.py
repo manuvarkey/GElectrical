@@ -27,14 +27,15 @@ from .element import ElementModel
 
 
 class Load(ElementModel):
-    
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_load'
+    name = 'Load 3ph'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'load.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_load'
-        self.name = 'Load 3ph'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'load.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0]]
@@ -96,13 +97,14 @@ class Load(ElementModel):
     
 class AsymmetricLoad(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_asymmetric_load'
+    name = 'Load 3ph Asymmetric'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'load.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_asymmetric_load'
-        self.name = 'Load 3ph Asymmetric'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'load.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0]]
@@ -173,13 +175,14 @@ class AsymmetricLoad(ElementModel):
 
 class SinglePhaseLoad(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_single_phase_load'
+    name = 'Load 1ph'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'load.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_single_phase_load'
-        self.name = 'Load 1ph'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'load.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0]]

@@ -28,13 +28,14 @@ from .element import ElementModel
 
 class Grid(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_grid'
+    name = 'External Grid'
+    group = 'Sources'
+    icon = misc.abs_path('icons', 'grid.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_grid'
-        self.name = 'External Grid'
-        self.group = 'Sources'
-        self.icon = misc.abs_path('icons', 'grid.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 6]]

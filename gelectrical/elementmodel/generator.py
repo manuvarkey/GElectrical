@@ -28,13 +28,14 @@ from .element import ElementModel
 
 class Generator(ElementModel):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_generator'
+    name = 'Generator'
+    group = 'Sources'
+    icon = misc.abs_path('icons', 'generator.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_generator'
-        self.name = 'Generator'
-        self.group = 'Sources'
-        self.icon = misc.abs_path('icons', 'generator.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 6]]
@@ -99,14 +100,15 @@ class Generator(ElementModel):
 
 
 class StaticGenerator(ElementModel):
-    
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_staticgenerator'
+    name = 'Static Generator'
+    group = 'Sources'
+    icon = misc.abs_path('icons', 'generator.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_staticgenerator'
-        self.name = 'Static Generator'
-        self.group = 'Sources'
-        self.icon = misc.abs_path('icons', 'generator.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 6]]
@@ -167,13 +169,14 @@ class StaticGenerator(ElementModel):
 
 class Motor(StaticGenerator):
     
-    def __init__(self, cordinates=(0,0)):
+    code = 'element_async_motor'
+    name = 'Asynchronous Motor'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'motor.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        StaticGenerator.__init__(self, cordinates)
-        self.code = 'element_async_motor'
-        self.name = 'Asynchronous Motor'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'motor.svg')
+        StaticGenerator.__init__(self, cordinates, **kwargs)
         self.database_path = misc.abs_path('database', 'motor.csv')
         self.ports = [[2, 0]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'M?'),

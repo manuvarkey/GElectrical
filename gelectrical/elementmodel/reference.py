@@ -36,13 +36,15 @@ log = logging.getLogger(__name__)
 
 class Reference(ElementModel):
     """Class for rendering cross reference elements"""
-    def __init__(self):
+
+    code = 'element_reference'
+    name = 'Cross Reference'
+    group = 'Miscellaneous'
+    icon = misc.abs_path('icons', 'reference.svg')
+
+    def __init__(self, **kwargs):
         # Global
-        ElementModel.__init__(self, (0,0))
-        self.code = 'element_reference'
-        self.name = 'Cross Reference'
-        self.group = 'Miscellaneous'
-        self.icon = misc.abs_path('icons', 'reference.svg')
+        ElementModel.__init__(self, (0,0), **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [(3,0), (3,6)]
@@ -92,13 +94,15 @@ class Reference(ElementModel):
 
 class ReferenceBox(Reference):
     """Class for rendering cross reference elements"""
-    def __init__(self):
+
+    code = 'element_reference_box'
+    name = 'Cross Reference'
+    group = 'Miscellaneous'
+    icon = misc.abs_path('icons', 'reference_box.svg')
+
+    def __init__(self, **kwargs):
         # Global
-        Reference.__init__(self)
-        self.code = 'element_reference_box'
-        self.name = 'Cross Reference'
-        self.group = 'Miscellaneous'
-        self.icon = misc.abs_path('icons', 'reference_box.svg')
+        Reference.__init__(self, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.fields = {'ref':       self.get_field_dict('str', 'Reference Code', '', 'CR?'),

@@ -28,13 +28,15 @@ from .element import ElementModel
 
 class Shunt(ElementModel):
     """Shunt impedence element"""
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_shunt'
+    name = 'Shunt'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'shunt.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_shunt'
-        self.name = 'Shunt'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'shunt.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0]]
@@ -91,13 +93,15 @@ class Shunt(ElementModel):
 
 class ShuntCapacitor(Shunt):
     """Shunt capacitor element"""
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_shunt_cap'
+    name = 'Shunt Capacitor'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'shuntcap.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        Shunt.__init__(self, cordinates)
-        self.code = 'element_shunt_cap'
-        self.name = 'Shunt Capacitor'
-        self.group = 'Loads'
-        self.icon = misc.abs_path('icons', 'shuntcap.svg')
+        Shunt.__init__(self, cordinates, **kwargs)
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'C?')
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${q_mvar}MVAr", True],

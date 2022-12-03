@@ -36,12 +36,15 @@ log = logging.getLogger(__name__)
 
 class ElementAssembly(ElementModel):
     """Class for rendering element assemblies"""
-    def __init__(self, children_codes=None, children=None):
+
+    code = 'element_assembly'
+    name = 'Assembly'
+    group = ''
+    icon = misc.abs_path('icons', 'assembly.svg')
+
+    def __init__(self, children_codes=None, children=None, **kwargs):
         # Global
-        ElementModel.__init__(self, (0,0))
-        self.code = 'element_assembly'
-        self.name = 'Assembly'
-        self.icon = misc.abs_path('icons', 'assembly.svg')
+        ElementModel.__init__(self, (0,0), **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[0,0]]

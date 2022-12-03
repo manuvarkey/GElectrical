@@ -57,6 +57,7 @@ class ProjectModel:
         self.fields['Information']['drawing_field_lang']['value'] = program_settings['drawing_field_lang']['value']
         self.fields['Information']['drawing_field_address']['value'] = program_settings['drawing_field_address']['value']
         program_state['project_settings_main'] = self.fields['Information']
+        program_state['project_settings'] = self.fields
         self.loadprofiles = misc.DEFAULT_LOAD_PROFILE
         
         # State variables
@@ -429,7 +430,7 @@ class ProjectModel:
         changed = []  # Undo tracking of changed elements
         base_ref = dict()  # Base references dictionary
         for code, model in self.program_state['element_models'].items():
-            base_ref[code] = model().fields['ref']['value'].strip('?')
+            base_ref[code] = model(project_settings=self.get_project_fields(full=True)).fields['ref']['value'].strip('?')
         base_ref['element_assembly'] = 'A'
         
         # Get selected elements
@@ -880,6 +881,7 @@ class ProjectModel:
             'proj_loadprofiles.json' in pages):
             self.fields = misc.update_fields_dict(self.fields, document['proj_fields'])
             self.program_state['project_settings_main'] = self.fields['Information']
+            self.program_state['project_settings'] = self.fields
             self.loadprofiles = pages['proj_loadprofiles.json']
             slno = 0
             for page_name, page in pages.items():

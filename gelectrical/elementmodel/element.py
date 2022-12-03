@@ -36,15 +36,15 @@ log = logging.getLogger(__name__)
 class ElementModel:
     """Base class for all drawing elements"""
     
-    def __init__(self, cordinates=(0,0)):
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Data
         self.x = int(cordinates[0])
         self.y = int(cordinates[1])
-        self.code = ''
         self.database_path = None
         self.orientation = 'vertical'
         self.ports = []
         self.fields = dict()
+        self.kwargs = kwargs
         
         # State data
         self.res_fields = dict()

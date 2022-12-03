@@ -28,13 +28,15 @@ from .element import ElementModel
 
 class Impedance(ElementModel):
     """Series impedence element"""
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_impedance'
+    name = 'Impedance'
+    group = 'Components'
+    icon = misc.abs_path('icons', 'impedance.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_impedance'
-        self.name = 'Impedance'
-        self.group = 'Components'
-        self.icon = misc.abs_path('icons', 'impedance.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0], [1, 8]]
@@ -91,13 +93,15 @@ class Impedance(ElementModel):
 
 class Inductance(Impedance):
     """Series inductance element"""
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_inductance'
+    name = 'Inductance'
+    group = 'Components'
+    icon = misc.abs_path('icons', 'inductance.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        Impedance.__init__(self, cordinates)
-        self.code = 'element_inductance'
-        self.name = 'Inductance'
-        self.group = 'Components'
-        self.icon = misc.abs_path('icons', 'inductance.svg')
+        Impedance.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0], [1, 8]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'L?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),

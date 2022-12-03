@@ -28,13 +28,15 @@ from .element import ElementModel
 
 class Switch(ElementModel):
     """Generic switching element"""
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_switch'
+    name = 'Switch'
+    group = 'Switching Devices'
+    icon = misc.abs_path('icons', 'switch.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates)
-        self.code = 'element_switch'
-        self.name = 'Switch'
-        self.group = 'Switching Devices'
-        self.icon = misc.abs_path('icons', 'switch.svg')
+        ElementModel.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0],
@@ -83,13 +85,15 @@ class Switch(ElementModel):
 
 class CircuitBreaker(Switch):
     """Generic circuit breaker element"""
-    def __init__(self, cordinates=(0,0)):
+    
+    code = 'element_circuitbreaker'
+    name = 'Circuit Breaker'
+    group = 'Switching Devices'
+    icon = misc.abs_path('icons', 'circuitbreaker.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        Switch.__init__(self, cordinates)
-        self.code = 'element_circuitbreaker'
-        self.name = 'Circuit Breaker'
-        self.group = 'Switching Devices'
-        self.icon = misc.abs_path('icons', 'circuitbreaker.svg')
+        Switch.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0],
                       [1, 6]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'Q?'),
@@ -118,13 +122,15 @@ class CircuitBreaker(Switch):
 
 class Contactor(Switch):
     """Generic circuit breaker element"""
-    def __init__(self, cordinates=(0,0)):
+
+    code = 'element_contactor'
+    name = 'Contactor'
+    group = 'Switching Devices'
+    icon = misc.abs_path('icons', 'contactor.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        Switch.__init__(self, cordinates)
-        self.code = 'element_contactor'
-        self.name = 'Contactor'
-        self.group = 'Switching Devices'
-        self.icon = misc.abs_path('icons', 'contactor.svg')
+        Switch.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0],
                       [1, 6]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'K?'),
