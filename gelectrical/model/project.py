@@ -420,6 +420,8 @@ class ProjectModel:
     def renumber_elements(self, mode):
         """Renumber drawing elements"""
         
+        excluded_codes = (*misc.REFERENCE_CODES, *misc.DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly')
+
         # Setup network model
         self.setup_base_model(elements=True, nodes=False)
         base_elements = self.networkmodel.base_elements
@@ -445,10 +447,11 @@ class ProjectModel:
             for key, model in base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
+                    code_ref = base_ref[code]
                     ref = model.fields['ref']['value']
                     try:
-                        count = int(ref.lstrip(base_ref[code]))
-                        refs[code] = max(refs[code], count+1)
+                        count = int(ref.lstrip(code_ref))
+                        refs[code_ref] = max(refs[code_ref], count+1)
                     except:
                         pass
                     
@@ -457,28 +460,31 @@ class ProjectModel:
             for key, model in base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
+                    code_ref = base_ref[code]
                     ref = model.fields['ref']['value']
-                    new_ref = base_ref[code] + str(refs[code])
-                    refs[code] += 1
+                    new_ref = code_ref + str(refs[code_ref])
+                    refs[code_ref] += 1
                     base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         elif mode == "New elements only":
             for key, model in base_elements.items():
                 code = model.code
                 if code == 'element_assembly':
+                    code_ref = base_ref[code]
                     ref = model.fields['ref']['value']
-                    if ref.strip('?') == base_ref[code]:
-                        new_ref = base_ref[code] + str(refs[code])
-                        refs[code] += 1
+                    if ref.strip('?') == code_ref:
+                        new_ref = code_ref + str(refs[code_ref])
+                        refs[code_ref] += 1
                         base_elements[key].set_text_field_value('ref', new_ref)
                         changed.append([key, ref])
         elif mode == "Selected elements only":
             for key, model in zip(selected_keys, selected_elements):
                 code = model.code
                 if code == 'element_assembly':
+                    code_ref = base_ref[code]
                     ref = model.fields['ref']['value']
-                    new_ref = base_ref[code] + str(refs[code])
-                    refs[code] += 1
+                    new_ref = code_ref + str(refs[code_ref])
+                    refs[code_ref] += 1
                     base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         
@@ -486,17 +492,17 @@ class ProjectModel:
         for key, model in base_elements.items():
             code = model.code
             if code == 'element_assembly':
+                code_ref = base_ref[code]
                 children = model.get_children()
                 for drg_no, element_index in children:
                     prefix_codes[(drg_no, element_index)] = model.fields['ref']['value'] + '-'
-        
-        excluded_codes = (*misc.REFERENCE_CODES, 'element_wire', 'element_assembly')
         
         # Update largest refs for elements
         if mode in ("New elements only", "Selected elements only"):
             for key, model in base_elements.items():
                 code = model.code
                 if code not in excluded_codes:
+                    code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
                     else:
@@ -505,9 +511,10 @@ class ProjectModel:
                     try:
                         # Add prefixed base to base_ref
                         if prefix + code not in base_ref:
-                            base_ref[prefix + code] = prefix + base_ref[code]
-                        count = int(ref.lstrip(base_ref[prefix + code]))
-                        refs[prefix + code] = max(refs[prefix + code], count+1)
+                            base_ref[prefix + code] = prefix + code_ref
+                        prefix_code_ref = base_ref[prefix + code]
+                        count = int(ref.lstrip(prefix_code_ref))
+                        refs[prefix_code_ref] = max(refs[prefix_code_ref], count+1)
                     except:
                         pass
         
@@ -516,13 +523,16 @@ class ProjectModel:
             for key, model in base_elements.items():
                 code = model.code
                 if code not in excluded_codes:
+                    code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
+                        base_ref[prefix + code] = prefix + code_ref
                     else:
                         prefix = ''
+                    prefix_code_ref = base_ref[prefix + code]
                     ref = model.fields['ref']['value']
-                    new_ref = prefix + base_ref[code] + str(refs[prefix + code])
-                    refs[prefix + code] += 1
+                    new_ref = prefix + code_ref + str(refs[prefix_code_ref])
+                    refs[prefix_code_ref] += 1
                     base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         elif mode == "New elements only":
@@ -530,27 +540,31 @@ class ProjectModel:
             for key, model in base_elements.items():
                 code = model.code
                 if code not in excluded_codes:
+                    code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
                     else:
                         prefix = ''
                     ref = model.fields['ref']['value']
-                    if ref.strip('?') == base_ref[code]:
-                        new_ref = prefix + base_ref[code] + str(refs[prefix + code])
-                        refs[prefix + code] += 1
+                    if ref.strip('?') == code_ref:
+                        prefix_code_ref = base_ref[prefix + code]
+                        new_ref = prefix + code_ref + str(refs[prefix_code_ref])
+                        refs[prefix_code_ref] += 1
                         base_elements[key].set_text_field_value('ref', new_ref)
                         changed.append([key, ref])
         elif mode == "Selected elements only":
             for key, model in zip(selected_keys, selected_elements):
                 code = model.code
                 if code not in excluded_codes:
+                    code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
                     else:
                         prefix = ''
                     ref = model.fields['ref']['value']
-                    new_ref = prefix + base_ref[code] + str(refs[prefix + code])
-                    refs[prefix + code] += 1
+                    prefix_code_ref = base_ref[prefix + code]
+                    new_ref = prefix + code_ref + str(refs[prefix_code_ref])
+                    refs[prefix_code_ref] += 1
                     base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
         
