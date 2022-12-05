@@ -820,15 +820,22 @@ class LTCableCustom(Line):
         # Data dropdowns
         self.laying_types = ['OH Line - \n3 phase with earth return\nGeneral geometry', 
                              'OH Line - \n3 phase with earth return\nTriangular arrangement',
-                             'OH Line - \n3 phase with earth return\nFlat arrangement']
+                             'OH Line - \n3 phase with earth return\nFlat arrangement',
+                             'OH Line - \n3 phase with neutral\nHorizontal arrangement',
+                             'OH Line - \n3 phase with neutral\nVertical arrangement',
+                             'OH Line - \n1 phase with neutral']
         self.laying_types_images = ['line_custom_oh1.svg',
                                     'line_custom_oh2.svg',
-                                    'line_custom_oh3.svg']
+                                    'line_custom_oh3.svg',
+                                    'line_custom_oh4.svg',
+                                    'line_custom_oh5.svg',
+                                    'line_custom_oh6.svg']
         self.conductor_materials = ['Copper','Aluminium','Steel']
         self.material_code = {'Copper':'Cu','Aluminium':'Al','Steel':'Fe'}
         self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}
         self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}
         self.conductor_delta20_dict = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}
+        self.cpe_list = ['Neutral', 'Ground return']
                                                                                        
         # Modify existing fields
         self.fields['r_ohm_per_km']['status_inactivate'] = True
@@ -850,7 +857,7 @@ class LTCableCustom(Line):
         self.fields['length_km']['alter_structure'] = True
         
         # Add new fields
-        self.fields['laying_type'] = self.get_field_dict('str', 'Line type', '', self.laying_types[0],
+        self.fields['laying_type'] = self.get_field_dict('str', 'Line type', '', self.laying_types[1],
                                                          selection_list=self.laying_types,
                                                          selection_image_list=self.laying_types_images,
                                                          alter_structure=True)
@@ -860,11 +867,14 @@ class LTCableCustom(Line):
                                                                 alter_structure=True)
         self.fields['conductor_cross_section'] = self.get_field_dict('float', 'Phase nominal\ncross-sectional area', 
                                                                     'sq.mm.', 50, alter_structure=True)
-        self.fields['dims_d'] = self.get_field_dict('float', 'D', 'm', 0.76, status_enable=False, alter_structure=True)
+        self.fields['dims_d'] = self.get_field_dict('float', 'D', 'm', 0.8, status_enable=False, alter_structure=True)
         self.fields['dims_dia'] = self.get_field_dict('float', 'Conductor Diameter', 'mm', 10, alter_structure=True)
-        self.fields['dims_d1'] = self.get_field_dict('float', 'D1', 'm', 0.7, alter_structure=True)
-        self.fields['dims_d2'] = self.get_field_dict('float', 'D2', 'm', 0.7, alter_structure=True)
-        self.fields['dims_d3'] = self.get_field_dict('float', 'D3', 'm', 0.9, alter_structure=True)
+        self.fields['dims_d1'] = self.get_field_dict('float', 'D1', 'm', 0.9, alter_structure=True)
+        self.fields['dims_d2'] = self.get_field_dict('float', 'D2', 'm', 0.6, alter_structure=True)
+        self.fields['dims_d3'] = self.get_field_dict('float', 'D3', 'm', 0.6, alter_structure=True)
+        self.fields['cpe'] = self.get_field_dict('str', 'CPE Conductor', '', self.cpe_list[0], 
+                                                 selection_list=self.cpe_list,
+                                                 alter_structure=True)
         self.fields['soil_resistivity'] = self.get_field_dict('float', 'Soil resistivity', 'Ohm.m', 100,
                                                               alter_structure=True)
         self.fields['working_temp_degree'] = self.get_field_dict(
@@ -878,16 +888,27 @@ class LTCableCustom(Line):
             self.fields[code]['value'] = value
             # Modify variables based on selection
             if code == 'laying_type':
+                self.fields['dims_d']['status_enable'] = False
+                self.fields['dims_d1']['status_enable'] = False
+                self.fields['dims_d2']['status_enable'] = False
+                self.fields['dims_d3']['status_enable'] = False
+                self.fields['cpe']['status_enable'] = False
                 if value == self.laying_types[0]:
-                    self.fields['dims_d']['status_enable'] = False
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
                     self.fields['dims_d3']['status_enable'] = True
-                elif value in self.laying_types[1:2]:
+                elif value in self.laying_types[1]:
+                    self.fields['dims_d1']['status_enable'] = True
+                    self.fields['dims_d2']['status_enable'] = True
+                elif value == self.laying_types[2]:
                     self.fields['dims_d']['status_enable'] = True
-                    self.fields['dims_d1']['status_enable'] = False
-                    self.fields['dims_d2']['status_enable'] = False
-                    self.fields['dims_d3']['status_enable'] = False
+                elif value in self.laying_types[3]:
+                    self.fields['dims_d1']['status_enable'] = True
+                    self.fields['dims_d2']['status_enable'] = True
+                    self.fields['cpe']['status_enable'] = True
+                elif value in self.laying_types[4:7]:
+                    self.fields['dims_d']['status_enable'] = True
+                    self.fields['cpe']['status_enable'] = True
             self.calculate_parameters()
 
     def conductor_k_value(self, conductor, t0, tf):
@@ -898,52 +919,93 @@ class LTCableCustom(Line):
         return k
             
     def calculate_parameters(self):
-        open_imp_value = 10000
+        # Get field values
         f_hz = self.kwargs['project_settings']['Simulation']['grid_frequency']['value']
         Sph = self.fields['conductor_cross_section']['value']
         L = self.fields['length_km']['value']
         phase_material = self.fields['conductor_material']['value']
         code_laying_type = self.fields['laying_type']['selection_list'].index(self.fields['laying_type']['value'])
         phase_working_temp = self.fields['working_temp_degree']['value']
+        r = self.fields['dims_dia']['value']/1000/2
+        d1 = self.fields['dims_d1']['value']
+        d2 = self.fields['dims_d2']['value']
+        d3 = self.fields['dims_d3']['value']
+        d = self.fields['dims_d']['value']
+        cpe = self.fields['cpe']['value']
+        # Variables
+        open_imp_value = 10000
         B_ph = self.conductor_B_dict[phase_material]
         resistivity_20_ph = self.conductor_delta20_dict[phase_material]
         resistivity_working_ph = resistivity_20_ph*(1+1/B_ph*(phase_working_temp-20))
         r_ph = open_imp_value if Sph == 0 else resistivity_working_ph*10**6/Sph
         mu_0 = 4*math.pi*10**-7
+        eps_0 = 8.8541878128e-12
         omega = 2*math.pi*f_hz
         rho = self.fields['soil_resistivity']['value']
+        # Impedence Equations
         delta = 1.85/math.sqrt(omega*mu_0/rho)  # As per IEC 60909-3 eq.(35)
-
-        if code_laying_type in (0,):
-            r = self.fields['dims_dia']['value']/1000/2
-            d1 = self.fields['dims_d1']['value']
-            d2 = self.fields['dims_d2']['value']
-            d3 = self.fields['dims_d3']['value']
-            d = (d1*d2*d3)**(1/3)
+        def reactance_ll(r, d_e):
+            return omega*mu_0/(2*math.pi)*(1/4+math.log(d_e/r))*1000  # As per IEC 60909-2 eq.(1)
+        def reactance_lg(r, d_e):
+            return omega*mu_0/(2*math.pi)*(1/4+3*math.log(delta/(r*d_e**2)**(1/3)))*1000  # As per IEC 60909-2 eq.(3)
+        def reactance0_ln_3ph(r, d_e, d_en):
+            # In same lines as 3 phase line in "Power System Stability and Control - Leonard L. Grigsby"
+            return 4*omega*mu_0/(2*math.pi)*( 1/4 + math.log((1/r) * math.sqrt(d_en**3/d_e)))*1000
+        def capacitance_ll(r, d_e):
+            return (2*math.pi*eps_0)/math.log(d_e/r)*1e12  # As per "Power System Stability and Control - Leonard L. Grigsby"
+        # 3ph Lines w/o neutral
+        if code_laying_type in (0,1,2):
+            if code_laying_type == 0:
+                d_e = (d1*d2*d3)**(1/3)
+            elif code_laying_type == 1:
+                d_e = (d1*(d2**2+d1**2/4))**(1/3)
+            elif code_laying_type == 2:
+                d_e = (2*d**3)**(1/3)
             # Positive sequence
             r_1 = r_ph
-            x_1 = omega*mu_0/(2*math.pi)*(1/4+math.log(d/r))*1000  # As per IEC 60909-2 eq.(1)
+            x_1 = reactance_ll(r, d_e)
+            c_1 = capacitance_ll(r, d_e)
             # Zero sequence
             r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
-            x_0 = x_0n = omega*mu_0/(2*math.pi)*(1/4+3*math.log(delta/(r*d**2)**(1/3)))*1000  # As per IEC 60909-2 eq.(3)
-        elif code_laying_type == 1:
-            r = self.fields['dims_dia']['value']/1000/2
-            d = self.fields['dims_d']['value']
+            x_0 = x_0n = reactance_lg(r, d_e)
+        # 3ph Lines with neutral
+        elif code_laying_type in (3,4):
+            if code_laying_type == 3:
+                d_e = (d1*d2*(d1+d2))**(1/3)
+                d_en = (d1*(d1+d2)*(2*d1+d2))**(1/3)
+            elif code_laying_type == 4:
+                d_e = (2*d**3)**(1/3)
+                d_en = (6*d**3)**(1/3)
             # Positive sequence
             r_1 = r_ph
-            x_1 = omega*mu_0/(2*math.pi)*(1/4+math.log(d/r))*1000  # As per IEC 60909-2 eq.(1)
+            x_1 = reactance_ll(r, d_e)
+            c_1 = capacitance_ll(r, d_e)
             # Zero sequence
-            r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
-            x_0 = x_0n = omega*mu_0/(2*math.pi)*(1/4+3*math.log(delta/(r*d**2)**(1/3)))*1000  # As per IEC 60909-2 eq.(3)
-        elif code_laying_type == 2:
-            r = self.fields['dims_dia']['value']/1000/2
-            d = (self.fields['dims_d']['value']**3*2)**(1/3)
+            if cpe == self.cpe_list[0]:  # Neutral return
+                r_0 = r_0n = 4*r_ph
+                x_0 = x_0n = reactance0_ln_3ph(r, d_e, d_en)
+            elif cpe == self.cpe_list[1]:  # Ground return
+                r_0n = 4*r_ph
+                x_0n = reactance0_ln_3ph(r, d_e, d_en)
+                r_0 = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+                x_0 = reactance_lg(r, d_e)
+        # 1ph line
+        elif code_laying_type == 5:
+            d_e = d
+            d_en = d
             # Positive sequence
             r_1 = r_ph
-            x_1 = omega*mu_0/(2*math.pi)*(1/4+math.log(d/r))*1000  # As per IEC 60909-2 eq.(1)
+            x_1 = reactance_ll(r, d_e)
+            c_1 = capacitance_ll(r, d_e)
             # Zero sequence
-            r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
-            x_0 = x_0n = omega*mu_0/(2*math.pi)*(1/4+3*math.log(delta/(r*d**2)**(1/3)))*1000  # As per IEC 60909-2 eq.(3)
+            if cpe == self.cpe_list[0]:  # Neutral return
+                r_0 = r_0n = 4*r_ph
+                x_0 = x_0n = 4*reactance_ll(r, d_en)
+            elif cpe == self.cpe_list[1]:  # Ground return
+                r_0n = 4*r_ph
+                x_0n = 4*reactance_ll(r, d_en)
+                r_0 = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+                x_0 = reactance_lg(r, d_e)
 
         # Short circuit ratings
         phase_ultimate_temp = self.fields['endtemp_degree']['value']
@@ -953,6 +1015,7 @@ class LTCableCustom(Line):
         # Update fields
         self.fields['r_ohm_per_km']['value'] = round(r_1, 3)
         self.fields['x_ohm_per_km']['value'] = round(x_1, 3)
+        self.fields['c_nf_per_km']['value'] = round(c_1, 3)
         self.fields['r0n_ohm_per_km']['value'] = round(r_0n, 3)
         self.fields['x0n_ohm_per_km']['value'] = round(x_0n, 3)
         self.fields['r0g_ohm_per_km']['value'] = round(r_0, 3)
