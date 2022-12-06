@@ -1121,35 +1121,36 @@ def fields_to_table(fields, insert_image=True):
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     index = 1
     for field in fields.values():
-        if field['type'] != 'graph':
-            table['Sl.No.'].append(index)
-            table['Description'].append(clean(field['caption']))
-            table['Unit'].append(field['unit'])
-            if field['type'] == 'float':
-                value = str(round(field['value'], 4))
-            else:
-                value = clean(field['value'])
-            if field['selection_list'] and field['selection_image_list'] and insert_image:
-                index = field['selection_list'].index(field['value'])
-                image_path = field['selection_image_list'][index]
-                if image_path:
-                    image_file = abs_path('icons', image_path)
-                    data_uri = base64.b64encode(open(image_file, 'rb').read()).decode('utf-8')
-                    img_tag = "<div class='parent flex-parent'><div class='child flex-left'><img class='img_table' src='data:image/svg;base64,{0}'></div><div class='child flex-right'>{1}</div></div>".format(data_uri, value)
-                    table['Value'].append(img_tag)
+        if field['status_enable'] == True:
+            if field['type'] != 'graph':
+                table['Sl.No.'].append(index)
+                table['Description'].append(clean(field['caption']))
+                table['Unit'].append(field['unit'])
+                if field['type'] == 'float':
+                    value = str(round(field['value'], 4))
+                else:
+                    value = clean(field['value'])
+                if field['selection_list'] and field['selection_image_list'] and insert_image:
+                    index = field['selection_list'].index(field['value'])
+                    image_path = field['selection_image_list'][index]
+                    if image_path:
+                        image_file = abs_path('icons', image_path)
+                        data_uri = base64.b64encode(open(image_file, 'rb').read()).decode('utf-8')
+                        img_tag = "<div class='parent flex-parent'><div class='child flex-left'><img class='img_table' src='data:image/svg;base64,{0}'></div><div class='child flex-right'>{1}</div></div>".format(data_uri, value)
+                        table['Value'].append(img_tag)
+                    else:
+                        table['Value'].append(value)
                 else:
                     table['Value'].append(value)
             else:
-                table['Value'].append(value)
-        else:
-            table['Sl.No.'].append(index)
-            table['Description'].append(clean(field['caption']))
-            table['Unit'].append(field['unit'])
-            if field['selection_list']:
-                table['Value'].append(field['selection_list'][field['value']][0])
-            else:
-                table['Value'].append(field['value'][0].replace('\n','</br>'))
-        index += 1
+                table['Sl.No.'].append(index)
+                table['Description'].append(clean(field['caption']))
+                table['Unit'].append(field['unit'])
+                if field['selection_list']:
+                    table['Value'].append(field['selection_list'][field['value']][0])
+                else:
+                    table['Value'].append(field['value'][0].replace('\n','</br>'))
+            index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False, classes='element_fields')
     
 def get_uid():
