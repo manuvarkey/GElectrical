@@ -153,7 +153,7 @@ class MainWindow():
                     self.display_status(misc.INFO, "Project successfully opened")
                     log.info('MainWindow - open_project - Project successfully opened - ' +self.filename)
                     # Setup window name
-                    self.window.set_title(self.filename + ' - ' + misc.PROGRAM_NAME)
+                    self.set_title(self.filename)
                     # Clear undo/redo stack
                     self.stack.clear()
                     # Set flags
@@ -291,7 +291,7 @@ class MainWindow():
                 projzip.writestr('document.json', json.dumps(document, indent=2))
             self.display_status(misc.INFO, "Project successfully saved")
             log.info('MainWindow - on_save -  Project successfully saved')
-            self.window.set_title(self.filename + ' - ' + misc.PROGRAM_NAME)
+            self.set_title(self.filename)
             # Save point in stack for checking change state
             self.stack.savepoint()
             
@@ -340,7 +340,7 @@ class MainWindow():
             # Call save project
             self.on_save(button)
             # Setup window name
-            self.window.set_title(self.filename + ' - ' + misc.PROGRAM_NAME)
+            self.set_title(self.filename)
             # Save point in stack for checking change state
             self.stack.savepoint()
             

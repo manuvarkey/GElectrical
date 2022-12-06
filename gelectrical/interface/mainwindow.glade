@@ -420,8 +420,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-in-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -437,8 +437,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-out-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1148,7 +1148,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkHeaderBar" id="gtk_header">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="title">gElectrical</property>
+        <property name="title">GElectrical</property>
         <property name="subtitle">untitled</property>
         <property name="has-subtitle">False</property>
         <property name="show-close-button">True</property>
