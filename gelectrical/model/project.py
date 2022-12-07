@@ -420,8 +420,6 @@ class ProjectModel:
     def renumber_elements(self, mode):
         """Renumber drawing elements"""
         
-        excluded_codes = (*misc.REFERENCE_CODES, *misc.DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly')
-
         # Setup network model
         self.setup_base_model(elements=True, nodes=False)
         base_elements = self.networkmodel.base_elements
@@ -501,7 +499,7 @@ class ProjectModel:
         if mode in ("New elements only", "Selected elements only"):
             for key, model in base_elements.items():
                 code = model.code
-                if code not in excluded_codes:
+                if code not in misc.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
@@ -522,7 +520,7 @@ class ProjectModel:
         if mode == "All":
             for key, model in base_elements.items():
                 code = model.code
-                if code not in excluded_codes:
+                if code not in misc.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
@@ -539,7 +537,7 @@ class ProjectModel:
             # Modify references
             for key, model in base_elements.items():
                 code = model.code
-                if code not in excluded_codes:
+                if code not in misc.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
@@ -555,7 +553,7 @@ class ProjectModel:
         elif mode == "Selected elements only":
             for key, model in zip(selected_keys, selected_elements):
                 code = model.code
-                if code not in excluded_codes:
+                if code not in misc.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]

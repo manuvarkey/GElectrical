@@ -50,6 +50,15 @@ class MessageView:
         self.listbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
         
     def update(self, model, select_callback):
+        """
+        Format: {'Head 1': [{'message': 'Title goes here', 'type': 'error'}, data_for_callback,
+                           [{'message': 'Title goes here', 'type': 'warning'}, data_for_callback],
+                               ...
+                           ],
+                 'Head 2':     ...
+                   ...
+                }
+        """
         self.clean()
         self.model = model
         self.select_callback = select_callback
