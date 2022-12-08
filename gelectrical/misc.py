@@ -120,7 +120,7 @@ LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_
                      'element_staticgenerator', 'element_async_motor')
 SUPPLY_ELEMENT_CODES = ('element_grid', 'element_generator', 'element_staticgenerator')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
-NON_ELEMENT_CODES  = (*REFERENCE_CODES, *DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly')
+NON_ELEMENT_CODES  = (*REFERENCE_CODES, *DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly', 'element_busbar')
 # Defaults
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Full load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],
                         'load_prof_2': ['90% load', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[0.9,0.9]}]],
