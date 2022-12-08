@@ -283,13 +283,13 @@ class ProjectModel:
     
     ## Analysis functions
     
-    def setup_base_model(self, elements=True, nodes=True):
+    def setup_base_model(self, build_ana_model=True):
         self.clear_status()
         self.networkmodel = NetworkModel(self.drawing_models)
-        if elements:
-            self.networkmodel.setup_base_elements()
-        if nodes:
+        self.networkmodel.setup_base_elements()
+        if build_ana_model:
             self.networkmodel.setup_global_nodes()
+            self.networkmodel.build_graph_model()
         self.status['net_model'] = True
         log.info('ProjectModel - setup_base_model - model generated')
         
@@ -374,8 +374,6 @@ class ProjectModel:
                 # Update element results
                 self.powermodel.update_results()
                 # Add new node elements
-                ref_counter = 1
-                gid_ref_dict = dict()  # gid -> ref mapping
                 for k1, drawing_model in enumerate(self.drawing_models):
                     page_gnodes = set()
                     node_elements = []
@@ -384,12 +382,7 @@ class ProjectModel:
                         gnodes = self.networkmodel.gnode_element_mapping_inverted[(k1,k2)]
                         for gnode in gnodes:
                             if gnode not in page_gnodes and gnode in self.powermodel.node_results:
-                                if gnode in gid_ref_dict:
-                                    ref = str(gid_ref_dict[gnode])
-                                else:
-                                    gid_ref_dict[gnode] = ref_counter
-                                    ref = str(ref_counter)
-                                    ref_counter += 1
+                                ref = str(gnode)
                                 # Select a port with coordinates (i.e. exclude reference ports)
                                 port = None
                                 for eport in self.networkmodel.port_mapping_inverted[gnode]:
@@ -421,7 +414,7 @@ class ProjectModel:
         """Renumber drawing elements"""
         
         # Setup network model
-        self.setup_base_model(elements=True, nodes=False)
+        self.setup_base_model(build_ana_model=False)
         base_elements = self.networkmodel.base_elements
         
         # Setup local variables
@@ -575,7 +568,7 @@ class ProjectModel:
         """Renumber drawing elements"""
         
         # Setup network model
-        self.setup_base_model(elements=True, nodes=False)
+        self.setup_base_model(build_ana_model=False)
         base_elements = self.networkmodel.base_elements
         # Setup local variables
         counter = 1
@@ -626,6 +619,11 @@ class ProjectModel:
     
     def export_html_report(self, filename, call_at_exit=None):
         self.powermodel.export_html_report(filename)
+        if call_at_exit:
+            call_at_exit()
+
+    def export_element_graph(self, filename, call_at_exit=None):
+        self.networkmodel.export_element_graph_html(filename)
         if call_at_exit:
             call_at_exit()
         

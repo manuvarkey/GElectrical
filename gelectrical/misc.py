@@ -118,6 +118,7 @@ ADVANCED_ELEMENTS = ('element_asymmetric_load', 'element_ward', 'element_xward',
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
 LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 
                      'element_staticgenerator', 'element_async_motor')
+SUPPLY_ELEMENT_CODES = ('element_grid', 'element_generator', 'element_staticgenerator')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
 NON_ELEMENT_CODES  = (*REFERENCE_CODES, *DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly')
 # Defaults
