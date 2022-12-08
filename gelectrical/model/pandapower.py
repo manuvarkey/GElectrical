@@ -586,7 +586,6 @@ class PandaPowerModel:
         sgens = self.power_model.sgen.to_dict(orient='records')
         loads = self.power_model.load.to_dict(orient='records')
         asymmetric_loads = self.power_model.asymmetric_load.to_dict(orient='records')
-        dfdata_load = dict()
         dfdata_p = dict()
         dfdata_q = dict()
         dfdata_pa = dict()
@@ -783,12 +782,7 @@ class PandaPowerModel:
                         log_variables.append(('res_'+elementcode+'_3ph', 'pl_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'ql_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
-                    elif elementcode == 'gen':
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'vm_pu'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'va_degree'))
-                    elif elementcode in ['impedence', 'dcline']:
+                    elif elementcode in ['impedence',]:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_from_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_from_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_to_mw'))
@@ -815,6 +809,18 @@ class PandaPowerModel:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_c_l_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_c_l_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
+                    elif elementcode == 'gen':
+                        log_variables.append(('res_'+elementcode, 'p_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_mvar'))
+                        log_variables.append(('res_'+elementcode, 'vm_pu'))
+                        log_variables.append(('res_'+elementcode, 'va_degree'))
+                    elif elementcode in ['dcline']:
+                        log_variables.append(('res_'+elementcode, 'p_from_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_from_mvar'))
+                        log_variables.append(('res_'+elementcode, 'p_to_mw'))
+                        log_variables.append(('res_'+elementcode, 'q_to_mvar'))
+                        log_variables.append(('res_'+elementcode, 'pl_mw'))
+                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
                 else:
                     if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
                         log_variables.append(('res_'+elementcode, 'p_mw'))
