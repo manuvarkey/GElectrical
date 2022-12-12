@@ -21,7 +21,7 @@
 #
 #
 
-import logging, json
+import logging, json, itertools
 import networkx as nx
 from networkx.algorithms.components.connected import connected_components
 from html import escape
@@ -50,9 +50,6 @@ class Tag(object):
 class NetworkModel:
     """Class for modelling a Network"""
 
-    START_GNODE = -1
-    END_GNODE = -2
-
     def __init__(self, drawing_models):
         # Data
         self.drawing_models = drawing_models
@@ -67,10 +64,15 @@ class NetworkModel:
         self.port_mapping = dict()  # Maps (page,x,y) -> global_node
         self.port_mapping_inverted = dict()  # Maps global_node -> (page,x,y)
 
-        # Graph variables
-        self.graph = None
+        # Graph data structures
+        # Graph of network elements as edges and gnodes as nodes
+        # Sources start from self.START_GNODE
+        # Loads terminate in self.END_GNODE
+        self.graph = None  
+        self.graph_source_nodes = set()
+        self.graph_sink_nodes = set()
 
-    # Analysis functions
+    # Build models
 
     def setup_base_elements(self):
         # Populate self.base_elements
@@ -126,7 +128,7 @@ class NetworkModel:
         subs_dict = {gnode:new_gnode for new_gnode, gnode in enumerate(sorted(gnodes), start=1)}
         port_mapping_mod = {key:subs_dict[value] for key, value in self.port_mapping.items()}
         self.port_mapping = port_mapping_mod
-        self.global_nodes = gnodes
+        self.global_nodes = set(subs_dict.values())
 
         # Populate self.port_mapping_inverted
         for eid, gnode in self.port_mapping.items():
@@ -162,28 +164,113 @@ class NetworkModel:
     def build_graph_model(self):
         """Build graph model for network"""
         self.graph = nx.Graph()
-        for ecode, element in self.base_elements.items():
+        self.graph_source_nodes = set()
+        self.graph_sink_nodes = set()
+        term_node_count = max(self.global_nodes) + 1
+        for ekey, element in self.base_elements.items():
             code = element.code
-            if code not in misc.NON_ELEMENT_CODES:
+            if code not in (*misc.NON_ELEMENT_CODES, 'element_busbar'):
                 if 'ref' in element.fields:
                     ref = element.fields['ref']['value']
                 else:
                     ref = ''
-                gnodes = self.gnode_element_mapping_inverted[ecode]
+                gnodes = self.gnode_element_mapping_inverted[ekey]
                 # Single port elements
                 if len(gnodes) == 1:
                     if code in misc.SUPPLY_ELEMENT_CODES:
-                        self.graph.add_edge(self.START_GNODE, gnodes[0], key=ecode, code=code, ref=ref)
+                        self.graph.add_edge(term_node_count, gnodes[0], key=ekey, code=code, ref=ref)
+                        self.graph_source_nodes.add(term_node_count)
+                        term_node_count += 1
                     else:
-                        self.graph.add_edge(gnodes[0], self.END_GNODE, key=ecode, code=code, ref=ref)
+                        self.graph.add_edge(gnodes[0], term_node_count, key=ekey, code=code, ref=ref)
+                        self.graph_sink_nodes.add(term_node_count)
+                        term_node_count += 1
                 # Two port elements:
                 elif len(gnodes) == 2:
-                    self.graph.add_edge(gnodes[0], gnodes[1], key=ecode, code=code, ref=ref)
+                    self.graph.add_edge(gnodes[0], gnodes[1], key=ekey, code=code, ref=ref)
                 # Three port elements:
                 elif len(gnodes) == 3:
-                    self.graph.add_edge(gnodes[0], gnodes[1], key=ecode, code=code, ref=ref)
-                    self.graph.add_edge(gnodes[0], gnodes[2], key=ecode, code=code, ref=ref)
+                    self.graph.add_edge(gnodes[0], gnodes[1], key=ekey, code=code, ref=ref)
+                    self.graph.add_edge(gnodes[0], gnodes[2], key=ekey, code=code, ref=ref)
         log.info('NetworkModel - build_graph - model generated')
+
+    # Graph analysis functions
+
+    # def get_all_upstream_elements(self, ekey, codes=None):
+    #     gnodes = self.gnode_element_mapping_inverted[ekey]
+    #     results = dict()
+    #     for source in self.graph_source_nodes:
+    #         paths = nx.all_simple_paths(self.graph, gnodes[0], source)
+    #         paths_comb = set(itertools.chain(*paths))
+    #         if codes:
+    #             upstream_edges = {d['key']: self.base_elements[d['key']] for x,y,d in self.graph.edges(paths_comb, data=True) if d['code'] in codes}
+    #         else:
+    #             upstream_edges = {d['key']: self.base_elements[d['key']] for x,y,d in self.graph.edges(paths_comb, data=True)}
+    #         results.update(upstream_edges)
+    #     # If exisitng element in dict, remove from dict
+    #     if ekey in results:
+    #         del results[ekey]
+    #     return results
+
+    def get_upstream_nodes(self, ekey):
+        gnodes = self.gnode_element_mapping_inverted[ekey]
+        g0 = gnodes[0]
+        result = set()
+        for source in self.graph_source_nodes:
+            simple_paths = nx.all_simple_paths(self.graph, g0, source)
+            paths_comb = set(itertools.chain(*simple_paths))
+            result = result | paths_comb
+        # If upstream do not include selected gnode, remove gnode from set
+        adj_nodes_g0 = set(self.graph.adj[g0]) - set(gnodes)
+        if not adj_nodes_g0:
+            result = result.remove(g0)
+        return result
+
+    def get_upstream_element(self, ekey, codes=None):
+        gnodes = self.gnode_element_mapping_inverted[ekey]
+        results = dict()
+        # Search in a path from g0 to all sources
+        for source in self.graph_source_nodes:
+            simple_paths = nx.all_simple_paths(self.graph, gnodes[0], source)
+            for path in map(nx.utils.pairwise, simple_paths):  # For all elements in path
+                for e_pair in path:
+                    # Skip element if same as current element
+                    if not set(gnodes).issubset(set(e_pair)):
+                        ekey_check = self.graph.edges[e_pair[0], e_pair[1]]['key']
+                        element_check = self.base_elements[ekey_check]
+                        if (codes is None) or (element_check.code in codes):
+                            results[ekey_check] = element_check
+                            break
+        return results
+
+    def get_downstream_element(self, ekey, codes=None):
+        # TODO only works in multisource source case for downstream of multiple source connection point
+        gnodes = self.gnode_element_mapping_inverted[ekey]
+        upstream_nodes = self.get_upstream_nodes(ekey)
+        results = dict()
+        # Search in a path from g0 to all sinks
+        for sink in self.graph_sink_nodes:
+            # Select start nodes from nodes not in upstream_nodes
+            start_gnodes = [gnode for gnode in gnodes if gnode not in upstream_nodes]
+            for start_gnode in start_gnodes:
+                simple_paths = nx.all_simple_paths(self.graph, start_gnode, sink)
+                for path in map(nx.utils.pairwise, simple_paths):
+                    path_it1, path_it2 =  itertools.tee(path, 2)
+                    path_nodes = set(itertools.chain(*path_it1))
+                    # If path shares nodes with upstream skip path
+                    if not(path_nodes & upstream_nodes):
+                        for e_pair in path_it2:
+                            # Skip element if same as current element
+                            if not set(gnodes).issubset(set(e_pair)):
+                                ekey_check = self.graph.edges[e_pair[0], e_pair[1]]['key']
+                                element_check = self.base_elements[ekey_check]
+                                # Add element and break path if <codes not specified> or <code matches>
+                                if (codes is None) or (element_check.code in codes):
+                                    results[ekey_check] = element_check
+                                    break
+        return results
+    
+    # Export results routines
 
     def export_element_graph_matplotlib(self, filename):
         import matplotlib
