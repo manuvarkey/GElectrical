@@ -671,13 +671,13 @@ class ProjectModel:
                 element_refs[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)
             # Lines
-            if model.code in ['element_line', 'element_line_cable', 'element_line_custom']:
+            if model.code in misc.LINE_ELEMENT_CODES:
                 element_lines.append(model)
             # Loads
-            if model.code in ['element_load', 'element_asymmetric_load', 'element_single_phase_load']:
+            if model.code in misc.LOAD_ELEMENT_CODES:
                 element_loads.append(model)
             # Switches
-            if model.code in ['element_switch', 'element_circuitbreaker']:
+            if model.code in misc.SWITCH_ELEMENT_CODES:
                 element_switches.append(model)
             # Nodes
             if model.code in misc.DISPLAY_ELEMENT_CODES:
