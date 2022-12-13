@@ -139,36 +139,17 @@ class GraphView():
         
         # Packing widgets
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.hbox_int = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         
         # Other widgets
         self.scrolled_window = Gtk.ScrolledWindow()
-        self.figure = Figure(figsize=(1, 1))
+        self.figure = Figure(figsize=(1, 1), layout="constrained")
         self.canvas = FigureCanvas(self.figure)  # a Gtk.DrawingArea
         self.nav_toolbar = NavigationToolbar(self.canvas, box)
         self.box.set_size_request(100,300)
-        self.name_widget = Gtk.Label('<i>' + self.title + '</i>', xalign=0.5)
-        self.name_widget.set_use_markup(True)
-        self.name_widget.props.margin_top = 6
-        self.name_widget.props.margin_bottom = 6
-        self.xlabel_widget = Gtk.Label('<i>' + self.xlabel + '</i>', xalign=0.5)
-        self.xlabel_widget.set_use_markup(True)
-        self.xlabel_widget.set_line_wrap(True)
-        self.ylabel_widget = Gtk.Label('<i>' + self.ylabel + '</i>', xalign=0.5)
-        self.ylabel_widget.set_use_markup(True)
-        self.ylabel_widget.set_line_wrap(True)
-        self.ylabel_widget.set_angle(90)
         
         # Start packing
         self.box.pack_start(self.vbox, True, True, 0)
-        if title: 
-            self.vbox.pack_start(self.name_widget, False, False, 0)
-        self.vbox.pack_start(self.hbox_int, True, True, 0)
-        if ylabel:
-            self.hbox_int.pack_start(self.ylabel_widget, False, False, 0)
-        self.hbox_int.pack_start(self.scrolled_window, True, True, 0)
-        if xlabel:
-            self.vbox.pack_start(self.xlabel_widget, False, False, 0)
+        self.vbox.pack_start(self.scrolled_window, True, True, 0)
         self.vbox.pack_start(self.nav_toolbar, False, False, 0)
         self.scrolled_window.add(self.canvas)
         
@@ -235,14 +216,12 @@ class GraphView():
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
             line = self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
-            #cursor = mplcursors.cursor(line)
-            #def selection(sel):
-                #sel.annotation.set_text(model.title + '\nX: ' + str(sel.target[0]) + '\nY: ' + str(sel.target[1]))
-                #sel.annotation.set(fontfamily=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
-            #cursor.connect("add", selection)
-
+        # Set legends title and stuff
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
+        self.plot.set_title(self.title, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
+        self.plot.set_xlabel(self.xlabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
+        self.plot.set_ylabel(self.ylabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
         self.canvas.draw()
         
     # Callbacks
