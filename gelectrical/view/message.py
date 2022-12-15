@@ -53,6 +53,7 @@ class MessageView:
         """
         Format: {'Head 1': [[{'message': 'Title goes here', 'type': 'error'}, data_for_callback],
                             [{'message': 'Title goes here', 'type': 'warning'}, data_for_callback],
+                            ['Title goes here', data_for_callback],
                                ...
                            ],
                  'Head 2':     ...
@@ -98,11 +99,11 @@ class MessageView:
                 message_text = message[0]
                 if type(message_text) is dict:
                     if message_text['type'] == 'error':
-                        message_processed = "<span fgcolor='#cc0000'>" + message_text['message'] + '</span>'
+                        message_processed = "<span fgcolor='#a40000'>" + message_text['message'] + '</span>'
                         data_widget.set_use_markup(True)
                         data_widget.set_markup(message_processed)
                     elif message_text['type'] == 'warning':
-                        message_processed = "<span fgcolor='#f57900'>" + message_text['message'] + '</span>'
+                        message_processed = "<span fgcolor='#ce5c00'>" + message_text['message'] + '</span>'
                         data_widget.set_use_markup(True)
                         data_widget.set_markup(message_processed)
                 else:

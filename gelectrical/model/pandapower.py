@@ -334,7 +334,7 @@ class PandaPowerModel:
             return {'message': message, 'type': 'warning'}
 
         def ref_eid(elementids):
-            return str([self.network_model.base_elements[tuple(eid)].fields['ref']['value'] for eid in elementids])
+            return ', '.join([self.network_model.base_elements[tuple(eid)].fields['ref']['value'] for eid in elementids])
 
         for code, result in pp_diagnostic_result.items():
             if result:
@@ -346,7 +346,7 @@ class PandaPowerModel:
                             if element_error_code in ['buses']:
                                 gnodeids = [self.power_nodes_inverted[e_id]
                                             for e_id in elementids_power]
-                                message = 'Disconnected Nodes \n' + 'Nodes: ' + str(gnodeids)
+                                message = 'Disconnected Nodes \n' + 'Nodes: ' + ', '.join(map(str, gnodeids))
                                 model = [['node', gnodeids]]
                                 result_parsed.append([message, model])
 
@@ -354,7 +354,7 @@ class PandaPowerModel:
                                 code = error_code_subs_dict[element_error_code]
                                 elementids = [
                                     self.power_elements_inverted[code, e_id] for e_id in elementids_power]
-                                message = 'Disconnected element \n' + ref_eid(elementids)
+                                message = 'Disconnected element \nElements: ' + ref_eid(elementids)
                                 model = [['element', elementids]]
                                 result_parsed.append([message, model])
 
@@ -364,7 +364,7 @@ class PandaPowerModel:
                         code = error_code_subs_dict[element_error_code]
                         elementids = [self.power_elements_inverted[code, e_id]
                                       for e_id in elementids_power]
-                        message = 'Different voltage levels connected \n' + ref_eid(elementids)
+                        message = 'Different voltage levels connected \nElements: ' + ref_eid(elementids)
                         model = [['element', elementids]]
                         result_parsed.append([error(message), model])
 
@@ -377,7 +377,7 @@ class PandaPowerModel:
                                 for elementid_power in elementids_power:
                                     elementids = self.power_elements_inverted[code,
                                                                              elementid_power]
-                                    message = 'Line impedence values close to zero \n' + ref_eid([elementids])
+                                    message = 'Line impedence values close to zero \nElements: ' + ref_eid([elementids])
                                     model = [['element', [elementids]]]
                                     result_parsed.append(
                                         [warning(message), model])
@@ -394,7 +394,7 @@ class PandaPowerModel:
                                     for elementid in elementids:
                                         if self.base_elements[elementid].code == tranfo_subs_dict[element_error_code]:
                                             elementids_added.append(elementid)
-                            message = 'Nominal voltages of transformer ports dont match \n' + ref_eid(elementids)
+                            message = 'Nominal voltages of transformer ports dont match \nElements: ' + ref_eid(elementids)
                             model = [['element', elementids_added]]
                             result_parsed.append([error(message), model])
 
@@ -406,7 +406,7 @@ class PandaPowerModel:
                                 elementid_power = error_list[0]
                                 gnodeids = [
                                     self.power_nodes_inverted[elementid_power]]
-                                message = 'Invalid values found in model \n' + 'Nodes: ' + str(gnodeids)
+                                message = 'Invalid values found in model \n' + 'Nodes: ' + ', '.join(map(str, gnodeids))
                                 model = [['node', gnodeids]]
                                 result_parsed.append([message, model])
 
@@ -415,7 +415,7 @@ class PandaPowerModel:
                                 elementid_power = error_list[0]
                                 elementids = [
                                     self.power_elements_inverted[code, elementid_power]]
-                                message = 'Invalid values found in model \n' + ref_eid(elementids)
+                                message = 'Invalid values found in model \nElements: ' + ref_eid(elementids)
                                 model = [['element', elementids]]
                                 result_parsed.append([error(message), model])
 
@@ -430,7 +430,7 @@ class PandaPowerModel:
                                 for elementid in elementids:
                                     if self.base_elements[elementid].code in ['element_reference', 'element_wire', 'element_busbar']:
                                         elementids_added.append(elementid)
-                            message = 'Multiple voltage sources connected to bus \n' + ref_eid(elementids_added)
+                            message = 'Multiple voltage sources connected to bus \nElements: ' + ref_eid(elementids_added)
                             model = [['elements', elementids_added]]
                             result_parsed.append([warning(message), model])
 
@@ -447,7 +447,7 @@ class PandaPowerModel:
                                       for e_id in elementids_power]
                         result_parsed.append(
                             ['Parallel connected switches.', [['element', model]]])
-                        message = 'Parallel connected switches \n' + ref_eid(elementids)
+                        message = 'Parallel connected switches \nElements: ' + ref_eid(elementids)
                         model = [['element', elementids]]
                         result_parsed.append([warning(message), model])
 

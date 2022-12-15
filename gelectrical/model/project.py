@@ -37,6 +37,7 @@ from ..view.graph import GraphViewDialog, GraphImage
 from ..model.graph import GraphModel
 from .networkmodel import NetworkModel
 from .pandapower import PandaPowerModel
+from .rulescheck import electrical_rules_check
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -267,12 +268,13 @@ class ProjectModel:
                 if code == 'node':
                     for k1, drawing_model in enumerate(self.drawing_models):
                         for k2, element in enumerate(drawing_model.elements):
-                            gnodes = self.networkmodel.gnode_element_mapping_inverted[(k1,k2)]
-                            for gnode in gnodes:
-                                if gnode in elementids:
-                                    element = self.drawing_models[k1][k2]
-                                    element.set_selection(select=True, color=misc.COLOR_SELECTED_WARNING)
-                                    self.mark_page(k1)
+                            if (k1,k2) in self.networkmodel.gnode_element_mapping_inverted:
+                                gnodes = self.networkmodel.gnode_element_mapping_inverted[(k1,k2)]
+                                for gnode in gnodes:
+                                    if gnode in elementids:
+                                        element = self.drawing_models[k1][k2]
+                                        element.set_selection(select=True, color=misc.COLOR_SELECTED_WARNING)
+                                        self.mark_page(k1)
                 else:
                     for k1,k2 in elementids:
                         element = self.drawing_models[k1][k2]
@@ -363,6 +365,13 @@ class ProjectModel:
             log.info('ProjectModel - run_linetoground_sccalc - calculation run')
         else:
             raise RuntimeError('ProjectModel - run_linetoground_sccalc - Power model not built')
+
+    def run_rulescheck(self):
+        """Run electrical rules check and report errors in diagnostic view"""
+        log.info('ProjectModel - run_rulescheck - running rulescheck...')
+        diagnostic_results = electrical_rules_check(self.networkmodel)
+        self.diagnostics_view.update(diagnostic_results, self.select_networkmodel)
+        log.info('ProjectModel - run_rulescheck - rulescheck run')
         
     def update_results(self):
         """ Update analysis results"""
@@ -565,8 +574,7 @@ class ProjectModel:
             base_elements[key].set_text_field_value('ref', ref)
             
     def get_reference_code(self):
-        """Renumber drawing elements"""
-        
+        """Get unique reference code"""
         # Setup network model
         self.setup_base_model(build_ana_model=False)
         base_elements = self.networkmodel.base_elements
