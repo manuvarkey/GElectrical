@@ -420,8 +420,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-in-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -437,8 +437,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-out-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -459,7 +459,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_copy1">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Cut items</property>
+                        <property name="tooltip-markup" translatable="yes">Cut Items</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Cut</property>
                         <property name="use-underline">True</property>
@@ -475,7 +475,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_copy">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Copy items</property>
+                        <property name="tooltip-markup" translatable="yes">Copy Items</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Copy</property>
                         <property name="use-underline">True</property>
@@ -539,6 +539,22 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">application-x-executable-symbolic</property>
                         <signal name="clicked" handler="on_run_analysis" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="toolbutton_draw_rulescheck">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-markup" translatable="yes">Run electrical rules check</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes">Analyse</property>
+                        <property name="use-underline">True</property>
+                        <property name="icon-name">view-list-symbolic</property>
+                        <signal name="clicked" handler="on_run_rulescheck" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

@@ -471,6 +471,10 @@ class MainWindow():
     def on_draw_clear_results(self, button=None):
         """Clear project results"""
         self.project.clear_results()
+        self.program_state['analysis_build_networkmodel'] = False
+        self.program_state['analysis_run_timeseries'] = False
+        self.program_state['analysis_run_sc_sym'] = False
+        self.program_state['analysis_run_sc_lg'] = False
         self.update()
         self.display_status(misc.INFO, "Analysis results cleared.")
     
@@ -481,7 +485,6 @@ class MainWindow():
         self.project.edit_loadprofiles()
         
     def on_run_analysis(self, widget):
-        """Export project data"""
 
         def exec_func(progress, settings):
             progress.add_message('Building Base Model...')
@@ -491,6 +494,7 @@ class MainWindow():
             progress.add_message('Building Power Model...')
             progress.set_fraction(0.1)
             self.project.build_power_model()
+            self.program_state['analysis_build_networkmodel'] = True
             
             if settings['diagnostics']:
                 progress.add_message('Running Diagnostics...')
@@ -506,16 +510,19 @@ class MainWindow():
                     progress.set_fraction(0.3)
                     #self.project.run_powerflow()
                     self.project.run_powerflow_timeseries()
+                    self.program_state['analysis_run_timeseries'] = True
                 
                 if settings['sc_sym']:
                     progress.add_message('Running Symmetric Short Circuit Calculation...')
                     progress.set_fraction(0.4)
                     self.project.run_sym_sccalc()
+                    self.program_state['analysis_run_sc_sym'] = True
                     
                 if settings['sc_gf']:
                     progress.add_message('Running Line to Ground Short Circuit Calculation...')
                     progress.set_fraction(0.5)
                     self.project.run_linetoground_sccalc()
+                    self.program_state['analysis_run_sc_lg'] = True
                 
                 progress.add_message('Updating Results...')
                 progress.set_fraction(0.6)
@@ -589,6 +596,25 @@ class MainWindow():
         else:
             log.info('MainWindow - on_run_analysis - analysis cancelled by user')
     
+    def on_run_rulescheck(self, widget):
+        if not self.program_state['analysis_build_networkmodel']:
+            self.display_status(misc.WARNING, "Networkmodel not build. Cannot run rules check.")
+            log.warning('MainWindow - on_run_rulescheck - Networkmodel not build - aborted')
+            return
+        if not self.program_state['analysis_run_timeseries']:
+            self.display_status(misc.WARNING, "Time series simulation not run. Cannot run rules check.")
+            log.warning('MainWindow - on_run_rulescheck - Time series simulation not run - aborted')
+            return
+        if not self.program_state['analysis_run_sc_sym']:
+            self.display_status(misc.WARNING, "Symmetric short circuit simulation not run. Cannot run rules check.")
+            log.warning('MainWindow - on_run_rulescheck - Symmetric short circuit simulation not run - aborted')
+            return
+        if not self.program_state['analysis_run_sc_lg']:
+            self.display_status(misc.WARNING, "SLG short circuit simulation not run. Cannot run rules check.")
+            log.warning('MainWindow - on_run_rulescheck - SLG short circuit simulation not run - aborted')
+            return
+        self.project.run_rulescheck()
+
     # Draw signal handler methods
         
     def on_draw_zoomin(self, button):
@@ -932,6 +958,10 @@ class MainWindow():
         self.program_state['project_settings'] = None  # Updated inside ProjectModel constructor
         self.project = ProjectModel(self.window, self.program_state)
         self.program_state['project'] = self.project
+        self.program_state['analysis_build_networkmodel'] = False
+        self.program_state['analysis_run_timeseries'] = False
+        self.program_state['analysis_run_sc_sym'] = False
+        self.program_state['analysis_run_sc_lg'] = False
         
         # Setup infobar/ revealer
         self.progress_revealer = self.builder.get_object("progress_revealer")

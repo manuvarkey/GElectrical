@@ -51,8 +51,8 @@ class MessageView:
         
     def update(self, model, select_callback):
         """
-        Format: {'Head 1': [{'message': 'Title goes here', 'type': 'error'}, data_for_callback,
-                           [{'message': 'Title goes here', 'type': 'warning'}, data_for_callback],
+        Format: {'Head 1': [[{'message': 'Title goes here', 'type': 'error'}, data_for_callback],
+                            [{'message': 'Title goes here', 'type': 'warning'}, data_for_callback],
                                ...
                            ],
                  'Head 2':     ...
