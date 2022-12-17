@@ -61,7 +61,7 @@ class Element:
         self.r = FieldDict(element.res_fields)
         self.f = FieldDict(element.fields)
 
-def get_message_data_struct(network, results_dict):
+def get_message_data_struct(network, results_dict_pass, results_dict_fail):
     """
     INPUT:
     results_dict  : Rules check result
@@ -75,30 +75,46 @@ def get_message_data_struct(network, results_dict):
                     ]
             }
     """
-    message_list = []
-    for caption, result_eids in results_dict.items():
-        ref_eid = ', '.join([network.base_elements[tuple(eid)].fields['ref']['value'] for eid in result_eids])
-        message = caption + '\nElements: ' + ref_eid
-        element_list = [['element', tuple(result_eids)]]
-        message_list.append((message, element_list))
-    return {'Electrical Rules Check': message_list}
+    def get_message(results_dict):
+        message_list = []
+        for caption, result_eids in results_dict.items():
+            ref_eid = ', '.join([network.base_elements[tuple(eid)].fields['ref']['value'] for eid in result_eids])
+            message = caption + '\nElements: ' + ref_eid
+            element_list = [['element', tuple(result_eids)]]
+            message_list.append((message, element_list))
+        return message_list
+    message_list_pass = get_message(results_dict_pass)
+    message_list_fail = get_message(results_dict_fail)
+    return {'Electrical Rules Check - Failed': message_list_fail,
+            'Electrical Rules Check - Passed': message_list_pass}
 
 # Rules check rules and functions
 
 electrical_rules = {
-'Cable overload protection by upstream switch': ('arg1 <= arg2', 
-                    (misc.LINE_ELEMENT_CODES, 'e.f.max_i_ka >= 0.1', 'all'), 
+'Line loading % < 100%': ('arg1 <= arg2', 
+                    (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
+                    ('self', 'e.r.loading_percent_max'),
+                    ('constant', 100)),
+'Line loss % < x%': ('arg1 <= sr.line_max_loss', 
+                    (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
+                    ('self', 'e.r.pl_mw_max')),
+'Line overload protection by upstream switch': ('arg1 <= arg2', 
+                    (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.f.max_i_ka'),
-                    ('upstream', misc.SWITCH_ELEMENT_CODES, 'e.f.In'))
+                    ('upstream', misc.SWITCH_ELEMENT_CODES, 'e.f.In')),
+'Transformer loading % < 100%': ('arg1 <= 100', 
+                    (misc.TRAFO_ELEMENT_CODES, 'True', 'all'), 
+                    ('self', 'e.r.loading_percent_max'))
 }
 
-def rules_check(network, rules):
+def rules_check(network, sim_settings, rules_settings, rules):
     """
     Conduct rules check as per defined rules.
 
     INPUT:
-    network       : Network model
-    program_state : Program state with project settings etc
+    network        : Network model
+    sim_settings   : Simulation settings
+    rules_settings : Rules check settings
 
     OUTPUT:
     results_dict  : Rules check result
@@ -122,38 +138,75 @@ def rules_check(network, rules):
         <expression>       : Expression using class notation to access elements
             ex: "e.f.i_ka + e.f.i_ka_max"
     """
-    results_dict = dict()
+    results_dict_pass = dict()
+    results_dict_fail = dict()
+    ss = FieldDict(sim_settings)
+    sr = FieldDict(rules_settings)
 
     for eid, element in network.base_elements.items():
         cur_element_var = Element(element)
+
         # Evaluate each rule for selected element
         for rule_caption, rule in rules.items():
             failure_flag = False  # Tracks rule failure
             run_evaluation = True  # Tracks if <check_expression> evalation can be run
             check_expression, (match_codes, match_expression, match_type), *args = rule
+            
             # Check if match_criterion satisfied
-            if element.code in match_codes and eval(match_expression, {'e':cur_element_var}):
+            if element.code in match_codes and eval(match_expression, {'e':cur_element_var,'sr':sr,'ss':ss}):
                 args_eval = []
+
                 # Fill arguments from rule
                 for arg in args:
                     if arg[0] == 'self':
                         expr = arg[1]
-                        args_eval.append([eval(expr, {'e':cur_element_var})])
-                    elif arg[0] == 'upstream':
+                        args_eval.append([eval(expr, {'e':cur_element_var,'sr':sr,'ss':ss})])
+
+                    elif arg[0] in ('upstream', 'downstream'):
                         codes = arg[1]
                         expr = arg[2]
-                        arg_element_dict = network.get_upstream_element(eid, codes)
+                        if arg[0] == 'upstream':
+                            arg_element_dict = network.get_upstream_element(eid, codes)
+                        else:
+                            arg_element_dict = network.get_downstream_element(eid, codes)
                         if arg_element_dict:
                             args_eval_sub = []
                             for arg_element in arg_element_dict.values():
                                 e = Element(arg_element)
-                                args_eval_sub.append(eval(expr, {'e':e}))
+                                args_eval_sub.append(eval(expr, {'e':e,'sr':sr,'ss':ss}))
                             args_eval.append(args_eval_sub)
                         else:
                             if match_type in ('all', 'any'):
                                 failure_flag = True
                             run_evaluation = False
                             break
+
+                    elif arg[0] == 'constant':
+                        const = arg[1]
+                        args_eval.append([const])
+
+                    elif arg[0] in ('match'):
+                        codes = arg[1]
+                        cond_expr = arg[2]
+                        expr = arg[3]
+                        arg_element_dict = dict()
+                        for eid_sub, element_sub in network.base_elements.items():
+                            sub_element_var = Element(element_sub)
+                            if element_sub.code in codes and eval(cond_expr, {'e':sub_element_var,'sr':sr,'ss':ss}):
+                                arg_element_dict[eid_sub] = sub_element_var
+
+                        if arg_element_dict:
+                            args_eval_sub = []
+                            for arg_element in arg_element_dict.values():
+                                args_eval_sub.append(eval(expr, {'e':arg_element,'sr':sr,'ss':ss}))
+                            args_eval.append(args_eval_sub)
+                        else:
+                            if match_type in ('all', 'any'):
+                                failure_flag = True
+                            run_evaluation = False
+                            break
+
+                # Run evaluation of check expression
                 if run_evaluation:
                     # Setup argument pairs for evaluation
                     args_eval_pair = []
@@ -162,24 +215,32 @@ def rules_check(network, rules):
                             for arg2 in  args_eval[1]:
                                 args_eval_pair.append((arg1, arg2))
                         else:
-                            args_eval_pair.append(arg1, 0)
+                            args_eval_pair.append((arg1, 0))
                     # Evaluate argument pairs
                     for (arg1, arg2) in args_eval_pair:
-                        if eval(check_expression, {'arg1':arg1, 'arg2':arg2}):
+                        if eval(check_expression, {'arg1':arg1, 'arg2':arg2,'sr':sr,'ss':ss}):
                             if match_type in ('any', 'any_ifexist'):
                                 break
                         else:
                             if match_type in ('all', 'all_ifexist'):
                                 failure_flag = True
                                 break
-                if failure_flag:
-                    if rule_caption not in results_dict:
-                        results_dict[rule_caption] = set()
-                    results_dict[rule_caption].add(eid)
-    return results_dict
 
-def electrical_rules_check(network):
+                # If failure add to result
+                if failure_flag:
+                    if rule_caption not in results_dict_fail:
+                        results_dict_fail[rule_caption] = set()
+                    results_dict_fail[rule_caption].add(eid)
+                else:
+                    if rule_caption not in results_dict_pass:
+                        results_dict_pass[rule_caption] = set()
+                    results_dict_pass[rule_caption].add(eid)
+
+
+    return results_dict_pass, results_dict_fail
+
+def electrical_rules_check(network, sim_settings, rules_settings):
     """Helper function to call electrical rules check"""
-    results_dict = rules_check(network, electrical_rules)
-    message_data = get_message_data_struct(network, results_dict)
+    results_dict_pass, results_dict_fail = rules_check(network, sim_settings, rules_settings, electrical_rules)
+    message_data = get_message_data_struct(network, results_dict_pass, results_dict_fail)
     return message_data

@@ -369,7 +369,10 @@ class ProjectModel:
     def run_rulescheck(self):
         """Run electrical rules check and report errors in diagnostic view"""
         log.info('ProjectModel - run_rulescheck - running rulescheck...')
-        diagnostic_results = electrical_rules_check(self.networkmodel)
+        settings = self.get_project_fields(full=True)
+        sim_settings = settings['Simulation']
+        rules_settings = settings['Rules Check']
+        diagnostic_results = electrical_rules_check(self.networkmodel, sim_settings, rules_settings)
         self.diagnostics_view.update(diagnostic_results, self.select_networkmodel)
         log.info('ProjectModel - run_rulescheck - rulescheck run')
         
@@ -725,7 +728,7 @@ class ProjectModel:
         P = misc.ELEMENT_PLACEHOLDER
         # Lines
         if element_lines:
-            col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent:max', 'pl_mw:max']
+            col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent_max', 'pl_mw_max']
             col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', '% P loss']
             code_sources = [E,E,E,E,E,E,E,E,E,R,R]
             table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines',
@@ -781,7 +784,7 @@ class ProjectModel:
             boq_captions['element_switches'] = 'Switches'
          # Nodes
         if element_nodes:
-            col_codes = ['ref', 'vn_kv', 'delv_perc:max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
+            col_codes = ['ref', 'vn_kv', 'delv_perc_max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
             col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (L-G, max)', 'Isc (L-G, min)']
             code_sources = [E,R,R,R,R,R,R]
             table = misc.elements_to_table(element_nodes.values(), col_codes, col_captions, code_sources, 'boq_nodes',

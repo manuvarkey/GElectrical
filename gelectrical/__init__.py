@@ -614,7 +614,7 @@ class MainWindow():
             log.warning('MainWindow - on_run_rulescheck - SLG short circuit simulation not run - aborted')
             return
         self.project.run_rulescheck()
-        self.display_status(misc.INFO, "Rules check run successfully. Please check warnings tab.")
+        self.display_status(misc.INFO, "Rules check run successfully. Please check messages tab.")
 
     # Draw signal handler methods
         

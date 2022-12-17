@@ -906,17 +906,17 @@ class PandaPowerModel:
                 misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', caption + ' (' + unit + ')')
             # Add stats
             if 'avg' in stat_fields:
-                subcode = dst_code + ':avg'
+                subcode = dst_code + '_max'
                 subcaption = caption + ' (avg)'
                 result[subcode] = misc.get_field_dict(
                     'float', subcaption, unit, val_avg, decimal=decimal)
             if 'max' in stat_fields:
-                subcode = dst_code + ':max'
+                subcode = dst_code + '_max'
                 subcaption = caption + ' (max)'
                 result[subcode] = misc.get_field_dict(
                     'float', subcaption, unit, val_max, decimal=decimal)
             if 'min' in stat_fields:
-                subcode = dst_code + ':min'
+                subcode = dst_code + '_max'
                 subcaption = caption + ' (min)'
                 result[subcode] = misc.get_field_dict(
                     'float', subcaption, unit, val_min, decimal=decimal)
@@ -989,19 +989,19 @@ class PandaPowerModel:
 
                 if 'avg' in fields:
                     val_avg = round(sum(values)/len(values), decimal)
-                    subcode = modcode + ':avg'
+                    subcode = modcode + '_max'
                     subcaption = caption + ' (avg)'
                     result[subcode] = misc.get_field_dict(
                         'float', subcaption, unit, val_avg, decimal=decimal)
                 if 'max' in fields:
                     val_max = round(max(values), decimal)
-                    subcode = modcode + ':max'
+                    subcode = modcode + '_max'
                     subcaption = caption + ' (max)'
                     result[subcode] = misc.get_field_dict(
                         'float', subcaption, unit, val_max, decimal=decimal)
                 if 'min' in fields:
                     val_min = round(min(values), decimal)
-                    subcode = modcode + ':min'
+                    subcode = modcode + '_max'
                     subcaption = caption + ' (min)'
                     result[subcode] = misc.get_field_dict(
                         'float', subcaption, unit, val_min, decimal=decimal)
@@ -1116,7 +1116,7 @@ class PandaPowerModel:
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
-                            ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent_stat']], fields=['avg','max'])
+                            ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['avg','max'])
                         combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 4, None],
                             ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'], sumfunc, stat_fields=['max'])
                     elif elementcode == 'trafo3w':
@@ -1131,7 +1131,7 @@ class PandaPowerModel:
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
-                            ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent_stat']], fields=['max'])
+                            ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['max'])
                     elif elementcode == 'gen':
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
@@ -1171,7 +1171,7 @@ class PandaPowerModel:
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
-                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent_max']], fields=['max'])
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent']], fields=['max'])
                     elif elementcode == 'trafo3w':
                         set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
                                                                     ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
@@ -1184,7 +1184,7 @@ class PandaPowerModel:
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
-                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent_max']], fields=['max'])
+                            ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent']], fields=['max'])
                     elif elementcode == 'gen':
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])

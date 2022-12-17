@@ -119,6 +119,7 @@ REFERENCE_CODES = ('element_reference', 'element_reference_box')
 LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 
                      'element_staticgenerator', 'element_async_motor')
 LINE_ELEMENT_CODES = ('element_line', 'element_line_cable', 'element_line_custom')
+TRAFO_ELEMENT_CODES = ('element_transformer', 'element_transformer3w')
 LOAD_ELEMENT_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load')
 SWITCH_ELEMENT_CODES = ('element_switch', 'element_circuitbreaker')
 SUPPLY_ELEMENT_CODES = ('element_grid', 'element_generator', 'element_staticgenerator')
@@ -1191,7 +1192,8 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                              'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
                              'grid_frequency': get_field_dict('float', 'Grid Frequency', 'Hz', 50, selection_list=[50,60], status_inactivate=False),
                              'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),
-                             'x_fault_ohm': get_field_dict('float', 'Fault reactance', 'Ohm', 0, status_inactivate=False)}}
+                             'x_fault_ohm': get_field_dict('float', 'Fault reactance', 'Ohm', 0, status_inactivate=False)},
+                             'Rules Check':{'line_max_loss' : get_field_dict('float', 'Maximum line loss', '%', 3, status_inactivate=False)}}
 
 # Cairo drawing functions
 
