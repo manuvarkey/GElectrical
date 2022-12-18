@@ -50,12 +50,15 @@ class Tag(object):
 class NetworkModel:
     """Class for modelling a Network"""
 
-    def __init__(self, drawing_models):
+    def __init__(self, program_state):
         # Data
-        self.drawing_models = drawing_models
+        self.program_state = program_state
+        self.drawing_models = self.program_state['project'].drawing_models
 
         # Generated
         self.base_elements = dict()  # Addressing by (page, slno)
+        self.node_elements = dict()  # Addressing by (page, global_node)
+        self.node_elements_bygnode = dict()  # (page, global_node) -> (node_element1, node_element2)
         self.global_nodes = set()  # Unique global node values after collapsing buses
         self.virtual_global_nodes = set()
         self.gnode_element_mapping = dict()  # Maps global_node -> [element1, ..]
@@ -76,13 +79,23 @@ class NetworkModel:
     # Build models
 
     def setup_base_elements(self):
-        # Populate self.base_elements
+        """Populate self.base_elements"""
+        self.base_elements = dict()
         for k1, drawing_model in enumerate(self.drawing_models):
             for k2, element in enumerate(drawing_model.elements):
                 self.base_elements[(k1, k2)] = element
+        log.info('NetworkModel - setup_base_model - model generated')
 
     def setup_global_nodes(self):
         """Build network model from drawing sheets"""
+
+        self.global_nodes = set()
+        self.virtual_global_nodes = set()
+        self.gnode_element_mapping = dict()
+        self.gnode_element_mapping_inverted = dict()
+        self.node_mapping = dict()
+        self.port_mapping = dict()
+        self.port_mapping_inverted = dict()
 
         duplicate_ports_list = []
         cur_gnode_num = 1
@@ -160,13 +173,44 @@ class NetworkModel:
                         self.gnode_element_mapping[gnode] = [(k1, k2)]
                     self.gnode_element_mapping_inverted[(k1, k2)].append(gnode)
 
+        log.info('NetworkModel - setup_global_nodes - updated')
+
+    def setup_node_elements(self):
+        """Populate self.node_elements"""
+        self.node_elements = dict()
+        self.node_elements_bygnode = dict()
+
+        for k1, drawing_model in enumerate(self.drawing_models):
+            page_gnodes = set()
+            # Prepare node elements
+            for k2, element in enumerate(drawing_model.elements):
+                gnodes = self.gnode_element_mapping_inverted[(k1,k2)]
+                for gnode in gnodes:
+                    if gnode not in page_gnodes:
+                        ref = str(gnode)
+                        # Select a port with coordinates (i.e. exclude reference ports)
+                        port = None
+                        for eport in self.port_mapping_inverted[gnode]:
+                            if len(eport) == 3 and eport[0] == k1:
+                                port = eport
+                                break
+                        if port:
+                            DisplayElementNode = self.program_state['element_models']['element_display_node']
+                            node_element = DisplayElementNode(port[1:], ref)
+                            self.node_elements[(k1, gnode)] = node_element
+                            if gnode not in self.node_elements_bygnode:
+                                self.node_elements_bygnode[gnode] = []
+                            self.node_elements_bygnode[gnode].append(node_element)
+                            page_gnodes.add(gnode)
         log.info('NetworkModel - setup_base_model - model generated')
+        return self.node_elements
 
     def build_graph_model(self):
         """Build graph model for network"""
         self.graph = nx.Graph()
         self.graph_source_nodes = set()
         self.graph_sink_nodes = set()
+
         disabled_lines = []
         disabled_switches = []
         term_node_count = max(self.global_nodes) + 1

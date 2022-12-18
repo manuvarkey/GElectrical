@@ -287,12 +287,22 @@ class ProjectModel:
     
     def setup_base_model(self, build_ana_model=True):
         self.clear_status()
-        self.networkmodel = NetworkModel(self.drawing_models)
+        self.networkmodel = NetworkModel(self.program_state)
+        # Setup base elements
         self.networkmodel.setup_base_elements()
         if build_ana_model:
+            # Setup node variables
             self.networkmodel.setup_global_nodes()
+            # Build and add node elements
+            node_elements = self.networkmodel.setup_node_elements()
+            with group(self, "Add node elements"):
+                self.clear_results(clear_elements=False)
+                for (k1, gnode), node_element in node_elements.items():
+                    drawing_model = self.drawing_models[k1]
+                    drawing_model.insert_element_at_index(node_element)
+            # Build graph model
             self.networkmodel.build_graph_model()
-        self.status['net_model'] = True
+            self.status['net_model'] = True
         log.info('ProjectModel - setup_base_model - model generated')
         
     def build_power_model(self):
@@ -381,43 +391,21 @@ class ProjectModel:
 
         if self.status['power_analysis']:
             with group(self, "Update analysis results"):
-                # Clear results
-                self.clear_results()
                 # Update element results
                 self.powermodel.update_results()
                 # Add new node elements
-                for k1, drawing_model in enumerate(self.drawing_models):
-                    page_gnodes = set()
-                    node_elements = []
-                    # Prepare node elements
-                    for k2, element in enumerate(drawing_model.elements):
-                        gnodes = self.networkmodel.gnode_element_mapping_inverted[(k1,k2)]
-                        for gnode in gnodes:
-                            if gnode not in page_gnodes and gnode in self.powermodel.node_results:
-                                ref = str(gnode)
-                                # Select a port with coordinates (i.e. exclude reference ports)
-                                port = None
-                                for eport in self.networkmodel.port_mapping_inverted[gnode]:
-                                    if len(eport) == 3 and eport[0] == k1:
-                                        port = eport
-                                        break
-                                if port:
-                                    node_element = self.program_state['element_models']['element_display_node'](port[1:], ref)
-                                    node_element.res_fields = copy.deepcopy(self.powermodel.node_results[gnode])
-                                    node_elements.append(node_element)
-                                    page_gnodes.add(gnode)
-                    # Add node elements
-                    for element in node_elements:
-                        drawing_model.insert_element_at_index(element)
+                for (k1, gnode), node_element in self.networkmodel.node_elements.items():
+                    if gnode in self.powermodel.node_results:
+                        node_element.res_fields = copy.deepcopy(self.powermodel.node_results[gnode])
             log.info('ProjectModel - update_results - results updated')
             self.drawing_view.refresh()
         else:
             log.info('ProjectModel - update_results - no results to update')
 
-    def clear_results(self):
+    def clear_results(self, clear_elements=True):
         """ Clear analysis results"""
         for drawing_model in self.drawing_models:
-            drawing_model.clear_results()
+            drawing_model.clear_results(clear_elements)
         
     ## Model functions
     
@@ -675,9 +663,7 @@ class ProjectModel:
         base_elements = self.networkmodel.base_elements
         # First pass add all required elements
         for key, model in base_elements.items():
-            if 'ref' in model.fields and (model.code not in misc.REFERENCE_CODES)\
-                 and (model.code not in misc.DISPLAY_ELEMENT_CODES)\
-                 and (model.code != 'element_assembly'):
+            if 'ref' in model.fields and model.code not in misc.NON_ELEMENT_CODES:
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
                 element_tables[key] = misc.fields_to_table(model.fields)

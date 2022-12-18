@@ -427,7 +427,7 @@ class DrawingModel:
         selected = self.get_selected_codes()
         self.delete_rows(selected)
 
-    def clear_results(self):
+    def clear_results(self, clear_elements=True):
         rows = []
         for el_no, element in enumerate(self.elements):
             # If display element, delete element
@@ -435,7 +435,8 @@ class DrawingModel:
                 rows.append(el_no)
             # Else clear results
             else:
-                element.res_fields = dict()
+                if clear_elements:
+                    element.res_fields = dict()
         self.delete_rows(rows)
             
     ## Floating model functions
