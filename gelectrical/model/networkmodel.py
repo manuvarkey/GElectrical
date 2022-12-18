@@ -358,6 +358,35 @@ class NetworkModel:
                                     results[ekey_check] = element_check
                                     break
         return results
+
+    def get_upstream_node_of_element(self, ekey, ignore_disabled=True):
+        gnodes = set(self.gnode_element_mapping_inverted[ekey])
+        results = dict()
+        if len(gnodes) == 1:
+            upstream_nodes_element = gnodes
+        else:
+            upstream_nodes = self.get_upstream_nodes(ekey, ignore_disabled=ignore_disabled)
+            upstream_nodes_element = upstream_nodes & gnodes
+        for gnode in upstream_nodes_element:
+            key = (ekey[0], gnode)
+            if key in self.node_elements:
+                results[key] = self.node_elements[key]
+        return results
+
+    def get_downstream_node_of_element(self, ekey, ignore_disabled=True):
+        gnodes = set(self.gnode_element_mapping_inverted[ekey])
+        results = dict()
+        if len(gnodes) == 1:
+            downstream_nodes_element = gnodes
+        else:
+            upstream_nodes = self.get_upstream_nodes(ekey, ignore_disabled=ignore_disabled)
+            upstream_nodes_element = upstream_nodes & gnodes
+            downstream_nodes_element = gnodes - upstream_nodes_element
+        for gnode in downstream_nodes_element:
+            key = (ekey[0], gnode)
+            if key in self.node_elements:
+                results[key] = self.node_elements[key]
+        return results
     
     # Export results routines
 

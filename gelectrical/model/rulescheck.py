@@ -162,13 +162,21 @@ def rules_check(network, sim_settings, rules_settings, rules):
                         expr = arg[1]
                         args_eval.append([eval(expr, {'e':cur_element_var,'sr':sr,'ss':ss})])
 
-                    elif arg[0] in ('upstream', 'downstream'):
-                        codes = arg[1]
-                        expr = arg[2]
+                    elif arg[0] in ('upstream', 'downstream', 'upstream_node', 'downstream_node'):
                         if arg[0] == 'upstream':
+                            codes = arg[1]
+                            expr = arg[2]
                             arg_element_dict = network.get_upstream_element(eid, codes)
-                        else:
+                        elif arg[0] == 'downstream':
+                            codes = arg[1]
+                            expr = arg[2]
                             arg_element_dict = network.get_downstream_element(eid, codes)
+                        elif arg[0] == 'upstream_node':
+                            expr = arg[1]
+                            arg_element_dict = network.get_upstream_node_of_element(eid)
+                        elif arg[0] == 'downstream_node':
+                            expr = arg[1]
+                            arg_element_dict = network.get_downstream_node_of_element(eid)
                         if arg_element_dict:
                             args_eval_sub = []
                             for arg_element in arg_element_dict.values():
@@ -194,7 +202,6 @@ def rules_check(network, sim_settings, rules_settings, rules):
                             sub_element_var = Element(element_sub)
                             if element_sub.code in codes and eval(cond_expr, {'e':sub_element_var,'sr':sr,'ss':ss}):
                                 arg_element_dict[eid_sub] = sub_element_var
-
                         if arg_element_dict:
                             args_eval_sub = []
                             for arg_element in arg_element_dict.values():
