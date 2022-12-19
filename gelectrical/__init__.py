@@ -136,7 +136,28 @@ class MainWindow():
         self.insert_view.clean()
         
     def open_project(self, filename):
-        # get filename and set project as active
+        """Get filename and set project as active"""
+        
+        # Ask confirmation from user
+        if self.stack.haschanged():
+            message = 'You have unsaved changes which will be lost if you continue.\n Are you sure you want to discard these changes ?'
+            title = 'Confirm Open'
+            dialogWindow = Gtk.MessageDialog(self.window,
+                                        Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                        Gtk.MessageType.QUESTION,
+                                        Gtk.ButtonsType.YES_NO,
+                                        message)
+            dialogWindow.set_transient_for(self.window)
+            dialogWindow.set_title(title)
+            dialogWindow.set_default_response(Gtk.ResponseType.NO)
+            dialogWindow.show_all()
+            response = dialogWindow.run()
+            dialogWindow.destroy()
+            if response != Gtk.ResponseType.YES:
+                # Do not open file
+                log.info('MainWindow - open_project - Cancelled by user')
+                return False
+
         self.filename = filename
         
         with ZipFile(self.filename, 'r') as projzip:
@@ -162,12 +183,15 @@ class MainWindow():
                     self.stack.savepoint()
                     # Refresh all displays
                     self.update()
+                    return True
                 else:
                     self.display_status(misc.ERROR, "Project could not be opened: Wrong file type selected")
                     log.warning('MainWindow - open_project - Project could not be opened: Wrong file type selected - ' +self.filename)
+                    return False
             except:
                 log.exception("Error parsing project file - " + self.filename)
                 self.display_status(misc.ERROR, "Project could not be opened: Error opening file")
+                return False
                     
     ## Main Window callbacks
 
@@ -231,8 +255,6 @@ class MainWindow():
         uri = recent.get_current_uri()
         filename = misc.uri_to_file(uri)
         self.open_project(filename)
-        window_title = self.filename
-        self.set_title(window_title)
         # Hide fileselector
         self.builder.get_object('popup_open').hide()
         
@@ -242,29 +264,7 @@ class MainWindow():
             uri = data_str.strip('\r\n\x00')
             file_uri = uri.split()[0] # we may have more than one file dropped
             filename = misc.get_file_path_from_dnd_dropped_uri(file_uri)
-            
             if os.path.isfile(filename):
-                # Ask confirmation from user
-                if self.stack.haschanged():
-                    message = 'You have unsaved changes which will be lost if you continue.\n Are you sure you want to discard these changes ?'
-                    title = 'Confirm Open'
-                    dialogWindow = Gtk.MessageDialog(self.window,
-                                             Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                             Gtk.MessageType.QUESTION,
-                                             Gtk.ButtonsType.YES_NO,
-                                             message)
-                    dialogWindow.set_transient_for(self.window)
-                    dialogWindow.set_title(title)
-                    dialogWindow.set_default_response(Gtk.ResponseType.NO)
-                    dialogWindow.show_all()
-                    response = dialogWindow.run()
-                    dialogWindow.destroy()
-                    if response != Gtk.ResponseType.YES:
-                        # Do not open file
-                        log.info('MainWindow - drag_data_received - Cancelled by user')
-                        return
-                        
-                # Open file
                 self.open_project(filename)
                 log.info('MainApp - drag_data_received  - opnened file ' + filename)
 
