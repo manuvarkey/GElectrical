@@ -118,7 +118,9 @@ class ProjectModel:
         ylim = misc.GRAPH_LOAD_CURRENT_LIMITS
         xlabel = 'Time (Hr)'
         ylabel = 'Diversity Factor'
-        dialog = GraphViewDialog(self.window, self.loadprofiles, xlim, ylim, xlabel, ylabel)
+        database_path = misc.abs_path('database', 'load_profiles.csv')
+        dialog = GraphViewDialog(self.window, self.loadprofiles, xlim, ylim, xlabel, ylabel, 
+                                 database_path=database_path)
         dialog.run()
     
     def append_page(self):

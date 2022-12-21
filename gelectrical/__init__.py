@@ -950,8 +950,8 @@ class MainWindow():
         self.draw_load_database_button = self.builder.get_object("draw_load_database_button")
         self.database_view = DatabaseView(self.window, 
                                           self.draw_load_database_button,
-                                          self.properties_view,
-                                          self.program_state)
+                                          self.stack,
+                                          field_view=self.properties_view)
         self.program_state['database_view'] = self.database_view
         
         # Setup ProjectView

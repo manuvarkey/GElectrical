@@ -30,6 +30,7 @@ import cairo
 # local files import
 from .. import misc
 from ..model.graph import GraphModel
+from .database import DatabaseView
 
 from matplotlib.backends.backend_gtk3agg import FigureCanvas
 from matplotlib.backends.backend_gtk3 import (
@@ -250,7 +251,7 @@ class GraphViewDialog():
             graph_database: Graph database to display
     """
     
-    def __init__(self, parent, graph_database, xlim, ylim, xlabel, ylabel):
+    def __init__(self, parent, graph_database, xlim, ylim, xlabel, ylabel, database_path=None):
         
         # Dialog variables
         self.toplevel = parent
@@ -259,23 +260,35 @@ class GraphViewDialog():
         self.ylim = ylim
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.database_path = database_path
         self.temp_graph = None
         self.mode = 'DEFAULT'
         self.graph_uids = []
+        self.database_fields = copy.deepcopy(misc.loadprofile_blank_fields)
         
         # Setup widgets
         self.builder = Gtk.Builder()
         self.builder.add_from_file(misc.abs_path("interface", "loadprofileeditor.glade"))
         self.builder.connect_signals(self)
         self.dialog_window = self.builder.get_object("dialog_window")
-        self.dialog_window.set_size_request(int(self.toplevel.get_size_request()[0]*0.6),int(self.toplevel.get_size_request()[1]*0.6))
+        self.dialog_window.set_transient_for(self.toplevel)
+        self.dialog_window.set_size_request(int(self.toplevel.get_size_request()[0]*0.8),int(self.toplevel.get_size_request()[1]*0.8))
         self.graph_box = self.builder.get_object("graph_box")
         self.combobox_title = self.builder.get_object("combobox_title")
         self.textbox_title = self.builder.get_object("textbox_title")
         self.stack_switcher = self.builder.get_object("main_stack")
+        self.loaddatabase_button = self.builder.get_object("loaddatabase_button")
         
         # Setup graphview
         self.graph_view = GraphView(self.graph_box, xlim, ylim, xlabel=xlabel, ylabel=ylabel, inactivate=True)
+
+        # Setup databaseview
+        if database_path:
+            self.database_view = DatabaseView(self.dialog_window, 
+                                            self.loaddatabase_button,
+                                            fields=self.database_fields,
+                                            fields_updated_callback=self.add_from_database)
+            self.database_view.update_from_database(database_path)
         
         # Populate database
         self.repopulate_combo()
@@ -305,6 +318,9 @@ class GraphViewDialog():
         self.textbox_title.set_text(self.temp_graph[0])
         self.stack_switcher.set_visible_child_name('edit')
         self.mode = 'ADD'
+
+    def add_from_database(self):
+        pass #TODO
     
     def delete_profile(self, button):
         index = self.combobox_title.get_active()
