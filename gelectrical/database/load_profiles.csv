@@ -1,99 +1,104 @@
-item_name;item_category;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24
-Large Office - Building - Equipment;NREL;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.8;0.6;0.6;0.5;0.5;0.4;0.4
-Large Office - Building - Light;NREL;0.05;0.05;0.05;0.05;0.05;0.1;0.1;0.3;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.7;0.5;0.5;0.3;0.3;0.1;0.05
-Large Office - Building - Elevator;NREL;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
-Large Office - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Medium Office - Building - Equipment;NREL;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.8;0.6;0.6;0.5;0.5;0.4;0.4
-Medium Office - Building - Light;NREL;0.05;0.05;0.05;0.05;0.05;0.1;0.1;0.3;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.7;0.5;0.5;0.3;0.3;0.1;0.05
-Medium Office - Building - Elevator;NREL;0;0;0;0;0;0;0;0.35;0.69;0.43;0.37;0.43;0.58;0.48;0.37;0.37;0.46;0.62;0.12;0.04;0.04;0;0;0
-Medium Office - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Small Office - Building - Equipment;NREL;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.5;0.4;0.4;0.4;0.4;0.4;0.4
-Small Office - Building - Light;NREL;0.05;0.05;0.05;0.05;0.05;0.1;0.1;0.3;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.5;0.3;0.3;0.2;0.2;0.1;0.05
-Small Office - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Midrise Apartment - Building - Elevator;NREL;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
-Midrise Apartment - Apartment - Equipment;NREL;0.45;0.41;0.39;0.38;0.38;0.43;0.54;0.65;0.66;0.67;0.69;0.7;0.69;0.66;0.65;0.68;0.8;1;1;0.93;0.89;0.85;0.71;0.58
-Midrise Apartment - Apartment - Light;NREL;0.07;0.07;0.07;0.07;0.19;0.39;0.44;0.39;0.17;0.12;0.12;0.12;0.12;0.12;0.12;0.21;0.44;0.62;0.83;0.99;1;0.69;0.38;0.16
-Midrise Apartment - Office - Equipment;NREL;0.33;0.33;0.33;0.33;0.33;0.33;0.33;0.5;1;1;1;1;0.94;1;1;1;1;0.5;0.33;0.33;0.33;0.33;0.33;0.33
-Midrise Apartment - Office - Light;NREL;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.18;0.18;0.18;0.18;0.18;0.18;0.18
-Primary School - Building - Equipment;NREL;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.35;0.35;0.35;0.35;0.35;0.35;0.35
-Primary School - Building - Light;NREL;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.18;0.18;0.18
-Primary School - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Primary School - Kitchen - Equipment;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.15;0.15;0.25;0.25;0.25;0.15;0.15;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1
-Primary School - Kitchen - Walk in freezer;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
-Primary School - Kitchen - Exhaust;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0
-Secondary School - Building - Equipment;NREL;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.35;0.35;0.35;0.35;0.35;0.35;0.35
-Secondary School - Building - Light;NREL;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.18;0.18;0.18
-Secondary School - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Secondary School - Kitchen - Equipment;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.15;0.15;0.25;0.25;0.25;0.15;0.15;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1
-Secondary School - Kitchen - Walk in freezer;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
-Secondary School - Kitchen - Exhaust;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0
-Retail - Building - Equipment;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.8;0.8;0.7;0.4;0.2;0.2
-Retail - Building - Light;NREL;0.05;0.05;0.05;0.05;0.05;0.05;0.05;0.2;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.5;0.2;0.05;0.05
-Retail - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Strip Mall - Building - Equipment;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.8;0.8;0.7;0.4;0.2;0.2
-Strip Mall - Building - Light;NREL;0.05;0.05;0.05;0.05;0.05;0.05;0.05;0.2;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.5;0.2;0.05;0.05
-Strip Mall - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Supermarket - Building - Equipment;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.8;0.8;0.7;0.4;0.2;0.2
-Supermarket - Building - Light;NREL;0.05;0.05;0.05;0.05;0.05;0.05;0.2;0.2;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.5;0.2;0.05;0.05
-Supermarket - Building - Walk in freezer;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
-Supermarket - Building - Mutideck Diary and Delicase;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.2;0.2;0.2
-Supermarket - Building - Glass door frozen food;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.2;0.2;0.2
-Supermarket - Building - Open well icecream display case;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.2;0.2;0.2
-Supermarket - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
-Full Service Restaurant - Building - Equipment;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.25;0.35;0.35;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25;0.25
-Full Service Restaurant - Building - Light;NREL;0.45;0.15;0.15;0.15;0.15;0.45;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9
-Full Service Restaurant - Building - HVAC;NREL;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Full Service Restaurant - Kitchen - Walk in freezer;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
-Full Service Restaurant - Kitchen - Exhaust;NREL;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Quick Service Restaurant - Building - Equipment;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.35;0.35;0.25;0.25;0.35;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25
-Quick Service Restaurant - Building - Light;NREL;0.45;0.15;0.15;0.15;0.15;0.45;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9
-Quick Service Restaurant - Building - HVAC;NREL;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Quick Service Restaurant - Kitchen - Walk in freezer;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
-Quick Service Restaurant - Kitchen - Exhaust;NREL;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Hospital - Building - Elevator;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.5;0.75;1;1;1;0.75;1;1;1;1;1;0.52;0.52;0.52;0.28;0.2;0.2
-Hospital - Building - Light;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.3;0.3;0.3;0.3;0.3;0.3;0.3;0.1
-Hospital - Building - HVAC;NREL;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Hospital - Admin - Equipment;NREL;0.3;0.3;0.3;0.3;0.5;0.5;1;1;1;1;1;1;1;1;1;1;1;1;0.5;0.5;0.3;0.3;0.3;0.3
-Hospital - Admin - Light;NREL;0.1;0.1;0.1;0.1;0.3;0.3;0.6;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.3;0.3;0.1;0.1
-Hospital - Critical - Equipment;NREL;0.5;0.5;0.5;0.5;0.5;0.5;1;1;1;1;1;1;1;1;1;1;1;1;0.8;0.8;0.5;0.5;0.5;0.5
-Hospital - Critical - Light;NREL;0.5;0.5;0.5;0.5;0.7;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.7;0.7;0.7;0.7;0.5;0.5
-Hospital - Kitchen - Equipment;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.25;0.35;0.35;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25;0.25
-Hospital - Kitchen - Walk in freezer;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
-Hospital - Kitchen - Exhaust;NREL;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0
-Outpatient Health Care - Building - Elevator;NREL;0.05;0.05;0.05;0.05;0.05;0.05;0.05;0.5;0.75;1;1;1;0.75;1;1;1;1;1;0.52;0.52;0.52;0.28;0.05;0.05
-Outpatient Health Care - Building - Equipment;NREL;0.3;0.3;0.3;0.3;0.5;0.5;1;1;1;1;1;1;1;1;1;1;1;1;0.5;0.5;0.3;0.3;0.3;0.3
-Outpatient Health Care - Building - Light;NREL;0.1;0.1;0.1;0.1;0.3;0.3;0.6;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.3;0.3;0.1;0.1
-Outpatient Health Care - Building - HVAC;NREL;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0
-Outpatient Health Care - Radiology - Equipment;NREL;0.01;0.01;0.01;0.01;0.01;0.01;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.01;0.01;0.01;0.01;0.01;0.01
-Outpatient Health Care - Radiology - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0
-Large Hotel - Building - Equipment;NREL;0.3;0.25;0.2;0.2;0.2;0.3;0.5;0.6;0.5;0.5;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.7;0.9;0.95;0.9;0.7;0.4
-Large Hotel - Building - Light;NREL;0.2;0.15;0.1;0.1;0.1;0.2;0.4;0.5;0.4;0.4;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.6;0.8;0.9;0.8;0.6;0.3
-Large Hotel - Building - Elevator;NREL;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
-Large Hotel - Building - HVAC;NREL;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Large Hotel - Guest Room - Equipment;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.62;0.9;0.43;0.43;0.26;0.26;0.26;0.26;0.26;0.26;0.26;0.51;0.51;0.49;0.66;0.7;0.35;0.2
-Large Hotel - Guest Room - Light;NREL;0.22;0.17;0.11;0.11;0.11;0.22;0.44;0.56;0.44;0.44;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.67;0.89;1;0.89;0.67;0.33
-Large Hotel - Laundry Room - Equipment;NREL;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0
-Large Hotel - Kitchen - Equipment;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.25;0.35;0.35;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25;0.25
-Large Hotel - Kitchen - Walk in freezer;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
-Large Hotel - Kitchen - Exhaust;NREL;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Small Hotel - Building - Equipment;NREL;0.3;0.25;0.2;0.2;0.2;0.3;0.5;0.6;0.5;0.5;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.7;0.9;0.95;0.9;0.7;0.4
-Small Hotel - Building - Light;NREL;0.2;0.15;0.1;0.1;0.1;0.2;0.4;0.5;0.4;0.4;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.6;0.8;0.9;0.8;0.6;0.3
-Small Hotel - Building - Elevator;NREL;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
-Small Hotel - Building - HVAC;NREL;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Small Hotel - Corridoor - Light;NREL;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
-Small Hotel - Employee Lounge - Equipment;NREL;0.11;0.11;0.11;0.11;0.11;0.19;0.19;0.25;1;1;0.86;0.86;1;0.86;0.86;0.86;0.86;0.86;0.25;0.19;0.11;0.11;0.11;0.11
-Small Hotel - Employee Lounge - Light;NREL;0.05;0.05;0.05;0.05;0.05;0.15;0.4;0.5;1;1;1;1;1;1;1;1;1;1;0.5;0.4;0.15;0.15;0.05;0.05
-Small Hotel - Excercise Room - Equipment;NREL;0;0;0;0;0;0;0.5;1;1;0.5;0.5;0.5;0;0.5;0.5;0.5;1;0.5;0.5;1;1;0.5;0.5;0
-Small Hotel - Excercise Room - Light;NREL;0;0;0;0;0;0;0.5;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0.5;0
-Small Hotel - Guest Room - Equipment;NREL;0.2;0.2;0.2;0.2;0.2;0.2;0.62;0.9;0.43;0.43;0.26;0.26;0.26;0.26;0.26;0.26;0.26;0.51;0.51;0.49;0.66;0.7;0.35;0.2
-Small Hotel - Guest Room - Light;NREL;0.22;0.17;0.11;0.11;0.11;0.22;0.44;0.56;0.44;0.44;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.67;0.89;1;0.89;0.67;0.33
-Small Hotel - Laundry Room - Equipment;NREL;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0
-Small Hotel - Laundry Room - Light;NREL;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0
-Small Hotel - Meeting Room - Equipment;NREL;0;0;0;0;0;0;0;0.05;0.54;0.54;0.26;0.26;0.05;0.54;0.54;0.26;0.26;0.26;0.05;0.05;0;0;0;0
-Small Hotel - Meeting Room - Light;NREL;0;0;0;0;0;0.2;0.3;0.5;1;1;1;1;1;1;1;1;1;1;0.5;0.3;0.2;0.05;0;0
-Small Hotel - Office - Equipment;NREL;0.33;0.33;0.33;0.33;0.33;0.38;0.38;0.43;0.43;0.43;1;1;0.94;1;1;1;1;0.75;0.63;0.63;0.48;0.48;0.33;0.33
-Small Hotel - Office - Light;NREL;0.5;0.5;0.5;0.5;0.5;0.5;0.5;0.61;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.61;0.5;0.5;0.5;0.5;0.5;0.5
-Small Hotel - Storage - Light;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2;0.2;0.1;0.1
-Warehouse - Building - Equipment;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.5;0.8;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.4;0.1;0.1;0.1;0.1;0.1;0.1
-Warehouse - Building - Light;NREL;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.4;0.7;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.3;0.1;0.1;0.1;0.1;0.1;0.1
-Warehouse - Building - HVAC;NREL;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0
+item_name;item_category;name;name1;0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23
+Large Office - Building - Equipment;NREL;Large Office - Building - Equipment;Default;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.8;0.6;0.6;0.5;0.5;0.4;0.4
+Large Office - Building - Light;NREL;Large Office - Building - Light;Default;0.05;0.05;0.05;0.05;0.05;0.1;0.1;0.3;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.7;0.5;0.5;0.3;0.3;0.1;0.05
+Large Office - Building - Elevator;NREL;Large Office - Building - Elevator;Default;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
+Large Office - Building - HVAC;NREL;Large Office - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Medium Office - Building - Equipment;NREL;Medium Office - Building - Equipment;Default;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.8;0.6;0.6;0.5;0.5;0.4;0.4
+Medium Office - Building - Light;NREL;Medium Office - Building - Light;Default;0.05;0.05;0.05;0.05;0.05;0.1;0.1;0.3;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.7;0.5;0.5;0.3;0.3;0.1;0.05
+Medium Office - Building - Elevator;NREL;Medium Office - Building - Elevator;Default;0;0;0;0;0;0;0;0.35;0.69;0.43;0.37;0.43;0.58;0.48;0.37;0.37;0.46;0.62;0.12;0.04;0.04;0;0;0
+Medium Office - Building - HVAC;NREL;Medium Office - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Small Office - Building - Equipment;NREL;Small Office - Building - Equipment;Default;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.5;0.4;0.4;0.4;0.4;0.4;0.4
+Small Office - Building - Light;NREL;Small Office - Building - Light;Default;0.05;0.05;0.05;0.05;0.05;0.1;0.1;0.3;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.5;0.3;0.3;0.2;0.2;0.1;0.05
+Small Office - Building - HVAC;NREL;Small Office - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Midrise Apartment - Building - Elevator;NREL;Midrise Apartment - Building - Elevator;Default;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
+Midrise Apartment - Apartment - Equipment;NREL;Midrise Apartment - Apartment - Equipment;Default;0.45;0.41;0.39;0.38;0.38;0.43;0.54;0.65;0.66;0.67;0.69;0.7;0.69;0.66;0.65;0.68;0.8;1;1;0.93;0.89;0.85;0.71;0.58
+Midrise Apartment - Apartment - Light;NREL;Midrise Apartment - Apartment - Light;Default;0.07;0.07;0.07;0.07;0.19;0.39;0.44;0.39;0.17;0.12;0.12;0.12;0.12;0.12;0.12;0.21;0.44;0.62;0.83;0.99;1;0.69;0.38;0.16
+Midrise Apartment - Office - Equipment;NREL;Midrise Apartment - Office - Equipment;Default;0.33;0.33;0.33;0.33;0.33;0.33;0.33;0.5;1;1;1;1;0.94;1;1;1;1;0.5;0.33;0.33;0.33;0.33;0.33;0.33
+Midrise Apartment - Office - Light;NREL;Midrise Apartment - Office - Light;Default;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.18;0.18;0.18;0.18;0.18;0.18;0.18
+Primary School - Building - Equipment;NREL;Primary School - Building - Equipment;Default;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.35;0.35;0.35;0.35;0.35;0.35;0.35
+Primary School - Building - Light;NREL;Primary School - Building - Light;Default;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.18;0.18;0.18
+Primary School - Building - HVAC;NREL;Primary School - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Primary School - Kitchen - Equipment;NREL;Primary School - Kitchen - Equipment;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.15;0.15;0.25;0.25;0.25;0.15;0.15;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1
+Primary School - Kitchen - Walk in freezer;NREL;Primary School - Kitchen - Walk in freezer;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
+Primary School - Kitchen - Exhaust;NREL;Primary School - Kitchen - Exhaust;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0
+Secondary School - Building - Equipment;NREL;Secondary School - Building - Equipment;Default;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.35;0.35;0.35;0.35;0.35;0.35;0.35
+Secondary School - Building - Light;NREL;Secondary School - Building - Light;Default;0.18;0.18;0.18;0.18;0.18;0.18;0.18;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.18;0.18;0.18
+Secondary School - Building - HVAC;NREL;Secondary School - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Secondary School - Kitchen - Equipment;NREL;Secondary School - Kitchen - Equipment;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.15;0.15;0.25;0.25;0.25;0.15;0.15;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1
+Secondary School - Kitchen - Walk in freezer;NREL;Secondary School - Kitchen - Walk in freezer;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
+Secondary School - Kitchen - Exhaust;NREL;Secondary School - Kitchen - Exhaust;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0
+Retail - Building - Equipment;NREL;Retail - Building - Equipment;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.8;0.8;0.7;0.4;0.2;0.2
+Retail - Building - Light;NREL;Retail - Building - Light;Default;0.05;0.05;0.05;0.05;0.05;0.05;0.05;0.2;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.5;0.2;0.05;0.05
+Retail - Building - HVAC;NREL;Retail - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Strip Mall - Building - Equipment;NREL;Strip Mall - Building - Equipment;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.8;0.8;0.7;0.4;0.2;0.2
+Strip Mall - Building - Light;NREL;Strip Mall - Building - Light;Default;0.05;0.05;0.05;0.05;0.05;0.05;0.05;0.2;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.5;0.2;0.05;0.05
+Strip Mall - Building - HVAC;NREL;Strip Mall - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Supermarket - Building - Equipment;NREL;Supermarket - Building - Equipment;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.8;0.8;0.7;0.4;0.2;0.2
+Supermarket - Building - Light;NREL;Supermarket - Building - Light;Default;0.05;0.05;0.05;0.05;0.05;0.05;0.2;0.2;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.5;0.2;0.05;0.05
+Supermarket - Building - Walk in freezer;NREL;Supermarket - Building - Walk in freezer;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
+Supermarket - Building - Mutideck Diary and Delicase;NREL;Supermarket - Building - Mutideck Diary and Delicase;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.2;0.2;0.2
+Supermarket - Building - Glass door frozen food;NREL;Supermarket - Building - Glass door frozen food;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.2;0.2;0.2
+Supermarket - Building - Open well icecream display case;NREL;Supermarket - Building - Open well icecream display case;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.2;0.2;0.2
+Supermarket - Building - HVAC;NREL;Supermarket - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0
+Full Service Restaurant - Building - Equipment;NREL;Full Service Restaurant - Building - Equipment;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.25;0.35;0.35;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25;0.25
+Full Service Restaurant - Building - Light;NREL;Full Service Restaurant - Building - Light;Default;0.45;0.15;0.15;0.15;0.15;0.45;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9
+Full Service Restaurant - Building - HVAC;NREL;Full Service Restaurant - Building - HVAC;Default;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Full Service Restaurant - Kitchen - Walk in freezer;NREL;Full Service Restaurant - Kitchen - Walk in freezer;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
+Full Service Restaurant - Kitchen - Exhaust;NREL;Full Service Restaurant - Kitchen - Exhaust;Default;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Quick Service Restaurant - Building - Equipment;NREL;Quick Service Restaurant - Building - Equipment;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.35;0.35;0.25;0.25;0.35;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25
+Quick Service Restaurant - Building - Light;NREL;Quick Service Restaurant - Building - Light;Default;0.45;0.15;0.15;0.15;0.15;0.45;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9
+Quick Service Restaurant - Building - HVAC;NREL;Quick Service Restaurant - Building - HVAC;Default;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Quick Service Restaurant - Kitchen - Walk in freezer;NREL;Quick Service Restaurant - Kitchen - Walk in freezer;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
+Quick Service Restaurant - Kitchen - Exhaust;NREL;Quick Service Restaurant - Kitchen - Exhaust;Default;1;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Hospital - Building - Elevator;NREL;Hospital - Building - Elevator;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.5;0.75;1;1;1;0.75;1;1;1;1;1;0.52;0.52;0.52;0.28;0.2;0.2
+Hospital - Building - Light;NREL;Hospital - Building - Light;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.5;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.3;0.3;0.3;0.3;0.3;0.3;0.3;0.1
+Hospital - Building - HVAC;NREL;Hospital - Building - HVAC;Default;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Hospital - Admin - Equipment;NREL;Hospital - Admin - Equipment;Default;0.3;0.3;0.3;0.3;0.5;0.5;1;1;1;1;1;1;1;1;1;1;1;1;0.5;0.5;0.3;0.3;0.3;0.3
+Hospital - Admin - Light;NREL;Hospital - Admin - Light;Default;0.1;0.1;0.1;0.1;0.3;0.3;0.6;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.3;0.3;0.1;0.1
+Hospital - Critical - Equipment;NREL;Hospital - Critical - Equipment;Default;0.5;0.5;0.5;0.5;0.5;0.5;1;1;1;1;1;1;1;1;1;1;1;1;0.8;0.8;0.5;0.5;0.5;0.5
+Hospital - Critical - Light;NREL;Hospital - Critical - Light;Default;0.5;0.5;0.5;0.5;0.7;0.7;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.7;0.7;0.7;0.7;0.5;0.5
+Hospital - Kitchen - Equipment;NREL;Hospital - Kitchen - Equipment;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.25;0.35;0.35;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25;0.25
+Hospital - Kitchen - Walk in freezer;NREL;Hospital - Kitchen - Walk in freezer;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
+Hospital - Kitchen - Exhaust;NREL;Hospital - Kitchen - Exhaust;Default;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0
+Outpatient Health Care - Building - Elevator;NREL;Outpatient Health Care - Building - Elevator;Default;0.05;0.05;0.05;0.05;0.05;0.05;0.05;0.5;0.75;1;1;1;0.75;1;1;1;1;1;0.52;0.52;0.52;0.28;0.05;0.05
+Outpatient Health Care - Building - Equipment;NREL;Outpatient Health Care - Building - Equipment;Default;0.3;0.3;0.3;0.3;0.5;0.5;1;1;1;1;1;1;1;1;1;1;1;1;0.5;0.5;0.3;0.3;0.3;0.3
+Outpatient Health Care - Building - Light;NREL;Outpatient Health Care - Building - Light;Default;0.1;0.1;0.1;0.1;0.3;0.3;0.6;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.9;0.6;0.6;0.3;0.3;0.1;0.1
+Outpatient Health Care - Building - HVAC;NREL;Outpatient Health Care - Building - HVAC;Default;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0
+Outpatient Health Care - Radiology - Equipment;NREL;Outpatient Health Care - Radiology - Equipment;Default;0.01;0.01;0.01;0.01;0.01;0.01;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.96;0.01;0.01;0.01;0.01;0.01;0.01
+Outpatient Health Care - Radiology - HVAC;NREL;Outpatient Health Care - Radiology - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0
+Large Hotel - Building - Equipment;NREL;Large Hotel - Building - Equipment;Default;0.3;0.25;0.2;0.2;0.2;0.3;0.5;0.6;0.5;0.5;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.7;0.9;0.95;0.9;0.7;0.4
+Large Hotel - Building - Light;NREL;Large Hotel - Building - Light;Default;0.2;0.15;0.1;0.1;0.1;0.2;0.4;0.5;0.4;0.4;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.6;0.8;0.9;0.8;0.6;0.3
+Large Hotel - Building - Elevator;NREL;Large Hotel - Building - Elevator;Default;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
+Large Hotel - Building - HVAC;NREL;Large Hotel - Building - HVAC;Default;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Large Hotel - Guest Room - Equipment;NREL;Large Hotel - Guest Room - Equipment;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.62;0.9;0.43;0.43;0.26;0.26;0.26;0.26;0.26;0.26;0.26;0.51;0.51;0.49;0.66;0.7;0.35;0.2
+Large Hotel - Guest Room - Light;NREL;Large Hotel - Guest Room - Light;Default;0.22;0.17;0.11;0.11;0.11;0.22;0.44;0.56;0.44;0.44;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.67;0.89;1;0.89;0.67;0.33
+Large Hotel - Laundry Room - Equipment;NREL;Large Hotel - Laundry Room - Equipment;Default;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0
+Large Hotel - Kitchen - Equipment;NREL;Large Hotel - Kitchen - Equipment;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.25;0.35;0.35;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.35;0.35;0.35;0.25;0.25;0.25;0.25;0.25
+Large Hotel - Kitchen - Walk in freezer;NREL;Large Hotel - Kitchen - Walk in freezer;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2
+Large Hotel - Kitchen - Exhaust;NREL;Large Hotel - Kitchen - Exhaust;Default;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Small Hotel - Building - Equipment;NREL;Small Hotel - Building - Equipment;Default;0.3;0.25;0.2;0.2;0.2;0.3;0.5;0.6;0.5;0.5;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.7;0.9;0.95;0.9;0.7;0.4
+Small Hotel - Building - Light;NREL;Small Hotel - Building - Light;Default;0.2;0.15;0.1;0.1;0.1;0.2;0.4;0.5;0.4;0.4;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.6;0.8;0.9;0.8;0.6;0.3
+Small Hotel - Building - Elevator;NREL;Small Hotel - Building - Elevator;Default;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
+Small Hotel - Building - HVAC;NREL;Small Hotel - Building - HVAC;Default;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Small Hotel - Corridoor - Light;NREL;Small Hotel - Corridoor - Light;Default;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1
+Small Hotel - Employee Lounge - Equipment;NREL;Small Hotel - Employee Lounge - Equipment;Default;0.11;0.11;0.11;0.11;0.11;0.19;0.19;0.25;1;1;0.86;0.86;1;0.86;0.86;0.86;0.86;0.86;0.25;0.19;0.11;0.11;0.11;0.11
+Small Hotel - Employee Lounge - Light;NREL;Small Hotel - Employee Lounge - Light;Default;0.05;0.05;0.05;0.05;0.05;0.15;0.4;0.5;1;1;1;1;1;1;1;1;1;1;0.5;0.4;0.15;0.15;0.05;0.05
+Small Hotel - Excercise Room - Equipment;NREL;Small Hotel - Excercise Room - Equipment;Default;0;0;0;0;0;0;0.5;1;1;0.5;0.5;0.5;0;0.5;0.5;0.5;1;0.5;0.5;1;1;0.5;0.5;0
+Small Hotel - Excercise Room - Light;NREL;Small Hotel - Excercise Room - Light;Default;0;0;0;0;0;0;0.5;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0.5;0
+Small Hotel - Guest Room - Equipment;NREL;Small Hotel - Guest Room - Equipment;Default;0.2;0.2;0.2;0.2;0.2;0.2;0.62;0.9;0.43;0.43;0.26;0.26;0.26;0.26;0.26;0.26;0.26;0.51;0.51;0.49;0.66;0.7;0.35;0.2
+Small Hotel - Guest Room - Light;NREL;Small Hotel - Guest Room - Light;Default;0.22;0.17;0.11;0.11;0.11;0.22;0.44;0.56;0.44;0.44;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.28;0.67;0.89;1;0.89;0.67;0.33
+Small Hotel - Laundry Room - Equipment;NREL;Small Hotel - Laundry Room - Equipment;Default;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0
+Small Hotel - Laundry Room - Light;NREL;Small Hotel - Laundry Room - Light;Default;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0
+Small Hotel - Meeting Room - Equipment;NREL;Small Hotel - Meeting Room - Equipment;Default;0;0;0;0;0;0;0;0.05;0.54;0.54;0.26;0.26;0.05;0.54;0.54;0.26;0.26;0.26;0.05;0.05;0;0;0;0
+Small Hotel - Meeting Room - Light;NREL;Small Hotel - Meeting Room - Light;Default;0;0;0;0;0;0.2;0.3;0.5;1;1;1;1;1;1;1;1;1;1;0.5;0.3;0.2;0.05;0;0
+Small Hotel - Office - Equipment;NREL;Small Hotel - Office - Equipment;Default;0.33;0.33;0.33;0.33;0.33;0.38;0.38;0.43;0.43;0.43;1;1;0.94;1;1;1;1;0.75;0.63;0.63;0.48;0.48;0.33;0.33
+Small Hotel - Office - Light;NREL;Small Hotel - Office - Light;Default;0.5;0.5;0.5;0.5;0.5;0.5;0.5;0.61;0.9;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.61;0.5;0.5;0.5;0.5;0.5;0.5
+Small Hotel - Storage - Light;NREL;Small Hotel - Storage - Light;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.2;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.2;0.2;0.2;0.2;0.1;0.1
+Warehouse - Building - Equipment;NREL;Warehouse - Building - Equipment;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.5;0.8;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.4;0.1;0.1;0.1;0.1;0.1;0.1
+Warehouse - Building - Light;NREL;Warehouse - Building - Light;Default;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.4;0.7;0.9;0.9;0.9;0.8;0.9;0.9;0.9;0.9;0.3;0.1;0.1;0.1;0.1;0.1;0.1
+Warehouse - Building - HVAC;NREL;Warehouse - Building - HVAC;Default;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0
+Hostel - Building - Equipment;Miscellaneous;Hostel - Building - Equipment;Default;0.3;0.25;0.2;0.2;0.2;0.3;0.5;0.6;0.5;0.5;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.35;0.7;0.9;0.95;0.9;0.7;0.4
+Hostel - Building - Light;Miscellaneous;Hostel - Building - Light;Default;0.2;0.15;0.1;0.1;0.1;0.2;0.4;0.5;0.4;0.4;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.25;0.6;0.8;0.9;0.8;0.6;0.3
+Hostel - Building - Light;Miscellaneous;Hostel - Building - Light;Default;0.05;0.05;0.05;0.05;0.1;0.2;0.4;0.5;0.5;0.35;0.15;0.15;0.15;0.15;0.15;0.15;0.35;0.5;0.5;0.4;0.4;0.3;0.2;0.1
+External - Night - Light;Miscellaneous;External - Night - Light;Default;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1
+External - Solar - Generation;Miscellaneous;External - Solar - Generation;Default;0;0;0;0;0;0;0;0;0.25;0.55;0.7;0.75;0.8;0.75;0.7;0.55;0.25;0;0;0;0;0;0;0

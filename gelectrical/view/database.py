@@ -193,15 +193,17 @@ class DatabaseView:
 
                         if self.stack:
                             with group(self, 'Update data from database'):  # For grouping undo
+                                for code, validated in validated_dict.items():
+                                    if self.field_view:
+                                        self.field_view.set_field(code, validated)
+                                    else:
+                                        self.fields[code]['value'] = validated
+                        else:
+                            for code, validated in validated_dict.items():
                                 if self.field_view:
                                     self.field_view.set_field(code, validated)
                                 else:
                                     self.fields[code]['value'] = validated
-                        else:
-                            if self.field_view:
-                                self.field_view.set_field(code, validated)
-                            else:
-                                self.fields[code]['value'] = validated
 
                         if self.field_view:
                             self.field_view.update_widgets()

@@ -320,7 +320,28 @@ class GraphViewDialog():
         self.mode = 'ADD'
 
     def add_from_database(self):
-        pass #TODO
+        if self.database_fields['name']['value'] != '' and self.database_fields['name1']['value'] != '':
+            title = self.database_fields['name']['value']
+            subtitle = self.database_fields['name1']['value']
+            xval = list(range(0,24))
+            yval = [self.database_fields[str(x)]['value'] for x in xval]
+            temp_graph = [title, [{'mode':misc.GRAPH_DATATYPE_PROFILE, 'title':subtitle, 'xval':xval, 'yval':yval}]]
+            cur_uid = misc.get_uid()
+            self.graph_database[cur_uid] = temp_graph
+            index = len(self.graph_database)-1
+            self.graph_database[cur_uid][0] = title
+            self.repopulate_combo()
+            self.combobox_title.set_active(index)
+            self.graph_view.clear_plots()
+            self.graph_view.add_plots(self.graph_database[cur_uid][1])
+            self.graph_view.inactivate = True
+            self.graph_view.plot_curves()
+        # Set default mode
+        self.stack_switcher.set_visible_child_name('default')
+        self.mode = 'DEFAULT'
+        # Clear fields
+        self.database_fields['name']['value'] = ''
+        self.database_fields['name1']['value'] = ''
     
     def delete_profile(self, button):
         index = self.combobox_title.get_active()
