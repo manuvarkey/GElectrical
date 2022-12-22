@@ -119,9 +119,21 @@ class ProjectModel:
         xlabel = 'Time (Hr)'
         ylabel = 'Diversity Factor'
         database_path = misc.abs_path('database', 'load_profiles.csv')
-        dialog = GraphViewDialog(self.window, self.loadprofiles, xlim, ylim, xlabel, ylabel, 
+        loadprofiles_copy = copy.deepcopy(self.loadprofiles)
+        dialog = GraphViewDialog(self.window, loadprofiles_copy, xlim, ylim, xlabel, ylabel, 
                                  database_path=database_path)
-        dialog.run()
+        selected_graph, database_modified_flag = dialog.run()
+        if database_modified_flag:
+            self.modify_loadprofiles(loadprofiles_copy)
+
+    @undoable
+    def modify_loadprofiles(self, loadprofiles):
+        loadprofiles_old = copy.deepcopy(self.loadprofiles)
+        self.loadprofiles = loadprofiles
+
+        yield "Update load profiles"
+        # Undo action
+        self.loadprofiles = loadprofiles_old
     
     def append_page(self):
         model = DrawingModel(self, self.program_state)

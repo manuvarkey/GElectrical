@@ -263,6 +263,7 @@ class GraphViewDialog():
         self.database_path = database_path
         self.temp_graph = None
         self.mode = 'DEFAULT'
+        self.database_modified_flag = False
         self.graph_uids = []
         self.database_fields = copy.deepcopy(misc.loadprofile_blank_fields)
         
@@ -336,6 +337,7 @@ class GraphViewDialog():
             self.graph_view.add_plots(self.graph_database[cur_uid][1])
             self.graph_view.inactivate = True
             self.graph_view.plot_curves()
+            self.database_modified_flag = True
         # Set default mode
         self.stack_switcher.set_visible_child_name('default')
         self.mode = 'DEFAULT'
@@ -356,6 +358,7 @@ class GraphViewDialog():
                 self.combobox_title.set_active(0)
                 self.graph_view.clear_plots()
                 self.graph_view.add_plots(self.graph_database[self.graph_uids[0]][1])
+            self.database_modified_flag = True
             
     def edit_profile(self, button):
         index = self.combobox_title.get_active()
@@ -368,6 +371,7 @@ class GraphViewDialog():
             self.textbox_title.set_text(self.temp_graph[0])
             self.stack_switcher.set_visible_child_name('edit')
             self.mode = 'EDIT'
+            self.database_modified_flag = True
     
     def accept_modification(self, button):
         title = self.textbox_title.get_text()
@@ -389,6 +393,7 @@ class GraphViewDialog():
         self.graph_view.plot_curves()
         self.stack_switcher.set_visible_child_name('default')
         self.mode = 'DEFAULT'
+        self.database_modified_flag = True
         
     def cancel_modification(self, button):
         index = self.combobox_title.get_active()
@@ -423,7 +428,7 @@ class GraphViewDialog():
             # Get formated text and update item_values
             index = self.combobox_title.get_active()
             self.dialog_window.destroy()
-            return self.graph_database[self.graph_uids[index]]
+            return self.graph_uids[index], self.database_modified_flag
         else:
             self.dialog_window.destroy()
             return None
