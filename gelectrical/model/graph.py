@@ -45,15 +45,12 @@ class GraphModel():
     # Functions
     
     def modify_data(self, xdata, ydata):
-        oldx = self.xval
-        oldy = self.yval
         self.model['xval'] = xdata
         self.model['yval'] = ydata
         self.xval = xdata
         self.yval = ydata
         
     def modify_title(self, title):
-        oldtitle = self.title
         self.model['title'] = title
     
     def get_model(self):

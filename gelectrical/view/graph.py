@@ -210,13 +210,20 @@ class GraphView():
             
         if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])) and self.ylim[0] != self.ylim[1]:
             self.plot.set_ylim(self.ylim[0], self.ylim[1])
+        if len(self.ylim) == 4 and self.ylim[3] == 'log':
+            self.plot.set_yscale('log')
             
         self.plot.grid(True, which='major')
         self.plot.minorticks_on()
         self.plot.grid(True, which='minor', alpha=0.2)
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
-            line = self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+            if model.mode == misc.GRAPH_DATATYPE_PROFILE:
+                self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+            elif model.mode == misc.GRAPH_DATATYPE_FREE:
+                self.plot.scatter(model.xval, model.yval, label=model.title, marker="o", color=color)
+            elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
+                self.plot.fill(model.xval, model.yval, label=model.title, color=color)
         # Set legends title and stuff
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})

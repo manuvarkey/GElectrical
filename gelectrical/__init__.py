@@ -861,6 +861,7 @@ class MainWindow():
         # Setup elements
         self.program_state['element_models'] = dict()
         self.program_state['element_models'][switch.Switch.code] = switch.Switch
+        self.program_state['element_models'][switch.Fuse.code] = switch.Fuse
         self.program_state['element_models'][switch.CircuitBreaker.code] = switch.CircuitBreaker
         self.program_state['element_models'][switch.Contactor.code] = switch.Contactor
         self.program_state['element_models'][busbar.BusBar.code] = busbar.BusBar
