@@ -18,7 +18,7 @@
 #  
 # 
 
-import os, cairo
+import os, cairo, math
 import numpy as np
 from shapely import Polygon, Point, LineString
 
@@ -31,39 +31,24 @@ from .element import ElementModel
 class ProtectionBase():
     """Generic protection base element"""
 
-    def __init__(self, curve_upper, curve_lower, fields):
+    def __init__(self, curve_upper, curve_lower):
         """ARGUMENTS:
-            curve_upper : Upper t vs I protection curve as string of list expression 
-                            ex: "[(f.i_m, t_conv), ... , (i_max, f.t_min)]"
-            curve_lower : Lower t vs I protection curve as string of list expression
+            curve_upper : Upper t vs I protection curve as list of tuples
+            curve_lower : Lower t vs I protection curve as list of tuples
             fields      : Fields to be used in evaluation of curves
         """
         self.curve_upper = curve_upper
         self.curve_lower = curve_lower
-        self.fields = FieldDict(fields)
         # Generated variables
         self.polygon = None
         self.linestring_upper = None
         self.linestring_lower = None
-        # Set mandatory fields
-        self.i_f = self.fields.i_f  # Convensional fusing current
-        self.i_nf = self.fields.i_nf  # Convensional non-fusing current
-        self.i_max = self.fields.i_max  # Maximum current rating
-        self.t_conv = self.fields.t_conv  # Convensional breaking time
         self.evaluate_curves()
 
     def evaluate_curves(self):
-        # Evaluate
-        var_dict = {'f':self.fields,
-                    'i_f':self.i_f,
-                    'i_nf':self.i_nf,
-                    'i_max':self.i_max,
-                    't_conv':self.t_conv}
-        curve_upper = eval(self.curve_upper, var_dict)
-        curve_lower = eval(self.curve_lower, var_dict)
-        self.linestring_upper = LineString(reversed(curve_upper))
-        self.linestring_lower = LineString(curve_lower)
-        self.polygon = Polygon(list(reversed(curve_upper)) + curve_lower)
+        self.linestring_upper = LineString(reversed(self.curve_upper))
+        self.linestring_lower = LineString(self.curve_lower)
+        self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
 
     def get_graph(self, title):
         polygon_pnts = np.array((self.polygon.exterior.coords))
@@ -133,7 +118,7 @@ class Fuse(Switch):
     """Generic Fuse element"""
     
     code = 'element_fuse'
-    name = 'Fuse'
+    name = 'Fuse (LV)'
     group = 'Switching Devices'
     icon = misc.abs_path('icons', 'fuse.svg')
 
@@ -142,9 +127,81 @@ class Fuse(Switch):
         Switch.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0],
                       [1, 6]]
+        # Data drapdowns
         self.fuse_types = ['gG']
         self.pole_types = ['SP', 'TP']
         self.current_values = [16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250]
+
+        # gG fuse data parameters
+        ## IEC 60269-1 - (I_min @ 10s, I_max @ 5s, I_min @ 0.1s, I_max @ 0.1s) in A
+        self.gg_current_gates = {  16: [33,65,85,150],
+                                20: [42,85,110,200],
+                                25: [52,110,150,260],
+
+                                32: [75,150,200,350],
+                                40: [95,190,260,450],
+                                50: [125,250,350,610],
+                                63: [160,320,450,820],
+                                80: [215,425,610,1100],
+
+                                100: [290,580,820,1450],
+                                125: [355,715,1100,1910],
+                                160: [460,950,1450,2590],
+                                200: [610,1250,1910,3420],
+                                250: [750,1650,2590,4500],
+
+                                315: [1050,2200,3420,6000],
+                                400: [1420,2840,4500,8060],
+                                500: [1780,3800,4500,8060],
+                                630: [2200,5100,8060,14140],
+                                800: [3060,7000,10600,19000],
+
+                                1000: [4000,9500,14140,24000],
+                                1250: [5000,13000,19000,35000]}
+        ## IEC 60269-1 - (I2t_min, I2t_max) @ 0.01 s in 1e3 A2/s
+        self.gg_current_gates_prearc = {   16: [0.3,1],
+                                        20: [0.5,1.8],
+                                        25: [1,3],
+                                        32: [1.8,5],
+                                        40: [3,9],
+                                        50: [5,16],
+                                        63: [9,27],
+                                        80: [16,46],
+                                        100: [27,86],
+                                        125: [46,140],
+                                        160: [86,250],
+                                        200: [140,400],
+                                        250: [250,760],
+                                        315: [400,1300],
+                                        400: [760,2250],
+                                        500: [1300,3800],
+                                        630: [2250,7500],
+                                        800: [3800,13600],
+                                        1000: [7840,25000],
+                                        1250: [13700,47000]}
+        ## IEC 60269-1 - Conventional time in Hrs
+        self.gg_conv_times = { 16: 1,
+                            20: 1,
+                            25: 1,
+                            32: 1,
+                            40: 1,
+                            50: 1,
+                            63: 1,
+                            80: 2,
+                            100: 2,
+                            125: 2,
+                            160: 2,
+                            200: 3,
+                            250: 3,
+                            315: 3,
+                            400: 3,
+                            500: 4,
+                            630: 4,
+                            800: 4,
+                            1000: 4,
+                            1250: 4}
+
+        # Set fields
         self.fields = {'ref'        : self.get_field_dict('str', 'Reference', '', 'Q?'),
                        'type'       : self.get_field_dict('str', 'Type', '', 'gG', selection_list=self.fuse_types),
                        'poles'      : self.get_field_dict('str', 'Poles', '', 'TP', selection_list=self.pole_types),
@@ -153,14 +210,9 @@ class Fuse(Switch):
                                                           alter_structure=True),
                        'pcurve_l'   : self.get_field_dict('graph', 'Line Protection', '', None, inactivate=True ),
                        'In_set'     : self.get_field_dict('float', 'In_set', 'xIn', 1, status_enable=False),
-                       'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 100),
+                       'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 50, alter_structure=True),
                        'sdfu'       : self.get_field_dict('bool', 'Switch Disconnector ?', '', True),
-                       'closed'     : self.get_field_dict('bool', 'Closed ?', '', True),
-                       # Breaker fields
-                       'i_f'    : self.get_field_dict('float', 'If', 'A', 63, status_enable=False),
-                       'i_nf'   : self.get_field_dict('float', 'Inf', 'A', 63*1.25, status_enable=False),
-                       'i_max'  : self.get_field_dict('float', 'I_f', 'A', 100000, status_enable=False),
-                       't_conv' : self.get_field_dict('float', 'I_f', 's', 3600, status_enable=False),
+                       'closed'     : self.get_field_dict('bool', 'Closed ?', '', True)
                        }
         self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
         self.text_model = [[(3.5,0.5), "${poles}, ${ref}", True],
@@ -209,19 +261,28 @@ class Fuse(Switch):
         # Get parameters
         In = self.fields['In']['value']
         Isc = self.fields['Isc']['value']*1000
-        # General fields
-        self.fields['i_max']['value'] = Isc
+        i_max = Isc
         # gG fuse
         if self.fields['type']['value'] == self.fuse_types[0]:
-            self.fields['i_f']['value'] = 1.6*In
-            self.fields['i_nf']['value'] = 1.25*In
-            self.fields['t_conv']['value'] = 3600
-            curve_upper = """[(i_f, t_conv), 
-                              (i_max, 0.01)]"""
-            curve_lower = """[(i_nf, t_conv), 
-                              (i_max, 0.001)]"""
-        # Get breaker model
-        self.line_protection_model = ProtectionBase(curve_upper, curve_lower, self.fields)
+            i_f = 1.6*In
+            i_nf = 1.25*In
+            t_conv = self.gg_conv_times[In]*3600
+            (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = self.gg_current_gates[In]
+            (i2t_min_0_01, i2t_max_0_01) = self.gg_current_gates_prearc[In]
+            i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
+            i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
+            curve_upper = [ (i_f, t_conv),
+                            (i_max_5, 5),
+                            (I_max_0_1, 0.1),
+                            (i_max_0_01, 0.01),
+                            (i_max, 0.01)]
+            curve_lower = [ (i_nf, t_conv),
+                            (i_min_10, 10),
+                            (i_min_0_1,0.1),
+                            (i_min_0_01, 0.01),
+                            (i_max, 0.01)]
+        # Get protection model
+        self.line_protection_model = ProtectionBase(curve_upper, curve_lower)
         graph = self.line_protection_model.get_graph('Line Protection')
         self.fields['pcurve_l']['value'] = graph
 
