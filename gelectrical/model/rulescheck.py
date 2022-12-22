@@ -23,43 +23,15 @@
 # 
 
 import logging, math
-from collections.abc import MutableMapping
 
 # local files import
 from .. import misc
-
+from ..misc import FieldDict, Element
 # Get logger object
 log = logging.getLogger(__name__)
 
+
 # Helper functions and classes
-
-class FieldDict(MutableMapping):
-    """Convinence class to read field dictionary attributes"""
-
-    def __init__(self, dict_var):
-        self.store = dict_var
-
-    def __getitem__(self, key):
-        return self.store[key]['value']
-
-    def __setitem__(self, key, value):
-        self.store[key]['value'] = value
-
-    def __delitem__(self, key):
-        del self.store[key]
-
-    def __iter__(self):
-        return iter(self.store)
-    
-    def __len__(self):
-        return len(self.store)
-    
-    __getattr__ = __getitem__
-
-class Element:
-    def __init__(self, element):
-        self.r = FieldDict(element.res_fields)
-        self.f = FieldDict(element.fields)
 
 def get_message_data_struct(network, results_dict_pass, results_dict_fail):
     """

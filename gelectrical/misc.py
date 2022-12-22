@@ -24,6 +24,7 @@
 
 import subprocess, threading, os, posixpath, platform, logging, math, cairo, copy, time, pathlib
 import base64
+from collections.abc import MutableMapping
 from uuid import uuid4 as uuid
 from urllib.parse import urlparse
 from urllib.request import url2pathname
@@ -831,6 +832,34 @@ class ReferenceCounter:
             return self.refs[code]
         else:
             return self.start
+
+class FieldDict(MutableMapping):
+    """Convinence class to read field dictionary attributes"""
+
+    def __init__(self, dict_var):
+        self.store = dict_var
+
+    def __getitem__(self, key):
+        return self.store[key]['value']
+
+    def __setitem__(self, key, value):
+        self.store[key]['value'] = value
+
+    def __delitem__(self, key):
+        del self.store[key]
+
+    def __iter__(self):
+        return iter(self.store)
+    
+    def __len__(self):
+        return len(self.store)
+    
+    __getattr__ = __getitem__
+
+class Element:
+    def __init__(self, element):
+        self.r = FieldDict(element.res_fields)
+        self.f = FieldDict(element.fields)
 
 ## GLOBAL METHODS
 
