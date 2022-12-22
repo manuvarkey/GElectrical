@@ -431,4 +431,4 @@ class GraphViewDialog():
             return self.graph_uids[index], self.database_modified_flag
         else:
             self.dialog_window.destroy()
-            return None
+            return None, self.database_modified_flag
