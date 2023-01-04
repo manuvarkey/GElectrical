@@ -114,15 +114,10 @@ class ElementAssembly(ElementModel):
     def set_model(self, model, gid=None):
         """Set storage model"""
         if model['code'] == self.code:
-            self.x = model['x']
-            self.y = model['y']
-            self.orientation = model['orientation']
-            self.ports = copy.deepcopy(model['ports'])
-            self.fields = misc.update_fields(self.fields, model['fields'])
+            ElementModel.set_model(self, model, gid)
             self.element_rect_width = model['element_rect_width']
             self.element_rect_height = model['element_rect_height']
             self.children_codes = model['children_codes']
-            self.gid = gid
         
     def set_children(self, children_codes, children=None):
         """Setup model"""

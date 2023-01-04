@@ -791,18 +791,6 @@ class LTCableIEC(Line):
         self.fields['ext_cpe_sc_current_rating']['value'] = round(ext_cpe_sc_current_rating/1000, 3)
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000,3)
 
-    def set_model(self, model, gid=None):
-        """Set storage model"""
-        if model['code'] == self.code:
-            self.x = model['x']
-            self.y = model['y']
-            self.orientation = model['orientation']
-            self.ports = copy.deepcopy(model['ports'])
-            for code in self.fields:
-                if code in model['fields']:
-                    self.set_text_field_value(code, model['fields'][code]['value'])
-            self.gid = gid
-
 
 class LTCableCustom(Line):
     """Cable element"""
@@ -1090,15 +1078,3 @@ class LTCableCustom(Line):
         self.fields['df']['value'] = round(self.fields['user_df']['value'], 3)
         self.fields['phase_sc_current_rating']['value'] = round(phase_sc_current_rating/1000, 3)
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000, 3)
-
-    def set_model(self, model, gid=None):
-        """Set storage model"""
-        if model['code'] == self.code:
-            self.x = model['x']
-            self.y = model['y']
-            self.orientation = model['orientation']
-            self.ports = copy.deepcopy(model['ports'])
-            for code in self.fields:
-                if code in model['fields']:
-                    self.set_text_field_value(code, model['fields'][code]['value'])
-            self.gid = gid

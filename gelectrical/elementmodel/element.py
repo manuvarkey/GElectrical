@@ -64,15 +64,15 @@ class ElementModel:
         self.schem_extends = []
     
     def set_text_field_value(self, code, value):
-        if self.fields and code in self.fields:
+        if code in self.fields:
             self.fields[code]['value'] = value
             
     def get_text_field(self, code):
-        if self.fields and code in self.fields:
+        if code in self.fields:
             return self.fields[code]
         
     def get_res_field(self, code):
-        if self.res_fields and code in self.res_fields:
+        if code in self.res_fields:
             return self.res_fields[code]
 
     def draw(self, context, select=False, override_color=None):
@@ -177,7 +177,7 @@ class ElementModel:
         """Return pandapower model for analysis"""
         power_model = tuple()
         return power_model
-    
+
     def set_model(self, model, gid=None):
         """Set storage model"""
         if model['code'] == self.code:
@@ -185,7 +185,9 @@ class ElementModel:
             self.y = model['y']
             self.orientation = model['orientation']
             self.ports = copy.deepcopy(model['ports'])
-            self.fields = misc.update_fields(self.fields, model['fields'])
+            for code in self.fields:
+                if code in model['fields']:
+                    self.set_text_field_value(code, model['fields'][code]['value'])
             self.gid = gid
             
     def set_gid(self, gid):

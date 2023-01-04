@@ -132,12 +132,7 @@ class Wire(ElementModel):
     def set_model(self, model, gid=None):
         """Set storage model"""
         if model['code'] == self.code:
-            self.x = model['x']
-            self.y = model['y']
-            self.orientation = model['orientation']
-            self.ports = copy.deepcopy(model['ports'])
-            self.fields = misc.update_fields(self.fields, model['fields'])
-            self.gid = gid
+            ElementModel.set_model(self, model, gid)
             points = copy.deepcopy(model['points'])
             if points:
                 self.update_points(points)
