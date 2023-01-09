@@ -48,7 +48,7 @@ class DisplayElementNode(ElementModel):
         self.model_width = 0
         self.model_height = 0
         self.ports = [(1,1)]
-        self.fields = {'ref':     self.get_field_dict('str', 'Node ID', '', ref, inactivate=True)}
+        self.fields = {'ref':     self.get_field_dict('str', 'Node ID', '', ref, status_inactivate=True)}
         self.text_model = [[(1,1-misc.SCHEM_FONT_SPACING/misc.M/2), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],]
         self.schem_model = [['RECT', (0,0), 2,2, True, []],]
     

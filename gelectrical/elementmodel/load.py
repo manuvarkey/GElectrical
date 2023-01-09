@@ -47,7 +47,7 @@ class Load(ElementModel):
                        'scaling':          self.get_field_dict('float', 'DF', '', 1),
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
-                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', inactivate=True ) }
+                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True ) }
         self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
         self.text_model = []
         self.schem_model = [ 
@@ -121,7 +121,7 @@ class AsymmetricLoad(ElementModel):
                        'scaling':          self.get_field_dict('float', 'DF', '', 1),
                        'type':          self.get_field_dict('str', 'Connection Type', '', 'wye', selection_list=['wye','delta']),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
-                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', inactivate=True )}
+                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True )}
         self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
         self.text_model = []
         self.schem_model = [ 
@@ -195,7 +195,7 @@ class SinglePhaseLoad(ElementModel):
                        'phase':          self.get_field_dict('str', 'Phase', '', 'A', selection_list=['A','B','C']),
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
-                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', inactivate=True )}
+                       'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True )}
         self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
         self.text_model = []
         self.schem_model = [ 

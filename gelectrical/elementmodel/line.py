@@ -472,8 +472,8 @@ class LTCableIEC(Line):
                                                                       status_enable=False,
                                                                       alter_structure=True)
         self.fields['user_df'] = self.get_field_dict('float', 'Additional DF', '', 1, alter_structure=True)
-        self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, inactivate=True, status_enable=False)
-        self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, inactivate=True, status_enable=False)
+        self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
+        self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
         self.calculate_parameters()
         
     def render_element(self, context):

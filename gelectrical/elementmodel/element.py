@@ -220,28 +220,12 @@ class ElementModel:
         
     ## Private Functions
     
-    def get_field_dict(self, field_type, caption, unit, value, max_chars=None, 
-                       validation_func=None, selection_list=None, 
-                       selection_image_list=None, decimal=6, 
-                       status_floating=False, status_enable=True,
-                       inactivate=False,
-                       click_to_edit_message=None,
-                       alter_structure=False):
-        field_dict = dict()
-        field_dict['type'] = field_type
-        field_dict['caption'] = caption
-        field_dict['unit'] = unit
-        field_dict['value'] = value
-        field_dict['max_chars'] = max_chars
-        field_dict['validation_func'] = validation_func
-        field_dict['selection_list'] = selection_list
-        field_dict['selection_image_list'] = selection_image_list
-        field_dict['decimal'] = decimal
-        field_dict['status_floating'] = status_floating
-        field_dict['status_enable'] = status_enable
-        field_dict['status_inactivate'] = inactivate
-        field_dict['click_to_edit_message'] = click_to_edit_message
-        field_dict['alter_structure'] = alter_structure
+    def get_field_dict(self, *args, **kwargs):
+        # Update any defaults
+        if 'status_inactivate' not in kwargs:
+            kwargs['status_inactivate'] = False
+        # Get field dict
+        field_dict = misc.get_field_dict(*args, **kwargs)
         return field_dict
     
     def get_field_value_dict(self):

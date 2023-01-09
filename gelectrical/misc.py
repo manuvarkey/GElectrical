@@ -1034,15 +1034,29 @@ def font_str_encode(family, size):
 
 # Field handling functions
 
-def get_field_dict(field_type, caption, unit, value, max_chars=None, 
-                       validation_func=None, 
-                       selection_list=None, 
-                       selection_image_list=None, 
-                       decimal=6,
-                       status_enable=True,
-                       status_inactivate=True,
-                       click_to_edit_message=None,
-                       alter_structure=False):
+def get_field_dict(field_type, caption, unit, value, 
+                        max_chars=None, 
+                        validation_func=None, 
+                        selection_list=None, 
+                        selection_image_list=None, 
+                        decimal=6,
+                        status_enable=True,
+                        status_inactivate=True,
+                        status_floating=False,
+                        click_to_edit_message=None,
+                        alter_structure=False):
+    """
+    ARGUMENTS:
+    field_type:             Any of ('int','float','str','multiline_str','bool', 'font', 'graph')
+    validation_func:        Function to validate input, should return validated result
+    selection_list:         List of values to select from
+    selection_image_list:   Corresponding images to load
+    status_enable:          Whether to display field ?
+    status_inactivate:      Whether to deactivate editing ?
+    status_floating:        Whether to display field while floating (only used for element addition)
+    click_to_edit_message:  Show a message before editing field
+    alter_structure:        Whether field alters field structure of base element ?
+    """
     field_dict = dict()
     field_dict['type'] = field_type
     field_dict['caption'] = caption
@@ -1055,6 +1069,7 @@ def get_field_dict(field_type, caption, unit, value, max_chars=None,
     field_dict['decimal'] = decimal
     field_dict['status_enable'] = status_enable
     field_dict['status_inactivate'] = status_inactivate
+    field_dict['status_floating'] = status_floating
     field_dict['click_to_edit_message'] = click_to_edit_message
     field_dict['alter_structure'] = alter_structure
     return field_dict
