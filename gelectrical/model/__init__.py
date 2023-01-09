@@ -20,4 +20,4 @@
 #  
 #  
 
-from . import drawing, graph, networkmodel, pandapower, project, rulescheck
+from . import drawing, graph, networkmodel, pandapower, project, rulescheck, protection
