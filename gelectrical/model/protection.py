@@ -18,7 +18,7 @@
 #  
 # 
 
-import os, math
+import copy
 import numpy as np
 from shapely import Polygon, Point, LineString
 
@@ -30,46 +30,62 @@ from ..misc import FieldDict
 class ProtectionModel():
     """Generic protection base element"""
 
-    def __init__(self, data_struct):
-        """ARGUMENTS:
+    def __init__(self, title, parameters, curve_u, curve_l):
+        """
             data_struct: Protection datastructure of following format
             
             { 
                 'type': 'protection'
-                'var': {'var_1': [caption, unit, value, value_list], 
-                        'var_2': [caption, unit, value, value_list] ... },
-                'curve_u': [('point', i1, t1), 
-                          ('iec', tms, i_n, k, c, alpha, i1, i2, n), 
-                          ('iec_inverse', tms, i_n, i1, i2, n), 
-                          ('iec_v_inverse', tms, i_n, i1, i2, n), 
-                          ('iec_e_inverse', tms, i_n, i1, i2, n), 
-                          ('ieee_m_inverse', tms, i_n, i1, i2, n), 
-                          ('ieee_v_inverse', tms, i_n, i1, i2, n), 
-                          ('ieee_e_inverse', tms, i_n, i1, i2, n), 
-                            ... ],
-                'curve_l': ...
+                'parameters': { 'var_1': [caption, unit, value, value_list], 
+                                'var_2': [caption, unit, value, value_list] ... },
+                'data': {'curve_u': [('point', i1, t1), 
+                                ('iec', tms, i_n, k, c, alpha, i1, i2, n), 
+                                ('iec_inverse', tms, i_n, i1, i2, n), 
+                                ('iec_v_inverse', tms, i_n, i1, i2, n), 
+                                ('iec_e_inverse', tms, i_n, i1, i2, n), 
+                                ('ieee_m_inverse', tms, i_n, i1, i2, n), 
+                                ('ieee_v_inverse', tms, i_n, i1, i2, n), 
+                                ('ieee_e_inverse', tms, i_n, i1, i2, n), 
+                                    ... ],
+                        'curve_l': ...}
+                'graph_model'      : (title, models),
+                'graph_options'    : (xlim, ylim, xlabel, ylabel)}
             }
         """
-        self.data_struct = data_struct
+        self.title = title
+        self.data_struct = {'type'          : 'protection',
+                            'parameters'    : parameters,
+                            'data'          : {'curve_u': curve_u,'curve_l': curve_l},
+                            'graph_model'   : [],
+                            'graph_options' : ( misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                misc.GRAPH_PROT_TIME_LIMITS, 
+                                                'I (A)', 
+                                                'Time (s)')}
         # Generated variables
         self.curve_upper = None  # Upper t vs I protection curve as list of tuples
         self.curve_lower = None  # Lower t vs I protection curve as list of tuples
         self.polygon = None
         self.linestring_upper = None
         self.linestring_lower = None
-        
-    def get_data_fields(self, title, modify_code=''):
-        fields = dict()
-        for key, (caption, unit, value, selection_list) in self.data_struct['var'].items():
-            fields[modify_code+key] = misc.get_field_dict('float', caption, unit, value, 
-                                                            selection_list=selection_list, 
-                                                            status_inactivate=False)
-        return fields
 
-    def evaluate_curves(self, fields):
+    def update_graph(self):
+        polygon_pnts = np.array((self.polygon.exterior.coords))
+        xval = list(polygon_pnts[:,0])
+        yval = list(polygon_pnts[:,1])
+        graph_model = ['Protection Curve', [{'mode':misc.GRAPH_DATATYPE_POLYGON, 
+                                        'title':self.title, 
+                                        'xval':xval, 
+                                        'yval': yval},]]
+        self.data_struct['graph_model'] = graph_model
+
+    def get_evaluated_model(self, fields, data_fields=None):
         
         # Variables for evaluation
         f = FieldDict(fields)
+        if data_fields:
+            d = FieldDict(data_fields)
+        else:
+            d = FieldDict(self.get_data_fields())
         
         # Functions for curve evaluation
         def point(i1, t1):
@@ -88,7 +104,7 @@ class ProtectionModel():
         ieee_e_inverse = lambda tms, i1, i2, n: iec(tms, f.In, 28.2, 0.1217, 2, i1, i2, n)
         
         def eval_curve(curve):
-            var_dict = {'f': f}
+            var_dict = {'f': f, 'd': d}
             func_dict = {   'point'         : point,
                             'iec'           : iec,
                             'iec_inverse'   : iec_inverse,
@@ -111,18 +127,25 @@ class ProtectionModel():
             return curve
 
         # Evaluate curves
-        self.curve_upper = eval_curve(self.data_struct['curve_u'])
-        self.curve_lower = eval_curve(self.data_struct['curve_l'])
+        self.curve_upper = eval_curve(self.data_struct['data']['curve_u'])
+        self.curve_lower = eval_curve(self.data_struct['data']['curve_l'])
 
         # Geometry elements
         self.linestring_upper = LineString(reversed(self.curve_upper))
         self.linestring_lower = LineString(self.curve_lower)
         self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
 
-    def get_graph(self, title):
-        polygon_pnts = np.array((self.polygon.exterior.coords))
-        xval = list(polygon_pnts[:,0])
-        yval = list(polygon_pnts[:,1])
-        graph_model = ['Protection Curve', [{'mode':misc.GRAPH_DATATYPE_POLYGON, 'title':title, 'xval':xval, 'yval': yval},]]
-        return graph_model
+        # Update graph
+        self.update_graph()
+
+        # Return model
+        return copy.deepcopy(self.data_struct)
+
+    def get_data_fields(self, modify_code=''):
+        fields = dict()
+        for key, (caption, unit, value, selection_list) in self.data_struct['parameters'].items():
+            fields[modify_code+key] = misc.get_field_dict('float', caption, unit, value, 
+                                                            selection_list=selection_list, 
+                                                            status_inactivate=False)
+        return fields
 

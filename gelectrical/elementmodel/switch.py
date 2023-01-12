@@ -26,36 +26,8 @@ from shapely import Polygon, Point, LineString
 from .. import misc
 from ..misc import FieldDict
 from .element import ElementModel
+from ..model.protection import ProtectionModel
 
-
-class ProtectionBase():
-    """Generic protection base element"""
-
-    def __init__(self, curve_upper, curve_lower):
-        """ARGUMENTS:
-            curve_upper : Upper t vs I protection curve as list of tuples
-            curve_lower : Lower t vs I protection curve as list of tuples
-            fields      : Fields to be used in evaluation of curves
-        """
-        self.curve_upper = curve_upper
-        self.curve_lower = curve_lower
-        # Generated variables
-        self.polygon = None
-        self.linestring_upper = None
-        self.linestring_lower = None
-        self.evaluate_curves()
-
-    def evaluate_curves(self):
-        self.linestring_upper = LineString(reversed(self.curve_upper))
-        self.linestring_lower = LineString(self.curve_lower)
-        self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
-
-    def get_graph(self, title):
-        polygon_pnts = np.array((self.polygon.exterior.coords))
-        xval = polygon_pnts[:,0]
-        yval = polygon_pnts[:,1]
-        graph_model = ['Protection Curve', [{'mode':misc.GRAPH_DATATYPE_POLYGON, 'title':title, 'xval':xval, 'yval': yval},]]
-        return graph_model
 
 class Switch(ElementModel):
     """Generic switching element"""
@@ -73,8 +45,10 @@ class Switch(ElementModel):
         self.ports = [[1, 0],
                       [1, 6]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'Q?'),
+                       'name':     self.get_field_dict('str', 'Name', '', ''),
                        'closed':  self.get_field_dict('bool', 'Closed ?', '', True)}
-        self.text_model = [[(3.5,1.5), "${ref}", True]]
+        self.text_model = [[(3.5,1.5), "${ref}", True],
+                           [(3.5,None), "${name}", True]]
         self.schem_model = [ 
                              ['LINE',(1,0),(1,2), []],
                              ['LINE',(1,4),(2.5,2), []],
@@ -118,7 +92,7 @@ class Fuse(Switch):
     """Generic Fuse element"""
     
     code = 'element_fuse'
-    name = 'Fuse (LV)'
+    name = 'Fuse'
     group = 'Switching Devices'
     icon = misc.abs_path('icons', 'fuse.svg')
 
@@ -203,32 +177,33 @@ class Fuse(Switch):
 
         # Set fields
         self.fields = {'ref'        : self.get_field_dict('str', 'Reference', '', 'Q?'),
+                       'name'       : self.get_field_dict('str', 'Name', '', ''),
                        'type'       : self.get_field_dict('str', 'Type', '', 'gG', selection_list=self.fuse_types),
                        'poles'      : self.get_field_dict('str', 'Poles', '', 'TP', selection_list=self.pole_types),
                        'Un'         : self.get_field_dict('float', 'Un', 'kV', 0.415),
                        'In'         : self.get_field_dict('int', 'In', 'A', 63, selection_list=self.current_values,
                                                           alter_structure=True),
-                       'pcurve_l'   : self.get_field_dict('graph', 'Line Protection', '', None, inactivate=True ),
                        'In_set'     : self.get_field_dict('float', 'In_set', 'xIn', 1, status_enable=False),
                        'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 50, alter_structure=True),
+                       'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None),
                        'sdfu'       : self.get_field_dict('bool', 'Switch Disconnector ?', '', True),
                        'closed'     : self.get_field_dict('bool', 'Closed ?', '', True)
                        }
-        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
         self.text_model = [[(3.5,0.5), "${poles}, ${ref}", True],
                            [(3.5,None), "${str(In)} A, ${type}", True],
-                           [(3.5,None), "${Isc}kA", True]]
+                           [(3.5,None), "${Isc}kA", True],
+                           [(3.5,None), "${name}", True]]
         self.schem_model_fuse = [ 
                              ['LINE',(1,0),(1,6), []],
                              ['RECT', (0.5,1.5), 1, 3, False, []]
                            ]
         self.schem_model_sdfu = [ 
-                             ['LINE',(1,0),(1,1.4), []],
+                             ['LINE',(1,0),(1,2), []],
                              ['LINE',(1,4),(2.5,2), []],
                              ['LINE',(1,4),(1,5), []],
                              # Round and bar
                              ['LINE',(0.5,2),(1.5,2), []],
-                             ['CIRCLE', (1,1.7), 0.3, False, []],
+                             ['CIRCLE', (1,2.3), 0.3, False, []],
                              # Fuse
                              ['LINE',(1,5),(1,10), []],
                              ['RECT', (0.5,6), 1, 3, False, []]
@@ -261,32 +236,30 @@ class Fuse(Switch):
         # Get parameters
         In = self.fields['In']['value']
         Isc = self.fields['Isc']['value']*1000
-        i_max = Isc
+        
         # gG fuse
         if self.fields['type']['value'] == self.fuse_types[0]:
-            i_f = 1.6*In
-            i_nf = 1.25*In
-            t_conv = self.gg_conv_times[In]*3600
             (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = self.gg_current_gates[In]
             (i2t_min_0_01, i2t_max_0_01) = self.gg_current_gates_prearc[In]
             i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
             i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
-            curve_upper = [ (i_f, t_conv),
-                            (i_max_5, 5),
-                            (I_max_0_1, 0.1),
-                            (i_max_0_01, 0.01),
-                            (i_max, 0.01)]
-            curve_lower = [ (i_nf, t_conv),
-                            (i_min_10, 10),
-                            (i_min_0_1,0.1),
-                            (i_min_0_01, 0.01),
-                            (i_max, 0.01)]
-        # Get protection model
-        self.line_protection_model = ProtectionBase(curve_upper, curve_lower)
-        graph = self.line_protection_model.get_graph('Line Protection')
-        self.fields['pcurve_l']['value'] = graph
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                            ('point', i_max_5, 5),
+                            ('point', I_max_0_1, 0.1),
+                            ('point', i_max_0_01, 0.01),
+                            ('point', '1000*f.Isc', 0.01)]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                            ('point', i_min_10, 10),
+                            ('point', i_min_0_1,0.1),
+                            ('point', i_min_0_01, 0.01),
+                            ('point', '1000*f.Isc', 0.01)]
+            # Get protection model
+            parameters = {  'i_nf'  : ('Non fusing current', 'xIn', 1.25, None),
+                            'i_f'   : ('Fusing current', 'xIn', 1.6, None),
+                            't_conv': ('Convensional time', 'Hrs', self.gg_conv_times[In], None)}
+            self.line_protection_model = ProtectionModel('Line Protection', parameters, curve_u, curve_l)
+            self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
 
-        
 
 class CircuitBreaker(Switch):
     """Generic circuit breaker element"""
@@ -302,23 +275,61 @@ class CircuitBreaker(Switch):
         self.ports = [[1, 0],
                       [1, 6]]
         self.pole_types = ['SP', 'SPN', 'DP', 'TP', 'TPN', 'FP']
-        self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'Q?'),
-                       'type':    self.get_field_dict('str', 'Type', '', 'CB'),
-                       'poles':   self.get_field_dict('str', 'Poles', '', 'TPN', selection_list=self.pole_types),
-                       'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
-                       'In':      self.get_field_dict('int', 'In', 'A', 63),
-                       'In_set':  self.get_field_dict('float', 'In_set', 'xIn', 1),
-                       'Im_min':  self.get_field_dict('float', 'Im (min)', 'xIn', 5),
-                       'Im_max':  self.get_field_dict('float', 'Im (max)', 'xIn', 10),
-                       'I0n':     self.get_field_dict('float', 'I0n', 'xIn', 1),
-                       'I0m_min': self.get_field_dict('float', 'I0m (min)', 'xIn', 5),
-                       'I0m_max': self.get_field_dict('float', 'I0m (max)', 'xIn', 10),
-                       'Isc':     self.get_field_dict('float', 'Isc', 'kA', 10),
-                       'drawout': self.get_field_dict('bool', 'Drawout type ?', '', False),
-                       'closed':  self.get_field_dict('bool', 'Closed ?', '', True)}
+        self.breaker_types = ['MCB','MCCB','ACB','MPCB','CB','RCCB']
+        self.sub_types_mcb = ['B Curve', 'C Curve', 'D Curve']
+        self.sub_types_mcb_dict = {'B Curve'     : (2,5),
+                                   'C Curve'     : (5,10),
+                                   'D Curve'     : (10,20),
+                                   }
+        self.sub_types_rccb = ['30 mA', '100 mA', '300 mA', '500 mA']
+        self.sub_types_rccb_dict = {'30 mA'     : (0.03,0.015,0.03),
+                                    '100 mA'    : (0.1,0.05,0.1),
+                                    '300 mA'    : (0.3,0.15,0.3),
+                                    '500 mA'    : (0.5,0.25,0.5),
+                                   }
+        self.current_values_mcb = [6,10,16,20,25,32,40,50,63,80,100]
+        self.current_values_rccb = [25,32,40,63,80,100]
+        self.current_values = [6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,320,400,500,630,800,1000,1250,1600,2000,2500,3200]
+        self.fields = { 'ref':      self.get_field_dict('str', 'Reference', '', 'Q?'),
+                        'name':     self.get_field_dict('str', 'Name', '', ''),
+                        'type':     self.get_field_dict('str', 'Type', '', 'CB',
+                                                             selection_list=self.breaker_types,
+                                                             alter_structure=True),
+                        'subtype':  self.get_field_dict('str', 'Sub Type', '', '',
+                                                             selection_list=None,
+                                                             alter_structure=True),
+                        'poles':    self.get_field_dict('str', 'Poles', '', 'TPN',
+                                                        selection_list=self.pole_types),
+                        'Un':       self.get_field_dict('float', 'Un', 'kV', 0.415),
+                        'In':       self.get_field_dict('int', 'In', 'A', 63,
+                                                        selection_list=self.current_values,
+                                                        alter_structure=True),
+                        'In_set':    self.get_field_dict('float', 'In_set', 'xIn', 1,
+                                                      alter_structure=True, status_enable=True),
+                        'Im_min':   self.get_field_dict('float', 'Im (min)', 'xIn', 5,
+                                                        alter_structure=True, status_enable=True),
+                        'Im_max':   self.get_field_dict('float', 'Im (max)', 'xIn', 10,
+                                                        alter_structure=True, status_enable=True),
+                        't_mag':    self.get_field_dict('float', 't (inst)', 's', 0.001,
+                                                        alter_structure=True, status_enable=True),
+                        'pcurve_l': self.get_field_dict('data', 'Line Protection', '', None),
+                        'I0n':      self.get_field_dict('float', 'I0n', 'xIn', 1,
+                                                        alter_structure=True, status_enable=True),
+                        'I0m_min':  self.get_field_dict('float', 'I0m (min)', 'xIn', 5,
+                                                        alter_structure=True, status_enable=True),
+                        'I0m_max':  self.get_field_dict('float', 'I0m (max)', 'xIn', 10,
+                                                        alter_structure=True, status_enable=True),
+                        't0_mag':    self.get_field_dict('float', 't0 (inst)', 's', 0.001,
+                                                        alter_structure=True, status_enable=True),
+                        'Isc':      self.get_field_dict('int', 'Isc', 'kA', 10,
+                                                        alter_structure=True),
+                        'drawout':  self.get_field_dict('bool', 'Drawout type ?', '', False, status_enable=True),
+                        'closed':   self.get_field_dict('bool', 'Closed ?', '', True)}
+        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
         self.text_model = [[(3.5,0.5), "${type}, ${poles}, ${ref}", True],
-                           [(3.5,None), "${str(In) + 'A' if In_set == 1 else str(In) + 'A(' + str(round(In*In_set)) + 'A)'}", True],
-                           [(3.5,None), "${Isc}kA", True]]
+                           [(3.5,None), "${str(In) + 'A' if In_set == 1 else str(In) + 'A(' + str(round(In*In_set)) + 'A)'}, ${subtype}", True],
+                           [(3.5,None), "${Isc}kA", True],
+                           [(3.5,None), "${name}", True]]
         self.schem_model_do = [ 
                              ['LINE',(1,0.5),(1,2), []],
                              ['LINE',(1,4),(2.5,2), []],
@@ -344,6 +355,22 @@ class CircuitBreaker(Switch):
                              ['LINE',(0.625,1.625),(1.375,2.375), []],
                              ['LINE',(0.625,2.375),(1.375,1.625), []],
                            ]
+        self.schem_model_rccb = [ 
+                             ['LINE',(1,0),(1,2), []],
+                             ['LINE',(1,4),(2.5,2), []],
+                             ['LINE',(1,4),(1,6), []],
+                             # Round and bar
+                             ['LINE',(0.5,2),(1.5,2), []],
+                             ['CIRCLE', (1,2.3), 0.3, False, []],
+                             # Arrow
+                             ['LINE',(1.75,3),(2.75,3.75), [], 'thin'],
+                             ['LINE',(2.325,3.275),(2.75,3.75), []],
+                             ['LINE',(2.175,3.475),(2.75,3.75), []],
+                             # RCCB symbol
+                             ['LINE',(2.95,3.9),(3.35,4.2), [], 'thin'],
+                             ['LINE',(3.1,3.7),(2.8,4.1), [], 'thin'],
+                           ]
+        self.calculate_parameters()
 
     def render_element(self, context):
         """Render element to context"""
@@ -351,7 +378,10 @@ class CircuitBreaker(Switch):
         if self.fields['drawout']['value']:
             self.schem_model = self.schem_model_do
         else:
-            self.schem_model = self.schem_model_ndo
+            if  self.fields['type']['value'] in ['RCCB']:
+                self.schem_model = self.schem_model_rccb
+            else:
+                self.schem_model = self.schem_model_ndo
         # Render
         if self.fields['closed']['value'] == True:
             self.render_model(context, self.schem_model)
@@ -361,6 +391,117 @@ class CircuitBreaker(Switch):
             self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
+
+    def set_text_field_value(self, code, value):
+        if self.fields and code in self.fields:
+            self.fields[code]['value'] = value
+            # Modify variables based on selection
+            if code == 'type':
+                if value in ['MCB']:
+                    self.fields['In']['selection_list'] = self.current_values_mcb
+                    if self.fields['In']['value'] not in self.current_values_mcb:
+                        self.fields['In']['value'] = self.current_values_mcb[0]
+                    self.fields['subtype']['selection_list'] = self.sub_types_mcb
+                    self.fields['subtype']['value'] = self.sub_types_mcb[0]
+
+                    self.fields['In_set']['status_enable'] = False
+                    self.fields['Im_min']['status_enable'] = False
+                    self.fields['Im_max']['status_enable'] = False
+                    self.fields['t_mag']['status_enable'] = False
+                    self.fields['I0n']['status_enable'] = False
+                    self.fields['I0m_min']['status_enable'] = False
+                    self.fields['I0m_max']['status_enable'] = False
+                    self.fields['t0_mag']['status_enable'] = False
+                    self.fields['drawout']['status_enable'] = False
+
+                elif value in ['RCCB']:
+                    self.fields['In']['selection_list'] = self.current_values_rccb
+                    if self.fields['In']['value'] not in self.current_values_rccb:
+                        self.fields['In']['value'] = self.current_values_rccb[0]
+                    self.fields['subtype']['selection_list'] = self.sub_types_rccb
+                    self.fields['subtype']['value'] = self.sub_types_rccb[0]
+
+                    self.fields['In_set']['status_enable'] = False
+                    self.fields['Im_min']['status_enable'] = False
+                    self.fields['Im_max']['status_enable'] = False
+                    self.fields['t_mag']['status_enable'] = False
+                    self.fields['I0n']['status_enable'] = False
+                    self.fields['I0m_min']['status_enable'] = False
+                    self.fields['I0m_max']['status_enable'] = False
+                    self.fields['t0_mag']['status_enable'] = False
+                    self.fields['drawout']['status_enable'] = False
+
+                elif value in ['MCCB','ACB']:
+                    self.fields['In']['selection_list'] = self.current_values
+                    if self.fields['In']['value'] not in self.current_values:
+                        self.fields['In']['value'] = self.current_values[0]
+                    self.fields['subtype']['selection_list'] = None
+                    self.fields['subtype']['value'] = ''
+
+                    self.fields['In_set']['status_enable'] = True
+                    self.fields['Im_min']['status_enable'] = True
+                    self.fields['Im_max']['status_enable'] = True
+                    self.fields['t_mag']['status_enable'] = True
+                    self.fields['I0n']['status_enable'] = True
+                    self.fields['I0m_min']['status_enable'] = True
+                    self.fields['I0m_max']['status_enable'] = True
+                    self.fields['t0_mag']['status_enable'] = True
+                    self.fields['drawout']['status_enable'] = True
+
+                elif value in ['MPCB', 'CB']:
+                    self.fields['In']['selection_list'] = None
+                    self.fields['subtype']['selection_list'] = None
+                    self.fields['subtype']['value'] = ''
+
+                    self.fields['In_set']['status_enable'] = True
+                    self.fields['Im_min']['status_enable'] = True
+                    self.fields['Im_max']['status_enable'] = True
+                    self.fields['t_mag']['status_enable'] = True
+                    self.fields['I0n']['status_enable'] = True
+                    self.fields['I0m_min']['status_enable'] = True
+                    self.fields['I0m_max']['status_enable'] = True
+                    self.fields['t0_mag']['status_enable'] = True
+                    self.fields['drawout']['status_enable'] = True
+            self.calculate_parameters()
+
+    def calculate_parameters(self):
+        # Get parameters
+        In = self.fields['In']['value']
+        Isc = self.fields['Isc']['value']*1000
+        i_max = Isc
+        # MCB IS/IEC 60898
+        if self.fields['type']['value'] in ('MCB'):
+            i_f = 1.45
+            i_nf = 1.13
+            t_ins_min = 0.001
+            t_ins_max = 0.008
+            t_conv = 1
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                        ('point', '1000*f.Isc', 'd.t_ins_max')]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                        ('point', '1000*f.Isc', 'd.t_ins_min')]
+        # CB generic IS/IEC 60947
+        else:
+            i_f = 1.3
+            i_nf = 1.05
+            if self.fields['In']['value'] <= 63:
+                t_conv = 1
+            else:
+                t_conv = 2
+            t_ins_min = 0.01
+            t_ins_max = 0.02
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                        ('point', '1000*f.Isc', 'd.t_ins_max')]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                        ('point', '1000*f.Isc', 'd.t_ins_min')]
+        # Get protection model
+        parameters = {  'i_nf'      : ('Non fusing current', 'xIn', i_nf, None),
+                        'i_f'       : ('Fusing current', 'xIn', i_f, None),
+                        't_conv'    : ('Convensional time', 'Hrs', t_conv, None),
+                        't_ins_min' : ('Instantaneous trip time (min)', 's', t_ins_min, None),
+                        't_ins_max' : ('Instantaneous trip time (max)', 's', t_ins_max, None)}
+        self.line_protection_model = ProtectionModel('Line Protection', parameters, curve_u, curve_l)
+        self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
 
 
 class Contactor(Switch):
@@ -377,13 +518,15 @@ class Contactor(Switch):
         self.ports = [[1, 0],
                       [1, 6]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'K?'),
+                       'name':     self.get_field_dict('str', 'Name', '', ''),
                        'type':    self.get_field_dict('str', 'Type', '', 'AC-3'),
                        'poles':   self.get_field_dict('str', 'Poles', '', 'TP'),
                        'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
                        'In':      self.get_field_dict('int', 'In', 'A', 16),
                        'closed':  self.get_field_dict('bool', 'Closed ?', '', True)}
         self.text_model = [[(3.5,1), "${poles}, ${ref}", True],
-                           [(3.5,None), "${In}A, ${type}", True]]
+                           [(3.5,None), "${In}A, ${type}", True],
+                           [(3.5,None), "${name}", True]]
         self.schem_model = [ 
                              ['LINE',(1,0),(1,2), []],
                              ['LINE',(1,4),(2.5,2), []],

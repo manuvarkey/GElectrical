@@ -292,12 +292,18 @@ class FieldView:
                     hbox.pack_start(caption_widget, False, False, 0)
                     hbox.pack_start(data_widget, True, True, 0)
                     
-                elif field['type'] in ('graph'):
+                elif field['type'] in ('graph', 'data'):
+                    
+                    # Set graph options
+                    if field['type'] == 'graph':
+                        (xlim, ylim, xlabel, ylabel) = field['graph_options']
+                    elif field['type'] == 'data':
+                        (xlim, ylim, xlabel, ylabel) = field['value']['graph_options']
+
                     data_widget = Gtk.Box()
-                    (xlim, ylim, xlabel, ylabel) = field['graph_options']
                     graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
                                           inactivate=field[self.inactivate_code])
-                        
+                    
                     if field['selection_list']:
                         title_widget = Gtk.ComboBoxText.new()
                         cur_uid = field['value']
@@ -330,7 +336,12 @@ class FieldView:
                             
                         title_widget.connect("changed", activate_callback_graphlist, set_field, graphview, code)
                     else:
-                        title, models = field['value']
+                        # Load graph models
+                        if field['type'] == 'graph':
+                            title, models = field['value']
+                        elif field['type'] == 'data':
+                            title, models = field['value']['graph_model']
+
                         for model in models:
                             graphview.add_plot(model)
                         text_buffer = Gtk.TextBuffer()
