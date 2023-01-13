@@ -42,7 +42,7 @@ class Load(ElementModel):
                       
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'X?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kW', 0),
+                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kVA', 0),
                        'cos_phi':       self.get_field_dict('float', 'PF', '', 0.8),
                        'scaling':          self.get_field_dict('float', 'DF', '', 1),
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),

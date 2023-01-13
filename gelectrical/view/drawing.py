@@ -164,7 +164,7 @@ class DrawingView:
                     oldval = element.get_text_field(code)['value']
                     element.set_text_field_value(code, value)
                     self.refresh() 
-                    yield "Modify '{}' '{}' element field from '{}' to '{}'".format(code, element.name, oldval, value)
+                    yield "Modify '{}' '{}' element field".format(code, element.name)
                     # Undo action
                     element.set_text_field_value(code, oldval)
                     self.refresh() 
