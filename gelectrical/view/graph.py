@@ -229,7 +229,7 @@ class GraphView():
             elif model.mode == misc.GRAPH_DATATYPE_FREE:
                 self.plot.scatter(model.xval, model.yval, label=model.title, marker="o", color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
-                self.plot.fill(model.xval, model.yval, label=model.title, color=color, alpha=0.5)
+                self.plot.fill(model.xval, model.yval, label=model.title, color=color, alpha=0.5, hatch='////')
         # Set legends title and stuff
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
