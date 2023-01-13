@@ -26,7 +26,7 @@ import cairo
 
 # local files import
 from .. import misc
-from .graph import GraphView
+from .graph import GraphView, GraphViewDialog
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -148,6 +148,34 @@ class FieldView:
             index = widget.get_active()
             set_field(code, graphview, index)  # set value
             if field['alter_structure'] == True:
+                self.update_widgets()
+
+        def show_graph_dialog_callback(widget, title, model, xlim, ylim, xlabel, ylabel):
+            # Function to show bigger graph as dialog
+            parent = self.window
+            graph_database = {title: (title, model)}
+            dialog = GraphViewDialog(parent, 
+                                    'View Graph',
+                                    graph_database, 
+                                    xlim, ylim, xlabel, ylabel,
+                                    read_only=True)
+            dialog.run()
+
+        def edit_graph_parameters_callback(widget, set_field, code, fields):
+            # Function to edit graph setttings
+            parent = self.window
+            dialog = FieldViewDialog(parent, 
+                                        'Edit Parameters', 
+                                        {'Parameters': fields}, 
+                                        self.enable_code,
+                                        self.inactivate_code)
+            modified_fields = dialog.run()
+            if modified_fields['Parameters']:
+                data_new = copy.deepcopy(self.fields[code]['value'])
+                parameters = data_new['parameters']
+                for key, field in modified_fields['Parameters'].items():
+                    parameters[key][2] = field['value']
+                set_field(code, data_new)
                 self.update_widgets()
                             
         def changed_callback(widget):
@@ -318,9 +346,14 @@ class FieldView:
                         if index is None:
                             index = 0
                             cur_uid = graph_uids[0]
+                        
                         # Update graph
                         title_widget.set_active(index)
-                        (title, models) = self.fields[code]['selection_list'][cur_uid]
+                        if field['type'] == 'graph':
+                            title, models = self.fields[code]['selection_list'][cur_uid]
+                        elif field['type'] == 'data':
+                            title, models = self.fields[code]['selection_list'][cur_uid]['graph_model']
+
                         graphview.clear_plots()
                         for model in models:
                             graphview.add_plot(model)
@@ -344,22 +377,58 @@ class FieldView:
 
                         for model in models:
                             graphview.add_plot(model)
+                        title_widget = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                         text_buffer = Gtk.TextBuffer()
                         text_buffer.set_text(title)
-                        title_widget = Gtk.TextView.new_with_buffer(text_buffer)
-                        title_widget.props.editable = False
-                        if field[self.inactivate_code] == False:
-                            def set_title(code, text):
-                                field = self.fields[code]
-                                field['value'][0][0] = text
-                                graphview.model.title = text
-                            title_widget = Gtk.Entry()
-                            title_widget.set_text(title)
-                            title_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
-                            title_widget.connect("activate", activate_callback_graphtitle, get_field, set_title, code)
-                            title_widget.connect("changed", changed_callback)
-                        else:
-                            title_widget.props.sensitive = False
+                        label_widget = Gtk.TextView.new_with_buffer(text_buffer)
+                        label_widget.props.editable = False
+                        show_graph_button = Gtk.Button.new_from_icon_name('view-fullscreen-symbolic',
+                                                                            Gtk.IconSize.BUTTON)
+                        show_graph_button.connect("clicked", show_graph_dialog_callback, 
+                                                    title, models,
+                                                    xlim, ylim, xlabel, ylabel)
+                        
+                        if field['type'] == 'graph':
+                            if field[self.inactivate_code] == False:
+                                def set_title(code, text):
+                                    field = self.fields[code]
+                                    field['value'][0][0] = text
+                                    graphview.model.title = text
+                                edit_title_widget = Gtk.Entry()
+                                edit_title_widget.set_text(title)
+                                edit_title_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
+                                edit_title_widget.connect("activate", activate_callback_graphtitle, get_field, set_title, code)
+                                edit_title_widget.connect("changed", changed_callback)
+                                title_widget.pack_start(edit_title_widget, True, True, 6)
+                                title_widget.pack_start(show_graph_button, False, False, 6)
+                            else:
+                                title_widget.pack_start(label_widget, True, True, 6)
+                                title_widget.pack_start(show_graph_button, False, False, 6)
+                        elif field['type'] == 'data':
+                            edit_button = Gtk.Button.new_from_icon_name('document-properties-symbolic',
+                                                                            Gtk.IconSize.BUTTON)
+                            button_box = Gtk.ButtonBox(Gtk.Orientation.HORIZONTAL)
+                            title_widget.pack_start(label_widget, True, True, 6)
+                            title_widget.pack_start(button_box, False, False, 6)
+                            button_box.pack_start(edit_button, False, False, 0)
+                            button_box.pack_start(show_graph_button, False, False, 0)
+                            button_box.set_layout(Gtk.ButtonBoxStyle.EXPAND)
+                            if field[self.inactivate_code] == False:
+                                parameters = field['value']['parameters']
+                                if parameters:
+                                    # Compile fields
+                                    parameter_fields = dict()
+                                    for key, (caption, unit, value, selection_list) in parameters.items():
+                                        parameter_fields[key] = misc.get_field_dict('float', caption, unit, value, 
+                                                                            selection_list=selection_list, 
+                                                                            status_inactivate=False)
+                                    edit_button.set_sensitive(True)
+                                    edit_button.connect("clicked", edit_graph_parameters_callback, self.set_field, code, parameter_fields)
+                                else:
+                                    edit_button.set_sensitive(False)
+                            else:
+                                edit_button.set_sensitive(False)
+                        
                     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
                     hbox_sub = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                     # Pack

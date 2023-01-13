@@ -68,17 +68,36 @@ class ProtectionModel():
         self.linestring_upper = None
         self.linestring_lower = None
 
+    @classmethod
+    def new_from_data(cls, data_struct):
+        if data_struct['type'] == 'protection':
+            title = data_struct['graph_model'][0]
+            parameters = data_struct['parameters']
+            curve_u = data_struct['data']['curve_u']
+            curve_l = data_struct['data']['curve_l']
+            return cls(title, parameters, curve_u, curve_l)
+        else:
+            raise ValueError('Wrong data structure passed')
+
+    def get_data_fields(self, modify_code=''):
+        fields = dict()
+        for key, (caption, unit, value, selection_list) in self.data_struct['parameters'].items():
+            fields[modify_code+key] = misc.get_field_dict('float', caption, unit, value, 
+                                                            selection_list=selection_list, 
+                                                            status_inactivate=False)
+        return fields
+
     def update_graph(self):
         polygon_pnts = np.array((self.polygon.exterior.coords))
         xval = list(polygon_pnts[:,0])
         yval = list(polygon_pnts[:,1])
-        graph_model = ['Protection Curve', [{'mode':misc.GRAPH_DATATYPE_POLYGON, 
+        graph_model = [self.title, [{'mode':misc.GRAPH_DATATYPE_POLYGON, 
                                         'title':self.title, 
                                         'xval':xval, 
                                         'yval': yval},]]
         self.data_struct['graph_model'] = graph_model
 
-    def get_evaluated_model(self, fields, data_fields=None):
+    def evaluate_curves(self, fields, data_fields=None):
         
         # Variables for evaluation
         f = FieldDict(fields)
@@ -135,17 +154,8 @@ class ProtectionModel():
         self.linestring_lower = LineString(self.curve_lower)
         self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
 
-        # Update graph
-        self.update_graph()
-
-        # Return model
+    def get_evaluated_model(self, fields, data_fields=None):
+        self.evaluate_curves(fields, data_fields)  # Evaluate curves
+        self.update_graph()  # Update graph
         return copy.deepcopy(self.data_struct)
-
-    def get_data_fields(self, modify_code=''):
-        fields = dict()
-        for key, (caption, unit, value, selection_list) in self.data_struct['parameters'].items():
-            fields[modify_code+key] = misc.get_field_dict('float', caption, unit, value, 
-                                                            selection_list=selection_list, 
-                                                            status_inactivate=False)
-        return fields
 

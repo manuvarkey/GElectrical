@@ -120,7 +120,10 @@ class ProjectModel:
         ylabel = 'Diversity Factor'
         database_path = misc.abs_path('database', 'load_profiles.csv')
         loadprofiles_copy = copy.deepcopy(self.loadprofiles)
-        dialog = GraphViewDialog(self.window, loadprofiles_copy, xlim, ylim, xlabel, ylabel, 
+        dialog = GraphViewDialog(self.window, 
+                                'Edit Load Profiles',
+                                loadprofiles_copy, 
+                                xlim, ylim, xlabel, ylabel, 
                                  database_path=database_path)
         selected_graph, database_modified_flag = dialog.run()
         if database_modified_flag:

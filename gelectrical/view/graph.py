@@ -89,7 +89,13 @@ class GraphImage():
         self.plot.grid(True, which='minor', alpha=0.2)
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
-            line = self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+            if model.mode == misc.GRAPH_DATATYPE_PROFILE:
+                self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+            elif model.mode == misc.GRAPH_DATATYPE_FREE:
+                self.plot.scatter(model.xval, model.yval, label=model.title, marker="o", color=color)
+            elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
+                self.plot.fill(model.xval, model.yval, label=model.title, color=color, alpha=0.5)
+
         self.plot.set_title(self.title, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
         self.plot.set_xlabel(self.xlabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
         self.plot.set_ylabel(self.ylabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
@@ -258,16 +264,19 @@ class GraphViewDialog():
             graph_database: Graph database to display
     """
     
-    def __init__(self, parent, graph_database, xlim, ylim, xlabel, ylabel, database_path=None):
+    def __init__(self, parent, window_caption, graph_database, xlim, ylim, xlabel, ylabel, database_path=None, read_only=False):
         
         # Dialog variables
         self.toplevel = parent
+        self.window_caption = window_caption
         self.graph_database = graph_database
         self.xlim = xlim
         self.ylim = ylim
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.database_path = database_path
+        self.read_only = read_only
+
         self.temp_graph = None
         self.mode = 'DEFAULT'
         self.database_modified_flag = False
@@ -279,6 +288,7 @@ class GraphViewDialog():
         self.builder.add_from_file(misc.abs_path("interface", "loadprofileeditor.glade"))
         self.builder.connect_signals(self)
         self.dialog_window = self.builder.get_object("dialog_window")
+        self.dialog_window.set_title(window_caption)
         self.dialog_window.set_transient_for(self.toplevel)
         self.dialog_window.set_size_request(int(self.toplevel.get_size_request()[0]*0.8),int(self.toplevel.get_size_request()[1]*0.8))
         self.graph_box = self.builder.get_object("graph_box")
@@ -286,17 +296,29 @@ class GraphViewDialog():
         self.textbox_title = self.builder.get_object("textbox_title")
         self.stack_switcher = self.builder.get_object("main_stack")
         self.loaddatabase_button = self.builder.get_object("loaddatabase_button")
+        self.add_button = self.builder.get_object("add_button")
+        self.edit_button = self.builder.get_object("edit_button")
+        self.delete_button = self.builder.get_object("delete_button")
         
         # Setup graphview
         self.graph_view = GraphView(self.graph_box, xlim, ylim, xlabel=xlabel, ylabel=ylabel, inactivate=True)
 
         # Setup databaseview
         if database_path:
+            self.loaddatabase_button.set_sensitive(False)
             self.database_view = DatabaseView(self.dialog_window, 
                                             self.loaddatabase_button,
                                             fields=self.database_fields,
                                             fields_updated_callback=self.add_from_database)
             self.database_view.update_from_database(database_path)
+        else:
+            self.loaddatabase_button.set_sensitive(False)
+
+        # Setup readonly mode
+        if read_only:
+            self.add_button.set_sensitive(False)
+            self.edit_button.set_sensitive(False)
+            self.delete_button.set_sensitive(False)
         
         # Populate database
         self.repopulate_combo()
