@@ -97,6 +97,11 @@ class ProtectionModel():
                                         'yval': yval},]]
         self.data_struct['graph_model'] = graph_model
 
+    def update_parameters(self, parameters):
+        for key, field in parameters.items():
+            if key in self.data_struct['parameters']:
+                self.data_struct['parameters'][key][2] = field[2]
+
     def evaluate_curves(self, fields, data_fields=None):
         
         # Variables for evaluation

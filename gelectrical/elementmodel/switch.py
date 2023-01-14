@@ -245,35 +245,35 @@ class Fuse(Switch):
         # Get parameters
         In = self.fields['In']['value']
         Isc = self.fields['Isc']['value']*1000
-        
-        if init:
-            # gG fuse
-            if self.fields['type']['value'] == self.fuse_types[0]:
-                (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = self.gg_current_gates[In]
-                (i2t_min_0_01, i2t_max_0_01) = self.gg_current_gates_prearc[In]
-                i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
-                i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
-                curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                                ('point', i_max_5, 5),
-                                ('point', I_max_0_1, 0.1),
-                                ('point', i_max_0_01, 0.01),
-                                ('point', '1000*f.Isc', 0.01)]
-                curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                                ('point', i_min_10, 10),
-                                ('point', i_min_0_1,0.1),
-                                ('point', i_min_0_01, 0.01),
-                                ('point', '1000*f.Isc', 0.01)]
-                # Get protection model
-                parameters = {  'i_nf'  : ['Non fusing current', 'xIn', 1.25, None],
-                                'i_f'   : ['Fusing current', 'xIn', 1.6, None],
-                                't_conv': ['Convensional time', 'Hrs', self.gg_conv_times[In], None]}
-                title = str(self.fields['In']['value']) + 'A, ' + self.fields['type']['value']
-            
-            self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
-        else:
-            self.line_protection_model = ProtectionModel.new_from_data(self.fields['pcurve_l']['value'])
-        self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
 
+        # gG fuse
+        if self.fields['type']['value'] == self.fuse_types[0]:
+            (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = self.gg_current_gates[In]
+            (i2t_min_0_01, i2t_max_0_01) = self.gg_current_gates_prearc[In]
+            i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
+            i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                            ('point', i_max_5, 5),
+                            ('point', I_max_0_1, 0.1),
+                            ('point', i_max_0_01, 0.01),
+                            ('point', '1000*f.Isc', 0.01)]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                            ('point', i_min_10, 10),
+                            ('point', i_min_0_1,0.1),
+                            ('point', i_min_0_01, 0.01),
+                            ('point', '1000*f.Isc', 0.01)]
+            # Get protection model
+            parameters = {  'i_nf'  : ['Non fusing current', 'xIn', 1.25, None],
+                            'i_f'   : ['Fusing current', 'xIn', 1.6, None],
+                            't_conv': ['Convensional time', 'Hrs', self.gg_conv_times[In], None]}
+            title = (self.fields['ref']['value'] + ', ' + 
+                    str(self.fields['In']['value']) + 'A, ' + 
+                    self.fields['type']['value'])
+        
+        self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
+        if not init:
+            self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
+        self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
 
 class CircuitBreaker(Switch):
     """Generic circuit breaker element"""
@@ -486,45 +486,53 @@ class CircuitBreaker(Switch):
         # Get parameters
         In = self.fields['In']['value']
         Isc = self.fields['Isc']['value']*1000
-        
-        if init:
-            # MCB IS/IEC 60898
-            if self.fields['type']['value'] in ('MCB'):
-                i_f = 1.45
-                i_nf = 1.13
-                t_ins_min = 0.001
-                t_ins_max = 0.008
-                t_conv = 1
-                curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                            ('point', '1000*f.Isc', 'd.t_ins_max')]
-                curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                            ('point', '1000*f.Isc', 'd.t_ins_min')]
-            # CB generic IS/IEC 60947
-            else:
-                i_f = 1.3
-                i_nf = 1.05
-                if self.fields['In']['value'] <= 63:
-                    t_conv = 1
-                else:
-                    t_conv = 2
-                t_ins_min = 0.01
-                t_ins_max = 0.02
-                curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                            ('point', '1000*f.Isc', 'd.t_ins_max')]
-                curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                            ('point', '1000*f.Isc', 'd.t_ins_min')]
-            # Get protection model
-            parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
-                            'i_f'       : ['Fusing current', 'xIn', i_f, None],
-                            't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
-                            't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
-                            't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
-            title = (self.fields['type']['value'] + ', ' + 
-                    (self.fields['subtype']['value']  + ', ' if self.fields['subtype']['value'] else '') +
-                    str(self.fields['In']['value']) + 'A')
-            self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
+    
+        # MCB IS/IEC 60898
+        if self.fields['type']['value'] in ('MCB',):
+            i_f = 1.45
+            i_nf = 1.13
+            t_ins_min = 0.001
+            t_ins_max = 0.008
+            t_conv = 1
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                        ('iec_inverse', 1, 'd.i_f*f.In', 'd.i_f*f.In*1.05', '10*f.In' , 50),
+                        ('point', '10*f.In', 'd.t_ins_max'),
+                        ('point', '1000*f.Isc', 'd.t_ins_max')]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                        ('iec_inverse', 1, 'd.i_nf*f.In', 'd.i_nf*f.In*1.05', '5*f.In' , 50),
+                        ('point', '5*f.In', 'd.t_ins_min'),
+                        ('point', '1000*f.Isc', 'd.t_ins_min')]
+        # CB generic IS/IEC 60947
         else:
-            self.line_protection_model = ProtectionModel.new_from_data(self.fields['pcurve_l']['value'])
+            i_f = 1.3
+            i_nf = 1.05
+            if self.fields['In']['value'] <= 63:
+                t_conv = 1
+            else:
+                t_conv = 2
+            t_ins_min = 0.01
+            t_ins_max = 0.02
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                        ('iec_inverse', 1, 'd.i_f*f.In', 'd.i_f*f.In*1.05', '10*f.In' , 50),
+                        ('point', '10*f.In', 'd.t_ins_max'),
+                        ('point', '1000*f.Isc', 'd.t_ins_max')]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                        ('iec_inverse', 1, 'd.i_nf*f.In', 'd.i_nf*f.In*1.05', '5*f.In' , 50),
+                        ('point', '5*f.In', 'd.t_ins_min'),
+                        ('point', '1000*f.Isc', 'd.t_ins_min')]
+        # Get protection model
+        parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
+                        'i_f'       : ['Fusing current', 'xIn', i_f, None],
+                        't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
+                        't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                        't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
+        title = (self.fields['ref']['value'] + ', ' + 
+                self.fields['type']['value'] + ', ' + 
+                (self.fields['subtype']['value']  + ', ' if self.fields['subtype']['value'] else '') +
+                str(self.fields['In']['value']) + 'A')
+        self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
+        if not init:
+            self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
         self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
 
 

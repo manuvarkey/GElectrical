@@ -129,6 +129,29 @@ class ProjectModel:
         if database_modified_flag:
             self.modify_loadprofiles(loadprofiles_copy)
 
+    def view_protection_coordination(self):
+        selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES)
+        if selected_elements:
+            models = []
+            for element in selected_elements:
+                element.calculate_parameters()
+                model = element.get_text_field('pcurve_l')['value']['graph_model'][1][0]
+                models.append(model)
+            graph_model = {'Coordination curves': ['Coordination curves', models]}
+            xlim = misc.GRAPH_PROT_CURRENT_LIMITS 
+            ylim = misc.GRAPH_PROT_TIME_LIMITS
+            xlabel = 'CURRENT IN AMPERES'
+            ylabel = 'TIME IN SECONDS'
+            # Show curves
+            dialog = GraphViewDialog(self.window, 
+                                    'View Graph',
+                                    graph_model, 
+                                    xlim, ylim, xlabel, ylabel,
+                                    read_only=True)
+            dialog.run()
+
+
+
     @undoable
     def modify_loadprofiles(self, loadprofiles):
         loadprofiles_old = copy.deepcopy(self.loadprofiles)

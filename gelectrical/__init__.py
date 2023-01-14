@@ -483,6 +483,9 @@ class MainWindow():
         
     def on_edit_loadprofiles(self, button):
         self.project.edit_loadprofiles()
+
+    def on_protection_coordination(self, button):
+        self.project.view_protection_coordination()
         
     def on_run_analysis(self, widget):
 
