@@ -165,12 +165,12 @@ class FieldView:
             # Function to edit graph setttings
             parent = self.window
             dialog = FieldViewDialog(parent, 
-                                        'Edit Parameters', 
-                                        {'Parameters': fields}, 
-                                        self.enable_code,
-                                        self.inactivate_code)
+                                    'Edit Parameters', 
+                                    {'Parameters': fields}, 
+                                    self.enable_code,
+                                    self.inactivate_code)
             modified_fields = dialog.run()
-            if modified_fields['Parameters']:
+            if modified_fields:
                 data_new = copy.deepcopy(self.fields[code]['value'])
                 parameters = data_new['parameters']
                 for key, field in modified_fields['Parameters'].items():

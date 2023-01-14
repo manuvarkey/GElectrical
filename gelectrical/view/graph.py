@@ -90,11 +90,15 @@ class GraphImage():
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
-                self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+                self.plot.plot(model.xval, model.yval, label=model.title, 
+                                marker="o", color=color)
             elif model.mode == misc.GRAPH_DATATYPE_FREE:
-                self.plot.scatter(model.xval, model.yval, label=model.title, marker="o", color=color)
+                self.plot.scatter(model.xval, model.yval, label=model.title, 
+                                marker="o", color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
-                self.plot.fill(model.xval, model.yval, label=model.title, color=color, alpha=0.5)
+                self.plot.fill(model.xval, model.yval, label=model.title, 
+                                color=color, edgecolor='black',
+                                alpha=0.5, hatch='////')
 
         self.plot.set_title(self.title, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
         self.plot.set_xlabel(self.xlabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
@@ -225,11 +229,15 @@ class GraphView():
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
-                self.plot.plot(model.xval, model.yval, label=model.title, marker="o", color=color)
+                self.plot.plot(model.xval, model.yval, label=model.title, 
+                                marker="o", color=color)
             elif model.mode == misc.GRAPH_DATATYPE_FREE:
-                self.plot.scatter(model.xval, model.yval, label=model.title, marker="o", color=color)
+                self.plot.scatter(model.xval, model.yval, label=model.title, 
+                                marker="o", color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
-                self.plot.fill(model.xval, model.yval, label=model.title, color=color, alpha=0.5, hatch='////')
+                self.plot.fill(model.xval, model.yval, label=model.title, 
+                                color=color, edgecolor='black',
+                                alpha=0.5, hatch='////')
         # Set legends title and stuff
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
