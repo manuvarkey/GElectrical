@@ -46,6 +46,7 @@ class ProtectionModel():
                                 ('ieee_m_inverse', tms, i_n, i1, i2, n), 
                                 ('ieee_v_inverse', tms, i_n, i1, i2, n), 
                                 ('ieee_e_inverse', tms, i_n, i1, i2, n), 
+                                ('thermal', tms, i_n, i1, i2, n),
                                     ... ],
                         'curve_l': ...}
                 'graph_model'      : (title, models),
@@ -120,9 +121,15 @@ class ProtectionModel():
             t_array = tms*(k/((i_array/i_n)**alpha - 1) + c)
             return list(i_array), list(t_array)
 
-        iec_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 0.14, 0, 0.02, i1, i2, n)
-        iec_v_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 13.5, 0, 1, i1, i2, n)
-        iec_e_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 80, 0, 2, i1, i2, n)
+        def thermal(tms, i_n, i1, i2, n):
+            # As per IEC 60255-8
+            i_array = np.geomspace(i1,i2,num=n)
+            t_array = tms*np.log(i_array**2/(i_array**2 - i_n**2))
+            return list(i_array), list(t_array)
+
+        iec_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 0.14, 0, 0.02, i1, i2, n) # As per IEC 60255-3
+        iec_v_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 13.5, 0, 1, i1, i2, n) # As per IEC 60255-3
+        iec_e_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 80, 0, 2, i1, i2, n) # As per IEC 60255-3
         ieee_m_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 0.0515, 0.1140, 0.02, i1, i2, n)
         ieee_v_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 19.61, 0.491, 2, i1, i2, n)
         ieee_e_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 28.2, 0.1217, 2, i1, i2, n)
@@ -136,7 +143,8 @@ class ProtectionModel():
                             'iec_e_inverse' : iec_e_inverse,
                             'ieee_m_inverse': ieee_m_inverse,
                             'ieee_v_inverse': ieee_v_inverse,
-                            'ieee_e_inverse': ieee_e_inverse
+                            'ieee_e_inverse': ieee_e_inverse,
+                            'thermal'       : thermal
                         }
             # Evaluate curve
             curve_i = []
@@ -147,6 +155,8 @@ class ProtectionModel():
                 i_array, t_array = func(*data_eval)
                 curve_i += i_array
                 curve_t += t_array
+            # curve_i.insert(0, curve_i[0])  # Extend curves to end of graph
+            # curve_t.insert(0, misc.GRAPH_PROT_TIME_LIMITS[1])  # Extend curves to end of graph
             curve = [(i,t) for i,t in zip(curve_i, curve_t)]
             return curve
 

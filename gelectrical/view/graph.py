@@ -37,6 +37,7 @@ from matplotlib.backends.backend_gtk3 import (
     NavigationToolbar2GTK3 as NavigationToolbar)
 from matplotlib.figure import Figure
 import matplotlib.style as mplstyle
+from matplotlib import ticker
 mplstyle.use('fast')
 
 # Get logger object
@@ -208,24 +209,30 @@ class GraphView():
                 self.signal2_id = None
             
         self.plot.clear()
+
+        formatter = ticker.StrMethodFormatter('{x:,.6g}')
         for tick in self.plot.get_xticklabels():
             tick.set_fontname(misc.GRAPH_FONT_FACE)
             tick.set_fontsize(misc.GRAPH_FONT_SIZE)
         for tick in self.plot.get_yticklabels():
             tick.set_fontname(misc.GRAPH_FONT_FACE)
             tick.set_fontsize(misc.GRAPH_FONT_SIZE)
-        self.plot.set_xlim(self.xlim[0], self.xlim[1])
+        if not(math.isnan(self.xlim[0]) or math.isnan(self.xlim[1])) and self.xlim[0] != self.xlim[1]:
+            self.plot.set_xlim(self.xlim[0], self.xlim[1])
         if len(self.xlim) == 4 and self.xlim[3] == 'log':
             self.plot.set_xscale('log')
-            
+        self.plot.xaxis.set_major_formatter(formatter)
+        
         if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])) and self.ylim[0] != self.ylim[1]:
             self.plot.set_ylim(self.ylim[0], self.ylim[1])
         if len(self.ylim) == 4 and self.ylim[3] == 'log':
             self.plot.set_yscale('log')
+        self.plot.yaxis.set_major_formatter(formatter)
             
         self.plot.grid(True, which='major')
         self.plot.minorticks_on()
         self.plot.grid(True, which='minor', alpha=0.2)
+        
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
@@ -244,6 +251,7 @@ class GraphView():
         self.plot.set_title(self.title, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
         self.plot.set_xlabel(self.xlabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
         self.plot.set_ylabel(self.ylabel, fontname=misc.GRAPH_FONT_FACE, fontsize=misc.GRAPH_FONT_SIZE)
+        # self.plot.ticklabel_format(style='plain')
         self.canvas.draw()
         
     # Callbacks
@@ -298,7 +306,7 @@ class GraphViewDialog():
         self.dialog_window = self.builder.get_object("dialog_window")
         self.dialog_window.set_title(window_caption)
         self.dialog_window.set_transient_for(self.toplevel)
-        self.dialog_window.set_size_request(int(self.toplevel.get_size_request()[0]*0.8),int(self.toplevel.get_size_request()[1]*0.8))
+        self.dialog_window.set_size_request(int(self.toplevel.get_size_request()[0]*0.6),int(self.toplevel.get_size_request()[1]*0.8))
         self.graph_box = self.builder.get_object("graph_box")
         self.combobox_title = self.builder.get_object("combobox_title")
         self.textbox_title = self.builder.get_object("textbox_title")
