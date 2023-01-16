@@ -28,7 +28,6 @@ from ..misc import FieldDict
 from .element import ElementModel
 from ..model.protection import ProtectionModel
 
-
 class Switch(ElementModel):
     """Generic switching element"""
 
@@ -102,7 +101,7 @@ class Fuse(Switch):
         self.ports = [[1, 0],
                       [1, 6]]
         # Data drapdowns
-        self.fuse_types = ['gG']
+        self.fuse_types = ['gG IEC', 'gG']
         self.pole_types = ['SP', 'TP']
         self.current_values = [16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250]
 
@@ -178,7 +177,8 @@ class Fuse(Switch):
         # Set fields
         self.fields = {'ref'        : self.get_field_dict('str', 'Reference', '', 'Q?'),
                        'name'       : self.get_field_dict('str', 'Name', '', ''),
-                       'type'       : self.get_field_dict('str', 'Type', '', 'gG', 
+                       'type'       : self.get_field_dict('str', 'Type', '', 'gG IEC', 
+                                                            alter_structure=True,
                                                             selection_list=self.fuse_types),
                        'poles'      : self.get_field_dict('str', 'Poles', '', 'TP', 
                                                             selection_list=self.pole_types),
@@ -190,8 +190,7 @@ class Fuse(Switch):
                                                             status_enable=False),
                        'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 50, 
                                                             alter_structure=True),
-                       'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None,
-                                                            alter_structure=True),
+                       'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None),
                        'sdfu'       : self.get_field_dict('bool', 'Switch Disconnector ?', '', True),
                        'closed'     : self.get_field_dict('bool', 'Closed ?', '', True)
                        }
@@ -236,7 +235,7 @@ class Fuse(Switch):
 
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
-        if code in ('type'):
+        if code in ('type', ):
             self.calculate_parameters(init=True)
         else:
             self.calculate_parameters(init=False)
@@ -246,29 +245,49 @@ class Fuse(Switch):
         In = self.fields['In']['value']
         Isc = self.fields['Isc']['value']*1000
 
-        # gG fuse
-        if self.fields['type']['value'] == self.fuse_types[0]:
+        # gG fuse outline
+        if self.fields['type']['value'] == 'gG IEC':
+            i_nf = 1.25
+            i_f = 1.6
+            t_conv = self.gg_conv_times[In]
             (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = self.gg_current_gates[In]
             (i2t_min_0_01, i2t_max_0_01) = self.gg_current_gates_prearc[In]
             i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
             i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
-            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                            ('point', i_max_5, 5),
-                            ('point', I_max_0_1, 0.1),
-                            ('point', i_max_0_01, 0.01),
-                            ('point', '1000*f.Isc', 0.01)]
-            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                            ('point', i_min_10, 10),
-                            ('point', i_min_0_1,0.1),
-                            ('point', i_min_0_01, 0.01),
-                            ('point', '1000*f.Isc', 0.01)]
+            u_points = [ (In*i_f, t_conv*3600),
+                        (i_max_5, 5),
+                        (I_max_0_1, 0.1)]
+            curve_u = misc.log_interpolate(u_points, num=10)
+            curve_u += [('point', i_max_0_01, 0.01),
+                        ('point', 1000*Isc, 0.01)]
+            l_points = [ (In*i_nf, t_conv*3600),
+                        (i_min_10, 10),
+                        (i_min_0_1,0.1),
+                        (i_min_0_01, 0.01)]
+            curve_l = misc.log_interpolate(l_points, num=10)
+            curve_l += [('point', i_min_0_01, 0.001),
+                        ('point', 1000*Isc, 0.001)]
             # Get protection model
-            parameters = {  'i_nf'  : ['Non fusing current', 'xIn', 1.25, None],
-                            'i_f'   : ['Fusing current', 'xIn', 1.6, None],
+            parameters = dict()
+            title = (self.fields['ref']['value'] + ', ' + 
+                    str(self.fields['In']['value']) + 'A, ' + 
+                    self.fields['type']['value'])
+        # gG fuse
+        elif self.fields['type']['value'] == 'gG':
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                        ('iec', 1, 'd.i_f*f.In', 80, 0, 4, 'd.i_f*f.In*1.05', '1000*f.Isc' , 10)]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                        ('iec', 1, 'd.i_nf*f.In', 80, 0, 4, 'd.i_nf*f.In*1.05', '1000*f.Isc' , 10)]
+            # Get protection model
+            parameters = {  'i_nf'  : ['Non fusing current', 'xIn', 1.35, None],
+                            'i_f'   : ['Fusing current', 'xIn', 1.45, None],
                             't_conv': ['Convensional time', 'Hrs', self.gg_conv_times[In], None]}
             title = (self.fields['ref']['value'] + ', ' + 
                     str(self.fields['In']['value']) + 'A, ' + 
                     self.fields['type']['value'])
+        else:
+            self.line_protection_model = None
+            return
         
         self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
         if not init:
@@ -320,20 +339,8 @@ class CircuitBreaker(Switch):
                                                         alter_structure=True),
                         'In_set':    self.get_field_dict('float', 'In_set', 'xIn', 1,
                                                       alter_structure=True, status_enable=True),
-                        'Im_min':   self.get_field_dict('float', 'Im (min)', 'xIn', 5,
-                                                        alter_structure=True, status_enable=True),
-                        'Im_max':   self.get_field_dict('float', 'Im (max)', 'xIn', 10,
-                                                        alter_structure=True, status_enable=True),
-                        't_mag':    self.get_field_dict('float', 't (inst)', 's', 0.001,
-                                                        alter_structure=True, status_enable=True),
                         'pcurve_l': self.get_field_dict('data', 'Line Protection', '', None),
                         'I0n':      self.get_field_dict('float', 'I0n', 'xIn', 1,
-                                                        alter_structure=True, status_enable=True),
-                        'I0m_min':  self.get_field_dict('float', 'I0m (min)', 'xIn', 5,
-                                                        alter_structure=True, status_enable=True),
-                        'I0m_max':  self.get_field_dict('float', 'I0m (max)', 'xIn', 10,
-                                                        alter_structure=True, status_enable=True),
-                        't0_mag':    self.get_field_dict('float', 't0 (inst)', 's', 0.001,
                                                         alter_structure=True, status_enable=True),
                         'Isc':      self.get_field_dict('int', 'Isc', 'kA', 10,
                                                         alter_structure=True),
@@ -417,15 +424,10 @@ class CircuitBreaker(Switch):
                         self.fields['In']['value'] = self.current_values_mcb[0]
                     self.fields['subtype']['selection_list'] = self.sub_types_mcb
                     self.fields['subtype']['value'] = self.sub_types_mcb[0]
+                    self.fields['Isc']['value'] = 10
 
                     self.fields['In_set']['status_enable'] = False
-                    self.fields['Im_min']['status_enable'] = False
-                    self.fields['Im_max']['status_enable'] = False
-                    self.fields['t_mag']['status_enable'] = False
                     self.fields['I0n']['status_enable'] = False
-                    self.fields['I0m_min']['status_enable'] = False
-                    self.fields['I0m_max']['status_enable'] = False
-                    self.fields['t0_mag']['status_enable'] = False
                     self.fields['drawout']['status_enable'] = False
 
                 elif value in ['RCCB']:
@@ -436,13 +438,7 @@ class CircuitBreaker(Switch):
                     self.fields['subtype']['value'] = self.sub_types_rccb[0]
 
                     self.fields['In_set']['status_enable'] = False
-                    self.fields['Im_min']['status_enable'] = False
-                    self.fields['Im_max']['status_enable'] = False
-                    self.fields['t_mag']['status_enable'] = False
                     self.fields['I0n']['status_enable'] = False
-                    self.fields['I0m_min']['status_enable'] = False
-                    self.fields['I0m_max']['status_enable'] = False
-                    self.fields['t0_mag']['status_enable'] = False
                     self.fields['drawout']['status_enable'] = False
 
                 elif value in ['MCCB','ACB']:
@@ -453,13 +449,7 @@ class CircuitBreaker(Switch):
                     self.fields['subtype']['value'] = ''
 
                     self.fields['In_set']['status_enable'] = True
-                    self.fields['Im_min']['status_enable'] = True
-                    self.fields['Im_max']['status_enable'] = True
-                    self.fields['t_mag']['status_enable'] = True
                     self.fields['I0n']['status_enable'] = True
-                    self.fields['I0m_min']['status_enable'] = True
-                    self.fields['I0m_max']['status_enable'] = True
-                    self.fields['t0_mag']['status_enable'] = True
                     self.fields['drawout']['status_enable'] = True
 
                 elif value in ['MPCB', 'CB']:
@@ -468,23 +458,17 @@ class CircuitBreaker(Switch):
                     self.fields['subtype']['value'] = ''
 
                     self.fields['In_set']['status_enable'] = True
-                    self.fields['Im_min']['status_enable'] = True
-                    self.fields['Im_max']['status_enable'] = True
-                    self.fields['t_mag']['status_enable'] = True
                     self.fields['I0n']['status_enable'] = True
-                    self.fields['I0m_min']['status_enable'] = True
-                    self.fields['I0m_max']['status_enable'] = True
-                    self.fields['t0_mag']['status_enable'] = True
                     self.fields['drawout']['status_enable'] = True
             
-            if code in ('type'):
+            if code in ('type', 'subtype'):
                 self.calculate_parameters(init=True)
             else:
                 self.calculate_parameters(init=False)
 
     def calculate_parameters(self, init=False):
         # Get parameters
-        In = self.fields['In']['value']
+        In = self.fields['In']['value'] * self.fields['In_set']['value']
         Isc = self.fields['Isc']['value']*1000
     
         # MCB IS/IEC 60898
@@ -492,40 +476,78 @@ class CircuitBreaker(Switch):
             i_f = 1.45
             i_nf = 1.13
             t_ins_min = 0.001
-            t_ins_max = 0.008
+            t_ins_max = 0.01
             t_conv = 1
+            i_m_min, i_m_max = self.sub_types_mcb_dict[self.fields['subtype']['value']]
             curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                        ('iec_inverse', 1, 'd.i_f*f.In', 'd.i_f*f.In*1.05', '10*f.In' , 50),
-                        ('point', '10*f.In', 'd.t_ins_max'),
+                        ('iec_e_inverse', 1.3, 'd.i_f*f.In', 'd.i_f*f.In*1.05', 'd.i_m_max*f.In' , 50),
+                        ('point', 'd.i_m_max*f.In', 'd.t_ins_max'),
                         ('point', '1000*f.Isc', 'd.t_ins_max')]
             curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                        ('iec_inverse', 1, 'd.i_nf*f.In', 'd.i_nf*f.In*1.05', '5*f.In' , 50),
-                        ('point', '5*f.In', 'd.t_ins_min'),
+                        ('iec_e_inverse', 0.7, 'd.i_nf*f.In', 'd.i_nf*f.In*1.05', 'd.i_m_min*f.In' , 50),
+                        ('point', 'd.i_m_min*f.In', 'd.t_ins_min'),
                         ('point', '1000*f.Isc', 'd.t_ins_min')]
+            parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
+                            'i_f'       : ['Fusing current', 'xIn', i_f, None],
+                            'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
+                            'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
+                            't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
+                            't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                            't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
         # CB generic IS/IEC 60947
-        else:
+        elif self.fields['type']['value'] in ('MCCB','CB','MPCB'):
             i_f = 1.3
             i_nf = 1.05
-            if self.fields['In']['value'] <= 63:
-                t_conv = 1
-            else:
-                t_conv = 2
-            t_ins_min = 0.01
-            t_ins_max = 0.02
+            i_m_min, i_m_max = (8*0.85, 8*1.15)
+            t_ins_min = 0.001
+            t_ins_max = 0.01
+            t_conv = 1
             curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                        ('iec_inverse', 1, 'd.i_f*f.In', 'd.i_f*f.In*1.05', '10*f.In' , 50),
-                        ('point', '10*f.In', 'd.t_ins_max'),
+                        ('iec_e_inverse', 1, 'd.i_f*f.In', 'd.i_f*f.In*1.01', '8*f.In*1.05' , 50),
+                        ('point', '8*f.In*1.05', 'd.t_ins_max'),
                         ('point', '1000*f.Isc', 'd.t_ins_max')]
             curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                        ('iec_inverse', 1, 'd.i_nf*f.In', 'd.i_nf*f.In*1.05', '5*f.In' , 50),
-                        ('point', '5*f.In', 'd.t_ins_min'),
+                        ('iec_e_inverse', 1, 'd.i_nf*f.In', 'd.i_nf*f.In*1.01', '8*f.In*0.95' , 50),
+                        ('point', '8*f.In*0.95', 'd.t_ins_min'),
                         ('point', '1000*f.Isc', 'd.t_ins_min')]
+            parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
+                            'i_f'       : ['Fusing current', 'xIn', i_f, None],
+                            'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
+                            'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
+                            't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
+                            't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                            't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
+        # CB generic IS/IEC 60947 delayed trip
+        elif self.fields['type']['value'] in ('ACB',):
+            i_f = 1.3
+            i_nf = 1.05
+            i_m_min, i_m_max = (8*0.85, 8*1.15)
+            if self.fields['type']['value'] in ('ACB',):
+                t_ins_min = 0.1
+                t_ins_max = 1
+            else:
+                t_ins_min = 0.001
+                t_ins_max = 0.01
+            t_conv = 1
+            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                        ('iec', 1, 'd.i_f*f.In', 80, 'd.t_ins_max', 2, 'd.i_f*f.In*1.01', '8*f.In*1.05' , 50),
+                        ('point', '8*f.In*1.05', 'd.t_ins_max'),
+                        ('point', '1000*f.Isc', 'd.t_ins_max')]
+            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                        ('iec', 1, 'd.i_nf*f.In', 80, 'd.t_ins_min', 2, 'd.i_nf*f.In*1.01', '8*f.In*0.95' , 50),
+                        ('point', '8*f.In*0.95', 'd.t_ins_min'),
+                        ('point', '1000*f.Isc', 'd.t_ins_min')]
+            parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
+                            'i_f'       : ['Fusing current', 'xIn', i_f, None],
+                            'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
+                            'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
+                            't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
+                            't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                            't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
+        else:
+            self.line_protection_model = None
+            return
         # Get protection model
-        parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
-                        'i_f'       : ['Fusing current', 'xIn', i_f, None],
-                        't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
-                        't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
-                        't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
         title = (self.fields['ref']['value'] + ', ' + 
                 self.fields['type']['value'] + ', ' + 
                 (self.fields['subtype']['value']  + ', ' if self.fields['subtype']['value'] else '') +

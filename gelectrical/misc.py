@@ -29,6 +29,8 @@ from uuid import uuid4 as uuid
 from urllib.parse import urlparse
 from urllib.request import url2pathname
 import pandas as pd
+import numpy as np
+from scipy.interpolate import interp1d
 
 from gi.repository import Gtk, Gdk, GLib, Pango, PangoCairo
 import openpyxl
@@ -1032,6 +1034,19 @@ def font_str_encode(family, size):
     pango_font.set_family(size)
     string = pango_font.to_string()
     return string
+
+def log_interpolate(points, num=10, prefix='point'):
+    x = [x for x,y in points]
+    y = [y for x,y in points]
+    fit_func = interp1d(np.log10(x), np.log10(y), kind='quadratic')
+    fit_func_mod = lambda x: list(10**(fit_func(np.log10(np.array(x)))))
+    X = np.geomspace(min(x), max(x), num=num)
+    Y = fit_func_mod(X)
+    if prefix:
+        points_int = [(prefix,x,y) for x,y in zip(X,Y)]
+    else:
+        points_int = [(x,y) for x,y in zip(X,Y)]
+    return points_int
 
 # Field handling functions
 

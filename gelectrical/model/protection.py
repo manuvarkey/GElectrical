@@ -21,6 +21,12 @@
 import copy
 import numpy as np
 from shapely import Polygon, Point, LineString
+# from scipy.interpolate import interp1d
+
+# def interpolate(x,y):
+#     fit_func = interp1d(np.log10(x), np.log10(y))
+#     fit_func_mod = lambda x: list(10**(fit_func(np.log10(np.array(x)))))
+#     return fit_func_mod
 
 # local files import
 from .. import misc
@@ -155,9 +161,14 @@ class ProtectionModel():
                 i_array, t_array = func(*data_eval)
                 curve_i += i_array
                 curve_t += t_array
-            # curve_i.insert(0, curve_i[0])  # Extend curves to end of graph
-            # curve_t.insert(0, misc.GRAPH_PROT_TIME_LIMITS[1])  # Extend curves to end of graph
-            curve = [(i,t) for i,t in zip(curve_i, curve_t)]
+            
+            curve = [(x,y) for x,y in zip(curve_i, curve_t)]
+
+            # fit_func = interpolate(curve_i, curve_t)
+            # X = np.geomspace(min(curve_i), max(curve_i), num=50)
+            # Y = fit_func(X)
+            # curve = [(x,y) for x,y in zip(X, Y)]
+
             return curve
 
         # Evaluate curves
