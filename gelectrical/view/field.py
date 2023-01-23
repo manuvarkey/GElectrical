@@ -320,7 +320,7 @@ class FieldView:
                     hbox.pack_start(caption_widget, False, False, 0)
                     hbox.pack_start(data_widget, True, True, 0)
                     
-                elif field['type'] in ('graph', 'data'):
+                elif field['type'] in ('graph', 'data') and field['value'] is not None:
                     
                     # Set graph options
                     if field['type'] == 'graph':
