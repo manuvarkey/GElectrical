@@ -87,7 +87,163 @@ class Switch(ElementModel):
         return power_model
 
 
-class Fuse(Switch):
+class ProtectionDevice(Switch):
+    """Generic Fuse element"""
+    
+    code = 'element_protectiondevice'
+    name = 'Protection Device'
+    group = 'Switching Devices'
+    icon = None
+
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        Switch.__init__(self, cordinates, **kwargs)
+        # Set fields
+        self.dict_subtype = {}
+        self.dict_prot_curve_type = {}
+        self.dict_prot_0_curve_type = {}
+        self.dict_in = {}
+        self.dict_i0 = {}
+        self.fields.update({'type'       : self.get_field_dict('str', 'Type', '', '',
+                                                            alter_structure=True),
+                        'subtype':  self.get_field_dict('str', 'Sub Type', '', '',
+                                                             alter_structure=True),
+                        'prot_curve_type':  self.get_field_dict('str', 'Line Protection curve', '', '',
+                                                             alter_structure=True),
+                        'prot_0_curve_type':  self.get_field_dict('str', 'Ground Protection curve', '', '',
+                                                             alter_structure=True),
+                        'poles'      : self.get_field_dict('str', 'Poles', '', 'TP'),
+                        'Un'         : self.get_field_dict('float', 'Un', 'kV', 0.415),
+                        'In'         : self.get_field_dict('int', 'In', 'A', 63,
+                                                            alter_structure=True),
+                        'In_set'     : self.get_field_dict('float', 'In_set', 'xIn', 1,
+                                                            alter_structure=True),
+                        'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 50, 
+                                                            alter_structure=True),
+                        'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None),
+                        'I0'         : self.get_field_dict('int', 'I0', 'A', 63,
+                                                            status_enable=False, 
+                                                            alter_structure=True),
+                        'I0_set'     : self.get_field_dict('float', 'I0_set', 'xIn', 1, 
+                                                            status_enable=False,
+                                                            alter_structure=True),
+                        'pcurve_g'   : self.get_field_dict('data', 'Ground Protection', '', None,
+                                                            status_enable=False,),
+                       })
+        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
+        self.fields['pcurve_g']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
+        self.line_protection_model = None
+        self.ground_protection_model = None
+
+    def get_line_protection_model(self):
+        curve_u = []
+        curve_l = []
+        parameters = dict()
+        return parameters, curve_u, curve_l
+
+    def get_ground_protection_model(self):
+        curve_u = []
+        curve_l = []
+        parameters = dict()
+        return parameters, curve_u, curve_l
+
+    def set_text_field_value(self, code, value):
+        ElementModel.set_text_field_value(self, code, value)
+        if code in ('type', 'subtype', 'prot_curve_type', 'prot_0_curve_type'):
+            # Set subtype
+            if self.fields['type']['value'] in self.dict_subtype:
+                self.fields['subtype']['selection_list'] = self.dict_subtype[self.fields['type']['value']]
+                self.fields['subtype']['status_enable'] = True
+            else:
+                self.fields['subtype']['selection_list'] = None
+                self.fields['subtype']['value'] = 'None'
+                self.fields['subtype']['status_enable'] = False
+
+            # Set protection curve
+            if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_curve_type:
+                self.fields['prot_curve_type']['selection_list'] = self.dict_prot_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])]
+                self.fields['prot_curve_type']['status_enable'] = True
+            else:
+                self.fields['prot_curve_type']['selection_list'] = None
+                self.fields['prot_curve_type']['value'] = 'None'
+                self.fields['prot_curve_type']['status_enable'] = False
+            if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_0_curve_type:
+                self.fields['prot_0_curve_type']['selection_list'] = self.dict_prot_0_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])]
+                self.fields['prot_0_curve_type']['status_enable'] = True
+            else:
+                self.fields['prot_0_curve_type']['selection_list'] = None
+                self.fields['prot_0_curve_type']['value'] = 'None'
+                self.fields['prot_0_curve_type']['status_enable'] = False
+
+            # Set In selection list
+            if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value']) in self.dict_in:
+                self.fields['In']['selection_list'] = self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value'])]
+            elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_in:
+                self.fields['In']['selection_list'] = self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], '*')]
+            else:
+                self.fields['In']['selection_list'] = None
+            if self.fields['In']['selection_list'] and self.fields['In']['value'] not in self.fields['In']['selection_list']:
+                self.fields['In']['value'] = self.fields['In']['selection_list'][0]
+
+            # Set I0 selection list
+            if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value']) in self.dict_i0:
+                self.fields['I0']['selection_list'] = self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value'])]
+            elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_i0:
+                self.fields['I0']['selection_list'] = self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], '*')]
+            else:
+                self.fields['I0']['selection_list'] = None
+            if self.fields['I0']['selection_list'] and self.fields['I0']['value'] not in self.fields['I0']['selection_list']:
+                self.fields['I0']['value'] = self.fields['I0']['selection_list'][0]
+
+            # Enable or disable curves
+            if self.fields['prot_curve_type']['value'] in ('Disabled', 'None', ''):
+                self.fields['In_set']['status_enable'] = False
+                self.fields['pcurve_l']['status_enable'] = False
+            else:
+                self.fields['In_set']['status_enable'] = True
+                self.fields['pcurve_l']['status_enable'] = True
+
+            if self.fields['prot_0_curve_type']['value'] in ('Disabled', 'None', ''):
+                self.fields['I0']['status_enable'] = False
+                self.fields['I0_set']['status_enable'] = False
+                self.fields['pcurve_g']['status_enable'] = False
+            else:
+                self.fields['I0']['status_enable'] = True
+                self.fields['I0_set']['status_enable'] = True
+                self.fields['pcurve_g']['status_enable'] = True
+
+            self.calculate_parameters(init=True)
+        else:
+            self.calculate_parameters(init=False)
+
+    def calculate_parameters(self, init=False):
+        # Form title
+        title = (self.fields['ref']['value'] + ', ' + 
+                str(self.fields['In']['value']) + 'A, ' + 
+                    self.fields['type']['value'] + ' - ' + 
+                    self.fields['subtype']['value'] + ' - ' + 
+                    self.fields['prot_curve_type']['value'])
+        # Set line protection model
+        parameters, curve_u, curve_l = self.get_line_protection_model()
+        if curve_l and curve_u:
+            self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
+            if not init:
+                self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
+            self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
+        else:
+            self.fields['pcurve_l']['value'] = None
+        # Set ground protection model
+        parameters, curve_u, curve_l = self.get_ground_protection_model()
+        if curve_l and curve_u:
+            self.ground_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
+            if not init:
+                self.ground_protection_model.update_parameters(self.fields['pcurve_g']['value']['parameters'])
+            self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
+        else:
+            self.fields['pcurve_g']['value'] = None
+
+
+class Fuse(ProtectionDevice):
     """Generic Fuse element"""
     
     code = 'element_fuse'
@@ -97,17 +253,88 @@ class Fuse(Switch):
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        Switch.__init__(self, cordinates, **kwargs)
+        ProtectionDevice.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0],
                       [1, 6]]
         # Data drapdowns
-        self.fuse_types = ['gG IEC', 'gG']
-        self.pole_types = ['SP', 'TP']
-        self.current_values = [16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250]
+        fuse_types = ['LV fuses']
+        fuse_subtypes_lv = ['gG']
+        fuse_prottypes_gg = ['gG IEC', 'gG']
+        pole_types = ['SP', 'TP']
+        current_values = [16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250]
+
+        self.dict_in = {('LV fuses', 'gG', 'gG IEC'): current_values,
+                        ('LV fuses', 'gG', 'gG'): current_values}
+        self.dict_i0 = {}
+        self.dict_subtype = {'LV fuses': fuse_subtypes_lv}
+        self.dict_prot_curve_type = {('LV fuses', 'gG'): fuse_prottypes_gg}
+        self.dict_prot_0_curve_type = {}
+
+        # Set fields
+        self.fields.update({'sdfu'       : self.get_field_dict('bool', 'Switch Disconnector ?', '', True)})
+        self.fields['type']['selection_list'] = fuse_types
+        self.fields['type']['value'] = fuse_types[0]
+        self.fields['subtype']['selection_list'] = fuse_subtypes_lv
+        self.fields['subtype']['value'] = fuse_subtypes_lv[0]
+        self.fields['prot_curve_type']['selection_list'] = fuse_prottypes_gg
+        self.fields['prot_curve_type']['value'] = fuse_prottypes_gg[0]
+        self.fields['poles']['selection_list'] = pole_types
+        self.fields['poles']['value'] = 'TP'
+        self.fields['In']['value'] = 63
+        self.fields['Isc']['value'] = 50
+
+        self.text_model = [[(3.5,0.5), "${poles}, ${ref}", True],
+                           [(3.5,None), "${str(In)} A, ${type}", True],
+                           [(3.5,None), "${Isc}kA", True],
+                           [(3.5,None), "${name}", True]]
+        self.schem_model_fuse = [ 
+                             ['LINE',(1,0),(1,6), []],
+                             ['RECT', (0.5,1.5), 1, 3, False, []]
+                           ]
+        self.schem_model_sdfu = [ 
+                             ['LINE',(1,0),(1,2), []],
+                             ['LINE',(1,4),(2.5,2), []],
+                             ['LINE',(1,4),(1,5), []],
+                             # Round and bar
+                             ['LINE',(0.5,2),(1.5,2), []],
+                             ['CIRCLE', (1,2.3), 0.3, False, []],
+                             # Fuse
+                             ['LINE',(1,5),(1,10), []],
+                             ['RECT', (0.5,6), 1, 3, False, []]
+                           ]
+        self.calculate_parameters(init=True)
+
+    def render_element(self, context):
+        """Render element to context"""
+        # Preprocessing
+        if self.fields['sdfu']['value']:
+            self.schem_model = self.schem_model_sdfu
+            self.ports = [[1, 0], [1, 10]]
+        else:
+            self.schem_model = self.schem_model_fuse
+            self.ports = [[1, 0], [1, 6]]
+        # Render
+        if self.fields['closed']['value'] == True:
+            self.render_model(context, self.schem_model)
+            self.render_text(context, self.text_model)
+        else:
+            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+        # Post processing
+        self.modify_extends()
+
+    def get_line_protection_model(self):
+        f = FieldDict(self.fields)
+        In = f.In
+        Isc = f.Isc        
+
+        curve_u = []
+        curve_l = []
+        parameters = dict()
 
         # gG fuse data parameters
         ## IEC 60269-1 - (I_min @ 10s, I_max @ 5s, I_min @ 0.1s, I_max @ 0.1s) in A
-        self.gg_current_gates = {  16: [33,65,85,150],
+        gg_current_gates = {  16: [33,65,85,150],
                                 20: [42,85,110,200],
                                 25: [52,110,150,260],
 
@@ -132,7 +359,7 @@ class Fuse(Switch):
                                 1000: [4000,9500,14140,24000],
                                 1250: [5000,13000,19000,35000]}
         ## IEC 60269-1 - (I2t_min, I2t_max) @ 0.01 s in 1e3 A2/s
-        self.gg_current_gates_prearc = {   16: [0.3,1],
+        gg_current_gates_prearc = {   16: [0.3,1],
                                         20: [0.5,1.8],
                                         25: [1,3],
                                         32: [1.8,5],
@@ -153,7 +380,7 @@ class Fuse(Switch):
                                         1000: [7840,25000],
                                         1250: [13700,47000]}
         ## IEC 60269-1 - Conventional time in Hrs
-        self.gg_conv_times = { 16: 1,
+        gg_conv_times = { 16: 1,
                             20: 1,
                             25: 1,
                             32: 1,
@@ -174,127 +401,45 @@ class Fuse(Switch):
                             1000: 4,
                             1250: 4}
 
-        # Set fields
-        self.fields = {'ref'        : self.get_field_dict('str', 'Reference', '', 'Q?'),
-                       'name'       : self.get_field_dict('str', 'Name', '', ''),
-                       'type'       : self.get_field_dict('str', 'Type', '', 'gG IEC', 
-                                                            alter_structure=True,
-                                                            selection_list=self.fuse_types),
-                       'poles'      : self.get_field_dict('str', 'Poles', '', 'TP', 
-                                                            selection_list=self.pole_types),
-                       'Un'         : self.get_field_dict('float', 'Un', 'kV', 0.415),
-                       'In'         : self.get_field_dict('int', 'In', 'A', 63, 
-                                                            selection_list=self.current_values,
-                                                            alter_structure=True),
-                       'In_set'     : self.get_field_dict('float', 'In_set', 'xIn', 1, 
-                                                            status_enable=False),
-                       'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 50, 
-                                                            alter_structure=True),
-                       'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None),
-                       'sdfu'       : self.get_field_dict('bool', 'Switch Disconnector ?', '', True),
-                       'closed'     : self.get_field_dict('bool', 'Closed ?', '', True)
-                       }
-        self.text_model = [[(3.5,0.5), "${poles}, ${ref}", True],
-                           [(3.5,None), "${str(In)} A, ${type}", True],
-                           [(3.5,None), "${Isc}kA", True],
-                           [(3.5,None), "${name}", True]]
-        self.schem_model_fuse = [ 
-                             ['LINE',(1,0),(1,6), []],
-                             ['RECT', (0.5,1.5), 1, 3, False, []]
-                           ]
-        self.schem_model_sdfu = [ 
-                             ['LINE',(1,0),(1,2), []],
-                             ['LINE',(1,4),(2.5,2), []],
-                             ['LINE',(1,4),(1,5), []],
-                             # Round and bar
-                             ['LINE',(0.5,2),(1.5,2), []],
-                             ['CIRCLE', (1,2.3), 0.3, False, []],
-                             # Fuse
-                             ['LINE',(1,5),(1,10), []],
-                             ['RECT', (0.5,6), 1, 3, False, []]
-                           ]
-        self.line_protection_model = None
-        self.calculate_parameters(init=True)
+        if f.type == 'LV fuses':
+            # gG fuse
+            if f.subtype == 'gG':
+                if f.prot_curve_type == 'gG IEC':
+                    i_nf = 1.25
+                    i_f = 1.6
+                    t_conv = gg_conv_times[In]
+                    (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = gg_current_gates[In]
+                    (i2t_min_0_01, i2t_max_0_01) = gg_current_gates_prearc[In]
+                    i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
+                    i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
+                    u_points = [ (In*i_f, t_conv*3600),
+                                (i_max_5, 5),
+                                (I_max_0_1, 0.1)]
+                    curve_u = misc.log_interpolate(u_points, num=10)
+                    curve_u += [('point', i_max_0_01, 0.01),
+                                ('point', 1000*Isc, 0.01)]
+                    l_points = [ (In*i_nf, t_conv*3600),
+                                (i_min_10, 10),
+                                (i_min_0_1,0.1),
+                                (i_min_0_01, 0.01)]
+                    curve_l = misc.log_interpolate(l_points, num=10)
+                    curve_l += [('point', i_min_0_01, 0.001),
+                                ('point', 1000*Isc, 0.001)]
+                    # Get protection model
+                    parameters = dict()
+                elif f.subtype == 'gG':
+                    curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                                ('iec', 1, 'd.i_f*f.In', 80, 0, 4, 'd.i_f*f.In*1.05', '1000*f.Isc' , 10)]
+                    curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                                ('iec', 1, 'd.i_nf*f.In', 80, 0, 4, 'd.i_nf*f.In*1.05', '1000*f.Isc' , 10)]
+                    # Get protection model
+                    parameters = {  'i_nf'  : ['Non fusing current', 'xIn', 1.35, None],
+                                    'i_f'   : ['Fusing current', 'xIn', 1.45, None],
+                                    't_conv': ['Convensional time', 'Hrs', gg_conv_times[In], None]}
+        return parameters, curve_u, curve_l
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        if self.fields['sdfu']['value']:
-            self.schem_model = self.schem_model_sdfu
-        else:
-            self.schem_model = self.schem_model_fuse
-        # Render
-        if self.fields['closed']['value'] == True:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
 
-    def set_text_field_value(self, code, value):
-        ElementModel.set_text_field_value(self, code, value)
-        if code in ('type', ):
-            self.calculate_parameters(init=True)
-        else:
-            self.calculate_parameters(init=False)
-
-    def calculate_parameters(self, init=False):
-        # Get parameters
-        In = self.fields['In']['value']
-        Isc = self.fields['Isc']['value']*1000
-
-        # gG fuse outline
-        if self.fields['type']['value'] == 'gG IEC':
-            i_nf = 1.25
-            i_f = 1.6
-            t_conv = self.gg_conv_times[In]
-            (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = self.gg_current_gates[In]
-            (i2t_min_0_01, i2t_max_0_01) = self.gg_current_gates_prearc[In]
-            i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
-            i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
-            u_points = [ (In*i_f, t_conv*3600),
-                        (i_max_5, 5),
-                        (I_max_0_1, 0.1)]
-            curve_u = misc.log_interpolate(u_points, num=10)
-            curve_u += [('point', i_max_0_01, 0.01),
-                        ('point', 1000*Isc, 0.01)]
-            l_points = [ (In*i_nf, t_conv*3600),
-                        (i_min_10, 10),
-                        (i_min_0_1,0.1),
-                        (i_min_0_01, 0.01)]
-            curve_l = misc.log_interpolate(l_points, num=10)
-            curve_l += [('point', i_min_0_01, 0.001),
-                        ('point', 1000*Isc, 0.001)]
-            # Get protection model
-            parameters = dict()
-            title = (self.fields['ref']['value'] + ', ' + 
-                    str(self.fields['In']['value']) + 'A, ' + 
-                    self.fields['type']['value'])
-        # gG fuse
-        elif self.fields['type']['value'] == 'gG':
-            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                        ('iec', 1, 'd.i_f*f.In', 80, 0, 4, 'd.i_f*f.In*1.05', '1000*f.Isc' , 10)]
-            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                        ('iec', 1, 'd.i_nf*f.In', 80, 0, 4, 'd.i_nf*f.In*1.05', '1000*f.Isc' , 10)]
-            # Get protection model
-            parameters = {  'i_nf'  : ['Non fusing current', 'xIn', 1.35, None],
-                            'i_f'   : ['Fusing current', 'xIn', 1.45, None],
-                            't_conv': ['Convensional time', 'Hrs', self.gg_conv_times[In], None]}
-            title = (self.fields['ref']['value'] + ', ' + 
-                    str(self.fields['In']['value']) + 'A, ' + 
-                    self.fields['type']['value'])
-        else:
-            self.line_protection_model = None
-            return
-        
-        self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
-        if not init:
-            self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
-        self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
-
-class CircuitBreaker(Switch):
+class CircuitBreaker(ProtectionDevice):
     """Generic circuit breaker element"""
     
     code = 'element_circuitbreaker'
@@ -304,49 +449,49 @@ class CircuitBreaker(Switch):
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        Switch.__init__(self, cordinates, **kwargs)
+        ProtectionDevice.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0],
                       [1, 6]]
-        self.pole_types = ['SP', 'SPN', 'DP', 'TP', 'TPN', 'FP']
-        self.breaker_types = ['MCB','MCCB','ACB','MPCB','CB','RCCB']
-        self.sub_types_mcb = ['B Curve', 'C Curve', 'D Curve']
-        self.sub_types_mcb_dict = {'B Curve'     : (2,5),
-                                   'C Curve'     : (5,10),
-                                   'D Curve'     : (10,20),
-                                   }
-        self.sub_types_rccb = ['30 mA', '100 mA', '300 mA', '500 mA']
-        self.sub_types_rccb_dict = {'30 mA'     : (0.03,0.015,0.03),
-                                    '100 mA'    : (0.1,0.05,0.1),
-                                    '300 mA'    : (0.3,0.15,0.3),
-                                    '500 mA'    : (0.5,0.25,0.5),
-                                   }
-        self.current_values_mcb = [6,10,16,20,25,32,40,50,63,80,100]
-        self.current_values_rccb = [25,32,40,63,80,100]
-        self.current_values = [6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,320,400,500,630,800,1000,1250,1600,2000,2500,3200]
-        self.fields = { 'ref':      self.get_field_dict('str', 'Reference', '', 'Q?'),
-                        'name':     self.get_field_dict('str', 'Name', '', ''),
-                        'type':     self.get_field_dict('str', 'Type', '', 'CB',
-                                                             selection_list=self.breaker_types,
-                                                             alter_structure=True),
-                        'subtype':  self.get_field_dict('str', 'Sub Type', '', '',
-                                                             selection_list=None,
-                                                             alter_structure=True),
-                        'poles':    self.get_field_dict('str', 'Poles', '', 'TPN',
-                                                        selection_list=self.pole_types),
-                        'Un':       self.get_field_dict('float', 'Un', 'kV', 0.415),
-                        'In':       self.get_field_dict('int', 'In', 'A', 63,
-                                                        selection_list=self.current_values,
-                                                        alter_structure=True),
-                        'In_set':    self.get_field_dict('float', 'In_set', 'xIn', 1,
-                                                      alter_structure=True, status_enable=True),
-                        'pcurve_l': self.get_field_dict('data', 'Line Protection', '', None),
-                        'I0n':      self.get_field_dict('float', 'I0n', 'xIn', 1,
-                                                        alter_structure=True, status_enable=True),
-                        'Isc':      self.get_field_dict('int', 'Isc', 'kA', 10,
-                                                        alter_structure=True),
-                        'drawout':  self.get_field_dict('bool', 'Drawout type ?', '', False, status_enable=True),
-                        'closed':   self.get_field_dict('bool', 'Closed ?', '', True)}
-        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
+        pole_types = ['SP', 'SPN', 'DP', 'TP', 'TPN', 'FP']
+        current_values_mcb = [6,10,16,20,25,32,40,50,63,80,100]
+        current_values_rccb = [25,32,40,63,80,100]
+        current_values_0_rccb = [0.03, 0.1, 0.3, 0.5]
+        current_values_mccb = [16,20,25,32,40,50,63,80,100,125,160,200,250,320,400,500,630,800,1000]
+        current_values_acb = [630,800,1000,1250,1600,2000,2500,3200]
+
+        breaker_types = ['LV breakers']
+        subtypes_lv = ['MCB','MCCB','ACB','MPCB','CB','RCCB']
+        prottypes_cb = ['EM Trip', 'Digital Trip', 'IEC Inv', 'IEC V.Inv', 'IEC E.Inv', 'IEEE M.Inv', 'IEEE V.Inv', 'IEEE E.Inv']
+        prottypes_mcb = ['B Curve', 'C Curve', 'D Curve']
+        sub_types_rccb = ['Type A', 'Type AC', 'Type B', 'Type AS']
+        self.dict_in = {('LV breakers', 'MCB', '*'): current_values_mcb,
+                        ('LV breakers', 'MCCB', '*'): current_values_mccb,
+                        ('LV breakers', 'ACB', '*'): current_values_acb,
+                        ('LV breakers', 'MPCB', '*'): None,
+                        ('LV breakers', 'CB', '*'): None,
+                        ('LV breakers', 'RCCB', '*'): current_values_rccb}
+        self.dict_i0 = {('LV breakers', 'RCCB', '*'): current_values_0_rccb}
+        self.dict_subtype = {'LV breakers': subtypes_lv}
+        self.dict_prot_curve_type = {('LV breakers', 'MCB'): prottypes_mcb,
+                                     ('LV breakers', 'MCCB'): prottypes_cb,
+                                     ('LV breakers', 'ACB'): prottypes_cb,
+                                     ('LV breakers', 'MPCB'): ['EM Trip'],
+                                     ('LV breakers', 'CB'): prottypes_cb,
+                                     ('LV breakers', 'RCCB'): ['None']}
+        self.dict_prot_0_curve_type = {('LV breakers', 'RCCB'): sub_types_rccb}
+
+        self.fields.update({'drawout':  self.get_field_dict('bool', 'Drawout type ?', '', False)})
+        self.fields['type']['selection_list'] = breaker_types
+        self.fields['type']['value'] = breaker_types[0]
+        self.fields['subtype']['selection_list'] = subtypes_lv
+        self.fields['subtype']['value'] = subtypes_lv[0]
+        self.fields['prot_curve_type']['selection_list'] = prottypes_mcb
+        self.fields['prot_curve_type']['value'] = prottypes_mcb[1]
+        self.fields['poles']['selection_list'] = pole_types
+        self.fields['poles']['value'] = 'TPN'
+        self.fields['In']['value'] = 63
+        self.fields['Isc']['value'] = 10
+
         self.text_model = [[(3.5,0.5), "${type}, ${poles}, ${ref}", True],
                            [(3.5,None), "${str(In) + 'A' if In_set == 1 else str(In) + 'A(' + str(round(In*In_set)) + 'A)'}, ${subtype}", True],
                            [(3.5,None), "${Isc}kA", True],
@@ -399,7 +544,7 @@ class CircuitBreaker(Switch):
         if self.fields['drawout']['value']:
             self.schem_model = self.schem_model_do
         else:
-            if  self.fields['type']['value'] in ['RCCB']:
+            if  self.fields['subtype']['value'] in ['RCCB']:
                 self.schem_model = self.schem_model_rccb
             else:
                 self.schem_model = self.schem_model_ndo
@@ -412,150 +557,79 @@ class CircuitBreaker(Switch):
             self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
-
-    def set_text_field_value(self, code, value):
-        if self.fields and code in self.fields:
-            self.fields[code]['value'] = value
-            # Modify variables based on selection
-            if code == 'type':
-                if value in ['MCB']:
-                    self.fields['In']['selection_list'] = self.current_values_mcb
-                    if self.fields['In']['value'] not in self.current_values_mcb:
-                        self.fields['In']['value'] = self.current_values_mcb[0]
-                    self.fields['subtype']['selection_list'] = self.sub_types_mcb
-                    self.fields['subtype']['value'] = self.sub_types_mcb[0]
-                    self.fields['Isc']['value'] = 10
-
-                    self.fields['In_set']['status_enable'] = False
-                    self.fields['I0n']['status_enable'] = False
-                    self.fields['drawout']['status_enable'] = False
-
-                elif value in ['RCCB']:
-                    self.fields['In']['selection_list'] = self.current_values_rccb
-                    if self.fields['In']['value'] not in self.current_values_rccb:
-                        self.fields['In']['value'] = self.current_values_rccb[0]
-                    self.fields['subtype']['selection_list'] = self.sub_types_rccb
-                    self.fields['subtype']['value'] = self.sub_types_rccb[0]
-
-                    self.fields['In_set']['status_enable'] = False
-                    self.fields['I0n']['status_enable'] = False
-                    self.fields['drawout']['status_enable'] = False
-
-                elif value in ['MCCB','ACB']:
-                    self.fields['In']['selection_list'] = self.current_values
-                    if self.fields['In']['value'] not in self.current_values:
-                        self.fields['In']['value'] = self.current_values[0]
-                    self.fields['subtype']['selection_list'] = None
-                    self.fields['subtype']['value'] = ''
-
-                    self.fields['In_set']['status_enable'] = True
-                    self.fields['I0n']['status_enable'] = True
-                    self.fields['drawout']['status_enable'] = True
-
-                elif value in ['MPCB', 'CB']:
-                    self.fields['In']['selection_list'] = None
-                    self.fields['subtype']['selection_list'] = None
-                    self.fields['subtype']['value'] = ''
-
-                    self.fields['In_set']['status_enable'] = True
-                    self.fields['I0n']['status_enable'] = True
-                    self.fields['drawout']['status_enable'] = True
             
-            if code in ('type', 'subtype'):
-                self.calculate_parameters(init=True)
-            else:
-                self.calculate_parameters(init=False)
-
-    def calculate_parameters(self, init=False):
+    def get_line_protection_model(self):
         # Get parameters
-        In = self.fields['In']['value'] * self.fields['In_set']['value']
-        Isc = self.fields['Isc']['value']*1000
-    
-        # MCB IS/IEC 60898
-        if self.fields['type']['value'] in ('MCB',):
-            i_f = 1.45
-            i_nf = 1.13
-            t_ins_min = 0.001
-            t_ins_max = 0.01
-            t_conv = 1
-            i_m_min, i_m_max = self.sub_types_mcb_dict[self.fields['subtype']['value']]
-            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                        ('iec_e_inverse', 1.3, 'd.i_f*f.In', 'd.i_f*f.In*1.05', 'd.i_m_max*f.In' , 50),
-                        ('point', 'd.i_m_max*f.In', 'd.t_ins_max'),
-                        ('point', '1000*f.Isc', 'd.t_ins_max')]
-            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                        ('iec_e_inverse', 0.7, 'd.i_nf*f.In', 'd.i_nf*f.In*1.05', 'd.i_m_min*f.In' , 50),
-                        ('point', 'd.i_m_min*f.In', 'd.t_ins_min'),
-                        ('point', '1000*f.Isc', 'd.t_ins_min')]
-            parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
-                            'i_f'       : ['Fusing current', 'xIn', i_f, None],
-                            'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
-                            'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
-                            't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
-                            't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
-                            't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
-        # CB generic IS/IEC 60947
-        elif self.fields['type']['value'] in ('MCCB','CB','MPCB'):
-            i_f = 1.3
-            i_nf = 1.05
-            i_m_min, i_m_max = (8*0.85, 8*1.15)
-            t_ins_min = 0.001
-            t_ins_max = 0.01
-            t_conv = 1
-            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                        ('iec_e_inverse', 1, 'd.i_f*f.In', 'd.i_f*f.In*1.01', '8*f.In*1.05' , 50),
-                        ('point', '8*f.In*1.05', 'd.t_ins_max'),
-                        ('point', '1000*f.Isc', 'd.t_ins_max')]
-            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                        ('iec_e_inverse', 1, 'd.i_nf*f.In', 'd.i_nf*f.In*1.01', '8*f.In*0.95' , 50),
-                        ('point', '8*f.In*0.95', 'd.t_ins_min'),
-                        ('point', '1000*f.Isc', 'd.t_ins_min')]
-            parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
-                            'i_f'       : ['Fusing current', 'xIn', i_f, None],
-                            'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
-                            'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
-                            't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
-                            't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
-                            't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
-        # CB generic IS/IEC 60947 delayed trip
-        elif self.fields['type']['value'] in ('ACB',):
-            i_f = 1.3
-            i_nf = 1.05
-            i_m_min, i_m_max = (8*0.85, 8*1.15)
-            if self.fields['type']['value'] in ('ACB',):
-                t_ins_min = 0.1
-                t_ins_max = 1
-            else:
+        f = FieldDict(self.fields)
+        In = f.In
+        Isc = f.Isc
+
+        curve_u = []
+        curve_l = []
+        parameters = dict()
+
+        sub_types_mcb_dict = {'B Curve'     : (2,5),
+                                'C Curve'     : (5,10),
+                                'D Curve'     : (10,20),
+                                }
+        sub_types_rccb_dict = {'30 mA'     : (0.03,0.015,0.03),
+                                '100 mA'    : (0.1,0.05,0.1),
+                                '300 mA'    : (0.3,0.15,0.3),
+                                '500 mA'    : (0.5,0.25,0.5),
+                                }
+        if f.type in ('LV breakers',):
+            # MCB IS/IEC 60898
+            if f.subtype in ('MCB',):
                 t_ins_min = 0.001
                 t_ins_max = 0.01
-            t_conv = 1
-            curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                        ('iec', 1, 'd.i_f*f.In', 80, 'd.t_ins_max', 2, 'd.i_f*f.In*1.01', '8*f.In*1.05' , 50),
-                        ('point', '8*f.In*1.05', 'd.t_ins_max'),
-                        ('point', '1000*f.Isc', 'd.t_ins_max')]
-            curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                        ('iec', 1, 'd.i_nf*f.In', 80, 'd.t_ins_min', 2, 'd.i_nf*f.In*1.01', '8*f.In*0.95' , 50),
-                        ('point', '8*f.In*0.95', 'd.t_ins_min'),
-                        ('point', '1000*f.Isc', 'd.t_ins_min')]
-            parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
-                            'i_f'       : ['Fusing current', 'xIn', i_f, None],
-                            'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
-                            'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
-                            't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
-                            't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
-                            't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
-        else:
-            self.line_protection_model = None
-            return
-        # Get protection model
-        title = (self.fields['ref']['value'] + ', ' + 
-                self.fields['type']['value'] + ', ' + 
-                (self.fields['subtype']['value']  + ', ' if self.fields['subtype']['value'] else '') +
-                str(self.fields['In']['value']) + 'A')
-        self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
-        if not init:
-            self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
-        self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
+                i_m_min, i_m_max = sub_types_mcb_dict[self.fields['prot_curve_type']['value']]
+                curve_u = [ ('point', 1.45*In, 3600),
+                            ('iec', 1, 1.43*In, 85, 0, 2, 1.45*In, i_m_max*In , 50),
+                            ('point', i_m_max*In, t_ins_max),
+                            ('point', 1000*Isc, t_ins_max)]
+                curve_l = [ ('point', 1.13*In, 3600),
+                            ('iec', 1, 1.125*In, 35, 0, 2, 1.13*In, i_m_min*In , 50),
+                            ('point', i_m_min*In, t_ins_min),
+                            ('point', 1000*Isc, t_ins_min)]
+                parameters = {}
+            # CB generic IS/IEC 60947
+            elif f.subtype in ('MCCB','ACB','MPCB','CB'):
+                i_f = 1.3
+                i_nf = 1.05
+                i_m_min, i_m_max = (8*0.85, 8*1.15)
+                if f.subtype in ('ACB',):
+                    t_ins_min = 0.1
+                    t_ins_max = 1
+                    t_delay = 0.1
+                else:
+                    t_ins_min = 0.001
+                    t_ins_max = 0.01
+                    t_delay = 0
+                t_conv = 1
+                curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
+                            ('iec', 1, 'd.i_f*f.In', 80, 'd.t_delay*1.1', 2, 'd.i_f*f.In*1.01', '8*f.In*1.05' , 50),
+                            ('point', '8*f.In*1.05', 'd.t_ins_max'),
+                            ('point', '1000*f.Isc', 'd.t_ins_max')]
+                curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
+                            ('iec', 1, 'd.i_nf*f.In', 80, 'd.t_delay*0.9', 2, 'd.i_nf*f.In*1.01', '8*f.In*0.95' , 50),
+                            ('point', '8*f.In*0.95', 'd.t_ins_min'),
+                            ('point', '1000*f.Isc', 'd.t_ins_min')]
+                parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
+                                'i_f'       : ['Fusing current', 'xIn', i_f, None],
+                                'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
+                                'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
+                                't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
+                                't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                                't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None],
+                                't_delay' : ['Trip time delay', 's', t_delay, None]}
+
+        return parameters, curve_u, curve_l
+
+    def get_ground_protection_model(self):
+        curve_u = []
+        curve_l = []
+        parameters = dict()
+        return parameters, curve_u, curve_l
 
 
 class Contactor(Switch):
