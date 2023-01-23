@@ -55,19 +55,14 @@ class ProtectionModel():
                                 ('thermal', tms, i_n, i1, i2, n),
                                     ... ],
                         'curve_l': ...}
-                'graph_model'      : (title, models),
-                'graph_options'    : (xlim, ylim, xlabel, ylabel)}
+                'graph_model'      : (title, models)}
             }
         """
         self.title = title
         self.data_struct = {'type'          : 'protection',
                             'parameters'    : parameters,
                             'data'          : {'curve_u': curve_u,'curve_l': curve_l},
-                            'graph_model'   : [],
-                            'graph_options' : ( misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                misc.GRAPH_PROT_TIME_LIMITS, 
-                                                'I (A)', 
-                                                'Time (s)')}
+                            'graph_model'   : []}
         # Generated variables
         self.curve_upper = None  # Upper t vs I protection curve as list of tuples
         self.curve_lower = None  # Lower t vs I protection curve as list of tuples

@@ -323,11 +323,8 @@ class FieldView:
                 elif field['type'] in ('graph', 'data') and field['value'] is not None:
                     
                     # Set graph options
-                    if field['type'] == 'graph':
-                        (xlim, ylim, xlabel, ylabel) = field['graph_options']
-                    elif field['type'] == 'data':
-                        (xlim, ylim, xlabel, ylabel) = field['value']['graph_options']
-
+                    (xlim, ylim, xlabel, ylabel) = field['graph_options']
+                    
                     data_widget = Gtk.Box()
                     graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
                                           inactivate=field[self.inactivate_code])

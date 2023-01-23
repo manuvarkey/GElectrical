@@ -130,8 +130,14 @@ class ProtectionDevice(Switch):
                         'pcurve_g'   : self.get_field_dict('data', 'Ground Protection', '', None,
                                                             status_enable=False,),
                        })
-        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
-        self.fields['pcurve_g']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, misc.GRAPH_PROT_TIME_LIMITS, 'I (A)', 'Time (s)')
+        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS')
+        self.fields['pcurve_g']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS')
         self.line_protection_model = None
         self.ground_protection_model = None
 
@@ -158,6 +164,8 @@ class ProtectionDevice(Switch):
                 self.fields['subtype']['selection_list'] = None
                 self.fields['subtype']['value'] = 'None'
                 self.fields['subtype']['status_enable'] = False
+            if self.fields['subtype']['selection_list'] and self.fields['subtype']['value'] not in self.fields['subtype']['selection_list']:
+                self.fields['subtype']['value'] = self.fields['subtype']['selection_list'][0]
 
             # Set protection curve
             if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_curve_type:
@@ -174,6 +182,10 @@ class ProtectionDevice(Switch):
                 self.fields['prot_0_curve_type']['selection_list'] = None
                 self.fields['prot_0_curve_type']['value'] = 'None'
                 self.fields['prot_0_curve_type']['status_enable'] = False
+            if self.fields['prot_curve_type']['selection_list'] and self.fields['prot_curve_type']['value'] not in self.fields['prot_curve_type']['selection_list']:
+                self.fields['prot_curve_type']['value'] = self.fields['prot_curve_type']['selection_list'][0]
+            if self.fields['prot_0_curve_type']['selection_list'] and self.fields['prot_0_curve_type']['value'] not in self.fields['prot_0_curve_type']['selection_list']:
+                self.fields['prot_0_curve_type']['value'] = self.fields['prot_0_curve_type']['selection_list'][0]
 
             # Set In selection list
             if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value']) in self.dict_in:
@@ -221,8 +233,7 @@ class ProtectionDevice(Switch):
         title = (self.fields['ref']['value'] + ', ' + 
                 str(self.fields['In']['value']) + 'A, ' + 
                     self.fields['type']['value'] + ' - ' + 
-                    self.fields['subtype']['value'] + ' - ' + 
-                    self.fields['prot_curve_type']['value'])
+                    self.fields['subtype']['value'])
         # Set line protection model
         parameters, curve_u, curve_l = self.get_line_protection_model()
         if curve_l and curve_u:
@@ -492,8 +503,8 @@ class CircuitBreaker(ProtectionDevice):
         self.fields['In']['value'] = 63
         self.fields['Isc']['value'] = 10
 
-        self.text_model = [[(3.5,0.5), "${type}, ${poles}, ${ref}", True],
-                           [(3.5,None), "${str(In) + 'A' if In_set == 1 else str(In) + 'A(' + str(round(In*In_set)) + 'A)'}, ${subtype}", True],
+        self.text_model = [[(3.5,0.5), "${subtype}, ${poles}, ${ref}", True],
+                           [(3.5,None), "${str(In) + 'A' if In_set == 1 else str(In) + 'A(' + str(round(In*In_set)) + 'A)'}", True],
                            [(3.5,None), "${Isc}kA", True],
                            [(3.5,None), "${name}", True]]
         self.schem_model_do = [ 
@@ -572,26 +583,22 @@ class CircuitBreaker(ProtectionDevice):
                                 'C Curve'     : (5,10),
                                 'D Curve'     : (10,20),
                                 }
-        sub_types_rccb_dict = {'30 mA'     : (0.03,0.015,0.03),
-                                '100 mA'    : (0.1,0.05,0.1),
-                                '300 mA'    : (0.3,0.15,0.3),
-                                '500 mA'    : (0.5,0.25,0.5),
-                                }
         if f.type in ('LV breakers',):
             # MCB IS/IEC 60898
             if f.subtype in ('MCB',):
                 t_ins_min = 0.001
                 t_ins_max = 0.01
                 i_m_min, i_m_max = sub_types_mcb_dict[self.fields['prot_curve_type']['value']]
-                curve_u = [ ('point', 1.45*In, 3600),
-                            ('iec', 1, 1.43*In, 85, 0, 2, 1.45*In, i_m_max*In , 50),
-                            ('point', i_m_max*In, t_ins_max),
-                            ('point', 1000*Isc, t_ins_max)]
-                curve_l = [ ('point', 1.13*In, 3600),
-                            ('iec', 1, 1.125*In, 35, 0, 2, 1.13*In, i_m_min*In , 50),
-                            ('point', i_m_min*In, t_ins_min),
-                            ('point', 1000*Isc, t_ins_min)]
-                parameters = {}
+                curve_u = [ ('point', '1.45*f.In', 3600),
+                            ('iec', 1, '1.43*f.In', 80, 0, 2, '1.45*f.In', str(i_m_max)+'*f.In' , 50),
+                            ('point', str(i_m_max)+'*f.In', 'd.t_ins_max'),
+                            ('point', '1000*f.Isc', 'd.t_ins_max')]
+                curve_l = [ ('point', '1.13*f.In', 3600),
+                            ('iec', 1, '1.125*f.In', 40, 0, 2, '1.13*f.In', str(i_m_min)+'*f.In' , 50),
+                            ('point', str(i_m_min)+'*f.In', 'd.t_ins_min'),
+                            ('point', '1000*f.Isc', 'd.t_ins_min')]
+                parameters = {'t_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                              't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
             # CB generic IS/IEC 60947
             elif f.subtype in ('MCCB','ACB','MPCB','CB'):
                 i_f = 1.3
@@ -608,12 +615,12 @@ class CircuitBreaker(ProtectionDevice):
                 t_conv = 1
                 curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
                             ('iec', 1, 'd.i_f*f.In', 80, 'd.t_delay*1.1', 2, 'd.i_f*f.In*1.01', '8*f.In*1.05' , 50),
-                            ('point', '8*f.In*1.05', 'd.t_ins_max'),
-                            ('point', '1000*f.Isc', 'd.t_ins_max')]
+                            ('point', '8*f.In*1.05', 'd.t_delay*1.1+d.t_ins_max'),
+                            ('point', '1000*f.Isc', 'd.t_delay*1.1+d.t_ins_max')]
                 curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
                             ('iec', 1, 'd.i_nf*f.In', 80, 'd.t_delay*0.9', 2, 'd.i_nf*f.In*1.01', '8*f.In*0.95' , 50),
-                            ('point', '8*f.In*0.95', 'd.t_ins_min'),
-                            ('point', '1000*f.Isc', 'd.t_ins_min')]
+                            ('point', '8*f.In*0.95', 'd.t_delay*0.9+d.t_ins_min'),
+                            ('point', '1000*f.Isc', 'd.t_delay*0.9+d.t_ins_min')]
                 parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
                                 'i_f'       : ['Fusing current', 'xIn', i_f, None],
                                 'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
@@ -626,9 +633,33 @@ class CircuitBreaker(ProtectionDevice):
         return parameters, curve_u, curve_l
 
     def get_ground_protection_model(self):
+        f = FieldDict(self.fields)
+        In = f.In
+        I0 = f.I0
+        Isc = f.Isc
+
         curve_u = []
         curve_l = []
         parameters = dict()
+        
+        if f.type in ('LV breakers',):
+            if f.subtype in ('RCCB',):
+                t_ins_min = 0.001
+                t_ins_max = 0.01
+                if f.subtype in ('Type AS',):
+                    t_delay = 1
+                else:
+                    t_delay = 0
+                curve_u = [ ('point', 'f.I0', 3600),
+                            ('point', 'f.I0', '1.1*d.t_delay + d.t_ins_max'),
+                            ('point', '1000*f.Isc', '1.1*d.t_delay + d.t_ins_max')]
+                curve_l = [ ('point', 'f.I0*0.5', 3600),
+                            ('point', 'f.I0*0.5', '0.9*d.t_delay + d.t_ins_min'),
+                            ('point', '1000*f.Isc', '0.9*d.t_delay + d.t_ins_min')]
+                parameters = {'t_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                              't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None],
+                              't_delay'   : ['Time delay', 's', t_delay, None]}
+        
         return parameters, curve_u, curve_l
 
 

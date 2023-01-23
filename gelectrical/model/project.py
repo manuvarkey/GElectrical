@@ -132,12 +132,24 @@ class ProjectModel:
     def view_protection_coordination(self):
         selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES)
         if selected_elements:
-            models = []
+            l_models = []
+            g_models = []
+            graph_model = {}
             for element in selected_elements:
                 element.calculate_parameters()
-                model = element.get_text_field('pcurve_l')['value']['graph_model'][1][0]
-                models.append(model)
-            graph_model = {'Coordination curves': ['Coordination curves', models]}
+                data_model_l = element.get_text_field('pcurve_l')['value']
+                data_model_g = element.get_text_field('pcurve_g')['value']
+                if data_model_l:
+                    model = data_model_l['graph_model'][1][0]
+                    l_models.append(model)
+                if data_model_g:
+                    model = data_model_g['graph_model'][1][0]
+                    g_models.append(model)
+
+            if l_models:
+                graph_model['Line protection'] = ['Line protection', l_models]
+            if g_models:
+                graph_model['Ground protection'] = ['Ground protection', g_models]
             xlim = misc.GRAPH_PROT_CURRENT_LIMITS 
             ylim = misc.GRAPH_PROT_TIME_LIMITS
             xlabel = 'CURRENT IN AMPERES'
