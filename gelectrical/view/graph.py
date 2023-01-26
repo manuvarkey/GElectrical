@@ -85,9 +85,10 @@ class GraphImage():
         if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])) and self.ylim[0] != self.ylim[1]:
             self.plot.set_ylim(self.ylim[0], self.ylim[1])
             
-        self.plot.grid(True, which='major')
+        self.plot.grid(True, which='major', alpha=0.3, color=misc.COLOR_GRID)
         self.plot.minorticks_on()
-        self.plot.grid(True, which='minor', alpha=0.2)
+        self.plot.grid(True, which='minor', alpha=0.1, color=misc.COLOR_GRID)
+
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
@@ -229,9 +230,9 @@ class GraphView():
             self.plot.set_yscale('log')
         self.plot.yaxis.set_major_formatter(formatter)
             
-        self.plot.grid(True, which='major')
+        self.plot.grid(True, which='major', alpha=0.3, color=misc.COLOR_GRID)
         self.plot.minorticks_on()
-        self.plot.grid(True, which='minor', alpha=0.2)
+        self.plot.grid(True, which='minor', alpha=0.1, color=misc.COLOR_GRID)
         
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]

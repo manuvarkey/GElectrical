@@ -118,7 +118,7 @@ class ProtectionDevice(Switch):
                                                             alter_structure=True),
                         'In_set'     : self.get_field_dict('float', 'In_set', 'xIn', 1,
                                                             alter_structure=True),
-                        'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 50, 
+                        'Isc'        : self.get_field_dict('int', 'Isc', 'kA', 50, 
                                                             alter_structure=True),
                         'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None),
                         'I0'         : self.get_field_dict('int', 'I0', 'A', 63,
@@ -439,10 +439,10 @@ class Fuse(ProtectionDevice):
                     # Get protection model
                     parameters = dict()
                 elif f.subtype == 'gG':
-                    curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                                ('iec', 1, 'd.i_f*f.In', 80, 0, 4, 'd.i_f*f.In*1.05', '1000*f.Isc' , 10)]
-                    curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                                ('iec', 1, 'd.i_nf*f.In', 80, 0, 4, 'd.i_nf*f.In*1.05', '1000*f.Isc' , 10)]
+                    curve_u = [ ('point', 'd.i_f*f.In*f.In_set', 'd.t_conv*3600'),
+                                ('iec', 1, 'd.i_f*f.In*f.In_set', 80, 0, 4, 'd.i_f*f.In*f.In_set*1.05', '1000*f.Isc' , 10)]
+                    curve_l = [ ('point', 'd.i_nf*f.In*f.In_set', 'd.t_conv*3600'),
+                                ('iec', 1, 'd.i_nf*f.In*f.In_set', 80, 0, 4, 'd.i_nf*f.In*f.In_set*1.05', '1000*f.Isc' , 10)]
                     # Get protection model
                     parameters = {  'i_nf'  : ['Non fusing current', 'xIn', 1.35, None],
                                     'i_f'   : ['Fusing current', 'xIn', 1.45, None],
@@ -472,7 +472,8 @@ class CircuitBreaker(ProtectionDevice):
 
         breaker_types = ['LV breakers']
         subtypes_lv = ['MCB','MCCB','ACB','MPCB','CB','RCCB']
-        prottypes_cb = ['EM Trip', 'Digital Trip', 'IEC Inv', 'IEC V.Inv', 'IEC E.Inv', 'IEEE M.Inv', 'IEEE V.Inv', 'IEEE E.Inv']
+        prottypes_cb = ['EM Trip', 'Digital Trip', 'Instantaneous Trip', 'IEC Inv', 'IEC V.Inv', 'IEC E.Inv', 'IEEE M.Inv', 'IEEE V.Inv', 'IEEE E.Inv']
+        prottypes_cb_gf = ['None', 'EF Trip']
         prottypes_mcb = ['B Curve', 'C Curve', 'D Curve']
         sub_types_rccb = ['Type A', 'Type AC', 'Type B', 'Type AS']
         self.dict_in = {('LV breakers', 'MCB', '*'): current_values_mcb,
@@ -486,10 +487,13 @@ class CircuitBreaker(ProtectionDevice):
         self.dict_prot_curve_type = {('LV breakers', 'MCB'): prottypes_mcb,
                                      ('LV breakers', 'MCCB'): prottypes_cb,
                                      ('LV breakers', 'ACB'): prottypes_cb,
-                                     ('LV breakers', 'MPCB'): ['EM Trip'],
+                                     ('LV breakers', 'MPCB'): prottypes_cb,
                                      ('LV breakers', 'CB'): prottypes_cb,
                                      ('LV breakers', 'RCCB'): ['None']}
-        self.dict_prot_0_curve_type = {('LV breakers', 'RCCB'): sub_types_rccb}
+        self.dict_prot_0_curve_type = {('LV breakers', 'RCCB'): sub_types_rccb,
+                                        ('LV breakers', 'MCCB'): prottypes_cb_gf,
+                                        ('LV breakers', 'ACB'): prottypes_cb_gf,
+                                        ('LV breakers', 'CB'): prottypes_cb_gf,}
 
         self.fields.update({'drawout':  self.get_field_dict('bool', 'Drawout type ?', '', False)})
         self.fields['type']['selection_list'] = breaker_types
@@ -579,62 +583,61 @@ class CircuitBreaker(ProtectionDevice):
         curve_l = []
         parameters = dict()
 
-        sub_types_mcb_dict = {'B Curve'     : (2,5),
+        sub_types_mcb_dict = {  'B Curve'     : (2,5),
                                 'C Curve'     : (5,10),
                                 'D Curve'     : (10,20),
-                                }
+                            }
         if f.type in ('LV breakers',):
             # MCB IS/IEC 60898
             if f.subtype in ('MCB',):
-                t_ins_min = 0.001
-                t_ins_max = 0.01
                 i_m_min, i_m_max = sub_types_mcb_dict[self.fields['prot_curve_type']['value']]
-                curve_u = [ ('point', '1.45*f.In', 3600),
-                            ('iec', 1, '1.43*f.In', 80, 0, 2, '1.45*f.In', str(i_m_max)+'*f.In' , 50),
-                            ('point', str(i_m_max)+'*f.In', 'd.t_ins_max'),
+                curve_u = [ ('point', '1.45*f.In*f.In_set', 3600),
+                            ('iec', 1, '1.42*f.In*f.In_set', 80, 0, 2, '1.45*f.In*f.In_set', str(i_m_max)+'*f.In*f.In_set' , 50),
+                            ('point', str(i_m_max)+'*f.In*f.In_set', 'd.t_ins_max'),
                             ('point', '1000*f.Isc', 'd.t_ins_max')]
-                curve_l = [ ('point', '1.13*f.In', 3600),
-                            ('iec', 1, '1.125*f.In', 40, 0, 2, '1.13*f.In', str(i_m_min)+'*f.In' , 50),
-                            ('point', str(i_m_min)+'*f.In', 'd.t_ins_min'),
+                curve_l = [ ('point', '1.13*f.In*f.In_set', 3600),
+                            ('iec', 1, '1.12*f.In*f.In_set', 40, 0, 2, '1.13*f.In*f.In_set', str(i_m_min)+'*f.In*f.In_set' , 50),
+                            ('point', str(i_m_min)+'*f.In*f.In_set', 'd.t_ins_min'),
                             ('point', '1000*f.Isc', 'd.t_ins_min')]
-                parameters = {'t_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
-                              't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None]}
+                parameters = {'t_ins_min' : ['Instantaneous trip time (min)', 's', 0.001, None],
+                              't_ins_max' : ['Instantaneous trip time (max)', 's', 0.01, None]}
             # CB generic IS/IEC 60947
             elif f.subtype in ('MCCB','ACB','MPCB','CB'):
-                i_f = 1.3
-                i_nf = 1.05
-                i_m_min, i_m_max = (8*0.85, 8*1.15)
-                if f.subtype in ('ACB',):
-                    t_ins_min = 0.1
-                    t_ins_max = 1
-                    t_delay = 0.1
+                if f.prot_curve_type in ('Instantaneous Trip'):
+                    curve_u = [ ('point', 'd.i_m_max*f.In', 3600),
+                                ('point', 'd.i_m_max*f.In', '1.1*d.t_delay + d.t_ins_max'),
+                                ('point', '1000*f.Isc', '1.1*d.t_delay + d.t_ins_max')]
+                    curve_l = [ ('point', 'd.i_m_min*f.In', 3600),
+                                ('point', 'd.i_m_min*f.In', '0.9*d.t_delay + d.t_ins_min'),
+                                ('point', '1000*f.Isc', '0.9*d.t_delay + d.t_ins_min')]
+                    parameters = {'i_m_min' : ['Instantaneous trip current (min)', 'xIn', 8*0.85, None],
+                                  'i_m_max' : ['Instantaneous trip current (max)', 'xIn', 8*1.15, None],
+                                  't_ins_min' : ['Instantaneous trip time (min)', 's', 0.001, None],
+                                  't_ins_max' : ['Instantaneous trip time (max)', 's', 0.05, None],
+                                  't_delay'   : ['Time delay', 's', 0, None]}
                 else:
-                    t_ins_min = 0.001
-                    t_ins_max = 0.01
-                    t_delay = 0
-                t_conv = 1
-                curve_u = [ ('point', 'd.i_f*f.In', 'd.t_conv*3600'),
-                            ('iec', 1, 'd.i_f*f.In', 80, 'd.t_delay*1.1', 2, 'd.i_f*f.In*1.01', '8*f.In*1.05' , 50),
-                            ('point', '8*f.In*1.05', 'd.t_delay*1.1+d.t_ins_max'),
-                            ('point', '1000*f.Isc', 'd.t_delay*1.1+d.t_ins_max')]
-                curve_l = [ ('point', 'd.i_nf*f.In', 'd.t_conv*3600'),
-                            ('iec', 1, 'd.i_nf*f.In', 80, 'd.t_delay*0.9', 2, 'd.i_nf*f.In*1.01', '8*f.In*0.95' , 50),
-                            ('point', '8*f.In*0.95', 'd.t_delay*0.9+d.t_ins_min'),
-                            ('point', '1000*f.Isc', 'd.t_delay*0.9+d.t_ins_min')]
-                parameters = {  'i_nf'      : ['Non fusing current', 'xIn', i_nf, None],
-                                'i_f'       : ['Fusing current', 'xIn', i_f, None],
-                                'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
-                                'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
-                                't_conv'    : ['Convensional time', 'Hrs', t_conv, None],
-                                't_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
-                                't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None],
-                                't_delay' : ['Trip time delay', 's', t_delay, None]}
+                    curve_u = [ ('point', 'd.i_f*f.In*f.In_set', 'd.t_conv*3600'),
+                                ('iec', 1, 'd.i_f*f.In*f.In_set', 80, 'd.t_delay*1.1', 2, 'd.i_f*f.In*f.In_set*1.1', 'd.i_m_max*f.In*f.In_set' , 50),
+                                ('point', 'd.i_m_max*f.In*f.In_set*1.05', 'd.t_delay*1.1+d.t_ins_max'),
+                                ('point', '1000*f.Isc', 'd.t_delay*1.1+d.t_ins_max')]
+                    curve_l = [ ('point', 'd.i_nf*f.In*f.In_set', 'd.t_conv*3600'),
+                                ('iec', 1, 'd.i_nf*f.In*f.In_set', 80, 'd.t_delay*0.9', 2, 'd.i_nf*f.In*f.In_set*1.1', 'd.i_m_min*f.In*f.In_set' , 50),
+                                ('point', 'd.i_m_min*f.In*f.In_set', 'd.t_delay*0.9+d.t_ins_min'),
+                                ('point', '1000*f.Isc', 'd.t_delay*0.9+d.t_ins_min')]
+                    parameters = {  'i_nf'      : ['Non fusing current', 'xIn', 1.05, None],
+                                    'i_f'       : ['Fusing current', 'xIn', 1.3, None],
+                                    'i_m_min'   : ['Magnetic trip (min)', 'xIn', 8*0.85, None],
+                                    'i_m_max'   : ['Magnetic trip (max)', 'xIn', 8*1.15, None],
+                                    't_conv'    : ['Convensional time', 'Hrs', 1, None],
+                                    't_ins_min' : ['Instantaneous trip time (min)', 's', 0.001, None],
+                                    't_ins_max' : ['Instantaneous trip time (max)', 's', 0.05, None],
+                                    't_delay' : ['Trip time delay', 's', 0, None]}
 
         return parameters, curve_u, curve_l
 
     def get_ground_protection_model(self):
         f = FieldDict(self.fields)
-        In = f.In
+        In = f.In*f.In_set
         I0 = f.I0
         Isc = f.Isc
 
@@ -643,7 +646,7 @@ class CircuitBreaker(ProtectionDevice):
         parameters = dict()
         
         if f.type in ('LV breakers',):
-            if f.subtype in ('RCCB',):
+            if f.subtype in ('RCCB',) or f.prot_0_curve_type in ('EF Trip',):
                 t_ins_min = 0.001
                 t_ins_max = 0.01
                 if f.subtype in ('Type AS',):
