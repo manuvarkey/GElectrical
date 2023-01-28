@@ -117,10 +117,15 @@ class ProtectionModel():
         def point(i1, t1):
             return (i1,), (t1,)
 
-        def iec(tms, i_n, k, c, alpha, i1, i2, n):
-            i_array = np.geomspace(i1,i2,num=n)
-            t_array = tms*(k/((i_array/i_n)**alpha - 1) + c)
-            return list(i_array), list(t_array)
+        def iec(tms, i_n, k, c, alpha, i1, i2, t_min, n):
+            if i2 > i1:
+                i_array = np.geomspace(i1,i2,num=n)
+                t_array_1 = tms*(k/((i_array/i_n)**alpha - 1) + c)
+                t_array_2 = np.ones(i_array.shape)*t_min
+                t_array = np.maximum(t_array_1, t_array_2)
+                return list(i_array), list(t_array)
+            else:
+                return [], []
 
         def thermal(tms, i_n, i1, i2, n):
             # As per IEC 60255-8
@@ -138,12 +143,12 @@ class ProtectionModel():
             else:
                 return [], []
 
-        iec_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 0.14, 0, 0.02, i1, i2, n) # As per IEC 60255-3
-        iec_v_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 13.5, 0, 1, i1, i2, n) # As per IEC 60255-3
-        iec_e_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 80, 0, 2, i1, i2, n) # As per IEC 60255-3
-        ieee_m_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 0.0515, 0.1140, 0.02, i1, i2, n)
-        ieee_v_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 19.61, 0.491, 2, i1, i2, n)
-        ieee_e_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 28.2, 0.1217, 2, i1, i2, n)
+        iec_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 0.14, 0, 0.02, i1, i2, t_min, n) # As per IEC 60255-3
+        iec_v_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 13.5, 0, 1, i1, i2, t_min, n) # As per IEC 60255-3
+        iec_e_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 80, 0, 2, i1, i2, t_min, n) # As per IEC 60255-3
+        ieee_m_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 0.0515, 0.1140, 0.02, i1, i2, t_min, n)
+        ieee_v_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 19.61, 0.491, 2, i1, i2, t_min, n)
+        ieee_e_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 28.2, 0.1217, 2, i1, i2, t_min, n)
         
         def eval_curve(curve):
             var_dict = {'f': f, 'd': d}
