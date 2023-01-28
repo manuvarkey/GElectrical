@@ -128,6 +128,16 @@ class ProtectionModel():
             t_array = tms*np.log(i_array**2/(i_array**2 - i_n**2))
             return list(i_array), list(t_array)
 
+        def i2t(tms, i_n, k, i1, i2, t_min, n):
+            if i2 > i1:
+                i_array = np.geomspace(i1,i2,num=n)
+                t_array_1 = tms*(k/((i_array/i_n)**2))
+                t_array_2 = np.ones(i_array.shape)*t_min
+                t_array = np.maximum(t_array_1, t_array_2)
+                return list(i_array), list(t_array)
+            else:
+                return [], []
+
         iec_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 0.14, 0, 0.02, i1, i2, n) # As per IEC 60255-3
         iec_v_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 13.5, 0, 1, i1, i2, n) # As per IEC 60255-3
         iec_e_inverse = lambda tms, i_n, i1, i2, n: iec(tms, i_n, 80, 0, 2, i1, i2, n) # As per IEC 60255-3
@@ -145,7 +155,8 @@ class ProtectionModel():
                             'ieee_m_inverse': ieee_m_inverse,
                             'ieee_v_inverse': ieee_v_inverse,
                             'ieee_e_inverse': ieee_e_inverse,
-                            'thermal'       : thermal
+                            'thermal'       : thermal,
+                            'i2t'           : i2t
                         }
             # Evaluate curve
             curve_i = []
