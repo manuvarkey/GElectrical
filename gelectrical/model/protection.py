@@ -133,10 +133,10 @@ class ProtectionModel():
             t_array = tms*np.log(i_array**2/(i_array**2 - i_n**2))
             return list(i_array), list(t_array)
 
-        def i2t(tms, i_n, k, i1, i2, t_min, n):
+        def i2t(tms, i_n, k, alpha, i1, i2, t_min, n):
             if i2 > i1:
                 i_array = np.geomspace(i1,i2,num=n)
-                t_array_1 = tms*(k/((i_array/i_n)**2))
+                t_array_1 = tms*(k/((i_array/i_n)**alpha))
                 t_array_2 = np.ones(i_array.shape)*t_min
                 t_array = np.maximum(t_array_1, t_array_2)
                 return list(i_array), list(t_array)
