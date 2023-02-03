@@ -161,6 +161,8 @@ class ProjectModel:
                                     xlim, ylim, xlabel, ylabel,
                                     read_only=True)
             dialog.run()
+        else:
+            return (misc.WARNING, 'No protection elements selected.')
 
 
 

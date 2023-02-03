@@ -485,7 +485,10 @@ class MainWindow():
         self.project.edit_loadprofiles()
 
     def on_protection_coordination(self, button):
-        self.project.view_protection_coordination()
+        ret_code = self.project.view_protection_coordination()
+        if ret_code:
+            self.display_status(*ret_code)
+            log.warning('MainWindow - on_protection_coordination - ' + ret_code[1])
         
     def on_run_analysis(self, widget):
 
