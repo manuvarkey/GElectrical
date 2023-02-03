@@ -111,7 +111,7 @@ class Line(ElementModel):
             line_type_code = 'cs'
         p0 = code + ':0'
         p1 = code + ':1'
-        if mode == misc.POWER_MODEL_POWERFLOW:
+        if mode in (misc.POWER_MODEL_POWERFLOW, misc.POWER_MODEL_LINEFAULT):
             power_model = (('line', (p0,p1), {'name': self.fields['ref']['value'],
                                         'length_km': self.fields['length_km']['value'],
                                         'r_ohm_per_km': self.fields['r_ohm_per_km']['value'],

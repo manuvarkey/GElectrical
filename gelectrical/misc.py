@@ -117,7 +117,8 @@ REPORT_FONT_FACE = 'monospace'
 REPORT_FONT_SIZE = 10
 # Power model types
 POWER_MODEL_POWERFLOW = 0
-POWER_MODEL_GROUNDFAULT = 1
+POWER_MODEL_LINEFAULT = 1
+POWER_MODEL_GROUNDFAULT = 2
 # Classification of elements
 ADVANCED_ELEMENTS = ('element_asymmetric_load', 'element_ward', 'element_xward',
                      'element_transformer3w', 'element_impedance', 'element_shunt')

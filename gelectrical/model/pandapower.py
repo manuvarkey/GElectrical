@@ -66,6 +66,7 @@ class PandaPowerModel:
         # Power variables
         self.power_model = pp.create_empty_network(name='Project power model', f_hz=f_hz)
         self.power_model_gf = pp.create_empty_network(name='Ground fault power model', f_hz=f_hz)
+        self.power_model_lf = pp.create_empty_network(name='Line fault power model', f_hz=f_hz)
         self.power_nodes = dict()  # Maps global_node -> power_node
         self.power_nodes_inverted = dict()  # Maps power_node -> global_node
         self.power_elements = dict()  # Maps element_code -> (table_code, slno)
@@ -88,6 +89,10 @@ class PandaPowerModel:
         if mode == misc.POWER_MODEL_POWERFLOW:
             self.power_model = pp.create_empty_network()
             power_model = self.power_model
+
+        elif mode == misc.POWER_MODEL_LINEFAULT:
+            self.power_model_lf = pp.create_empty_network()
+            power_model = self.power_model_lf
             
         elif mode == misc.POWER_MODEL_GROUNDFAULT:
             self.power_model_gf = pp.create_empty_network()
@@ -1213,12 +1218,12 @@ class PandaPowerModel:
     def run_sym_sccalc(self, lv_tol_percent=6, r_fault_ohm=0.0, x_fault_ohm=0.0):
         """Run symmetric short circuit calculation"""
 
-        sc.calc_sc(self.power_model, fault='3ph', case='max', lv_tol_percent=lv_tol_percent,
+        sc.calc_sc(self.power_model_lf, fault='3ph', case='max', lv_tol_percent=lv_tol_percent,
                    check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
-        res_3ph_max = self.power_model.res_bus_sc.to_dict()
-        sc.calc_sc(self.power_model, fault='3ph', case='min', lv_tol_percent=lv_tol_percent,
+        res_3ph_max = self.power_model_lf.res_bus_sc.to_dict()
+        sc.calc_sc(self.power_model_lf, fault='3ph', case='min', lv_tol_percent=lv_tol_percent,
                    check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
-        res_3ph_min = self.power_model.res_bus_sc.to_dict()
+        res_3ph_min = self.power_model_lf.res_bus_sc.to_dict()
 
         # Update nodes
         for bus in res_3ph_max['ikss_ka']:

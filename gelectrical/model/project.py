@@ -362,8 +362,9 @@ class ProjectModel:
             sim_settings = self.get_project_fields(page='Simulation')
             f_hz = sim_settings['grid_frequency']
             self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles, f_hz)
-            self.powermodel.build_power_model(mode=misc.POWER_MODEL_POWERFLOW)
+            self.powermodel.build_power_model(mode=misc.POWER_MODEL_LINEFAULT)
             self.powermodel.build_power_model(mode=misc.POWER_MODEL_GROUNDFAULT)
+            self.powermodel.build_power_model(mode=misc.POWER_MODEL_POWERFLOW)
             self.status['power_model'] = True
             log.info('ProjectModel - build_power_model - model generated')
         else:

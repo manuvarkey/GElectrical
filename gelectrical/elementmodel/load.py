@@ -329,6 +329,26 @@ class Motor3ph(Load):
         # Post processing
         self.modify_extends()
 
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+        """Return pandapower model for analysis"""
+        if mode == misc.POWER_MODEL_POWERFLOW:
+            power_model = Load.get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW)
+        elif mode in (misc.POWER_MODEL_LINEFAULT, misc.POWER_MODEL_GROUNDFAULT):
+            p0 = code + ':0'
+            p_mw = self.fields['p_kw']['value']/1000
+            pf = self.fields['cos_phi']['value']
+            q_mvar = p_mw/pf*(1-pf**2)**0.5
+            sn_mva = p_mw/pf
+            power_model = (('sgen', (p0,), {'name': self.fields['ref']['value'],
+                                        'p_mw': -p_mw,
+                                        'q_mvar': -q_mvar,
+                                        'type': 'motor',
+                                        'k': self.fields['k']['value'],
+                                        'rx': self.fields['rx']['value'],
+                                        'sn_mva': sn_mva,
+                                        'in_service': self.fields['in_service']['value']}),)
+        return power_model
+
 
 class Motor1ph(SinglePhaseLoad):
     
@@ -346,9 +366,7 @@ class Motor1ph(SinglePhaseLoad):
         self.fields['sn_kva']['status_enable'] = False
         self.fields['mode']['status_enable'] = False
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
-        self.fields.update({'p_kw':    self.get_field_dict('float', 'P', 'kW', 25),
-                       'k':    self.get_field_dict('float', 'Isc/In', '', 7),
-                       'rx':      self.get_field_dict('float', 'R/X', '', 0.42)})
+        self.fields.update({'p_kw':    self.get_field_dict('float', 'P', 'kW', 25)})
         self.text_model = [[(5,2), "${name}, ${ref}", True],
                            [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
         self.schem_model = [ 
