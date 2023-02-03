@@ -45,6 +45,46 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
       <mime-type>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</mime-type>
     </mime-types>
   </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/clipboard-check.svg</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/code-square.svg</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/diagram-2.svg</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/graph-up.svg</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/hash.svg</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/link.svg</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/eraser.svg</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/trash.svg</property>
+  </object>
   <object class="GtkImage" id="image_assembly">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
@@ -297,6 +337,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkToolbar" id="on_run_analysis">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="toolbar-style">icons</property>
                     <property name="icon_size">4</property>
                     <child>
                       <object class="GtkToolButton" id="toolbutton_draw_add_tab">
@@ -378,6 +419,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">#</property>
                         <property name="use-underline">True</property>
+                        <property name="icon-widget">image5</property>
                         <signal name="clicked" handler="on_draw_renumber" swapped="no"/>
                       </object>
                       <packing>
@@ -391,9 +433,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Link reference</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes">#</property>
+                        <property name="label" translatable="yes">Link</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">insert-link-symbolic</property>
+                        <property name="icon-widget">image6</property>
                         <signal name="clicked" handler="on_draw_linkref" swapped="no"/>
                       </object>
                       <packing>
@@ -420,8 +462,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-in-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -437,8 +479,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-out-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -519,9 +561,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Edit load profiles</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes">Edit Load</property>
+                        <property name="label" translatable="yes">Edit Load Profiles</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">document-properties-symbolic</property>
+                        <property name="icon-widget">image4</property>
                         <signal name="clicked" handler="on_edit_loadprofiles" swapped="no"/>
                       </object>
                       <packing>
@@ -535,9 +577,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Protection Coordination</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes">Edit Load</property>
+                        <property name="label" translatable="yes">Protection Coordination</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">mail-send-receive-symbolic</property>
+                        <property name="icon-widget">image3</property>
                         <signal name="clicked" handler="on_protection_coordination" swapped="no"/>
                       </object>
                       <packing>
@@ -563,7 +605,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Analyse</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">application-x-executable-symbolic</property>
+                        <property name="icon-widget">image2</property>
                         <signal name="clicked" handler="on_run_analysis" swapped="no"/>
                       </object>
                       <packing>
@@ -577,9 +619,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Run electrical rules check</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes">Analyse</property>
+                        <property name="label" translatable="yes">Rules</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">view-list-symbolic</property>
+                        <property name="icon-widget">image1</property>
                         <signal name="clicked" handler="on_run_rulescheck" swapped="no"/>
                       </object>
                       <packing>
@@ -645,7 +687,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="tooltip-markup" translatable="yes">Clear analysis results</property>
                         <property name="label" translatable="yes">Clear Analysis</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">edit-clear-symbolic</property>
+                        <property name="icon-widget">image7</property>
                         <signal name="clicked" handler="on_draw_clear_results" swapped="no"/>
                       </object>
                       <packing>
@@ -660,7 +702,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="tooltip-markup" translatable="yes">Delete Selected Items</property>
                         <property name="label" translatable="yes">Delete</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">list-remove-symbolic</property>
+                        <property name="icon-widget">image8</property>
                         <signal name="clicked" handler="on_draw_delete" swapped="no"/>
                       </object>
                       <packing>
