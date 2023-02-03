@@ -883,7 +883,9 @@ class MainWindow():
         self.program_state['element_models'][impedance.Inductance.code] = impedance.Inductance
         self.program_state['element_models'][shunt.ShuntCapacitor.code] = shunt.ShuntCapacitor
         self.program_state['element_models'][generator.Generator.code] = generator.Generator
-        self.program_state['element_models'][generator.Motor.code] = generator.Motor
+        # self.program_state['element_models'][generator.Motor.code] = generator.Motor
+        self.program_state['element_models'][load.Motor3ph.code] = load.Motor3ph
+        self.program_state['element_models'][load.Motor1ph.code] = load.Motor1ph
         self.program_state['element_models'][displayelements.DisplayElementNode.code] = displayelements.DisplayElementNode
         self.program_state['element_models'][generator.StaticGenerator.code] = generator.StaticGenerator
         self.program_state['element_models'][ward.Ward.code] = ward.Ward

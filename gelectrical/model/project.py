@@ -783,7 +783,7 @@ class ProjectModel:
                 table['Sc'][0] = 'kVA'
                 for slno, element in enumerate(element_loads):
                     scaling = element.fields['scaling']['value']
-                    if element.code == 'element_load':
+                    if element.code in ('element_load','element_async_motor_3ph'):
                         s_kva = round(element.fields['sn_kva']['value']*scaling, 4)
                         pf = str(round(element.fields['cos_phi']['value'], 2)) + (' lag' if element.fields['mode']['value'] else ' lead')
                     else:

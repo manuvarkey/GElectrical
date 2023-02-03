@@ -173,7 +173,7 @@ class AsymmetricLoad(ElementModel):
         return power_model
     
 
-class SinglePhaseLoad(ElementModel):
+class SinglePhaseLoad(Load):
     
     code = 'element_single_phase_load'
     name = 'Load 1ph'
@@ -182,7 +182,7 @@ class SinglePhaseLoad(ElementModel):
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
-        ElementModel.__init__(self, cordinates, **kwargs)
+        Load.__init__(self, cordinates, **kwargs)
         self.model_width = 0
         self.model_height = 0
         self.ports = [[1, 0]]
@@ -266,3 +266,124 @@ class SinglePhaseLoad(ElementModel):
                                        'scaling': self.fields['scaling']['value'],
                                        'in_service': self.fields['in_service']['value']}),)
         return power_model
+
+
+# Motor models suitable for assymetric calculations
+
+
+class Motor3ph(Load):
+    
+    code = 'element_async_motor_3ph'
+    name = 'Motor 3ph'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'motor.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        Load.__init__(self, cordinates, **kwargs)
+        self.database_path = misc.abs_path('database', 'motor.csv')
+        self.ports = [[2, 0]]
+        self.fields['ref']['value'] = 'M?'
+        self.fields['sn_kva']['status_enable'] = False
+        self.fields['mode']['status_enable'] = False
+        self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
+        self.fields.update({'p_kw':    self.get_field_dict('float', 'P', 'kW', 25),
+                       'k':    self.get_field_dict('float', 'Isc/In', '', 7),
+                       'rx':      self.get_field_dict('float', 'R/X', '', 0.42)})
+        self.text_model = [[(5,2), "${name}, ${ref}", True],
+                           [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
+        self.schem_model = [ 
+                             ['CIRCLE', (2,4), 2, False, []],
+                             # M
+                             ['LINE',(1.5,4),(1.75,3), [], 'thin'],
+                             ['LINE',(1.75,3),(2,4), [], 'thin'],
+                             ['LINE',(2,4),(2.25,3), [], 'thin'],
+                             ['LINE',(2.25,3),(2.5,4), [], 'thin'],
+                             # Sine
+                             ['ARC', (2.25,5), 0.25, 0, -180, [], 'thin'],
+                             ['ARC', (1.75,5), 0.25, -180, -360, [], 'thin'],
+                             # Connecting line
+                             ['LINE',(2,0),(2,2), []],
+                           ]
+        self.calculate_parameters()
+
+    def set_text_field_value(self, code, value):
+        if code in self.fields:
+            self.fields[code]['value'] = value
+        self.calculate_parameters()
+
+    def calculate_parameters(self):
+        self.fields['sn_kva']['value'] = self.fields['p_kw']['value']/self.fields['cos_phi']['value']
+        self.fields['mode']['value'] = True
+
+    def render_element(self, context):
+        """Render element to context"""
+        # Preprocessing
+        # Render
+        if self.fields['in_service']['value']:
+            self.render_model(context, self.schem_model)
+            self.render_text(context, self.text_model)
+        else:
+            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+        # Post processing
+        self.modify_extends()
+
+
+class Motor1ph(SinglePhaseLoad):
+    
+    code = 'element_async_motor_1ph'
+    name = 'Motor 1ph'
+    group = 'Loads'
+    icon = misc.abs_path('icons', 'motor.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        SinglePhaseLoad.__init__(self, cordinates, **kwargs)
+        self.database_path = None
+        self.ports = [[2, 0]]
+        self.fields['ref']['value'] = 'M?'
+        self.fields['sn_kva']['status_enable'] = False
+        self.fields['mode']['status_enable'] = False
+        self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
+        self.fields.update({'p_kw':    self.get_field_dict('float', 'P', 'kW', 25),
+                       'k':    self.get_field_dict('float', 'Isc/In', '', 7),
+                       'rx':      self.get_field_dict('float', 'R/X', '', 0.42)})
+        self.text_model = [[(5,2), "${name}, ${ref}", True],
+                           [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
+        self.schem_model = [ 
+                             ['CIRCLE', (2,4), 2, False, []],
+                             # M
+                             ['LINE',(1.5,4),(1.75,3), [], 'thin'],
+                             ['LINE',(1.75,3),(2,4), [], 'thin'],
+                             ['LINE',(2,4),(2.25,3), [], 'thin'],
+                             ['LINE',(2.25,3),(2.5,4), [], 'thin'],
+                             # Sine
+                             ['ARC', (2.25,5), 0.25, 0, -180, [], 'thin'],
+                             ['ARC', (1.75,5), 0.25, -180, -360, [], 'thin'],
+                             # Connecting line
+                             ['LINE',(2,0),(2,2), []],
+                           ]
+        self.calculate_parameters()
+
+    def set_text_field_value(self, code, value):
+        if code in self.fields:
+            self.fields[code]['value'] = value
+        self.calculate_parameters()
+
+    def calculate_parameters(self):
+        self.fields['sn_kva']['value'] = self.fields['p_kw']['value']/self.fields['cos_phi']['value']
+        self.fields['mode']['value'] = True
+
+    def render_element(self, context):
+        """Render element to context"""
+        # Preprocessing
+        # Render
+        if self.fields['in_service']['value']:
+            self.render_model(context, self.schem_model)
+            self.render_text(context, self.text_model)
+        else:
+            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+        # Post processing
+        self.modify_extends()
