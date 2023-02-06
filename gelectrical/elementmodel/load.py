@@ -288,9 +288,9 @@ class Motor3ph(Load):
         self.fields['sn_kva']['status_enable'] = False
         self.fields['mode']['status_enable'] = False
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
-        self.fields.update({'p_kw'  : self.get_field_dict('float', 'Mechanical rated power', 'kW', 5),
-                            'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85),
-                            'k'     : self.get_field_dict('float', 'Isc/In', '', 7),
+        self.fields.update({'p_kw'  : self.get_field_dict('float', 'Mechanical rated power', 'kW', 5, alter_structure=True),
+                            'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85, alter_structure=True),
+                            'k'     : self.get_field_dict('float', 'Isc/In', '', 7, alter_structure=True),
                             'rx'    : self.get_field_dict('float', 'R/X', '', 0.42),
                             'dcurve': self.get_field_dict('data', 'Damage curve', '', None)})
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
@@ -389,9 +389,9 @@ class Motor1ph(SinglePhaseLoad):
         self.fields['sn_kva']['status_enable'] = False
         self.fields['mode']['status_enable'] = False
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
-        self.fields.update({'p_kw'  : self.get_field_dict('float', 'P', 'kW', 1),
-                            'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85),
-                            'k'     : self.get_field_dict('float', 'Isc/In', '', 5),
+        self.fields.update({'p_kw'  : self.get_field_dict('float', 'P', 'kW', 1, alter_structure=True),
+                            'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85, alter_structure=True),
+                            'k'     : self.get_field_dict('float', 'Isc/In', '', 5, alter_structure=True),
                             'dcurve': self.get_field_dict('data', 'Damage curve', '', None)})
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 

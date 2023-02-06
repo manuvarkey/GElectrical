@@ -130,26 +130,41 @@ class ProjectModel:
             self.modify_loadprofiles(loadprofiles_copy)
 
     def view_protection_coordination(self):
-        selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES)
+        selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES)
         if selected_elements:
             l_models = []
             g_models = []
+            d_models = []
             graph_model = {}
             for element in selected_elements:
                 element.calculate_parameters()
-                data_model_l = element.get_text_field('pcurve_l')['value']
-                data_model_g = element.get_text_field('pcurve_g')['value']
-                if data_model_l:
-                    model = data_model_l['graph_model'][1][0]
-                    l_models.append(model)
-                if data_model_g:
-                    model = data_model_g['graph_model'][1][0]
-                    g_models.append(model)
+                pcurve_l = element.get_text_field('pcurve_l')
+                pcurve_g = element.get_text_field('pcurve_g')
+                dcurve = element.get_text_field('dcurve')
+                if pcurve_l:
+                    data_model = pcurve_l['value']
+                    if data_model:
+                        model = data_model['graph_model'][1][0]
+                        l_models.append(model)
+                if pcurve_g:
+                    data_model = pcurve_g['value']
+                    if data_model:
+                        model = data_model['graph_model'][1][0]
+                        g_models.append(model)
+                if dcurve:
+                    data_model = dcurve['value']
+                    if data_model:
+                        model1 = data_model['graph_model'][1][0]
+                        model2 = data_model['graph_model'][1][1]
+                        if model1:
+                            d_models.append(model1)
+                        if model2:
+                            d_models.append(model2)
 
-            if l_models:
-                graph_model['Line protection'] = ['Line protection', l_models]
-            if g_models:
-                graph_model['Ground protection'] = ['Ground protection', g_models]
+            if l_models or d_models:
+                graph_model['Line protection'] = ['Line protection', l_models+d_models]
+            if g_models or d_models:
+                graph_model['Ground protection'] = ['Ground protection', g_models+d_models]
             xlim = misc.GRAPH_PROT_CURRENT_LIMITS 
             ylim = misc.GRAPH_PROT_TIME_LIMITS
             xlabel = 'CURRENT IN AMPERES'
