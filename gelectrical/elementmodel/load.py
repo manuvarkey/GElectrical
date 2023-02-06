@@ -24,6 +24,7 @@ from gi.repository import PangoCairo
 # local files import
 from .. import misc
 from .element import ElementModel
+from ..model.protection import ProtectionModel
 
 
 class Load(ElementModel):
@@ -48,7 +49,7 @@ class Load(ElementModel):
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True ) }
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
+        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,5), []],
@@ -122,7 +123,7 @@ class AsymmetricLoad(ElementModel):
                        'type':          self.get_field_dict('str', 'Connection Type', '', 'wye', selection_list=['wye','delta']),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True )}
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
+        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,5), []],
@@ -196,7 +197,7 @@ class SinglePhaseLoad(Load):
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True )}
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
+        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,5), []],
@@ -287,9 +288,15 @@ class Motor3ph(Load):
         self.fields['sn_kva']['status_enable'] = False
         self.fields['mode']['status_enable'] = False
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
-        self.fields.update({'p_kw':    self.get_field_dict('float', 'P', 'kW', 25),
-                       'k':    self.get_field_dict('float', 'Isc/In', '', 7),
-                       'rx':      self.get_field_dict('float', 'R/X', '', 0.42)})
+        self.fields.update({'p_kw'  : self.get_field_dict('float', 'Mechanical rated power', 'kW', 5),
+                            'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85),
+                            'k'     : self.get_field_dict('float', 'Isc/In', '', 7),
+                            'rx'    : self.get_field_dict('float', 'R/X', '', 0.42),
+                            'dcurve': self.get_field_dict('data', 'Damage curve', '', None)})
+        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS', {})
         self.text_model = [[(5,2), "${name}, ${ref}", True],
                            [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
         self.schem_model = [ 
@@ -305,16 +312,32 @@ class Motor3ph(Load):
                              # Connecting line
                              ['LINE',(2,0),(2,2), []],
                            ]
+        self.damage_model = None
         self.calculate_parameters()
 
     def set_text_field_value(self, code, value):
-        if code in self.fields:
-            self.fields[code]['value'] = value
+        Load.set_text_field_value(self, code, value)
         self.calculate_parameters()
 
     def calculate_parameters(self):
-        self.fields['sn_kva']['value'] = self.fields['p_kw']['value']/self.fields['cos_phi']['value']
+        self.fields['sn_kva']['value'] = self.fields['p_kw']['value']*self.fields['efficiency']['value']/(100*self.fields['cos_phi']['value'])
         self.fields['mode']['value'] = True
+        # Damage curve
+        title = (self.fields['ref']['value'])
+        i_n = self.fields['p_kw']['value']*1000/(1.732*415)
+        k = self.fields['k']['value']
+        curve_u = [('point', k*i_n, 3600),
+                    ('point', k*i_n, 'd.stall_time')]
+        curve_l = [('point', i_n, 3600),
+                    ('point', i_n, 'd.accel_time'),
+                    ('point', k*i_n, 'd.accel_time'),
+                    ('point', k*i_n, 0.001)]
+        param = {'accel_time'  : ['Acceleration time', 's', 5, None],
+                 'stall_time'  : ['Safe stall time', 's', 10, None],}
+        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        if self.fields['dcurve']['value']:
+            self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
+        self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
     def render_element(self, context):
         """Render element to context"""
@@ -335,7 +358,7 @@ class Motor3ph(Load):
             power_model = Load.get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW)
         elif mode in (misc.POWER_MODEL_LINEFAULT, misc.POWER_MODEL_GROUNDFAULT):
             p0 = code + ':0'
-            p_mw = self.fields['p_kw']['value']/1000
+            p_mw = self.fields['p_kw']['value']*self.fields['efficiency']['value']/(100*1000)
             pf = self.fields['cos_phi']['value']
             q_mvar = p_mw/pf*(1-pf**2)**0.5
             sn_mva = p_mw/pf
@@ -366,7 +389,14 @@ class Motor1ph(SinglePhaseLoad):
         self.fields['sn_kva']['status_enable'] = False
         self.fields['mode']['status_enable'] = False
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
-        self.fields.update({'p_kw':    self.get_field_dict('float', 'P', 'kW', 25)})
+        self.fields.update({'p_kw'  : self.get_field_dict('float', 'P', 'kW', 1),
+                            'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85),
+                            'k'     : self.get_field_dict('float', 'Isc/In', '', 5),
+                            'dcurve': self.get_field_dict('data', 'Damage curve', '', None)})
+        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS', {})
         self.text_model = [[(5,2), "${name}, ${ref}", True],
                            [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
         self.schem_model = [ 
@@ -385,13 +415,28 @@ class Motor1ph(SinglePhaseLoad):
         self.calculate_parameters()
 
     def set_text_field_value(self, code, value):
-        if code in self.fields:
-            self.fields[code]['value'] = value
+        Load.set_text_field_value(self, code, value)
         self.calculate_parameters()
 
     def calculate_parameters(self):
-        self.fields['sn_kva']['value'] = self.fields['p_kw']['value']/self.fields['cos_phi']['value']
+        self.fields['sn_kva']['value'] = self.fields['p_kw']['value']*self.fields['efficiency']['value']/(100*self.fields['cos_phi']['value'])
         self.fields['mode']['value'] = True
+        # Damage curve
+        title = (self.fields['ref']['value'])
+        i_n = self.fields['p_kw']['value']*1000/(1.732*415)
+        k = self.fields['k']['value']
+        curve_u = [('point', k*i_n, 3600),
+                    ('point', k*i_n, 'd.stall_time')]
+        curve_l = [('point', i_n, 3600),
+                    ('point', i_n, 'd.accel_time'),
+                    ('point', k*i_n, 'd.accel_time'),
+                    ('point', k*i_n, 0.001)]
+        param = {'accel_time'  : ['Acceleration time', 's', 5, None],
+                 'stall_time'  : ['Safe stall time', 's', 10, None],}
+        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        if self.fields['dcurve']['value']:
+            self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
+        self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
     def render_element(self, context):
         """Render element to context"""

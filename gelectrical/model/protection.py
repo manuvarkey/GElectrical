@@ -36,12 +36,12 @@ from ..misc import FieldDict
 class ProtectionModel():
     """Generic protection base element"""
 
-    def __init__(self, title, parameters, curve_u, curve_l):
+    def __init__(self, title, parameters, curve_u, curve_l, element_type='protection'):
         """
             data_struct: Protection datastructure of following format
             
             { 
-                'type': 'protection'
+                'type': 'protection' | 'damage'
                 'parameters': { 'var_1': [caption, unit, value, value_list], 
                                 'var_2': [caption, unit, value, value_list] ... },
                 'data': {'curve_u': [('point', i1, t1), 
@@ -59,7 +59,7 @@ class ProtectionModel():
             }
         """
         self.title = title
-        self.data_struct = {'type'          : 'protection',
+        self.data_struct = {'type'          : element_type,
                             'parameters'    : parameters,
                             'data'          : {'curve_u': curve_u,'curve_l': curve_l},
                             'graph_model'   : []}
@@ -90,14 +90,47 @@ class ProtectionModel():
         return fields
 
     def update_graph(self):
-        polygon_pnts = np.array((self.polygon.exterior.coords))
-        xval = list(polygon_pnts[:,0])
-        yval = list(polygon_pnts[:,1])
-        graph_model = [self.title, [{'mode':misc.GRAPH_DATATYPE_POLYGON, 
-                                        'title':self.title, 
-                                        'xval':xval, 
-                                        'yval': yval},]]
-        self.data_struct['graph_model'] = graph_model
+        if self.data_struct['type'] == 'protection':
+            polygon_pnts = np.array((self.polygon.exterior.coords))
+            xval = list(polygon_pnts[:,0])
+            yval = list(polygon_pnts[:,1])
+            graph_model = [self.title, [{'mode':misc.GRAPH_DATATYPE_POLYGON, 
+                                            'title':self.title, 
+                                            'xval':xval, 
+                                            'yval': yval},]]
+            self.data_struct['graph_model'] = graph_model
+        elif self.data_struct['type'] == 'damage':
+            xval1 = [x for x,y in self.curve_upper]
+            yval1 = [y for x,y in self.curve_upper]
+            xval2 = [x for x,y in self.curve_lower]
+            yval2 = [y for x,y in self.curve_lower]
+            graphs = []
+            damage_flag = False
+            starting_flag = False
+
+            if xval1 and yval1:
+                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                                            'title': self.title + ' - Damage', 
+                                            'xval':xval1, 
+                                            'yval': yval1})
+                damage_flag = True
+            if xval2 and yval2:
+                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                                            'title':self.title + ' - Starting', 
+                                            'xval':xval2, 
+                                            'yval': yval2})
+                starting_flag = True
+
+            if damage_flag and not starting_flag:
+                title = self.title + ' - Damage curve'
+            elif starting_flag and not damage_flag:
+                title = self.title + ' - Starting curve'
+            else:
+                title = self.title
+
+            graph_model = [title, graphs]
+            self.data_struct['graph_model'] = graph_model
+            
 
     def update_parameters(self, parameters):
         for key, field in parameters.items():

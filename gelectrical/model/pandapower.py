@@ -908,7 +908,7 @@ class PandaPowerModel:
             result[dst_code] = misc.get_field_dict(
                 'graph', caption, unit, graph_model, decimal=decimal)
             result[dst_code]['graph_options'] = (
-                misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', caption + ' (' + unit + ')')
+                misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', caption + ' (' + unit + ')', {})
             # Add stats
             if 'avg' in stat_fields:
                 subcode = dst_code + '_max'
@@ -974,7 +974,7 @@ class PandaPowerModel:
             result[maincode] = misc.get_field_dict(
                 'graph', maincaption, mainunit, graph_model, decimal=decimal)
             result[maincode]['graph_options'] = (
-                misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', maincaption + ' (' + mainunit + ')')
+                misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', maincaption + ' (' + mainunit + ')', {})
 
         def set_graph_data_stats(result, table, data, fields=['avg']):
             model = []

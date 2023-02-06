@@ -119,7 +119,7 @@ class StaticGenerator(ElementModel):
                        'k':    self.get_field_dict('float', 'In/Isc', '', 0.1),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Generation Profile', '', 0, status_inactivate=True ) }
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
+        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = [[(5,0), "${name}, ${ref}", True],
                            [(5,None), "${p_mw}+j${q_mvar}MVA", True]]
         self.schem_model = [ 
@@ -187,7 +187,7 @@ class Motor(StaticGenerator):
                        'rx':      self.get_field_dict('float', 'R/X', '', 0.42),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 0, status_inactivate=True ) }
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF')
+        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = [[(5,2), "${name}, ${ref}", True],
                            [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
         self.schem_model = [ 

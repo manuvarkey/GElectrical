@@ -843,9 +843,10 @@ class ProjectModel:
         ylim = misc.GRAPH_LOAD_CURRENT_LIMITS
         xlabel = 'Time (Hr)'
         ylabel = 'Diversity Factor'
+        params = {}
         for loadprofile_caption in loadprofile_captions:
             title, graph_model = self.loadprofiles[loadprofile_caption]
-            graph_image = GraphImage(xlim, ylim, '', xlabel, ylabel)
+            graph_image = GraphImage(xlim, ylim, '', xlabel, ylabel, graph_params=params)
             graph_image.add_plots(graph_model)
             emb_image = graph_image.get_embedded_html_image(figsize=(500, 175))
             loadprofile_images[loadprofile_caption] = emb_image

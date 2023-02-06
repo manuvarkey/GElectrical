@@ -47,12 +47,13 @@ log = logging.getLogger(__name__)
 class GraphImage():
     """Class for handling graph image"""
     
-    def __init__(self, xlim, ylim, title='', xlabel='', ylabel='', inactivate=False):
+    def __init__(self, xlim, ylim, title='', xlabel='', ylabel='', inactivate=False, graph_params={}):
         self.xlim = xlim
         self.ylim = ylim
         self.title = title
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.graph_params = graph_params
         self.models = []
         self.colors = misc.GRAPH_COLORS
         # Plot
@@ -89,14 +90,19 @@ class GraphImage():
         self.plot.minorticks_on()
         self.plot.grid(True, which='minor', alpha=0.1, color=misc.COLOR_GRID)
 
+        if 'marker' in self.graph_params and not self.graph_params['marker']:
+            opt_marker = ''
+        else:
+            opt_marker = 'o'
+        
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
                 self.plot.plot(model.xval, model.yval, label=model.title, 
-                                marker="o", color=color)
+                                marker=opt_marker, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_FREE:
                 self.plot.scatter(model.xval, model.yval, label=model.title, 
-                                marker="o", color=color)
+                                marker=opt_marker, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
                 self.plot.fill(model.xval, model.yval, label=model.title, 
                                 color=color, edgecolor='black',
@@ -135,7 +141,7 @@ class MouseButtons:
 class GraphView():
     """Class for displaying graph"""
     
-    def __init__(self, box, xlim, ylim, title='', xlabel='', ylabel='', inactivate=False):
+    def __init__(self, box, xlim, ylim, title='', xlabel='', ylabel='', inactivate=False, graph_params={}):
         
         self.box = box
         self.xlim = xlim
@@ -143,6 +149,7 @@ class GraphView():
         self.title = title
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.graph_params = graph_params
         self.inactivate = inactivate
         self.models = []
         self.model = None
@@ -233,15 +240,20 @@ class GraphView():
         self.plot.grid(True, which='major', alpha=0.3, color=misc.COLOR_GRID)
         self.plot.minorticks_on()
         self.plot.grid(True, which='minor', alpha=0.1, color=misc.COLOR_GRID)
+
+        if 'marker' in self.graph_params and not self.graph_params['marker']:
+            opt_marker = ''
+        else:
+            opt_marker = 'o'
         
         for slno, model in enumerate(self.models):
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
                 self.plot.plot(model.xval, model.yval, label=model.title, 
-                                marker="o", color=color)
+                                marker=opt_marker, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_FREE:
                 self.plot.scatter(model.xval, model.yval, label=model.title, 
-                                marker="o", color=color)
+                                marker=opt_marker, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
                 self.plot.fill(model.xval, model.yval, label=model.title, 
                                 color=color, edgecolor='black',

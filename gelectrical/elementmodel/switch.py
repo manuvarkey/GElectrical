@@ -133,11 +133,11 @@ class ProtectionDevice(Switch):
         self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
-                                                    'TIME IN SECONDS')
+                                                    'TIME IN SECONDS', {})
         self.fields['pcurve_g']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
-                                                    'TIME IN SECONDS')
+                                                    'TIME IN SECONDS', {})
         self.line_protection_model = None
         self.ground_protection_model = None
 
