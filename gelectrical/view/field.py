@@ -323,11 +323,11 @@ class FieldView:
                 elif field['type'] in ('graph', 'data') and field['value'] is not None:
                     
                     # Set graph options
-                    (xlim, ylim, xlabel, ylabel) = field['graph_options']
+                    (xlim, ylim, xlabel, ylabel, graph_params) = field['graph_options']
                     
                     data_widget = Gtk.Box()
                     graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
-                                          inactivate=field[self.inactivate_code])
+                                          inactivate=field[self.inactivate_code], graph_params=graph_params)
                     
                     if field['selection_list']:
                         title_widget = Gtk.ComboBoxText.new()
@@ -355,7 +355,7 @@ class FieldView:
                         for model in models:
                             graphview.add_plot(model)
                         
-                        def set_field(code, graphview, index):
+                        def set_field_graph(code, graphview, index):
                             graph_uid = graph_uids[index]
                             (title, models) = self.fields[code]['selection_list'][graph_uid]
                             self.set_field(code, graph_uid)
@@ -364,7 +364,7 @@ class FieldView:
                                 graphview.add_plot(model)
                             graphview.model.title = text
                             
-                        title_widget.connect("changed", activate_callback_graphlist, set_field, graphview, code)
+                        title_widget.connect("changed", activate_callback_graphlist, set_field_graph, graphview, code)
                     else:
                         # Load graph models
                         if field['type'] == 'graph':
