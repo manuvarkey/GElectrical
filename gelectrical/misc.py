@@ -1185,13 +1185,13 @@ def elements_to_table(elements, col_codes, col_captions, code_sources, table_cla
         modifyfunc(table)
     return pd.DataFrame(table).to_html(index=False, escape=False, classes=table_class)
     
-def fields_to_table(fields, insert_image=True):
+def fields_to_table(fields, insert_image=True, insert_graph=True):
     table = {'Sl.No.':[], 'Description': [], 'Value': [], 'Unit': []}
     clean = lambda x: clean_markup(str(x)).replace('\n','</br>')
     index = 1
     for field in fields.values():
         if field['status_enable'] == True:
-            if field['type'] != 'graph':
+            if field['type'] not in ('graph', 'data'):
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
                 table['Unit'].append(field['unit'])
@@ -1211,6 +1211,25 @@ def fields_to_table(fields, insert_image=True):
                         table['Value'].append(value)
                 else:
                     table['Value'].append(value)
+            elif field['type'] == 'data':
+                table['Sl.No.'].append(index)
+                table['Description'].append(clean(field['caption']))
+                table['Unit'].append(field['unit'])
+                img_tag = ''
+                graph_fields = ''
+                # Add graphimage
+                if insert_graph:
+                    from .view.graph import GraphImage
+                    xlim, ylim, xlabel, ylabel, graph_params = field['graph_options']
+                    title = field['value']['graph_model'][0]
+                    graph_models = field['value']['graph_model'][1]
+                    graph_image = GraphImage(xlim, ylim, title, xlabel, ylabel, graph_params)
+                    graph_image.add_plots(graph_models)
+                    img_tag = graph_image.get_embedded_html_image(figsize=(200, 200))
+                # Add graph options
+                for caption, unit, value, value_list in field['value']['parameters'].values():
+                    graph_fields += '</br>' + caption + ' : ' + str(value) + ' ' + unit
+                table['Value'].append(img_tag + graph_fields)
             else:
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))

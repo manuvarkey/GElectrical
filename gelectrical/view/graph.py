@@ -73,18 +73,25 @@ class GraphImage():
     
     def plot_graph(self):
         self.plot.clear()
+
+        formatter = ticker.StrMethodFormatter('{x:,.6g}')
         for tick in self.plot.get_xticklabels():
             tick.set_fontname(misc.GRAPH_FONT_FACE)
             tick.set_fontsize(misc.GRAPH_FONT_SIZE)
         for tick in self.plot.get_yticklabels():
             tick.set_fontname(misc.GRAPH_FONT_FACE)
             tick.set_fontsize(misc.GRAPH_FONT_SIZE)
-        self.plot.set_xlim(self.xlim[0], self.xlim[1])
+        if not(math.isnan(self.xlim[0]) or math.isnan(self.xlim[1])) and self.xlim[0] != self.xlim[1]:
+            self.plot.set_xlim(self.xlim[0], self.xlim[1])
         if len(self.xlim) == 4 and self.xlim[3] == 'log':
             self.plot.set_xscale('log')
-            
+        self.plot.xaxis.set_major_formatter(formatter)
+        
         if not(math.isnan(self.ylim[0]) or math.isnan(self.ylim[1])) and self.ylim[0] != self.ylim[1]:
             self.plot.set_ylim(self.ylim[0], self.ylim[1])
+        if len(self.ylim) == 4 and self.ylim[3] == 'log':
+            self.plot.set_yscale('log')
+        self.plot.yaxis.set_major_formatter(formatter)
             
         self.plot.grid(True, which='major', alpha=0.3, color=misc.COLOR_GRID)
         self.plot.minorticks_on()
@@ -114,6 +121,9 @@ class GraphImage():
 
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
+
+        self.figure.patch.set_alpha(0.)
+        self.plot.patch.set_alpha(0.)
     
     def save_image(self, filename, figsize=(512, 384), file_format='svg'):
         self.figure.set_figwidth(figsize[0]/80)
