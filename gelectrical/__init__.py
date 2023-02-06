@@ -806,37 +806,17 @@ class MainWindow():
         undo.setstack(self.stack)
         # Save point in stack for checking change state
         self.stack.savepoint()
-        
-        # Dynamically load elements from library
-        #self.program_state['element_models'] = dict()
-        #file_names = [f for f in os.listdir(misc.abs_path('element_library'))]
-        #module_names = []
-        #for f in file_names:
-            #if f[-3:] == '.py' and f != '__init__.py':
-                #module_names.append(f[:-3])
-        #module_names.sort()
-        #for module_name in module_names:
-            #try:
-                #spec = importlib.util.spec_from_file_location(module_name, misc.abs_path('element_library', module_name + '.py'))
-                #module = importlib.util.module_from_spec(spec)
-                #sys.modules[spec.name] = module
-                #spec.loader.exec_module(module)
-                #custom_object = module.CustomItem()
-                #self.program_state['element_models'][custom_object.code] = custom_object
-                #log.info('Model loaded - ' + module_name)
-            #except ImportError:
-                #log.error('Error Loading model - ' + module_name)
 
         # Fill in default values
         self.program_state['mode'] = misc.MODE_DEFAULT
         self.program_state['stack'] = self.stack
-        # Project Filename
-        self.filename = None
+        self.filename = None  # Project Filename
             
         log.info('Setting up program settings')
         dirs = appdirs.AppDirs(misc.PROGRAM_NAME, misc.PROGRAM_AUTHOR, version=misc.PROGRAM_VER)
         settings_dir = dirs.user_data_dir
         self.user_library_dir = misc.posix_path(dirs.user_data_dir,'database')
+        misc.USER_LIBRARY_DIR = self.user_library_dir  # Update path in misc for use by other routines
         self.settings_filename = misc.posix_path(settings_dir,'settings.ini')
         # Create directory if does not exist
         if not os.path.exists(settings_dir):
@@ -844,21 +824,25 @@ class MainWindow():
         if not os.path.exists(self.user_library_dir):
             os.makedirs(self.user_library_dir)
         
+        default_program_settings = copy.deepcopy(misc.default_program_settings)
+        # Update static program setting values
+        default_program_settings['Paths']['library_path']['value'] = self.user_library_dir
         try:
             if os.path.exists(self.settings_filename):
                 with open(self.settings_filename, 'r') as fp:
                     program_settings = json.load(fp)
-                    self.program_settings = misc.update_fields_dict(misc.default_program_settings, program_settings)
+                    self.program_settings = misc.update_fields_dict(default_program_settings, program_settings)
                     log.info('Program settings opened at ' + str(self.settings_filename))
             else:
-                self.program_settings = copy.deepcopy(misc.default_program_settings, )
+                self.program_settings = default_program_settings
                 with open(self.settings_filename, 'w') as fp:
                     json.dump(self.program_settings, fp, indent = 4)
                 log.info('Program settings saved at ' + str(self.settings_filename))
         except:
             # If an error load default program preference
-            self.program_settings = copy.deepcopy(misc.default_program_settings)
+            self.program_settings = default_program_settings
             log.info('Program settings initialisation failed - falling back on default values')
+
         self.program_state['program_settings_main'] = self.program_settings['Defaults']
         # Setup program settings
         self.update_program_settings()

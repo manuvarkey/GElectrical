@@ -177,7 +177,7 @@ class Motor(StaticGenerator):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         StaticGenerator.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'motor.csv')
+        self.database_path = misc.open_library('motor.csv')
         self.ports = [[2, 0]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'M?'),
                        'name':     self.get_field_dict('str', 'Name', '', 'MOTOR'),

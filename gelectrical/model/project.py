@@ -118,7 +118,7 @@ class ProjectModel:
         ylim = misc.GRAPH_LOAD_CURRENT_LIMITS
         xlabel = 'Time (Hr)'
         ylabel = 'Diversity Factor'
-        database_path = misc.abs_path('database', 'load_profiles.csv')
+        database_path = misc.open_library('load_profiles.csv')
         loadprofiles_copy = copy.deepcopy(self.loadprofiles)
         dialog = GraphViewDialog(self.window, 
                                 'Edit Load Profiles',

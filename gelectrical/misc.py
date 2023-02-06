@@ -46,6 +46,8 @@ PROGRAM_NAME = 'GElectrical'
 PROGRAM_AUTHOR = 'kavilgroup'
 PROGRAM_VER = '1'
 APPID = "com.kavilgroup.gelectrical"
+# Paths updated from __init__
+USER_LIBRARY_DIR = ''
 # Error codes used for displaying info in main window
 ERROR = -1
 WARNING = -2
@@ -1052,6 +1054,16 @@ def log_interpolate(points, num=10, prefix='point'):
         points_int = [(x,y) for x,y in zip(X,Y)]
     return points_int
 
+def open_library(filename):
+    filename_abs = posix_path(USER_LIBRARY_DIR, filename)
+    filename_abs_lib = abs_path('database', filename)
+    if os.path.isfile(filename_abs):
+        return filename_abs
+    elif os.path.isfile(filename_abs_lib):
+        return filename_abs_lib
+    else:
+        return None
+
 # Field handling functions
 
 def get_field_dict(field_type, caption, unit, value, 
@@ -1225,7 +1237,8 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'Interface':{'advanced_mode' : get_field_dict('bool', 'Enable advanced mode', '', True, status_inactivate=False),
                                          'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
                                          'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False),
-                                         'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)}}
+                                         'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)},
+                            'Paths': {'library_path':    get_field_dict('path', 'User Library', '', '')}}
                                          
 default_project_settings = {'Information': {'project_name': get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
                             'drawing_field_dept':    get_field_dict('str', 'Responsible department', '', '', status_inactivate=False),

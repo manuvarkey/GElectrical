@@ -36,7 +36,7 @@ class Transformer(ElementModel):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ElementModel.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'transformer.csv')
+        self.database_path = misc.open_library('transformer.csv')
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 0],
@@ -124,7 +124,7 @@ class Transformer3w(ElementModel):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ElementModel.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'transformer3w.csv')
+        self.database_path = misc.open_library('transformer3w.csv')
         self.model_width = 0
         self.model_height = 0
         self.ports = [[4, 0],

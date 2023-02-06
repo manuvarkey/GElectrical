@@ -282,7 +282,7 @@ class Motor3ph(Load):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Load.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'motor.csv')
+        self.database_path = misc.open_library('motor.csv')
         self.ports = [[2, 0]]
         self.fields['ref']['value'] = 'M?'
         self.fields['sn_kva']['status_enable'] = False
@@ -384,7 +384,7 @@ class Motor1ph(SinglePhaseLoad):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         SinglePhaseLoad.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'motor1ph.csv')
+        self.database_path = misc.open_library('motor1ph.csv')
         self.ports = [[2, 0]]
         self.fields['ref']['value'] = 'M?'
         self.fields['sn_kva']['status_enable'] = False

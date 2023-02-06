@@ -135,6 +135,12 @@ class FieldView:
             set_field(code, font)  # set value
             if field['alter_structure'] == True:
                 self.update_widgets()
+
+        def activate_callback_path(widget, get_field, set_field, code):
+            field = get_field(code)
+            if field['status_inactivate']:
+                filename = field['value']
+                misc.open_file(filename)
                 
         def activate_callback_graphtitle(widget, get_field, set_field, code):
             field = get_field(code)
@@ -316,6 +322,14 @@ class FieldView:
                 elif field['type'] in ('font'):
                     data_widget = Gtk.FontButton.new_with_font(field['value'])
                     data_widget.connect("font-set", activate_callback_font, get_field, set_field, code)
+                    # Pack
+                    hbox.pack_start(caption_widget, False, False, 0)
+                    hbox.pack_start(data_widget, True, True, 0)
+
+                elif field['type'] in ('path'):
+                    data_widget = Gtk.Button.new_with_label(field['value'])
+                    data_widget.get_children()[0].set_xalign(0)
+                    data_widget.connect("clicked", activate_callback_path, get_field, set_field, code)
                     # Pack
                     hbox.pack_start(caption_widget, False, False, 0)
                     hbox.pack_start(data_widget, True, True, 0)

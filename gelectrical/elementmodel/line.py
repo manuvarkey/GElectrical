@@ -36,7 +36,7 @@ class Line(ElementModel):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ElementModel.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'line.csv')
+        self.database_path = misc.open_library('line.csv')
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 0], [2, 8]]
@@ -158,7 +158,7 @@ class LTCableIEC(Line):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Line.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'cable_iec.csv')
+        self.database_path = misc.open_library('cable_iec.csv')
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
                            [(3,None), "${int(length_km*1000)}m", True],
@@ -803,7 +803,7 @@ class LTCableCustom(Line):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Line.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.abs_path('database', 'line_custom.csv')
+        self.database_path = misc.open_library('line_custom.csv')
         
         # Data dropdowns
         self.laying_types = ['OH Line - \n3 phase with earth return\nGeneral geometry', 
