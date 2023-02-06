@@ -1,109 +1,157 @@
-item_name;item_category;name;p_kw;cos_phi;k;rx
-0.37kW, 2P, IE2;IE2 (High efficiency);0.37kW, 2P, IE2;0.51;0.75;7;0.42
-0.55kW, 2P, IE2;IE2 (High efficiency);0.55kW, 2P, IE2;0.74;0.75;7;0.42
-0.75kW, 2P, IE2;IE2 (High efficiency);0.75kW, 2P, IE2;0.97;0.85;7;0.42
-1.1kW, 2P, IE2;IE2 (High efficiency);1.1kW, 2P, IE2;1.38;0.85;7;0.42
-1.5kW, 2P, IE2;IE2 (High efficiency);1.5kW, 2P, IE2;1.85;0.85;7;0.42
-2.2kW, 2P, IE2;IE2 (High efficiency);2.2kW, 2P, IE2;2.64;0.85;7;0.42
-3.7kW, 2P, IE2;IE2 (High efficiency);3.7kW, 2P, IE2;4.33;0.85;7;0.42
-5.5kW, 2P, IE2;IE2 (High efficiency);5.5kW, 2P, IE2;6.32;0.85;7;0.42
-7.5kW, 2P, IE2;IE2 (High efficiency);7.5kW, 2P, IE2;8.51;0.85;7;0.42
-9.3kW, 2P, IE2;IE2 (High efficiency);9.3kW, 2P, IE2;10.47;0.85;7;0.42
-11kW, 2P, IE2;IE2 (High efficiency);11kW, 2P, IE2;12.3;0.9;7;0.42
-15kW, 2P, IE2;IE2 (High efficiency);15kW, 2P, IE2;16.61;0.9;7;0.42
-18.5kW, 2P, IE2;IE2 (High efficiency);18.5kW, 2P, IE2;20.35;0.9;7;0.42
-22kW, 2P, IE2;IE2 (High efficiency);22kW, 2P, IE2;24.1;0.9;7;0.42
-30kW, 2P, IE2;IE2 (High efficiency);30kW, 2P, IE2;32.61;0.9;7;0.42
-37kW, 2P, IE2;IE2 (High efficiency);37kW, 2P, IE2;40;0.9;7;0.42
-45kW, 2P, IE2;IE2 (High efficiency);45kW, 2P, IE2;48.44;0.9;7;0.42
-55kW, 2P, IE2;IE2 (High efficiency);55kW, 2P, IE2;59.01;0.9;7;0.42
-75kW, 2P, IE2;IE2 (High efficiency);75kW, 2P, IE2;79.96;0.9;7;0.42
-90kW, 2P, IE2;IE2 (High efficiency);90kW, 2P, IE2;95.64;0.9;7;0.42
-110kW, 2P, IE2;IE2 (High efficiency);110kW, 2P, IE2;116.65;0.9;7;0.42
-125kW, 2P, IE2;IE2 (High efficiency);125kW, 2P, IE2;132.14;0.9;7;0.42
-132kW, 2P, IE2;IE2 (High efficiency);132kW, 2P, IE2;139.53;0.9;7;0.42
-160kW, 2P, IE2;IE2 (High efficiency);160kW, 2P, IE2;168.42;0.9;7;0.42
-200kW, 2P, IE2;IE2 (High efficiency);200kW, 2P, IE2;210.53;0.9;7;0.42
-250kW, 2P, IE2;IE2 (High efficiency);250kW, 2P, IE2;263.16;0.9;7;0.42
-315kW, 2P, IE2;IE2 (High efficiency);315kW, 2P, IE2;331.58;0.9;7;0.42
-0.37kW, 4P, IE2;IE2 (High efficiency);0.37kW, 4P, IE2;0.53;0.7;7;0.42
-0.55kW, 4P, IE2;IE2 (High efficiency);0.55kW, 4P, IE2;0.73;0.7;7;0.42
-0.75kW, 4P, IE2;IE2 (High efficiency);0.75kW, 4P, IE2;0.94;0.8;7;0.42
-1.1kW, 4P, IE2;IE2 (High efficiency);1.1kW, 4P, IE2;1.35;0.8;7;0.42
-1.5kW, 4P, IE2;IE2 (High efficiency);1.5kW, 4P, IE2;1.81;0.8;7;0.42
-2.2kW, 4P, IE2;IE2 (High efficiency);2.2kW, 4P, IE2;2.61;0.8;7;0.42
-3.7kW, 4P, IE2;IE2 (High efficiency);3.7kW, 4P, IE2;4.29;0.8;7;0.42
-5.5kW, 4P, IE2;IE2 (High efficiency);5.5kW, 4P, IE2;6.27;0.8;7;0.42
-7.5kW, 4P, IE2;IE2 (High efficiency);7.5kW, 4P, IE2;8.46;0.8;7;0.42
-9.3kW, 4P, IE2;IE2 (High efficiency);9.3kW, 4P, IE2;10.41;0.8;7;0.42
-11kW, 4P, IE2;IE2 (High efficiency);11kW, 4P, IE2;12.25;0.85;7;0.42
-15kW, 4P, IE2;IE2 (High efficiency);15kW, 4P, IE2;16.56;0.85;7;0.42
-18.5kW, 4P, IE2;IE2 (High efficiency);18.5kW, 4P, IE2;20.29;0.85;7;0.42
-22kW, 4P, IE2;IE2 (High efficiency);22kW, 4P, IE2;24.02;0.85;7;0.42
-30kW, 4P, IE2;IE2 (High efficiency);30kW, 4P, IE2;32.5;0.85;7;0.42
-37kW, 4P, IE2;IE2 (High efficiency);37kW, 4P, IE2;39.91;0.85;7;0.42
-45kW, 4P, IE2;IE2 (High efficiency);45kW, 4P, IE2;48.34;0.85;7;0.42
-55kW, 4P, IE2;IE2 (High efficiency);55kW, 4P, IE2;58.82;0.85;7;0.42
-75kW, 4P, IE2;IE2 (High efficiency);75kW, 4P, IE2;79.79;0.85;7;0.42
-90kW, 4P, IE2;IE2 (High efficiency);90kW, 4P, IE2;95.54;0.85;7;0.42
-110kW, 4P, IE2;IE2 (High efficiency);110kW, 4P, IE2;116.4;0.85;7;0.42
-125kW, 4P, IE2;IE2 (High efficiency);125kW, 4P, IE2;132.14;0.85;7;0.42
-132kW, 4P, IE2;IE2 (High efficiency);132kW, 4P, IE2;139.39;0.85;7;0.42
-160kW, 4P, IE2;IE2 (High efficiency);160kW, 4P, IE2;168.6;0.85;7;0.42
-200kW, 4P, IE2;IE2 (High efficiency);200kW, 4P, IE2;210.3;0.85;7;0.42
-250kW, 4P, IE2;IE2 (High efficiency);250kW, 4P, IE2;262.88;0.85;7;0.42
-315kW, 4P, IE2;IE2 (High efficiency);315kW, 4P, IE2;331.23;0.85;7;0.42
-0.37kW, 2P, IE3;IE3 (Premium efficiency);0.37kW, 2P, IE3;0.49;0.75;8;0.42
-0.55kW, 2P, IE3;IE3 (Premium efficiency);0.55kW, 2P, IE3;0.7;0.75;8;0.42
-0.75kW, 2P, IE3;IE3 (Premium efficiency);0.75kW, 2P, IE3;0.93;0.85;8;0.42
-1.1kW, 2P, IE3;IE3 (Premium efficiency);1.1kW, 2P, IE3;1.33;0.85;8;0.42
-1.5kW, 2P, IE3;IE3 (Premium efficiency);1.5kW, 2P, IE3;1.78;0.85;8;0.42
-2.2kW, 2P, IE3;IE3 (Premium efficiency);2.2kW, 2P, IE3;2.56;0.85;8;0.42
-3.7kW, 2P, IE3;IE3 (Premium efficiency);3.7kW, 2P, IE3;4.21;0.85;8;0.42
-5.5kW, 2P, IE3;IE3 (Premium efficiency);5.5kW, 2P, IE3;6.17;0.85;8;0.42
-7.5kW, 2P, IE3;IE3 (Premium efficiency);7.5kW, 2P, IE3;8.32;0.85;8;0.42
-9.3kW, 2P, IE3;IE3 (Premium efficiency);9.3kW, 2P, IE3;10.25;0.85;8;0.42
-11kW, 2P, IE3;IE3 (Premium efficiency);11kW, 2P, IE3;12.06;0.9;8;0.42
-15kW, 2P, IE3;IE3 (Premium efficiency);15kW, 2P, IE3;16.32;0.9;8;0.42
-18.5kW, 2P, IE3;IE3 (Premium efficiency);18.5kW, 2P, IE3;20.02;0.9;8;0.42
-22kW, 2P, IE3;IE3 (Premium efficiency);22kW, 2P, IE3;23.73;0.9;8;0.42
-30kW, 2P, IE3;IE3 (Premium efficiency);30kW, 2P, IE3;32.15;0.9;8;0.42
-37kW, 2P, IE3;IE3 (Premium efficiency);37kW, 2P, IE3;39.49;0.9;8;0.42
-45kW, 2P, IE3;IE3 (Premium efficiency);45kW, 2P, IE3;47.87;0.9;8;0.42
-55kW, 2P, IE3;IE3 (Premium efficiency);55kW, 2P, IE3;58.32;0.9;8;0.42
-75kW, 2P, IE3;IE3 (Premium efficiency);75kW, 2P, IE3;79.2;0.9;8;0.42
-90kW, 2P, IE3;IE3 (Premium efficiency);90kW, 2P, IE3;94.74;0.9;8;0.42
-110kW, 2P, IE3;IE3 (Premium efficiency);110kW, 2P, IE3;115.55;0.9;8;0.42
-125kW, 2P, IE3;IE3 (Premium efficiency);125kW, 2P, IE3;131.16;0.9;8;0.42
-132kW, 2P, IE3;IE3 (Premium efficiency);132kW, 2P, IE3;138.36;0.9;8;0.42
-160kW, 2P, IE3;IE3 (Premium efficiency);160kW, 2P, IE3;167.36;0.9;8;0.42
-200kW, 2P, IE3;IE3 (Premium efficiency);200kW, 2P, IE3;208.77;0.9;8;0.42
-250kW, 2P, IE3;IE3 (Premium efficiency);250kW, 2P, IE3;260.96;0.9;8;0.42
-315kW, 2P, IE3;IE3 (Premium efficiency);315kW, 2P, IE3;328.81;0.9;8;0.42
-0.37kW, 4P, IE3;IE3 (Premium efficiency);0.37kW, 4P, IE3;0.51;0.7;8;0.42
-0.55kW, 4P, IE3;IE3 (Premium efficiency);0.55kW, 4P, IE3;0.71;0.7;8;0.42
-0.75kW, 4P, IE3;IE3 (Premium efficiency);0.75kW, 4P, IE3;0.91;0.8;8;0.42
-1.1kW, 4P, IE3;IE3 (Premium efficiency);1.1kW, 4P, IE3;1.31;0.8;8;0.42
-1.5kW, 4P, IE3;IE3 (Premium efficiency);1.5kW, 4P, IE3;1.76;0.8;8;0.42
-2.2kW, 4P, IE3;IE3 (Premium efficiency);2.2kW, 4P, IE3;2.54;0.8;8;0.42
-3.7kW, 4P, IE3;IE3 (Premium efficiency);3.7kW, 4P, IE3;4.19;0.8;8;0.42
-5.5kW, 4P, IE3;IE3 (Premium efficiency);5.5kW, 4P, IE3;6.14;0.8;8;0.42
-7.5kW, 4P, IE3;IE3 (Premium efficiency);7.5kW, 4P, IE3;8.3;0.8;8;0.42
-9.3kW, 4P, IE3;IE3 (Premium efficiency);9.3kW, 4P, IE3;10.22;0.8;8;0.42
-11kW, 4P, IE3;IE3 (Premium efficiency);11kW, 4P, IE3;12.04;0.85;8;0.42
-15kW, 4P, IE3;IE3 (Premium efficiency);15kW, 4P, IE3;16.29;0.85;8;0.42
-18.5kW, 4P, IE3;IE3 (Premium efficiency);18.5kW, 4P, IE3;19.98;0.85;8;0.42
-22kW, 4P, IE3;IE3 (Premium efficiency);22kW, 4P, IE3;23.66;0.85;8;0.42
-30kW, 4P, IE3;IE3 (Premium efficiency);30kW, 4P, IE3;32.05;0.85;8;0.42
-37kW, 4P, IE3;IE3 (Premium efficiency);37kW, 4P, IE3;39.4;0.85;8;0.42
-45kW, 4P, IE3;IE3 (Premium efficiency);45kW, 4P, IE3;47.77;0.85;8;0.42
-55kW, 4P, IE3;IE3 (Premium efficiency);55kW, 4P, IE3;58.14;0.85;8;0.42
-75kW, 4P, IE3;IE3 (Premium efficiency);75kW, 4P, IE3;78.95;0.85;8;0.42
-90kW, 4P, IE3;IE3 (Premium efficiency);90kW, 4P, IE3;94.54;0.85;8;0.42
-110kW, 4P, IE3;IE3 (Premium efficiency);110kW, 4P, IE3;115.3;0.85;8;0.42
-125kW, 4P, IE3;IE3 (Premium efficiency);125kW, 4P, IE3;130.89;0.85;8;0.42
-132kW, 4P, IE3;IE3 (Premium efficiency);132kW, 4P, IE3;138.08;0.85;8;0.42
-160kW, 4P, IE3;IE3 (Premium efficiency);160kW, 4P, IE3;167.01;0.85;8;0.42
-200kW, 4P, IE3;IE3 (Premium efficiency);200kW, 4P, IE3;208.33;0.85;8;0.42
-250kW, 4P, IE3;IE3 (Premium efficiency);250kW, 4P, IE3;260.42;0.85;8;0.42
-315kW, 4P, IE3;IE3 (Premium efficiency);315kW, 4P, IE3;328.13;0.85;8;0.42
+item_name;item_category;p_kw;efficiency;cos_phi;k;rx
+0.37kW, 2P, IE1;IE1;0.37;66.1;0.75;6;0.42
+0.55kW, 2P, IE1;IE1;0.55;69.1;0.75;6;0.42
+0.75kW, 2P, IE1;IE1;0.75;72.1;0.85;6;0.42
+1.1kW, 2P, IE1;IE1;1.1;75;0.85;6;0.42
+1.5kW, 2P, IE1;IE1;1.5;77.2;0.85;6;0.42
+2.2kW, 2P, IE1;IE1;2.2;79.7;0.85;6.5;0.42
+3.7kW, 2P, IE1;IE1;3.7;82.7;0.85;6.5;0.42
+5.5kW, 2P, IE1;IE1;5.5;84.7;0.85;6.5;0.42
+7.5kW, 2P, IE1;IE1;7.5;86;0.85;6.5;0.42
+11kW, 2P, IE1;IE1;11;87.6;0.9;6.5;0.42
+15kW, 2P, IE1;IE1;15;88.7;0.9;6.5;0.42
+18.5kW, 2P, IE1;IE1;18.5;89.3;0.9;6.5;0.42
+22kW, 2P, IE1;IE1;22;89.9;0.9;6.5;0.42
+30kW, 2P, IE1;IE1;30;90.7;0.9;6.5;0.42
+37kW, 2P, IE1;IE1;37;91.2;0.9;6.5;0.42
+45kW, 2P, IE1;IE1;45;91.7;0.9;6.5;0.42
+55kW, 2P, IE1;IE1;55;92.1;0.9;6.5;0.42
+75kW, 2P, IE1;IE1;75;92.7;0.9;6.5;0.42
+90kW, 2P, IE1;IE1;90;93;0.9;6.5;0.42
+110kW, 2P, IE1;IE1;110;93.3;0.9;6.5;0.42
+125kW, 2P, IE1;IE1;125;93.4;0.9;6.5;0.42
+132kW, 2P, IE1;IE1;132;93.5;0.9;6.5;0.42
+160kW, 2P, IE1;IE1;160;93.8;0.9;6.5;0.42
+200kW, 2P, IE1;IE1;200;94;0.9;6.5;0.42
+250kW, 2P, IE1;IE1;250;94;0.9;6.5;0.42
+315kW, 2P, IE1;IE1;315;94;0.9;6.5;0.42
+0.37kW, 4P, IE1;IE1;0.37;65.1;0.7;5.5;0.42
+0.55kW, 4P, IE1;IE1;0.55;69.1;0.7;5.5;0.42
+0.75kW, 4P, IE1;IE1;0.75;72.1;0.8;5.5;0.42
+1.1kW, 4P, IE1;IE1;1.1;75;0.8;5.5;0.42
+1.5kW, 4P, IE1;IE1;1.5;77.2;0.8;5.5;0.42
+2.2kW, 4P, IE1;IE1;2.2;79.7;0.8;6.5;0.42
+3.7kW, 4P, IE1;IE1;3.7;82.7;0.8;6.5;0.42
+5.5kW, 4P, IE1;IE1;5.5;84.7;0.8;6.5;0.42
+7.5kW, 4P, IE1;IE1;7.5;86;0.8;6.5;0.42
+11kW, 4P, IE1;IE1;11;87.6;0.85;6.5;0.42
+15kW, 4P, IE1;IE1;15;88.7;0.85;6.5;0.42
+18.5kW, 4P, IE1;IE1;18.5;89.3;0.85;6.5;0.42
+22kW, 4P, IE1;IE1;22;89.9;0.85;6.5;0.42
+30kW, 4P, IE1;IE1;30;90.7;0.85;6.5;0.42
+37kW, 4P, IE1;IE1;37;91.2;0.85;6.5;0.42
+45kW, 4P, IE1;IE1;45;91.7;0.85;6.5;0.42
+55kW, 4P, IE1;IE1;55;92.1;0.85;6.5;0.42
+75kW, 4P, IE1;IE1;75;92.7;0.85;6.5;0.42
+90kW, 4P, IE1;IE1;90;93;0.85;6.5;0.42
+110kW, 4P, IE1;IE1;110;93.3;0.85;6.5;0.42
+125kW, 4P, IE1;IE1;125;93.4;0.85;6.5;0.42
+132kW, 4P, IE1;IE1;132;93.5;0.85;6.5;0.42
+160kW, 4P, IE1;IE1;160;93.8;0.85;6.5;0.42
+200kW, 4P, IE1;IE1;200;94;0.85;6.5;0.42
+250kW, 4P, IE1;IE1;250;94;0.85;6.5;0.42
+315kW, 4P, IE1;IE1;315;94;0.85;6.5;0.42
+0.37kW, 2P, IE2;IE2 (High efficiency);0.37;72.2;0.75;6.5;0.42
+0.55kW, 2P, IE2;IE2 (High efficiency);0.55;74.8;0.75;6.5;0.42
+0.75kW, 2P, IE2;IE2 (High efficiency);0.75;77.4;0.85;6.5;0.42
+1.1kW, 2P, IE2;IE2 (High efficiency);1.1;79.6;0.85;6.5;0.42
+1.5kW, 2P, IE2;IE2 (High efficiency);1.5;81.3;0.85;6.5;0.42
+2.2kW, 2P, IE2;IE2 (High efficiency);2.2;83.2;0.85;7;0.42
+3.7kW, 2P, IE2;IE2 (High efficiency);3.7;85.5;0.85;7;0.42
+5.5kW, 2P, IE2;IE2 (High efficiency);5.5;87;0.85;7;0.42
+7.5kW, 2P, IE2;IE2 (High efficiency);7.5;88.1;0.85;7;0.42
+11kW, 2P, IE2;IE2 (High efficiency);11;89.4;0.9;7;0.42
+15kW, 2P, IE2;IE2 (High efficiency);15;90.3;0.9;7;0.42
+18.5kW, 2P, IE2;IE2 (High efficiency);18.5;90.9;0.9;7;0.42
+22kW, 2P, IE2;IE2 (High efficiency);22;91.3;0.9;7;0.42
+30kW, 2P, IE2;IE2 (High efficiency);30;92;0.9;7;0.42
+37kW, 2P, IE2;IE2 (High efficiency);37;92.5;0.9;7;0.42
+45kW, 2P, IE2;IE2 (High efficiency);45;92.9;0.9;7;0.42
+55kW, 2P, IE2;IE2 (High efficiency);55;93.2;0.9;7;0.42
+75kW, 2P, IE2;IE2 (High efficiency);75;93.8;0.9;7;0.42
+90kW, 2P, IE2;IE2 (High efficiency);90;94.1;0.9;7;0.42
+110kW, 2P, IE2;IE2 (High efficiency);110;94.3;0.9;7;0.42
+125kW, 2P, IE2;IE2 (High efficiency);125;94.5;0.9;7;0.42
+132kW, 2P, IE2;IE2 (High efficiency);132;94.6;0.9;7;0.42
+160kW, 2P, IE2;IE2 (High efficiency);160;94.8;0.9;7;0.42
+200kW, 2P, IE2;IE2 (High efficiency);200;95;0.9;7;0.42
+250kW, 2P, IE2;IE2 (High efficiency);250;95;0.9;7;0.42
+315kW, 2P, IE2;IE2 (High efficiency);315;95;0.9;7;0.42
+0.37kW, 4P, IE2;IE2 (High efficiency);0.37;70.1;0.7;6;0.42
+0.55kW, 4P, IE2;IE2 (High efficiency);0.55;75.1;0.7;6;0.42
+0.75kW, 4P, IE2;IE2 (High efficiency);0.75;79.6;0.8;6;0.42
+1.1kW, 4P, IE2;IE2 (High efficiency);1.1;81.4;0.8;6;0.42
+1.5kW, 4P, IE2;IE2 (High efficiency);1.5;82.8;0.8;6;0.42
+2.2kW, 4P, IE2;IE2 (High efficiency);2.2;84.3;0.8;7;0.42
+3.7kW, 4P, IE2;IE2 (High efficiency);3.7;86.3;0.8;7;0.42
+5.5kW, 4P, IE2;IE2 (High efficiency);5.5;87.7;0.8;7;0.42
+7.5kW, 4P, IE2;IE2 (High efficiency);7.5;88.7;0.8;7;0.42
+11kW, 4P, IE2;IE2 (High efficiency);11;89.8;0.85;7;0.42
+15kW, 4P, IE2;IE2 (High efficiency);15;90.6;0.85;7;0.42
+18.5kW, 4P, IE2;IE2 (High efficiency);18.5;91.2;0.85;7;0.42
+22kW, 4P, IE2;IE2 (High efficiency);22;91.6;0.85;7;0.42
+30kW, 4P, IE2;IE2 (High efficiency);30;92.3;0.85;7;0.42
+37kW, 4P, IE2;IE2 (High efficiency);37;92.7;0.85;7;0.42
+45kW, 4P, IE2;IE2 (High efficiency);45;93.1;0.85;7;0.42
+55kW, 4P, IE2;IE2 (High efficiency);55;93.5;0.85;7;0.42
+75kW, 4P, IE2;IE2 (High efficiency);75;94;0.85;7;0.42
+90kW, 4P, IE2;IE2 (High efficiency);90;94.2;0.85;7;0.42
+110kW, 4P, IE2;IE2 (High efficiency);110;94.5;0.85;7;0.42
+125kW, 4P, IE2;IE2 (High efficiency);125;94.6;0.85;7;0.42
+132kW, 4P, IE2;IE2 (High efficiency);132;94.7;0.85;7;0.42
+160kW, 4P, IE2;IE2 (High efficiency);160;94.9;0.85;7;0.42
+200kW, 4P, IE2;IE2 (High efficiency);200;95.1;0.85;7;0.42
+250kW, 4P, IE2;IE2 (High efficiency);250;95.1;0.85;7;0.42
+315kW, 4P, IE2;IE2 (High efficiency);315;95.1;0.85;7;0.42
+0.37kW, 2P, IE3;IE3 (Premium efficiency);0.37;75.5;0.75;7;0.42
+0.55kW, 2P, IE3;IE3 (Premium efficiency);0.55;78.1;0.75;7;0.42
+0.75kW, 2P, IE3;IE3 (Premium efficiency);0.75;80.7;0.85;7;0.42
+1.1kW, 2P, IE3;IE3 (Premium efficiency);1.1;82.7;0.85;7;0.42
+1.5kW, 2P, IE3;IE3 (Premium efficiency);1.5;84.2;0.85;7;0.42
+2.2kW, 2P, IE3;IE3 (Premium efficiency);2.2;85.9;0.85;7.7;0.42
+3.7kW, 2P, IE3;IE3 (Premium efficiency);3.7;87.8;0.85;7.7;0.42
+5.5kW, 2P, IE3;IE3 (Premium efficiency);5.5;89.2;0.85;7.7;0.42
+7.5kW, 2P, IE3;IE3 (Premium efficiency);7.5;90.1;0.85;7.7;0.42
+11kW, 2P, IE3;IE3 (Premium efficiency);11;91.2;0.9;7.7;0.42
+15kW, 2P, IE3;IE3 (Premium efficiency);15;91.9;0.9;7.7;0.42
+18.5kW, 2P, IE3;IE3 (Premium efficiency);18.5;92.4;0.9;7.7;0.42
+22kW, 2P, IE3;IE3 (Premium efficiency);22;92.7;0.9;7.7;0.42
+30kW, 2P, IE3;IE3 (Premium efficiency);30;93.3;0.9;7.7;0.42
+37kW, 2P, IE3;IE3 (Premium efficiency);37;93.7;0.9;7.7;0.42
+45kW, 2P, IE3;IE3 (Premium efficiency);45;94;0.9;7.7;0.42
+55kW, 2P, IE3;IE3 (Premium efficiency);55;94.3;0.9;7.7;0.42
+75kW, 2P, IE3;IE3 (Premium efficiency);75;94.7;0.9;7.7;0.42
+90kW, 2P, IE3;IE3 (Premium efficiency);90;95;0.9;7.7;0.42
+110kW, 2P, IE3;IE3 (Premium efficiency);110;95.2;0.9;7.7;0.42
+125kW, 2P, IE3;IE3 (Premium efficiency);125;95.3;0.9;7.7;0.42
+132kW, 2P, IE3;IE3 (Premium efficiency);132;95.4;0.9;7.7;0.42
+160kW, 2P, IE3;IE3 (Premium efficiency);160;95.6;0.9;7.7;0.42
+200kW, 2P, IE3;IE3 (Premium efficiency);200;95.8;0.9;7.7;0.42
+250kW, 2P, IE3;IE3 (Premium efficiency);250;95.8;0.9;7.7;0.42
+315kW, 2P, IE3;IE3 (Premium efficiency);315;95.8;0.9;7.7;0.42
+0.37kW, 4P, IE3;IE3 (Premium efficiency);0.37;73;0.7;6.5;0.42
+0.55kW, 4P, IE3;IE3 (Premium efficiency);0.55;78;0.7;6.5;0.42
+0.75kW, 4P, IE3;IE3 (Premium efficiency);0.75;82.5;0.8;6.5;0.42
+1.1kW, 4P, IE3;IE3 (Premium efficiency);1.1;84.1;0.8;6.5;0.42
+1.5kW, 4P, IE3;IE3 (Premium efficiency);1.5;85.3;0.8;6.5;0.42
+2.2kW, 4P, IE3;IE3 (Premium efficiency);2.2;86.7;0.8;7.5;0.42
+3.7kW, 4P, IE3;IE3 (Premium efficiency);3.7;88.4;0.8;7.5;0.42
+5.5kW, 4P, IE3;IE3 (Premium efficiency);5.5;89.6;0.8;7.5;0.42
+7.5kW, 4P, IE3;IE3 (Premium efficiency);7.5;90.4;0.8;7.5;0.42
+11kW, 4P, IE3;IE3 (Premium efficiency);11;91.4;0.85;7.5;0.42
+15kW, 4P, IE3;IE3 (Premium efficiency);15;92.1;0.85;7.5;0.42
+18.5kW, 4P, IE3;IE3 (Premium efficiency);18.5;92.6;0.85;7.5;0.42
+22kW, 4P, IE3;IE3 (Premium efficiency);22;93;0.85;7.5;0.42
+30kW, 4P, IE3;IE3 (Premium efficiency);30;93.6;0.85;7.5;0.42
+37kW, 4P, IE3;IE3 (Premium efficiency);37;93.9;0.85;7.5;0.42
+45kW, 4P, IE3;IE3 (Premium efficiency);45;94.2;0.85;7.5;0.42
+55kW, 4P, IE3;IE3 (Premium efficiency);55;94.6;0.85;7.5;0.42
+75kW, 4P, IE3;IE3 (Premium efficiency);75;95;0.85;7.7;0.42
+90kW, 4P, IE3;IE3 (Premium efficiency);90;95.2;0.85;7.7;0.42
+110kW, 4P, IE3;IE3 (Premium efficiency);110;95.4;0.85;7.7;0.42
+125kW, 4P, IE3;IE3 (Premium efficiency);125;95.5;0.85;7.7;0.42
+132kW, 4P, IE3;IE3 (Premium efficiency);132;95.6;0.85;7.7;0.42
+160kW, 4P, IE3;IE3 (Premium efficiency);160;95.8;0.85;7.7;0.42
+200kW, 4P, IE3;IE3 (Premium efficiency);200;96;0.85;7.7;0.42
+250kW, 4P, IE3;IE3 (Premium efficiency);250;96;0.85;7.7;0.42
+315kW, 4P, IE3;IE3 (Premium efficiency);315;96;0.85;7.7;0.42

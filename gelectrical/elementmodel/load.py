@@ -297,8 +297,9 @@ class Motor3ph(Load):
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
-        self.text_model = [[(5,2), "${name}, ${ref}", True],
-                           [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
+        self.text_model = [[(5,2), "${ref}", True],
+                           [(5,None), "${p_kw}kW, ${cos_phi}pf", True],
+                           [(5,None), "${name}", True]]
         self.schem_model = [ 
                              ['CIRCLE', (2,4), 2, False, []],
                              # M
@@ -333,7 +334,7 @@ class Motor3ph(Load):
                     ('point', k*i_n, 'd.accel_time'),
                     ('point', k*i_n, 0.001)]
         param = {'accel_time'  : ['Acceleration time', 's', 5, None],
-                 'stall_time'  : ['Safe stall time', 's', 10, None],}
+                 'stall_time'  : ['Safe stall time', 's', 20, None],}
         self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
         if self.fields['dcurve']['value']:
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
@@ -383,7 +384,7 @@ class Motor1ph(SinglePhaseLoad):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         SinglePhaseLoad.__init__(self, cordinates, **kwargs)
-        self.database_path = None
+        self.database_path = misc.abs_path('database', 'motor1ph.csv')
         self.ports = [[2, 0]]
         self.fields['ref']['value'] = 'M?'
         self.fields['sn_kva']['status_enable'] = False
@@ -397,8 +398,9 @@ class Motor1ph(SinglePhaseLoad):
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
-        self.text_model = [[(5,2), "${name}, ${ref}", True],
-                           [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
+        self.text_model = [[(5,2), "${ref}", True],
+                           [(5,None), "${p_kw}kW, ${cos_phi}pf", True],
+                           [(5,None), "${name}", True]]
         self.schem_model = [ 
                              ['CIRCLE', (2,4), 2, False, []],
                              # M
@@ -431,8 +433,8 @@ class Motor1ph(SinglePhaseLoad):
                     ('point', i_n, 'd.accel_time'),
                     ('point', k*i_n, 'd.accel_time'),
                     ('point', k*i_n, 0.001)]
-        param = {'accel_time'  : ['Acceleration time', 's', 5, None],
-                 'stall_time'  : ['Safe stall time', 's', 10, None],}
+        param = {'accel_time'  : ['Acceleration time', 's', 3, None],
+                 'stall_time'  : ['Safe stall time', 's', 20, None],}
         self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
         if self.fields['dcurve']['value']:
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
