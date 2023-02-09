@@ -22,9 +22,9 @@
 #  
 # 
 
-import logging, copy, pickle, codecs, csv, json, os
+import logging, csv, json
 from gi.repository import Gtk, Gdk, GLib
-import cairo
+import numpy as np
 
 # local files import
 from .. import misc
@@ -180,11 +180,31 @@ class DatabaseView:
                                     validated = False
                             elif data_type == 'graph':
                                 try:
-                                    dirname = os.path.dirname(self.data_path)
-                                    valuepath = misc.abs_path(dirname, value)
+                                    dirname = misc.dir_from_path(self.data_path)
+                                    valuepath = misc.posix_path(dirname, value)
                                     with open(valuepath, 'r') as fileobj:
                                         data = json.load(fileobj)
                                         validated = data
+                                except:
+                                    validated = None
+                            elif data_type == 'data':
+                                try:
+                                    (subdir, data_filename, params_filename) = eval(value)
+                                    dirname = misc.dir_from_path(self.data_path)
+                                    valuepath_params = misc.posix_path(dirname, subdir, params_filename)
+                                    with open(valuepath_params, 'r') as fp:
+                                        data_struct = json.load(fp)
+                                    validated = data_struct
+                                    if data_filename:
+                                        valuepath = misc.posix_path(dirname, subdir, data_filename)
+                                        data = np.loadtxt(valuepath, delimiter=',')
+                                        curve_u = []
+                                        curve_l = []
+                                        for row in data:
+                                            curve_u.append(('point', str(row[0])+'*f.In', str(row[1])))
+                                            curve_l.append(('point', str(row[2])+'*f.In', str(row[3])))
+                                        validated['data']['curve_u'] = curve_u
+                                        validated['data']['curve_l'] = curve_l
                                 except:
                                     validated = None
                             else:
