@@ -85,8 +85,10 @@ class Line(ElementModel):
                        'df':            self.get_field_dict('float', 'DF', '', 1,
                                                                     alter_structure=True),
                        'designation':   self.get_field_dict('str', 'Designation', '', ''),
-                       'type':          self.get_field_dict('str', 'Type of Line', '', 'Under Ground', selection_list=['Over Head','Under Ground']),
-                       'parallel':      self.get_field_dict('int', '# Parallel Lines', '', 1),
+                       'type':          self.get_field_dict('str', 'Type of Line', '', 'Under Ground', 
+                                                            selection_list=['Over Head','Under Ground']),
+                       'parallel':      self.get_field_dict('int', '# Parallel Lines', '', 1,
+                                                            alter_structure=True),
                        'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
                                                                     alter_structure=True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
@@ -198,7 +200,7 @@ class Line(ElementModel):
         title = (self.fields['ref']['value'])
         i_n = self.fields['max_i_ka']['value']*1000 * self.fields['df']['value'] * self.fields['parallel']['value']
         i_z = i_n*1.45
-        i_sc = self.fields['phase_sc_current_rating']['value']*1000
+        i_sc = self.fields['phase_sc_current_rating']['value']*1000 * self.fields['parallel']['value']
         curve_u = [('point', i_z, 3600),
                     ('point', i_sc/math.sqrt(10), 10),
                     ('point', i_sc/math.sqrt(0.01), 0.01)]
