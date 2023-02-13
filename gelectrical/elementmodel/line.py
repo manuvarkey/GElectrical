@@ -24,6 +24,7 @@ from gi.repository import PangoCairo
 # local files import
 from .. import misc
 from .element import ElementModel
+from ..model.protection import ProtectionModel
 
 
 class Line(ElementModel):
@@ -40,9 +41,30 @@ class Line(ElementModel):
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 0], [2, 8]]
+        
+        self.conductor_materials = ['Copper','Aluminium','Steel']
+        self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}
+        self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}
+        self.conductor_delta20_dict = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}
+        self.conductor_ultimate_working_temp_dict = {'Copper': 395, 'Aluminium': 325, 'Steel': 500}
+        
+        self.insulation_materials = ['PVC', 'XLPE/EPR', 'Air']
+        self.material_code = {'Copper':'Cu','Aluminium':'Al','Steel':'Fe'}
+        self.insulation_code = {'PVC':'Y', 'XLPE/EPR':'2X'}
+        self.insulation_max_working_temp_dict = {'PVC': 70, 'XLPE/EPR': 90}
+        self.insulation_ultimate_working_temp_dict = {'PVC': 160, 'XLPE/EPR': 250}
+
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'W?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
                        'length_km':     self.get_field_dict('float', 'Length', 'km', 1),
+                       'conductor_material': self.get_field_dict('str', 'Conductor material', '', 
+                                                                self.conductor_materials[0], 
+                                                                selection_list=self.conductor_materials,
+                                                                alter_structure=True),
+                       'insulation_material': self.get_field_dict('str', 'Insulation', '', 
+                                                                self.insulation_materials[0], 
+                                                                selection_list=self.insulation_materials,
+                                                                alter_structure=True),
                        'r_ohm_per_km':  self.get_field_dict('float', 'R', 'Ohm/km', 0.1),
                        'x_ohm_per_km':  self.get_field_dict('float', 'X', 'Ohm/km', 0.1),
                        'c_nf_per_km':   self.get_field_dict('float', 'C', 'nF/km', 0),
@@ -53,19 +75,30 @@ class Line(ElementModel):
                        'r0g_ohm_per_km': self.get_field_dict('float', 'R0g', 'Ohm/km', 0),
                        'x0g_ohm_per_km': self.get_field_dict('float', 'X0g', 'Ohm/km', 0),
                        'c0g_nf_per_km':  self.get_field_dict('float', 'C0g', 'nF/km', 0),
-                       'endtemp_degree':self.get_field_dict('float', 'Tf', 'degC', 160),
-                       'max_i_ka':      self.get_field_dict('float', 'Imax', 'kA', 1),
-                       'phase_sc_current_rating': self.get_field_dict('float', 'Isc phase (1s)', 'kA', 0),
+                       'endtemp_degree':self.get_field_dict('float', 'Tf', 'degC', 160,
+                                                                alter_structure=True),
+                       'max_i_ka':      self.get_field_dict('float', 'Imax', 'kA', 1,
+                                                                    alter_structure=True),
+                       'phase_sc_current_rating': self.get_field_dict('float', 'Isc phase (1s)', 'kA', 0,
+                                                                    alter_structure=True),
                        'cpe_sc_current_rating': self.get_field_dict('float', 'Isc cpe (1s)', 'kA', 0),
-                       'df':            self.get_field_dict('float', 'DF', '', 1),
+                       'df':            self.get_field_dict('float', 'DF', '', 1,
+                                                                    alter_structure=True),
                        'designation':   self.get_field_dict('str', 'Designation', '', ''),
                        'type':          self.get_field_dict('str', 'Type of Line', '', 'Under Ground', selection_list=['Over Head','Under Ground']),
                        'parallel':      self.get_field_dict('int', '# Parallel Lines', '', 1),
+                       'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
+                                                                    alter_structure=True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
+        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS', {})
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
                            [(3,None), "${length_km}km", True],
                            [(3,None), "${name}", True]]
+        self.calculate_damage_curve()
     
     def render_element(self, context):
         """Render element to context"""
@@ -146,6 +179,34 @@ class Line(ElementModel):
             
         return power_model
 
+    def set_text_field_value(self, code, value):
+        ElementModel.set_text_field_value(self, code, value)
+        self.calculate_parameters()
+
+    def calculate_parameters(self):
+        self.calculate_damage_curve()
+
+    def conductor_k_value(self, conductor, t0, tf):
+        B = self.conductor_B_dict[conductor]
+        Qc = self.conductor_Qc_dict[conductor]
+        delta20 = self.conductor_delta20_dict[conductor]
+        k = math.sqrt(Qc*(B+20)/delta20*math.log((B+tf)/(B+t0)))
+        return k
+
+    def calculate_damage_curve(self):
+        # Damage curve
+        title = (self.fields['ref']['value'])
+        i_n = self.fields['max_i_ka']['value']*1000 * self.fields['df']['value']
+        i_z = i_n*1.45
+        i_sc = self.fields['phase_sc_current_rating']['value']*1000
+        curve_u = [('point', i_z, 3600),
+                    ('point', i_sc/math.sqrt(10), 10),
+                    ('point', i_sc/math.sqrt(0.01), 0.01)]
+        curve_l = []
+        param = {}
+        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
+
 
 class LTCableIEC(Line):
     """Cable element"""
@@ -188,14 +249,6 @@ class LTCableIEC(Line):
                          'Armour in parallel\nwith external CPC conductor']
         self.cpe_materials = ['Copper','Aluminium','Steel']
         self.cpe_insulation = ['PVC','XLPE/EPR']
-        self.material_code = {'Copper':'Cu','Aluminium':'Al','Steel':'Fe'}
-        self.insulation_code = {'PVC':'Y', 'XLPE/EPR':'2X'}
-        self.insulation_max_working_temp_dict = {'PVC': 70, 'XLPE/EPR': 90}
-        self.insulation_ultimate_working_temp_dict = {'PVC': 160, 'XLPE/EPR': 250}
-        self.conductor_ultimate_working_temp_dict = {'Copper': 395, 'Aluminium': 325, 'Steel': 500}
-        self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}
-        self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}
-        self.conductor_delta20_dict = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}
         ground_arrangements_1 = ['Ducts touching', 'Spaced 0.25m', 'Spaced 0.5m', 'Spaced 1.0m']
         ground_arrangements_2 = ['Cables touching', 'Spaced one cable dia', 'Spaced 0.125m', 'Spaced 0.25m', 'Spaced 0.5m']
         surface_arrangements = ['Bunched', 'Single layer on wall, floor',  'Single layer fixed directly\nunder a wooden ceiling']
@@ -399,6 +452,12 @@ class LTCableIEC(Line):
                                  self.laying_types[7]: self.schem_model_surface}
                                                                                        
         # Modify existing fields
+        self.fields['conductor_material'] = self.get_field_dict('str', 'Conductor material', '', self.conductor_materials[0], 
+                                                                selection_list=self.conductor_materials,
+                                                                alter_structure=True)
+        self.fields['insulation_material'] = self.get_field_dict('str', 'Insulation', '', self.insulation_materials[0], 
+                                                                 selection_list=self.insulation_materials,
+                                                                 alter_structure=True)
         self.fields['r_ohm_per_km']['status_inactivate'] = True
         self.fields['g_us_per_km']['status_enable'] = False
         self.fields['r0g_ohm_per_km']['status_inactivate'] = True
@@ -417,12 +476,6 @@ class LTCableIEC(Line):
         self.fields['length_km']['alter_structure'] = True
         
         # Add new fields
-        self.fields['conductor_material'] = self.get_field_dict('str', 'Conductor material', '', self.conductor_materials[0], 
-                                                                selection_list=self.conductor_materials,
-                                                                alter_structure=True)
-        self.fields['insulation_material'] = self.get_field_dict('str', 'Insulation', '', self.insulation_materials[0], 
-                                                                 selection_list=self.insulation_materials,
-                                                                 alter_structure=True)
         self.fields['conductor_cross_section'] = self.get_field_dict('float', 'Phase nominal\ncross-sectional area', 'sq.mm.', 
                                                                      25, selection_list=cross_sections_cu,
                                                                      alter_structure=True)
@@ -553,13 +606,6 @@ class LTCableIEC(Line):
                     self.fields['armour_sc_current_rating']['status_enable'] = True
                     self.fields['ext_cpe_sc_current_rating']['status_enable'] = True
             self.calculate_parameters()
-            
-    def conductor_k_value(self, conductor, t0, tf):
-        B = self.conductor_B_dict[conductor]
-        Qc = self.conductor_Qc_dict[conductor]
-        delta20 = self.conductor_delta20_dict[conductor]
-        k = math.sqrt(Qc*(B+20)/delta20*math.log((B+tf)/(B+t0)))
-        return k
             
     def calculate_parameters(self):
         Sph = self.fields['conductor_cross_section']['value']
@@ -791,6 +837,8 @@ class LTCableIEC(Line):
         self.fields['ext_cpe_sc_current_rating']['value'] = round(ext_cpe_sc_current_rating/1000, 3)
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000,3)
 
+        self.calculate_damage_curve()
+
 
 class LTCableCustom(Line):
     """Cable element"""
@@ -821,17 +869,16 @@ class LTCableCustom(Line):
                                     'line_custom_oh6.svg',
                                     'line_custom_ug1.svg']
         self.conductor_materials = ['Copper','Aluminium','Steel']
-        self.material_code = {'Copper':'Cu','Aluminium':'Al','Steel':'Fe'}
-        self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}
-        self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}
-        self.conductor_delta20_dict = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}
-        self.insulation_max_working_temp_dict = {'PVC': 70, 'XLPE/EPR': 90}
-        self.insulation_ultimate_working_temp_dict = {'PVC': 160, 'XLPE/EPR': 250}
         self.cpe_list = ['Neutral', 'Ground return']
         self.armour_list = ['Armour', 'Ground return']
         self.cpe_materials = ['Copper','Aluminium','Steel']
                                                                                        
         # Modify existing fields
+        self.fields['conductor_material'] = self.get_field_dict('str', 'Conductor material', '', 
+                                                                self.conductor_materials[1],
+                                                                selection_list=self.conductor_materials,
+                                                                alter_structure=True)
+        self.fields['insulation_material']['status_enable'] = False
         self.fields['r_ohm_per_km']['status_inactivate'] = True
         self.fields['x_ohm_per_km']['status_inactivate'] = True
         self.fields['c_nf_per_km']['status_inactivate'] = True
@@ -855,10 +902,6 @@ class LTCableCustom(Line):
                                                          selection_list=self.laying_types,
                                                          selection_image_list=self.laying_types_images,
                                                          alter_structure=True)
-        self.fields['conductor_material'] = self.get_field_dict('str', 'Conductor material', '', 
-                                                                self.conductor_materials[1],
-                                                                selection_list=self.conductor_materials,
-                                                                alter_structure=True)
         self.fields['conductor_cross_section'] = self.get_field_dict('float', 'Phase nominal\ncross-sectional area', 
                                                                     'sq.mm.', 50, alter_structure=True)
         self.fields['dims_d'] = self.get_field_dict('float', 'D', 'm', 0.8, status_enable=False, alter_structure=True)
@@ -925,13 +968,6 @@ class LTCableCustom(Line):
                     self.fields['armour_material']['status_enable'] = True
                     self.fields['armour_cross_section']['status_enable'] = True
             self.calculate_parameters()
-
-    def conductor_k_value(self, conductor, t0, tf):
-        B = self.conductor_B_dict[conductor]
-        Qc = self.conductor_Qc_dict[conductor]
-        delta20 = self.conductor_delta20_dict[conductor]
-        k = math.sqrt(Qc*(B+20)/delta20*math.log((B+tf)/(B+t0)))
-        return k
             
     def calculate_parameters(self):
         # Get field values
@@ -1078,3 +1114,5 @@ class LTCableCustom(Line):
         self.fields['df']['value'] = round(self.fields['user_df']['value'], 3)
         self.fields['phase_sc_current_rating']['value'] = round(phase_sc_current_rating/1000, 3)
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000, 3)
+
+        self.calculate_damage_curve()

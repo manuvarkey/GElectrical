@@ -111,7 +111,7 @@ GRAPH_FONT_FACE = 'monospace'
 GRAPH_FONT_SIZE = 10
 GRAPH_LOAD_TIME_LIMITS = (0,23,1)
 GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
-GRAPH_PROT_TIME_LIMITS = (0.001,1000,60,'log')
+GRAPH_PROT_TIME_LIMITS = (0.001,10000,60,'log')
 GRAPH_PROT_CURRENT_LIMITS = (0.01,100e3,100,'log')
 GRAPH_COLORS = ('#ef2929', '#fce94f', '#729fcf', '#a40000', '#c4a000', '#204a87', '#4e9a06', '#ce5c00')
 # Report parameters
@@ -133,7 +133,7 @@ TRAFO_ELEMENT_CODES = ('element_transformer', 'element_transformer3w')
 LOAD_ELEMENT_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 'element_async_motor_3ph', 'element_async_motor_1ph')
 SWITCH_ELEMENT_CODES = ('element_switch', 'element_circuitbreaker', 'element_fuse', 'element_contactor')
 PROTECTION_ELEMENT_CODES = ('element_circuitbreaker', 'element_fuse')
-DAMAGE_ELEMENT_CODES = ('element_async_motor_3ph', 'element_async_motor_1ph')
+DAMAGE_ELEMENT_CODES = ('element_async_motor_3ph', 'element_async_motor_1ph','element_line','element_line_cable','element_line_custom')
 SUPPLY_ELEMENT_CODES = ('element_grid', 'element_generator', 'element_staticgenerator')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
 NON_ELEMENT_CODES  = (*REFERENCE_CODES, *DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly')

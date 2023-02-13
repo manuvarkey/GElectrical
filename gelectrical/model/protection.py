@@ -114,12 +114,22 @@ class ProtectionModel():
                                             'xval':xval1, 
                                             'yval': yval1})
                 damage_flag = True
+            else:
+                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                                            'title': '', 
+                                            'xval':[], 
+                                            'yval': []})
             if xval2 and yval2:
                 graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
                                             'title':self.title + ' - Starting', 
                                             'xval':xval2, 
                                             'yval': yval2})
                 starting_flag = True
+            else:
+                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                                            'title': '', 
+                                            'xval':[], 
+                                            'yval': []})
 
             if damage_flag and not starting_flag:
                 title = self.title + ' - Damage curve'
@@ -222,7 +232,10 @@ class ProtectionModel():
         # Geometry elements
         self.linestring_upper = LineString(reversed(self.curve_upper))
         self.linestring_lower = LineString(self.curve_lower)
-        self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
+        if self.curve_upper and self.curve_lower:
+            self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
+        else:
+            self.polygon = None
 
     def get_evaluated_model(self, fields, data_fields=None):
         self.evaluate_curves(fields, data_fields)  # Evaluate curves

@@ -340,8 +340,13 @@ class FieldView:
                     (xlim, ylim, xlabel, ylabel, graph_params) = field['graph_options']
                     
                     data_widget = Gtk.Box()
-                    graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
+
+                    if field['type'] in ('graph'):
+                        graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
                                           inactivate=field[self.inactivate_code], graph_params=graph_params)
+                    else:
+                        graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
+                                          inactivate=True, graph_params=graph_params)
                     
                     if field['selection_list']:
                         title_widget = Gtk.ComboBoxText.new()
