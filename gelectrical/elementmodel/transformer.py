@@ -18,12 +18,13 @@
 #  
 # 
 
-import os, cairo
+import math
 from gi.repository import PangoCairo
 
 # local files import
 from .. import misc
 from .element import ElementModel
+from ..model.protection import ProtectionModel
 
 
 class Transformer(ElementModel):
@@ -43,7 +44,7 @@ class Transformer(ElementModel):
                       [2, 10]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'T?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'sn_mva':        self.get_field_dict('float', 'Sn', 'MVA', 100),
+                       'sn_mva':        self.get_field_dict('float', 'Sn', 'MVA', 1),
                        'vn_hv_kv':      self.get_field_dict('float', 'Un (HV)', 'kV', 11),
                        'vn_lv_kv':      self.get_field_dict('float', 'Un (LV)', 'kV', 0.415),
                        'vkr_percent':   self.get_field_dict('float', 'Usc (Real)', '%', 0.5),
@@ -58,7 +59,13 @@ class Transformer(ElementModel):
                        'pfe_kw':        self.get_field_dict('float', 'Pfe', 'kW', 30),
                        'i0_percent':    self.get_field_dict('float', 'I0', '%', 0.1),
                        'sym_hv':        self.get_field_dict('str', 'HV Symbol', '', 'D'),
-                       'sym_lv':        self.get_field_dict('str', 'LV Symbol', '', 'Yn')}
+                       'sym_lv':        self.get_field_dict('str', 'LV Symbol', '', 'Yn'),
+                       'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
+                                                                    alter_structure=True),}
+        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS', {})
         
         self.text_model = [[(5,2.5), "${ref}", True],
                            [(5,None), "${sn_mva}MVA", True],
@@ -72,6 +79,7 @@ class Transformer(ElementModel):
                              ['LINE',(2,0),(2,1.5), []],
                              ['LINE',(2,8.5),(2,10), []],
                            ]
+        self.calculate_parameters(init=True)
     
     def render_element(self, context):
         """Render element to context"""
@@ -112,6 +120,26 @@ class Transformer(ElementModel):
                                             'si0_hv_partial': self.fields['si0_hv_partial']['value'],
                                             'shift_degree': self.fields['shift_degree']['value']}),)
         return power_model
+    
+    def set_text_field_value(self, code, value):
+        ElementModel.set_text_field_value(self, code, value)
+        self.calculate_parameters(init=False)
+
+    def calculate_parameters(self, init=False):
+        # Damage curve
+        title = (self.fields['ref']['value'])
+        i_n = self.fields['sn_mva']['value']*1e3 / (1.732*self.fields['vn_lv_kv']['value'])
+        i_sc = i_n / self.fields['vk_percent']['value'] * 100
+        curve_u = [('point', 'd.i_e*'+str(i_n), 3600),
+                    ('point', i_sc, 'd.t_sc')]
+        curve_l = [('point', 12*i_n, 0.1),
+                    ('point', 25*i_n, 0.01),]
+        param = {'i_e'  : ['Short time emergency load', 'xIn', 2, None],
+                't_sc'  : ['Short circuit withstand time', 's', 2, None],}
+        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        if not init:
+            self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
+        self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
 
 class Transformer3w(ElementModel):

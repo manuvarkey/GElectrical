@@ -196,7 +196,7 @@ class Line(ElementModel):
     def calculate_damage_curve(self):
         # Damage curve
         title = (self.fields['ref']['value'])
-        i_n = self.fields['max_i_ka']['value']*1000 * self.fields['df']['value']
+        i_n = self.fields['max_i_ka']['value']*1000 * self.fields['df']['value'] * self.fields['parallel']['value']
         i_z = i_n*1.45
         i_sc = self.fields['phase_sc_current_rating']['value']*1000
         curve_u = [('point', i_z, 3600),

@@ -332,7 +332,7 @@ class Motor3ph(Load):
         curve_l = [('point', i_n, 3600),
                     ('point', i_n, 'd.accel_time'),
                     ('point', k*i_n, 'd.accel_time'),
-                    ('point', k*i_n, 0.001)]
+                    ('point', k*i_n, 0.01)]
         param = {'accel_time'  : ['Acceleration time', 's', 5, None],
                  'stall_time'  : ['Safe stall time', 's', 20, None],}
         self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
@@ -432,7 +432,7 @@ class Motor1ph(SinglePhaseLoad):
         curve_l = [('point', i_n, 3600),
                     ('point', i_n, 'd.accel_time'),
                     ('point', k*i_n, 'd.accel_time'),
-                    ('point', k*i_n, 0.001)]
+                    ('point', k*i_n, 0.01)]
         param = {'accel_time'  : ['Acceleration time', 's', 3, None],
                  'stall_time'  : ['Safe stall time', 's', 20, None],}
         self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
