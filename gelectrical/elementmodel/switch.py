@@ -117,11 +117,11 @@ class ProtectionDevice(Switch):
                                                              alter_structure=True),
                         'poles'      : self.get_field_dict('str', 'Poles', '', 'TP'),
                         'Un'         : self.get_field_dict('float', 'Un', 'kV', 0.415),
-                        'In'         : self.get_field_dict('int', 'In', 'A', 63,
+                        'In'         : self.get_field_dict('float', 'In', 'A', 63,
                                                             alter_structure=True),
                         'In_set'     : self.get_field_dict('float', 'In_set', 'xIn', 1,
                                                             alter_structure=True),
-                        'Isc'        : self.get_field_dict('int', 'Isc', 'kA', 50, 
+                        'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 50, 
                                                             alter_structure=True),
                         'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None, 
                                                             alter_structure=True),
@@ -303,21 +303,15 @@ class Fuse(ProtectionDevice):
                       [1, 6]]
         # Data drapdowns
         fuse_types = ['LV fuses', 'MV fuses']
-        fuse_subtypes_mv = ['Expulsion', 'Current Limiting']
         fuse_subtypes_lv = ['gG']
         fuse_prottypes_gg = ['gG IEC']
-        fuse_prottypes_mv_cl = ['IS 9385-1']
-        fuse_prottypes_mv_exp = ['IS 9385-2']
         pole_types = ['SP', 'TP']
         current_values = [16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250]
 
         self.dict_in = {('LV fuses', 'gG', 'gG IEC'): current_values}
         self.dict_i0 = {}
-        self.dict_subtype = {'LV fuses': fuse_subtypes_lv,
-                            'MV fuses': fuse_subtypes_mv}
-        self.dict_prot_curve_type = {('LV fuses', 'gG'): fuse_prottypes_gg,
-                                    ('MV fuses', 'Expulsion'): fuse_prottypes_mv_exp,
-                                    ('MV fuses', 'Current Limiting'): fuse_prottypes_mv_cl}
+        self.dict_subtype = {'LV fuses': fuse_subtypes_lv}
+        self.dict_prot_curve_type = {('LV fuses', 'gG'): fuse_prottypes_gg}
         self.dict_prot_0_curve_type = {}
 
         # Set fields
@@ -334,8 +328,8 @@ class Fuse(ProtectionDevice):
         self.fields['Isc']['value'] = 50
 
         self.text_model = [[(3.5,0.5), "${poles}, ${ref}", True],
-                           [(3.5,None), "${str(In)} A, ${type}", True],
-                           [(3.5,None), "${Isc}kA", True],
+                           [(3.5,None), "${'%g'%(In)}A, ${type}", True],
+                           [(3.5,None), "${'%g'%(Isc)}kA", True],
                            [(3.5,None), "${name}", True]]
         self.schem_model_fuse = [ 
                              ['LINE',(1,0),(1,6), []],
@@ -551,8 +545,8 @@ class CircuitBreaker(ProtectionDevice):
         self.fields['Isc']['value'] = 10
 
         self.text_model = [[(3.5,0.5), "${subtype}, ${poles}, ${ref}", True],
-                           [(3.5,None), "${str(In) + 'A' if In_set == 1 else str(In) + 'A(' + str(round(In*In_set)) + 'A)'}", True],
-                           [(3.5,None), "${Isc}kA", True],
+                           [(3.5,None), "${'%g'%(In) + 'A' if In_set == 1 else '%g'%(In) + 'A(' + str(round(In*In_set)) + 'A)'}", True],
+                           [(3.5,None), "${'%g'%(Isc)} kA", True],
                            [(3.5,None), "${name}", True]]
         self.schem_model_do = [ 
                              ['LINE',(1,0.5),(1,2), []],
@@ -840,10 +834,10 @@ class Contactor(Switch):
                        'type':    self.get_field_dict('str', 'Type', '', 'AC-3'),
                        'poles':   self.get_field_dict('str', 'Poles', '', 'TP'),
                        'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
-                       'In':      self.get_field_dict('int', 'In', 'A', 16),
+                       'In':      self.get_field_dict('float', 'In', 'A', 16),
                        'closed':  self.get_field_dict('bool', 'Closed ?', '', True)}
         self.text_model = [[(3.5,1), "${poles}, ${ref}", True],
-                           [(3.5,None), "${In}A, ${type}", True],
+                           [(3.5,None), "${'%g'%(In)}A, ${type}", True],
                            [(3.5,None), "${name}", True]]
         self.schem_model = [ 
                              ['LINE',(1,0),(1,2), []],
