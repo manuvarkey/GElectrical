@@ -1237,7 +1237,15 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                 if field['selection_list']:
                     table['Value'].append(field['selection_list'][field['value']][0])
                 else:
-                    table['Value'].append(field['value'][0].replace('\n','</br>'))
+                    if insert_graph:
+                        from .view.graph import GraphImage
+                        xlim, ylim, xlabel, ylabel, graph_params = field['graph_options']
+                        title = field['value'][0]
+                        graph_models = field['value'][1]
+                        graph_image = GraphImage(xlim, ylim, title, xlabel, ylabel, graph_params)
+                        graph_image.add_plots(graph_models)
+                        img_tag = graph_image.get_embedded_html_image(figsize=(200, 200))
+                    table['Value'].append(img_tag)
             index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False, classes='element_fields')
     
