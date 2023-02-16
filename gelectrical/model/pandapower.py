@@ -1037,7 +1037,7 @@ class PandaPowerModel:
                 values2 = values[1:2,:]
                 a = np.sum(values1, axis=0)
                 b = np.sum(values2, axis=0)
-                result = np.divide(a, b, out=np.zeros_like(a), where=(b!=0))*100
+                result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
                 return list(result)
             
             def percentage_3_3_func(value_dict): 
@@ -1046,7 +1046,7 @@ class PandaPowerModel:
                 values2 = values[3:6,:]
                 a = np.sum(values1, axis=0)
                 b = np.sum(values2, axis=0)
-                result = np.divide(a, b, out=np.zeros_like(a), where=(b!=0))*100
+                result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
                 return list(result)
 
             def pf_1_1_func(value_dict): 
@@ -1056,7 +1056,7 @@ class PandaPowerModel:
                 p = np.abs(values1)
                 q = np.array(values2)
                 s = np.sqrt(p**2 + q**2)
-                result = np.divide(p, s, out=np.ones_like(p), where=(s!=0))
+                result = np.divide(p, s, out=np.ones_like(p), where=(np.abs(s)>1e-8))
                 return list(result)
 
             def pf_3_3_func(value_dict): 
@@ -1066,7 +1066,7 @@ class PandaPowerModel:
                 p = np.abs(np.sum(values1, axis=0))
                 q = np.sum(values2, axis=0)
                 s = np.sqrt(p**2 + q**2)
-                result = np.divide(p, s, out=np.ones_like(p), where=(s!=0))
+                result = np.divide(p, s, out=np.ones_like(p), where=(np.abs(s)>1e-8))
                 return list(result)
 
             if runpp_3ph:
