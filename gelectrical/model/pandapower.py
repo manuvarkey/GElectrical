@@ -1278,6 +1278,16 @@ class PandaPowerModel:
                     self.element_results[e_code] = element_result
                 (elementcode, element_id) = self.power_elements[e_code]
 
+                # Add node related data to elements
+                if element.code in misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES:
+                    if element.code not in misc.TRAFO_ELEMENT_CODES:
+                        lnode = element.get_nodes(str(e_code))[0][0]
+                        gnode = self.node_mapping[lnode]
+                        node_result = self.node_results[gnode]
+                        if 'vn_kv' in node_result:
+                            field = node_result['vn_kv']
+                            element_result['vn_kv'] = copy.deepcopy(field)
+
             elif element.code == 'element_busbar':
                 # Create/get element dict
                 if e_code in self.element_results:

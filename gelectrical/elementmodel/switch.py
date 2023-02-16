@@ -248,11 +248,11 @@ class ProtectionDevice(Switch):
         # Form title
         if self.fields['custom']['value']:
             title = (self.fields['ref']['value'] + ', ' + 
-                str(self.fields['In']['value']) + 'A, ' + 
+                '%g'%(self.fields['In']['value']) + 'A, ' + 
                     self.fields['type']['value'])
         else:
             title = (self.fields['ref']['value'] + ', ' + 
-                str(self.fields['In']['value']) + 'A, ' + 
+                '%g'%(self.fields['In']['value']) + 'A, ' + 
                     self.fields['type']['value'] + ' - ' + 
                     self.fields['subtype']['value'])
 

@@ -74,11 +74,11 @@ class ProjectModel:
         self.drawing_model = None
         self.drawing_view = None
         self.stack = program_state['stack']
-        self.status = {'net_model': False, 'power_model': False, 'power_analysis': False}
         # Analysis varables
+        self.status = {}
+        self.clear_status()
         self.networkmodel = None
         self.powermodel = None
-        self.graph = None
         # Initialise tab
         self.add_page_vanilla()
         self.drawing_notebook.connect("switch-page", self.on_switch_tab)
@@ -88,9 +88,7 @@ class ProjectModel:
     
     def clear_status(self):
         """Clear module status"""
-        self.status = {'net_model': False, 'power_model': False, 'power_analysis': False}
-        self.networkmodel = None
-        self.powermodel = None
+        self.status = {'net_model': False, 'power_model': False, 'power_analysis': False, 'power_results': False}
     
     def get_project_fields(self, page='Information', full=False):
         if full:
@@ -136,30 +134,52 @@ class ProjectModel:
             g_models = []
             d_models = []
             graph_model = {}
+            voltages = {}
+
+            # Populate voltage levels for breakers
+            if self.status['power_results'] == False:
+                self.setup_base_model()
+                self.build_power_model()
+                self.update_results()
+
+            for element in selected_elements:
+                if element.code in (misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES):
+                    if element.code in misc.TRAFO_ELEMENT_CODES:
+                        voltages[element.gid] = element.fields['vn_lv_kv']['value']
+                    else:
+                        voltages[element.gid] = element.res_fields['vn_kv']['value']
+            max_voltage = max(voltages.values())
+
+            # Populate curves
             for element in selected_elements:
                 element.calculate_parameters()
-                pcurve_l = element.get_text_field('pcurve_l')
-                pcurve_g = element.get_text_field('pcurve_g')
-                dcurve = element.get_text_field('dcurve')
-                if pcurve_l:
-                    data_model = pcurve_l['value']
-                    if data_model:
-                        model = data_model['graph_model'][1][0]
-                        l_models.append(model)
-                if pcurve_g:
-                    data_model = pcurve_g['value']
-                    if data_model:
-                        model = data_model['graph_model'][1][0]
-                        g_models.append(model)
-                if dcurve:
-                    data_model = dcurve['value']
-                    if data_model:
-                        model1 = data_model['graph_model'][1][0]
-                        model2 = data_model['graph_model'][1][1]
-                        if model1:
-                            d_models.append(model1)
-                        if model2:
-                            d_models.append(model2)
+                scale = voltages[element.gid]/max_voltage
+
+                if element.code in misc.PROTECTION_ELEMENT_CODES:
+                    pcurve_l = element.line_protection_model
+                    pcurve_g = element.ground_protection_model
+                    if pcurve_l:
+                        data_model = pcurve_l.get_evaluated_model(element.fields, scale=scale)
+                        if data_model:
+                            model = data_model['graph_model'][1][0]
+                            l_models.append(model)
+                    if pcurve_g:
+                        data_model = pcurve_g.get_evaluated_model(element.fields, scale=scale)
+                        if data_model:
+                            model = data_model['graph_model'][1][0]
+                            g_models.append(model)
+
+                if element.code in misc.DAMAGE_ELEMENT_CODES:
+                    dcurve = element.damage_model
+                    if dcurve:
+                        data_model = dcurve.get_evaluated_model(element.fields, scale=scale)
+                        if data_model:
+                            model1 = data_model['graph_model'][1][0]
+                            model2 = data_model['graph_model'][1][1]
+                            if model1:
+                                d_models.append(model1)
+                            if model2:
+                                d_models.append(model2)
 
             if l_models or d_models:
                 graph_model['Line protection'] = ['Line protection', l_models+d_models]
@@ -459,7 +479,7 @@ class ProjectModel:
     def update_results(self):
         """ Update analysis results"""
 
-        if self.status['power_analysis']:
+        if self.status['power_model']:
             with group(self, "Update analysis results"):
                 # Update element results
                 self.powermodel.update_results()
@@ -467,6 +487,7 @@ class ProjectModel:
                 for (k1, gnode), node_element in self.networkmodel.node_elements.items():
                     if gnode in self.powermodel.node_results:
                         node_element.res_fields = copy.deepcopy(self.powermodel.node_results[gnode])
+            self.status['power_results'] = True
             log.info('ProjectModel - update_results - results updated')
             self.drawing_view.refresh()
         else:

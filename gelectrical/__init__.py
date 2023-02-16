@@ -439,6 +439,7 @@ class MainWindow():
         log.info(redotext)
         self.stack.redo()
         self.update()
+        self.project.clear_status()
         self.display_status(misc.INFO, redotext)
 
     def on_undo(self, button):
@@ -449,12 +450,14 @@ class MainWindow():
         log.info(undotext)
         self.stack.undo()
         self.update()
+        self.project.clear_status()
         self.display_status(misc.INFO, undotext)
         
     def on_draw_cut(self, button=None):
         """Copy selected item to clipboard"""
         self.project.drawing_view.copy_selected()
         self.project.drawing_view.delete_selected()
+        self.project.clear_status()
         
     def on_draw_copy(self, button=None):
         """Copy selected item to clipboard"""
@@ -463,13 +466,16 @@ class MainWindow():
     def on_draw_paste(self, button=None):
         """Paste rows from clipboard into schedule view"""
         self.project.drawing_view.paste()
+        self.project.clear_status()
         
     def on_draw_delete(self, button=None):
         """Delete selected item"""
         self.project.drawing_view.delete_selected()
+        self.project.clear_status()
 
     def on_draw_clear_results(self, button=None):
         """Clear project results"""
+        self.project.clear_status()
         self.project.clear_results()
         self.program_state['analysis_build_networkmodel'] = False
         self.program_state['analysis_run_timeseries'] = False
@@ -729,6 +735,7 @@ class MainWindow():
             self.insert_view.update(floating_model.fields, floating_model.name, floating_model.get_text_field, floating_model.set_text_field_value)
             self.project.drawing_view.set_mode(misc.MODE_INSERT, [on_end_callback])
             stack_toolbar_left.set_visible_child_name('page_insert')
+            self.project.clear_status()
             self.project.drawing_view.restore_scroll_position()
             
     def draw_element_add_header_func(self, row, before, group_dict):

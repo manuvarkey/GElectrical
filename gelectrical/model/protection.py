@@ -74,12 +74,22 @@ class ProtectionModel():
     def new_from_data(cls, data_struct):
         if data_struct['type'] == 'protection':
             title = data_struct['graph_model'][0]
-            parameters = data_struct['parameters']
-            curve_u = data_struct['data']['curve_u']
-            curve_l = data_struct['data']['curve_l']
+            parameters = copy.deepcopy(data_struct['parameters'])
+            curve_u = copy.deepcopy(data_struct['data']['curve_u'])
+            curve_l = copy.deepcopy(data_struct['data']['curve_l'])
             return cls(title, parameters, curve_u, curve_l)
         else:
             raise ValueError('Wrong data structure passed')
+
+    def copy(self):
+        new_obj = self.new_from_data(self.data_struct)
+        # Copy generated data
+        new_obj.curve_upper = copy.deepcopy(self.curve_upper)
+        new_obj.curve_lower = copy.deepcopy(self.curve_lower)
+        new_obj.polygon = Polygon(self.polygon)
+        new_obj.linestring_upper = LineString(self.linestring_upper)
+        new_obj.linestring_lower = LineString(self.linestring_lower)
+        return new_obj
 
     def get_data_fields(self, modify_code=''):
         fields = dict()
@@ -147,7 +157,7 @@ class ProtectionModel():
             if key in self.data_struct['parameters']:
                 self.data_struct['parameters'][key][2] = field[2]
 
-    def evaluate_curves(self, fields, data_fields=None):
+    def evaluate_curves(self, fields, data_fields=None, scale=1):
         
         # Variables for evaluation
         f = FieldDict(fields)
@@ -215,14 +225,7 @@ class ProtectionModel():
                 i_array, t_array = func(*data_eval)
                 curve_i += i_array
                 curve_t += t_array
-            
-            curve = [(x,y) for x,y in zip(curve_i, curve_t)]
-
-            # fit_func = interpolate(curve_i, curve_t)
-            # X = np.geomspace(min(curve_i), max(curve_i), num=50)
-            # Y = fit_func(X)
-            # curve = [(x,y) for x,y in zip(X, Y)]
-
+            curve = [(x*scale,y) for x,y in zip(curve_i, curve_t)]
             return curve
 
         # Evaluate curves
@@ -237,8 +240,10 @@ class ProtectionModel():
         else:
             self.polygon = None
 
-    def get_evaluated_model(self, fields, data_fields=None):
-        self.evaluate_curves(fields, data_fields)  # Evaluate curves
+    def get_evaluated_model(self, fields, data_fields=None, scale=1):
+        self.evaluate_curves(fields, data_fields,scale)  # Evaluate curves
         self.update_graph()  # Update graph
         return copy.deepcopy(self.data_struct)
+
+        
 

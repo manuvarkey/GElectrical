@@ -132,10 +132,12 @@ class Transformer(ElementModel):
         i_sc = i_n / self.fields['vk_percent']['value'] * 100
         curve_u = [('point', 'd.i_e*'+str(i_n), 3600),
                     ('point', i_sc, 'd.t_sc')]
-        curve_l = [('point', 12*i_n, 0.1),
-                    ('point', 25*i_n, 0.01),]
+        curve_l = [('point', 'd.i_100ms*'+str(i_n), 0.1),
+                    ('point', 'd.i_10ms*'+str(i_n), 0.01),]
         param = {'i_e'  : ['Short time emergency load', 'xIn', 2, None],
-                't_sc'  : ['Short circuit withstand time', 's', 2, None],}
+                't_sc'  : ['Short circuit withstand time', 's', 2, None],
+                'i_100ms'  : ['Inrush current @ 0.1 s', 's', 12, None],
+                'i_10ms'  : ['Inrush current @ 0.01 s', 's', 25, None],}
         self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
         if not init:
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
