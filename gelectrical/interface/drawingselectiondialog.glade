@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkDialog" id="selection_dialog">
     <property name="name">dialog</property>
-    <property name="width_request">1000</property>
-    <property name="height_request">600</property>
+    <property name="width-request">1400</property>
+    <property name="height-request">800</property>
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">Select elements...</property>
-    <property name="type_hint">dialog</property>
+    <property name="type-hint">dialog</property>
     <property name="gravity">center</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox1">
-        <property name="can_focus">False</property>
-        <property name="margin_left">6</property>
-        <property name="margin_right">6</property>
-        <property name="margin_top">6</property>
-        <property name="margin_bottom">6</property>
+        <property name="can-focus">False</property>
+        <property name="margin-left">6</property>
+        <property name="margin-right">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
-            <property name="can_focus">False</property>
-            <property name="margin_top">12</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">12</property>
             <property name="hexpand">True</property>
-            <property name="layout_style">end</property>
+            <property name="layout-style">end</property>
             <child>
               <object class="GtkButton" id="button_cancel">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="use_stock">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="use-stock">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -47,8 +44,8 @@
               <object class="GtkButton" id="button_apply">
                 <property name="label">Select</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
+                <property name="can-focus">False</property>
+                <property name="receives-default">False</property>
                 <style>
                   <class name="suggested-action"/>
                 </style>
@@ -69,7 +66,7 @@
         <child>
           <object class="GtkBox" id="box1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="orientation">vertical</property>
@@ -77,10 +74,10 @@
               <object class="GtkLabel" id="label_title">
                 <property name="name">label_title</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="margin_top">6</property>
-                <property name="margin_bottom">6</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
                 <property name="label" translatable="yes">Please select elements from the sheets below...</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -95,8 +92,8 @@
             <child>
               <object class="GtkNotebook" id="drawing_notebook">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="tab_pos">bottom</property>
+                <property name="can-focus">True</property>
+                <property name="tab-pos">bottom</property>
               </object>
               <packing>
                 <property name="expand">True</property>
