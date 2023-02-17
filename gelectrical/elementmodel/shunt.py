@@ -42,12 +42,12 @@ class Shunt(ElementModel):
         self.ports = [[1, 0]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'Z?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'p_mw':        self.get_field_dict('float', 'P', 'MW', 0),
-                       'q_mvar':       self.get_field_dict('float', 'Q', 'MVAr', 0),
+                       'p_kw':        self.get_field_dict('float', 'P', 'kW', 0),
+                       'q_kvar':       self.get_field_dict('float', 'Q', 'kVAr', 10),
                        'vn_kv':       self.get_field_dict('float', 'Vn', 'kV', 0.415),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${p_mw}+j${q_mvar}MVA", True],
+                           [(3,None), "${p_kw}+j${q_kvar}kVA", True],
                            [(3,None), "${name}", True]]
         self.schem_model = [ 
                              ['LINE',(1,0),(1,1), []],
@@ -84,8 +84,8 @@ class Shunt(ElementModel):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('shunt', (p0,), {'name': self.fields['ref']['value'],
-                                       'p_mw': self.fields['p_mw']['value'],
-                                       'q_mvar': self.fields['q_mvar']['value'],
+                                       'p_mw': self.fields['p_kw']['value']/1000,
+                                       'q_mvar': self.fields['q_kvar']['value']/1000,
                                        'vn_kv': self.fields['vn_kv']['value'],
                                        'in_service': self.fields['in_service']['value']}),)
         return power_model
@@ -104,7 +104,7 @@ class ShuntCapacitor(Shunt):
         Shunt.__init__(self, cordinates, **kwargs)
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'C?')
         self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${q_mvar}MVAr", True],
+                           [(3,None), "${q_kvar}kVAr", True],
                            [(3,None), "${name}", True]]
         self.schem_model = [ 
                              ['LINE',(1,0),(1,3), []],

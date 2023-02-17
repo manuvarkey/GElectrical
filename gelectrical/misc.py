@@ -125,7 +125,7 @@ POWER_MODEL_LINEFAULT = 1
 POWER_MODEL_GROUNDFAULT = 2
 # Classification of elements
 ADVANCED_ELEMENTS = ('element_asymmetric_load', 'element_ward', 'element_xward',
-                     'element_transformer3w', 'element_impedance', 'element_inductance', 'element_shunt', 'element_shunt_cap')
+                     'element_transformer3w', 'element_impedance', 'element_shunt')
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
 LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 
                      'element_staticgenerator', 'element_async_motor',
@@ -1277,7 +1277,7 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
                              'Simulation':{'run_diagnostics' : get_field_dict('bool', 'Run diagnostics', '', True, status_inactivate=False),
-                             'power_flow_3ph' : get_field_dict('bool', 'Enable assymetric power flow calculation', '', True, status_inactivate=False),
+                             'power_flow_3ph' : get_field_dict('bool', 'Enable assymetric power flow calculation', '', False, status_inactivate=False),
                              'run_powerflow' : get_field_dict('bool', 'Run time series power flow', '', False, status_inactivate=False),
                              'run_sc_sym' : get_field_dict('bool', 'Run symmetric short circuit calculation', '', False, status_inactivate=False),
                              'run_sc_gf' : get_field_dict('bool', 'Run line to ground short circuit calculation', '', False, status_inactivate=False),
