@@ -382,7 +382,7 @@ class PandaPowerModel:
                                 for elementid_power in elementids_power:
                                     elementids = self.power_elements_inverted[code,
                                                                              elementid_power]
-                                    message = 'Line impedence values close to zero \nElements: ' + ref_eid([elementids])
+                                    message = 'Line impedance values close to zero \nElements: ' + ref_eid([elementids])
                                     model = [['element', [elementids]]]
                                     result_parsed.append(
                                         [warning(message), model])
@@ -500,7 +500,7 @@ class PandaPowerModel:
                     result = getattr(self.power_model, 'res_' +
                                      elementcode).loc[element_id]
                 # Populate element results
-                if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
                     element_result['p_mw'] = misc.get_field_dict(
                         'float', 'P', 'MW', result['p_mw'])
                     element_result['q_mvar'] = misc.get_field_dict(
@@ -548,7 +548,7 @@ class PandaPowerModel:
                         'float', 'V', 'pu', result['vm_pu'])
                     element_result['va_degree'] = misc.get_field_dict(
                         'float', 'V angle', 'degree', result['va_degree'])
-                elif elementcode in ['impedence', 'dcline']:
+                elif elementcode in ['impedance', 'dcline']:
                     element_result['p_from_mw'] = misc.get_field_dict(
                         'float', 'P from', 'MW', result['p_from_mw'])
                     element_result['q_from_mvar'] = misc.get_field_dict(
@@ -741,7 +741,7 @@ class PandaPowerModel:
             if e_code in self.power_elements:
                 (elementcode, element_id) = self.power_elements[e_code]
                 if runpp_3ph:
-                    if elementcode in ['load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                    if elementcode in ['load', 'sgen', 'storage']:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_mvar'))
                     elif elementcode in ['ext_grid', 'asymmetric_load']:
@@ -781,13 +781,13 @@ class PandaPowerModel:
                         log_variables.append(('res_'+elementcode+'_3ph', 'pl_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'ql_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
-                    elif elementcode in ['impedence',]:
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_from_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_from_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_to_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_to_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_mvar'))
+                    # elif elementcode in ['impedance',]:
+                    #     log_variables.append(('res_'+elementcode, 'p_from_mw'))
+                    #     log_variables.append(('res_'+elementcode, 'q_from_mvar'))
+                    #     log_variables.append(('res_'+elementcode, 'p_to_mw'))
+                    #     log_variables.append(('res_'+elementcode, 'q_to_mvar'))
+                    #     log_variables.append(('res_'+elementcode, 'pl_mw'))
+                    #     log_variables.append(('res_'+elementcode, 'ql_mvar'))
                     elif elementcode in ['line']:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_a_from_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_a_from_mvar'))
@@ -808,20 +808,20 @@ class PandaPowerModel:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_c_l_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_c_l_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
-                    elif elementcode == 'gen':
-                        log_variables.append(('res_'+elementcode, 'p_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_mvar'))
-                        log_variables.append(('res_'+elementcode, 'vm_pu'))
-                        log_variables.append(('res_'+elementcode, 'va_degree'))
-                    elif elementcode in ['dcline']:
-                        log_variables.append(('res_'+elementcode, 'p_from_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_from_mvar'))
-                        log_variables.append(('res_'+elementcode, 'p_to_mw'))
-                        log_variables.append(('res_'+elementcode, 'q_to_mvar'))
-                        log_variables.append(('res_'+elementcode, 'pl_mw'))
-                        log_variables.append(('res_'+elementcode, 'ql_mvar'))
+                    # elif elementcode == 'gen':
+                    #     log_variables.append(('res_'+elementcode, 'p_mw'))
+                    #     log_variables.append(('res_'+elementcode, 'q_mvar'))
+                    #     log_variables.append(('res_'+elementcode, 'vm_pu'))
+                    #     log_variables.append(('res_'+elementcode, 'va_degree'))
+                    # elif elementcode in ['dcline']:
+                    #     log_variables.append(('res_'+elementcode, 'p_from_mw'))
+                    #     log_variables.append(('res_'+elementcode, 'q_from_mvar'))
+                    #     log_variables.append(('res_'+elementcode, 'p_to_mw'))
+                    #     log_variables.append(('res_'+elementcode, 'q_to_mvar'))
+                    #     log_variables.append(('res_'+elementcode, 'pl_mw'))
+                    #     log_variables.append(('res_'+elementcode, 'ql_mvar'))
                 else:
-                    if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                    if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
                         log_variables.append(('res_'+elementcode, 'p_mw'))
                         log_variables.append(('res_'+elementcode, 'q_mvar'))
                     elif elementcode == 'trafo':
@@ -849,7 +849,7 @@ class PandaPowerModel:
                         log_variables.append(('res_'+elementcode, 'q_mvar'))
                         log_variables.append(('res_'+elementcode, 'vm_pu'))
                         log_variables.append(('res_'+elementcode, 'va_degree'))
-                    elif elementcode in ['impedence', 'dcline']:
+                    elif elementcode in ['impedance', 'dcline']:
                         log_variables.append(('res_'+elementcode, 'p_from_mw'))
                         log_variables.append(('res_'+elementcode, 'q_from_mvar'))
                         log_variables.append(('res_'+elementcode, 'p_to_mw'))
@@ -1097,7 +1097,7 @@ class PandaPowerModel:
 
                 # Populate element results
                 if runpp_3ph:
-                    if elementcode in ['load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                    if elementcode in ['load', 'sgen', 'storage']:
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
                         combine_graphdata(element_result, elementcode, ['pf', element_id, 'PF', '', 2, None],
@@ -1137,18 +1137,18 @@ class PandaPowerModel:
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['max'])
-                    elif elementcode == 'gen':
-                        set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
-                                                                    ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
-                        combine_graphdata(element_result, elementcode, ['pf', element_id, 'PF', '', 2, None],
-                            ['p_mw', 'q_mvar'], pf_1_1_func)
-                        set_graphdata(element_result, elementcode, [
-                                    ['vm_pu', element_id, 'V', 'pu', 3, None, 'vm_pu']])
-                        set_graphdata(element_result, elementcode, [
-                                    ['va_degree', element_id, 'V angle', 'degree', 1, None, 'va_degree']])
-                    elif elementcode in ['impedence', 'dcline']:
-                        set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P', 'MW', 4, None, 'p_from_mw']])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
+                    # elif elementcode == 'gen':
+                    #     set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
+                    #                                                 ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
+                    #     combine_graphdata(element_result, elementcode, ['pf', element_id, 'PF', '', 2, None],
+                    #         ['p_mw', 'q_mvar'], pf_1_1_func)
+                    #     set_graphdata(element_result, elementcode, [
+                    #                 ['vm_pu', element_id, 'V', 'pu', 3, None, 'vm_pu']])
+                    #     set_graphdata(element_result, elementcode, [
+                    #                 ['va_degree', element_id, 'V angle', 'degree', 1, None, 'va_degree']])
+                    # elif elementcode in ['impedance', 'dcline']:
+                    #     set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P', 'MW', 4, None, 'p_from_mw']])
+                    #     set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
                     elif elementcode in ['line']:
                         combine_graphdata(element_result, elementcode, ['p_hv_mw', element_id, 'P', 'MW', 4, None],
                             ['p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'], sumfunc, stat_fields=['avg', 'max'])
@@ -1164,7 +1164,7 @@ class PandaPowerModel:
                             ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw', 'p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'], 
                             percentage_3_3_func, stat_fields=['max'])
                 else:
-                    if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'sward', 'storage']:
+                    if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
                         combine_graphdata(element_result, elementcode, ['pf', element_id, 'PF', '', 2, None],
@@ -1199,7 +1199,7 @@ class PandaPowerModel:
                                     ['vm_pu', element_id, 'V', 'pu', 3, None, 'vm_pu']])
                         set_graphdata(element_result, elementcode, [
                                     ['va_degree', element_id, 'V angle', 'degree', 1, None, 'va_degree']])
-                    elif elementcode in ['impedence', 'dcline']:
+                    elif elementcode in ['impedance', 'dcline']:
                         set_graphdata(element_result, elementcode, [['p_from_mw', element_id, 'P', 'MW', 4, None, 'p_from_mw']])
                         set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
                     elif elementcode in ['line']:
