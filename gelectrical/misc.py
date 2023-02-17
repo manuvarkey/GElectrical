@@ -125,7 +125,7 @@ POWER_MODEL_LINEFAULT = 1
 POWER_MODEL_GROUNDFAULT = 2
 # Classification of elements
 ADVANCED_ELEMENTS = ('element_asymmetric_load', 'element_ward', 'element_xward',
-                     'element_transformer3w', 'element_impedance', 'element_shunt')
+                     'element_transformer3w', 'element_impedance', 'element_inductance', 'element_shunt', 'element_shunt_cap')
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
 LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 
                      'element_staticgenerator', 'element_async_motor',
@@ -1263,7 +1263,7 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
-                            'Interface':{'advanced_mode' : get_field_dict('bool', 'Enable advanced mode', '', True, status_inactivate=False),
+                            'Interface':{'advanced_mode' : get_field_dict('bool', 'Enable advanced mode', '', False, status_inactivate=False),
                                          'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
                                          'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False),
                                          'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)},

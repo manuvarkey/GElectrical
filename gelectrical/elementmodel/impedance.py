@@ -42,9 +42,11 @@ class Impedance(ElementModel):
         self.ports = [[1, 0], [1, 8]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'Z?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'rft_pu':     self.get_field_dict('float', 'R', 'pu', 0.01),
-                       'xft_pu':  self.get_field_dict('float', 'X', 'pu', 0.01),
-                       'sn_mva':  self.get_field_dict('float', 'Base MVA', 'MVA', 1),
+                       'rft_pu':     self.get_field_dict('float', 'R', 'pu', 0.001),
+                       'xft_pu':  self.get_field_dict('float', 'X', 'pu', 0.001),
+                       'rft0_pu':     self.get_field_dict('float', 'R0', 'pu', 0.001),
+                       'xft0_pu':  self.get_field_dict('float', 'X0', 'pu', 0.001),
+                       'sn_kva':  self.get_field_dict('float', 'Base kVA', 'kVA', 100),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = []
         self.schem_model = [ 
@@ -54,7 +56,7 @@ class Impedance(ElementModel):
                            ]
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${rft_pu}+j${xft_pu}pu", True],
-                           [(3,None), "${sn_mva}MVA", True],
+                           [(3,None), "${sn_kva}kVA", True],
                            [(3,None), "${name}", True]]
     
     def render_element(self, context):
@@ -86,7 +88,9 @@ class Impedance(ElementModel):
         power_model = (('impedance', (p0,p1), {'name': self.fields['ref']['value'],
                                        'rft_pu': self.fields['rft_pu']['value'],
                                        'xft_pu': self.fields['xft_pu']['value'],
-                                       'sn_mva': self.fields['sn_mva']['value'],
+                                       'rft0_pu': self.fields['rft0_pu']['value'],
+                                       'xft0_pu': self.fields['xft0_pu']['value'],
+                                       'sn_mva': self.fields['sn_kva']['value']/1000,
                                        'in_service': self.fields['in_service']['value'],}),)
         return power_model
 
@@ -103,12 +107,7 @@ class Inductance(Impedance):
         # Global
         Impedance.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0], [1, 8]]
-        self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'L?'),
-                       'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'rft_pu':     self.get_field_dict('float', 'R', 'pu', 0),
-                       'xft_pu':  self.get_field_dict('float', 'X', 'pu', 0.07),
-                       'sn_mva':  self.get_field_dict('float', 'Base MVA', 'MVA', 1),
-                       'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
+        self.fields['ref']['value'] = 'L?'
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,1.75), []],
@@ -123,5 +122,5 @@ class Inductance(Impedance):
                            ]
         self.text_model = [[(3.5,1), "${ref}", True],
                            [(3.5,None), "j${xft_pu}pu", True],
-                           [(3.5,None), "${sn_mva}MVA", True],
+                           [(3.5,None), "${sn_kva}kVA", True],
                            [(3.5,None), "${name}", True]]
