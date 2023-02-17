@@ -383,6 +383,7 @@ class FieldView:
                             for model in models:
                                 graphview.add_plot(model)
                             graphview.model.title = text
+                            GLib.idle_add(graphview.plot_curves)
                             
                         title_widget.connect("changed", activate_callback_graphlist, set_field_graph, graphview, code)
                     else:
