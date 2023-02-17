@@ -168,14 +168,18 @@ class DrawingView:
                     # Undo action
                     element.set_text_field_value(code, oldval)
                     self.refresh() 
-            
+
             set_text_field = UndoableSetTextValue(self.program_state['stack'], self.refresh).set_text_field_value_undo
-            if self.properties_view:
-                self.properties_view.update(element.fields, element.name, element.get_text_field, set_text_field)  # Update properties
-            if self.results_view:
-                self.results_view.update(element.res_fields, element.name, element.get_res_field, None)  # Update results
-            if self.database_view:
-                self.database_view.update_from_database(element.database_path)
+
+            def select_action():
+                if self.properties_view:
+                    self.properties_view.update(element.fields, element.name, element.get_text_field, set_text_field)  # Update properties
+                if self.results_view:
+                    self.results_view.update(element.res_fields, element.name, element.get_res_field, None)  # Update results
+                if self.database_view:
+                    self.database_view.update_from_database(element.database_path)
+            GLib.timeout_add(200, select_action)
+
         elif elements and elements[0].code != 'element_wire':
             # Check if all items are similar
             code = elements[0].code
@@ -208,12 +212,15 @@ class DrawingView:
                         element.set_text_field_value(*data)
                     self.multiselect_fields[data[0]]['value'] = data[1]
                     self.refresh()
-                if self.properties_view:
-                    self.properties_view.update(self.multiselect_fields, elements[0].name + ' (Mutliple)', get_field, set_field)  # Update properties
-                if self.database_view:
-                    self.database_view.update_from_database(elements[0].database_path)
-                if self.results_view:
-                    self.results_view.clean()
+                
+                def select_action():
+                    if self.properties_view:
+                        self.properties_view.update(self.multiselect_fields, elements[0].name + ' (Mutliple)', get_field, set_field)  # Update properties
+                    if self.database_view:
+                        self.database_view.update_from_database(elements[0].database_path)
+                    if self.results_view:
+                        self.results_view.clean()
+                GLib.timeout_add(200, select_action)
             
     ## Callbacks
         
