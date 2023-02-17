@@ -185,19 +185,20 @@ class GraphView():
         
         # Plot
         self.plot = self.figure.add_subplot(111)
-        self.plot_curves()
         
     # Functions
     
-    def add_plot(self, graph_model):
+    def add_plot(self, graph_model, render=False):
         self.models.append(GraphModel(graph_model))
         if len(self.models) == 1:
             self.model = self.models[0]
-        self.plot_curves()
+        if render:
+            self.plot_curves()
         
     def add_plots(self, graph_models):
         for model in graph_models:
             self.add_plot(model)
+        GLib.idle_add(self.plot_curves)
         
     def clear_plots(self):
         self.models.clear()
@@ -383,7 +384,6 @@ class GraphViewDialog():
         self.graph_view.clear_plots()
         self.graph_view.add_plots(self.temp_graph[1])
         self.graph_view.inactivate = False
-        self.graph_view.plot_curves()
         self.textbox_title.set_text(self.temp_graph[0])
         self.stack_switcher.set_visible_child_name('edit')
         self.mode = 'ADD'
@@ -404,7 +404,6 @@ class GraphViewDialog():
             self.graph_view.clear_plots()
             self.graph_view.add_plots(self.graph_database[cur_uid][1])
             self.graph_view.inactivate = True
-            self.graph_view.plot_curves()
             self.database_modified_flag = True
         # Set default mode
         self.stack_switcher.set_visible_child_name('default')
@@ -435,7 +434,6 @@ class GraphViewDialog():
             self.graph_view.clear_plots()
             self.graph_view.add_plots(self.temp_graph[1])
             self.graph_view.inactivate = False
-            self.graph_view.plot_curves()
             self.textbox_title.set_text(self.temp_graph[0])
             self.stack_switcher.set_visible_child_name('edit')
             self.mode = 'EDIT'
@@ -458,7 +456,6 @@ class GraphViewDialog():
         self.graph_view.clear_plots()
         self.graph_view.add_plots(self.graph_database[cur_uid][1])
         self.graph_view.inactivate = True
-        self.graph_view.plot_curves()
         self.stack_switcher.set_visible_child_name('default')
         self.mode = 'DEFAULT'
         self.database_modified_flag = True
@@ -468,7 +465,6 @@ class GraphViewDialog():
         self.graph_view.clear_plots()
         self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
         self.graph_view.inactivate = True
-        self.graph_view.plot_curves()
         self.stack_switcher.set_visible_child_name('default')
         self.mode = 'DEFAULT'
             

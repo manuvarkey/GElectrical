@@ -373,6 +373,7 @@ class FieldView:
                         graphview.clear_plots()
                         for model in models:
                             graphview.add_plot(model)
+                        GLib.idle_add(graphview.plot_curves)
                         
                         def set_field_graph(code, graphview, index):
                             graph_uid = graph_uids[index]
@@ -393,6 +394,7 @@ class FieldView:
 
                         for model in models:
                             graphview.add_plot(model)
+                        GLib.idle_add(graphview.plot_curves)
                         title_widget = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                         text_buffer = Gtk.TextBuffer()
                         text_buffer.set_text(title)
