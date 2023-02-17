@@ -671,7 +671,7 @@ class MainWindow():
         for value in rounding_values:
             rounding_combo.append_text(value)
         box.pack_start(rounding_combo, True, True, 3)
-        rounding_combo.set_active(2)
+        rounding_combo.set_active(1)
         
         # Run dialog
         dialog_window.show_all()
