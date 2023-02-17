@@ -330,7 +330,7 @@ class GraphViewDialog():
         self.dialog_window = self.builder.get_object("dialog_window")
         self.dialog_window.set_title(window_caption)
         self.dialog_window.set_transient_for(self.toplevel)
-        self.dialog_window.set_size_request(int(self.toplevel.get_size_request()[0]*0.6),int(self.toplevel.get_size_request()[1]*0.8))
+        self.dialog_window.set_default_size(int(misc.WINDOW_WIDTH*0.6),int(misc.WINDOW_HEIGHT*0.8))
         self.graph_box = self.builder.get_object("graph_box")
         self.combobox_title = self.builder.get_object("combobox_title")
         self.textbox_title = self.builder.get_object("textbox_title")

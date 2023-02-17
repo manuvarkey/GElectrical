@@ -890,6 +890,7 @@ class MainWindow():
         self.builder.add_from_file(misc.abs_path("interface", "mainwindow.glade"))
         self.builder.connect_signals(self)
         self.window = self.builder.get_object("window_main")
+        self.window.set_default_size(misc.WINDOW_WIDTH,misc.WINDOW_HEIGHT)
         self.drawing_notebook = self.builder.get_object("drawing_notebook")
         self.program_state['window'] = self.window
         self.program_state['drawing_notebook'] = self.drawing_notebook

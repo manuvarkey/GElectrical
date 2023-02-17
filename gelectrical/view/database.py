@@ -52,7 +52,7 @@ class DatabaseView:
             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
              Gtk.STOCK_OK, Gtk.ResponseType.OK))
         self.dialog_window.set_resizable(True)
-        self.dialog_window.set_size_request(int(self.window.get_size_request()[0]*0.8),int(self.window.get_size_request()[1]*0.8))
+        self.dialog_window.set_default_size(int(misc.WINDOW_WIDTH*0.5),int(misc.WINDOW_HEIGHT*0.7))
         self.dialog_window.set_default_response(Gtk.ResponseType.OK)
 
         # Pack Dialog
