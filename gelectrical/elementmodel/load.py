@@ -318,6 +318,10 @@ class Motor3ph(Load):
 
     def set_text_field_value(self, code, value):
         Load.set_text_field_value(self, code, value)
+        if not self.model_loading:
+            self.calculate_parameters()
+
+    def set_model_cleanup(self):
         self.calculate_parameters()
 
     def calculate_parameters(self):
@@ -418,8 +422,12 @@ class Motor1ph(SinglePhaseLoad):
 
     def set_text_field_value(self, code, value):
         Load.set_text_field_value(self, code, value)
-        self.calculate_parameters()
+        if not self.model_loading:
+            self.calculate_parameters()
 
+    def set_model_cleanup(self):
+        self.calculate_parameters()
+        
     def calculate_parameters(self):
         self.fields['sn_kva']['value'] = self.fields['p_kw']['value']*self.fields['efficiency']['value']/(100*self.fields['cos_phi']['value'])
         self.fields['mode']['value'] = True

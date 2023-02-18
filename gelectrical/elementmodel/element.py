@@ -58,6 +58,7 @@ class ElementModel:
         self.model_height = 0
         # State variables
         self.selected = False
+        self.model_loading = False  # Flag set during model loading stage
         self.selected_color = misc.COLOR_SELECTED
         self.draw_schem_color = misc.COLOR_NORMAL
         self.text_extends = []
@@ -178,9 +179,14 @@ class ElementModel:
         power_model = tuple()
         return power_model
 
+    def set_model_cleanup(self):
+        # Function called after model loading
+        pass
+
     def set_model(self, model, gid=None):
         """Set storage model"""
         if model['code'] == self.code:
+            self.model_loading = True
             self.x = model['x']
             self.y = model['y']
             self.orientation = model['orientation']
@@ -189,6 +195,8 @@ class ElementModel:
                 if code in model['fields']:
                     self.set_text_field_value(code, model['fields'][code]['value'])
             self.gid = gid
+            self.model_loading = False
+            self.set_model_cleanup()
             
     def set_gid(self, gid):
         self.gid = gid

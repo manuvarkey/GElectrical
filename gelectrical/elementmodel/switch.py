@@ -239,10 +239,14 @@ class ProtectionDevice(Switch):
                     self.fields['I0']['status_enable'] = True
                     self.fields['I0_set']['status_enable'] = True
                     self.fields['pcurve_g']['status_enable'] = True
-
-            self.calculate_parameters(init=True)
+            if not self.model_loading:
+                self.calculate_parameters(init=True)
         else:
-            self.calculate_parameters(init=False)
+            if not self.model_loading:
+                self.calculate_parameters(init=False)
+
+    def set_model_cleanup(self):
+        self.calculate_parameters(init=False)
 
     def calculate_parameters(self, init=False):
         # Form title

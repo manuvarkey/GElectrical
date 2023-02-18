@@ -183,6 +183,10 @@ class Line(ElementModel):
 
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
+        if not self.model_loading:
+            self.calculate_parameters()
+
+    def set_model_cleanup(self):
         self.calculate_parameters()
 
     def calculate_parameters(self):
@@ -607,7 +611,11 @@ class LTCableIEC(Line):
                     self.fields['cpe_cross_section']['status_enable'] = True
                     self.fields['armour_sc_current_rating']['status_enable'] = True
                     self.fields['ext_cpe_sc_current_rating']['status_enable'] = True
-            self.calculate_parameters()
+            if not self.model_loading:
+                self.calculate_parameters()
+
+    def set_model_cleanup(self):
+        self.calculate_parameters()
             
     def calculate_parameters(self):
         Sph = self.fields['conductor_cross_section']['value']
@@ -969,7 +977,11 @@ class LTCableCustom(Line):
                     self.fields['cpe']['value'] = self.armour_list[0]
                     self.fields['armour_material']['status_enable'] = True
                     self.fields['armour_cross_section']['status_enable'] = True
-            self.calculate_parameters()
+            if not self.model_loading:
+                self.calculate_parameters()
+
+    def set_model_cleanup(self):
+        self.calculate_parameters()
             
     def calculate_parameters(self):
         # Get field values

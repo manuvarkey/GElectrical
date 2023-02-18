@@ -123,6 +123,10 @@ class Transformer(ElementModel):
     
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
+        if not self.model_loading:
+            self.calculate_parameters(init=False)
+
+    def set_model_cleanup(self):
         self.calculate_parameters(init=False)
 
     def calculate_parameters(self, init=False):
