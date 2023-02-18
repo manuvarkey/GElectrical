@@ -290,6 +290,8 @@ class ProjectModel:
         # Clear first page model
         blank_model = DrawingModel(self, self.program_state).get_model()
         self.drawing_models[0].set_model(blank_model)
+        self.clear_status()
+        self.clear_results()
         
     def get_page_nos(self):
         return len(self.drawing_models)
