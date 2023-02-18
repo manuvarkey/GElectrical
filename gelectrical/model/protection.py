@@ -233,8 +233,16 @@ class ProtectionModel():
         self.curve_lower = eval_curve(self.data_struct['data']['curve_l'])
 
         # Geometry elements
-        self.linestring_upper = LineString(reversed(self.curve_upper))
-        self.linestring_lower = LineString(self.curve_lower)
+        if self.curve_upper:
+            self.linestring_upper = LineString(reversed(misc.log_interpolate_piecewise(self.curve_upper)))
+        else:
+            self.linestring_upper = None
+
+        if self.curve_lower:
+            self.linestring_lower = LineString(misc.log_interpolate_piecewise(self.curve_lower))
+        else:
+            self.linestring_lower = None
+            
         if self.curve_upper and self.curve_lower:
             self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
         else:
@@ -245,5 +253,71 @@ class ProtectionModel():
         self.update_graph()  # Update graph
         return copy.deepcopy(self.data_struct)
 
+    def get_current(self, t, mode='protection'):
+        values = tuple()
+        if mode == 'protection' and self.polygon:
+            if t > self.polygon.bounds[3]:
+                values = (min(self.linestring_lower.xy[0]), min(self.linestring_upper.xy[0]))
+            elif t < self.polygon.bounds[1]:
+                values = (max(self.linestring_lower.xy[0]), max(self.linestring_upper.xy[0]))
+            else:
+                hor_line = LineString([[self.polygon.bounds[0]-0.1, t],
+                                        [self.polygon.bounds[2]+0.1, t]])
+                bounds = self.polygon.intersection(hor_line).bounds
+                values = (bounds[0], bounds[2])
+        elif mode == 'damage' and self.linestring_upper:
+            if t > self.linestring_upper.bounds[3] or t < self.linestring_upper.bounds[1]:
+                values = tuple()
+            else:
+                hor_line = LineString([[self.linestring_upper.bounds[0]-0.1, t],
+                                        [self.linestring_upper.bounds[2]+0.1, t]])
+                bounds = (self.linestring_upper.intersection(hor_line)).bounds
+                values = (bounds[0], bounds[2])
+        elif mode == 'starting' and self.linestring_lower:
+            if t > self.linestring_lower.bounds[3] or t < self.linestring_lower.bounds[1]:
+                values = tuple()
+            else:
+                hor_line = LineString([[self.linestring_lower.bounds[0]-0.1, t],
+                                        [self.linestring_lower.bounds[2]+0.1, t]])
+                bounds = (self.linestring_lower.intersection(hor_line)).bounds
+                values = (bounds[0], bounds[2])
+        else:
+            values = tuple()
+        return tuple(sorted(set(values)))
+
+    def get_time(self, I, mode='protection'):
+        values = tuple()
+        if mode == 'protection' and self.polygon:
+            if I > self.polygon.bounds[2] or I < self.polygon.bounds[0]:
+                values = tuple()
+            else:
+                vert_line = LineString([[I, self.polygon.bounds[1]-0.1],
+                                        [I, self.polygon.bounds[3]+0.1]])
+                bounds = self.polygon.intersection(vert_line).bounds
+                values = (bounds[1], bounds[3])
+        elif mode == 'damage' and self.linestring_upper:
+            if I > self.linestring_upper.bounds[2] or I < self.linestring_upper.bounds[0]:
+                values = tuple()
+            else:
+                vert_line = LineString([[I, self.linestring_upper.bounds[1]-0.1],
+                                        [I, self.linestring_upper.bounds[3]+0.1]])
+                bounds = (self.linestring_upper.intersection(vert_line)).bounds
+                values = (bounds[1], bounds[3])
+        elif mode == 'starting' and self.linestring_lower:
+            if I > self.linestring_lower.bounds[2] or I < self.linestring_lower.bounds[0]:
+                values = tuple()
+            else:
+                vert_line = LineString([[I, self.linestring_lower.bounds[1]-0.1],
+                                        [I, self.linestring_lower.bounds[3]+0.1]])
+                bounds = (self.linestring_lower.intersection(vert_line)).bounds
+                values = (bounds[1], bounds[3])
+        else:
+            values = tuple()
+        return tuple(sorted(set(values)))
+
+
+
+
+        
         
 

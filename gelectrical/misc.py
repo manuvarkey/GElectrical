@@ -1056,6 +1056,40 @@ def log_interpolate(points, num=10, prefix='point'):
         points_int = [(x,y) for x,y in zip(X,Y)]
     return points_int
 
+def log_interpolate_piecewise(points):
+    
+    def log_interpolate(x, y, num):
+        fit_func = interp1d(np.log10(x), np.log10(y))
+        fit_func_mod = lambda x: list(10**(fit_func(np.log10(np.array(x)))))
+        X = np.geomspace(min(x), max(x), num=num)
+        Y = fit_func_mod(X)
+        return tuple(X), tuple(Y)
+
+    I0, t0 = points[0]
+    curve_i = [I0]
+    curve_t = [t0]
+    for I,t in points[1:]:
+        if I0 != 0 and t0 != 0 and I !=0 and t != 0:
+            deli = I/I0
+            delt = t/t0
+            dist_norm = max(deli, delt)
+            if dist_norm > 1.5:
+                num = int(20*np.log10(dist_norm))
+                i_vals = [I0, I]
+                t_vals = [t0, t]
+                i_array_int, t_array_int = log_interpolate(i_vals, t_vals, num)
+                curve_i += i_array_int[1:]
+                curve_t += t_array_int[1:]
+            else:
+                curve_i += [I]
+                curve_t += [t]
+        else:
+            curve_i += [I]
+            curve_t += [t]
+        I0, t0 = I, t
+    points_int = tuple([(x,y) for x, y in zip(curve_i, curve_t)])
+    return points_int
+
 def open_library(filename):
     filename_abs = posix_path(USER_LIBRARY_DIR, filename)
     filename_abs_lib = abs_path('database', filename)
