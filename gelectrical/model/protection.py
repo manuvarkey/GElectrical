@@ -72,18 +72,23 @@ class ProtectionModel():
 
     @classmethod
     def new_from_data(cls, data_struct):
-        if data_struct['type'] == 'protection':
-            title = data_struct['graph_model'][0]
+        if data_struct and data_struct['type'] in ('protection', 'damage'):
+            if data_struct['graph_model']:
+                title = data_struct['graph_model'][0]
+            else:
+                title = ''
             parameters = copy.deepcopy(data_struct['parameters'])
             curve_u = copy.deepcopy(data_struct['data']['curve_u'])
             curve_l = copy.deepcopy(data_struct['data']['curve_l'])
-            return cls(title, parameters, curve_u, curve_l)
+            element_type = data_struct['type']
+            return cls(title, parameters, curve_u, curve_l, element_type)
         else:
             raise ValueError('Wrong data structure passed')
 
     def copy(self):
         new_obj = self.new_from_data(self.data_struct)
         # Copy generated data
+        new_obj.title = self.title
         new_obj.curve_upper = copy.deepcopy(self.curve_upper)
         new_obj.curve_lower = copy.deepcopy(self.curve_lower)
         new_obj.polygon = Polygon(self.polygon)
@@ -234,7 +239,7 @@ class ProtectionModel():
 
         # Geometry elements
         if self.curve_upper:
-            self.linestring_upper = LineString(reversed(misc.log_interpolate_piecewise(self.curve_upper)))
+            self.linestring_upper = LineString(misc.log_interpolate_piecewise(self.curve_upper))
         else:
             self.linestring_upper = None
 
@@ -243,13 +248,22 @@ class ProtectionModel():
         else:
             self.linestring_lower = None
             
-        if self.curve_upper and self.curve_lower:
-            self.polygon = Polygon(list(reversed(self.curve_upper)) + self.curve_lower)
+        if self.linestring_upper and self.linestring_lower:
+            self.polygon = Polygon(list(reversed(self.linestring_upper.coords)) + list(self.linestring_lower.coords))
         else:
             self.polygon = None
 
-    def get_evaluated_model(self, fields, data_fields=None, scale=1):
-        self.evaluate_curves(fields, data_fields,scale)  # Evaluate curves
+    def get_graph_model(self):
+        return copy.deepcopy(self.data_struct['graph_model'])
+
+    def get_evaluated(self, fields, data_fields=None, scale=1):
+        obj = self.copy()
+        obj.evaluate_curves(fields, data_fields, scale)  # Evaluate curves
+        obj.update_graph()  # Update graph
+        return obj
+
+    def get_evaluated_model(self, fields, data_fields=None):
+        self.evaluate_curves(fields, data_fields)  # Evaluate curves
         self.update_graph()  # Update graph
         return copy.deepcopy(self.data_struct)
 
@@ -314,7 +328,40 @@ class ProtectionModel():
         else:
             values = tuple()
         return tuple(sorted(set(values)))
+    
+    def contains(self, geometry, curve='upper', direction='right'):
+        """
+        Check if geometry lies completely to the given direction of selected curve
+        """
+        if curve == 'upper':
+            linestring = self.linestring_upper
+        elif curve == 'lower':
+            linestring = self.linestring_lower
 
+        if linestring and geometry:
+            i0 = linestring.xy[0][0]
+            t0 = linestring.xy[1][0]
+            i1 = linestring.xy[0][-1]
+            t1 = linestring.xy[1][-1]
+            if direction == 'right':
+                check_geom = Polygon(list(linestring.coords) + 
+                                        [(i1, 100000), (i0, 100000)])
+                geom_mask = Polygon([   (i0, 100000), 
+                                        (i1, 100000), 
+                                        (i1, t1), 
+                                        (i0, t1),
+                                        (i0, 10000)  ])
+                geometry_masked = geometry.intersection(geom_mask)
+            elif direction == 'left':
+                check_geom = Polygon(list(linestring.coords) + 
+                                        [(i1, 0), 
+                                         (0, 0), 
+                                         (0, 100000), 
+                                         (i0, 100000)])
+                geometry_masked = geometry
+            return check_geom.contains(geometry_masked)
+        
+    
 
 
 

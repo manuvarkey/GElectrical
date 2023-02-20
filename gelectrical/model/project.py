@@ -159,23 +159,23 @@ class ProjectModel:
                     pcurve_l = element.line_protection_model
                     pcurve_g = element.ground_protection_model
                     if pcurve_l:
-                        data_model = pcurve_l.get_evaluated_model(element.fields, scale=scale)
-                        if data_model:
-                            model = data_model['graph_model'][1][0]
+                        curve_eval = pcurve_l.get_evaluated(element.fields, scale=scale)
+                        if curve_eval:
+                            model = curve_eval.get_graph_model()[1][0]
                             l_models.append(model)
                     if pcurve_g:
-                        data_model = pcurve_g.get_evaluated_model(element.fields, scale=scale)
-                        if data_model:
-                            model = data_model['graph_model'][1][0]
+                        curve_eval = pcurve_g.get_evaluated(element.fields, scale=scale)
+                        if curve_eval:
+                            model = curve_eval.get_graph_model()[1][0]
                             g_models.append(model)
 
                 if element.code in misc.DAMAGE_ELEMENT_CODES:
                     dcurve = element.damage_model
                     if dcurve:
-                        data_model = dcurve.get_evaluated_model(element.fields, scale=scale)
-                        if data_model:
-                            model1 = data_model['graph_model'][1][0]
-                            model2 = data_model['graph_model'][1][1]
+                        curve_eval = dcurve.get_evaluated(element.fields, scale=scale)
+                        if curve_eval:
+                            model1 = curve_eval.get_graph_model()[1][0]
+                            model2 = curve_eval.get_graph_model()[1][1]
                             if model1:
                                 d_models.append(model1)
                             if model2:
