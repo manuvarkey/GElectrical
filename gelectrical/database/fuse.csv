@@ -21,6 +21,7 @@ item_name;item_category;custom;type;In;In_set;Isc;pcurve_l
 400A, gG - HN;gG fuse - HN - L&T;True;gG - HN;400;1;100;('fuse_lnt', '400_1.csv', 'params.json')
 500A, gG - HN;gG fuse - HN - L&T;True;gG - HN;500;1;100;('fuse_lnt', '500_1.csv', 'params.json')
 630A, gG - HN;gG fuse - HN - L&T;True;gG - HN;630;1;100;('fuse_lnt', '630_1.csv', 'params.json')
+800A, gG - HN;gG fuse - HN - L&T;True;gG - HN;800;1;100;('fuse_lnt', '800_1.csv', 'params.json')
 6.3A, MV HRC;MV HRC - CEF - ABB;True;MV HRC;6.3;1;63;('fuse_abb_cef', '6.3.csv', 'params.json')
 10A, MV HRC;MV HRC - CEF - ABB;True;MV HRC;10;1;63;('fuse_abb_cef', '10.csv', 'params.json')
 16A, MV HRC;MV HRC - CEF - ABB;True;MV HRC;16;1;63;('fuse_abb_cef', '16.csv', 'params.json')
