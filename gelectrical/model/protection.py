@@ -64,11 +64,12 @@ class ProtectionModel():
                             'data'          : {'curve_u': curve_u,'curve_l': curve_l},
                             'graph_model'   : []}
         # Generated variables
-        self.curve_upper = None  # Upper t vs I protection curve as list of tuples
-        self.curve_lower = None  # Lower t vs I protection curve as list of tuples
         self.polygon = None
         self.linestring_upper = None
         self.linestring_lower = None
+        self.polygon_log = None
+        self.linestring_upper_log = None
+        self.linestring_lower_log = None
 
     @classmethod
     def new_from_data(cls, data_struct):
@@ -89,11 +90,12 @@ class ProtectionModel():
         new_obj = self.new_from_data(self.data_struct)
         # Copy generated data
         new_obj.title = self.title
-        new_obj.curve_upper = copy.deepcopy(self.curve_upper)
-        new_obj.curve_lower = copy.deepcopy(self.curve_lower)
         new_obj.polygon = Polygon(self.polygon)
         new_obj.linestring_upper = LineString(self.linestring_upper)
         new_obj.linestring_lower = LineString(self.linestring_lower)
+        new_obj.polygon_log = Polygon(self.polygon_log)
+        new_obj.linestring_upper_log = LineString(self.linestring_upper_log)
+        new_obj.linestring_lower_log = LineString(self.linestring_lower_log)
         return new_obj
 
     def get_data_fields(self, modify_code=''):
@@ -115,10 +117,10 @@ class ProtectionModel():
                                             'yval': yval},]]
             self.data_struct['graph_model'] = graph_model
         elif self.data_struct['type'] == 'damage':
-            xval1 = [x for x,y in self.curve_upper]
-            yval1 = [y for x,y in self.curve_upper]
-            xval2 = [x for x,y in self.curve_lower]
-            yval2 = [y for x,y in self.curve_lower]
+            xval1 = list(self.linestring_upper.xy[0])
+            yval1 = list(self.linestring_upper.xy[1])
+            xval2 = list(self.linestring_lower.xy[0])
+            yval2 = list(self.linestring_lower.xy[1])
             graphs = []
             damage_flag = False
             starting_flag = False
@@ -230,28 +232,36 @@ class ProtectionModel():
                 i_array, t_array = func(*data_eval)
                 curve_i += i_array
                 curve_t += t_array
-            curve = [(x*scale,y) for x,y in zip(curve_i, curve_t)]
+            curve = (np.array([curve_i, curve_t]).T)*[scale, 1]
             return curve
 
         # Evaluate curves
-        self.curve_upper = eval_curve(self.data_struct['data']['curve_u'])
-        self.curve_lower = eval_curve(self.data_struct['data']['curve_l'])
+        curve_upper = eval_curve(self.data_struct['data']['curve_u'])
+        curve_lower = eval_curve(self.data_struct['data']['curve_l'])
 
         # Geometry elements
-        if self.curve_upper:
-            self.linestring_upper = LineString(misc.log_interpolate_piecewise(self.curve_upper))
+        if curve_upper is not None:
+            # self.linestring_upper = LineString(misc.log_interpolate_piecewise(self.curve_upper))
+            self.linestring_upper = LineString(curve_upper)
+            self.linestring_upper_log = LineString(np.log10(curve_upper))
         else:
             self.linestring_upper = None
+            self.linestring_upper_log = None
 
-        if self.curve_lower:
-            self.linestring_lower = LineString(misc.log_interpolate_piecewise(self.curve_lower))
+        if curve_lower is not None:
+            # self.linestring_lower = LineString(misc.log_interpolate_piecewise(self.curve_lower))
+            self.linestring_lower = LineString(curve_lower)
+            self.linestring_lower_log = LineString(np.log10(curve_lower))
         else:
             self.linestring_lower = None
+            self.linestring_lower_log = None
             
         if self.linestring_upper and self.linestring_lower:
             self.polygon = Polygon(list(reversed(self.linestring_upper.coords)) + list(self.linestring_lower.coords))
+            self.polygon_log = Polygon(list(reversed(self.linestring_upper_log.coords)) + list(self.linestring_lower_log.coords))
         else:
             self.polygon = None
+            self.polygon_log = None
 
     def get_graph_model(self):
         return copy.deepcopy(self.data_struct['graph_model'])
@@ -275,26 +285,26 @@ class ProtectionModel():
             elif t < self.polygon.bounds[1]:
                 values = (max(self.linestring_lower.xy[0]), max(self.linestring_upper.xy[0]))
             else:
-                hor_line = LineString([[self.polygon.bounds[0]-0.1, t],
-                                        [self.polygon.bounds[2]+0.1, t]])
-                bounds = self.polygon.intersection(hor_line).bounds
-                values = (bounds[0], bounds[2])
+                hor_line = LineString(np.log10([[self.polygon.bounds[0]-0.0001, t],
+                                                [self.polygon.bounds[2]+0.0001, t]]))
+                bounds = self.polygon_log.intersection(hor_line).bounds
+                values = (10**bounds[0], 10**bounds[2])
         elif mode == 'damage' and self.linestring_upper:
             if t > self.linestring_upper.bounds[3] or t < self.linestring_upper.bounds[1]:
                 values = tuple()
             else:
-                hor_line = LineString([[self.linestring_upper.bounds[0]-0.1, t],
-                                        [self.linestring_upper.bounds[2]+0.1, t]])
-                bounds = (self.linestring_upper.intersection(hor_line)).bounds
-                values = (bounds[0], bounds[2])
+                hor_line = LineString(np.log10([[self.linestring_upper.bounds[0]-0.0001, t],
+                                                [self.linestring_upper.bounds[2]+0.0001, t]]))
+                bounds = (self.linestring_upper_log.intersection(hor_line)).bounds
+                values = (10**bounds[0], 10**bounds[2])
         elif mode == 'starting' and self.linestring_lower:
             if t > self.linestring_lower.bounds[3] or t < self.linestring_lower.bounds[1]:
                 values = tuple()
             else:
-                hor_line = LineString([[self.linestring_lower.bounds[0]-0.1, t],
-                                        [self.linestring_lower.bounds[2]+0.1, t]])
-                bounds = (self.linestring_lower.intersection(hor_line)).bounds
-                values = (bounds[0], bounds[2])
+                hor_line = LineString(np.log10([[self.linestring_lower.bounds[0]-0.0001, t],
+                                                [self.linestring_lower.bounds[2]+0.0001, t]]))
+                bounds = (self.linestring_lower_log.intersection(hor_line)).bounds
+                values = (10**bounds[0], 10**bounds[2])
         else:
             values = tuple()
         return tuple(sorted(set(values)))
@@ -305,38 +315,41 @@ class ProtectionModel():
             if I > self.polygon.bounds[2] or I < self.polygon.bounds[0]:
                 values = tuple()
             else:
-                vert_line = LineString([[I, self.polygon.bounds[1]-0.1],
-                                        [I, self.polygon.bounds[3]+0.1]])
-                bounds = self.polygon.intersection(vert_line).bounds
-                values = (bounds[1], bounds[3])
+                vert_line = LineString(np.log10([[I, self.polygon.bounds[1]-0.0001],
+                                                 [I, self.polygon.bounds[3]+0.0001]]))
+                bounds = self.polygon_log.intersection(vert_line).bounds
+                values = (10**bounds[1], 10**bounds[3])
         elif mode == 'damage' and self.linestring_upper:
             if I > self.linestring_upper.bounds[2] or I < self.linestring_upper.bounds[0]:
                 values = tuple()
             else:
-                vert_line = LineString([[I, self.linestring_upper.bounds[1]-0.1],
-                                        [I, self.linestring_upper.bounds[3]+0.1]])
-                bounds = (self.linestring_upper.intersection(vert_line)).bounds
-                values = (bounds[1], bounds[3])
+                vert_line = LineString(np.log10([[I, self.linestring_upper.bounds[1]-0.0001],
+                                                 [I, self.linestring_upper.bounds[3]+0.0001]]))
+                bounds = (self.linestring_upper_log.intersection(vert_line)).bounds
+                values = (10**bounds[1], 10**bounds[3])
         elif mode == 'starting' and self.linestring_lower:
             if I > self.linestring_lower.bounds[2] or I < self.linestring_lower.bounds[0]:
                 values = tuple()
             else:
-                vert_line = LineString([[I, self.linestring_lower.bounds[1]-0.1],
-                                        [I, self.linestring_lower.bounds[3]+0.1]])
-                bounds = (self.linestring_lower.intersection(vert_line)).bounds
-                values = (bounds[1], bounds[3])
+                vert_line = LineString(np.log10([[I, self.linestring_lower.bounds[1]-0.0001],
+                                                 [I, self.linestring_lower.bounds[3]+0.0001]]))
+                bounds = (self.linestring_lower_log.intersection(vert_line)).bounds
+                values = (10**bounds[1], 10**bounds[3])
         else:
             values = tuple()
         return tuple(sorted(set(values)))
     
-    def contains(self, geometry, curve='upper', direction='right'):
+    def contains(self, geometry, curve='upper', direction='right', i_max=None):
         """
         Check if geometry lies completely to the given direction of selected curve
         """
+        lim_min = -6
+        lim_max = 6
+        
         if curve == 'upper':
-            linestring = self.linestring_upper
+            linestring = self.linestring_upper_log
         elif curve == 'lower':
-            linestring = self.linestring_lower
+            linestring = self.linestring_lower_log
 
         if linestring and geometry:
             i0 = linestring.xy[0][0]
@@ -345,19 +358,26 @@ class ProtectionModel():
             t1 = linestring.xy[1][-1]
             if direction == 'right':
                 check_geom = Polygon(list(linestring.coords) + 
-                                        [(i1, 100000), (i0, 100000)])
-                geom_mask = Polygon([   (i0, 100000), 
-                                        (i1, 100000), 
+                                        [(i1, lim_max), (i0, lim_max)])
+                geom_mask = Polygon([   (i0, lim_max), 
+                                        (i1, lim_max), 
                                         (i1, t1), 
                                         (i0, t1),
-                                        (i0, 10000)  ])
+                                        (i0, lim_max)  ])
+                if i_max:
+                    limit_mask = Polygon([(lim_min, lim_max), 
+                                        (i_max, lim_max), 
+                                        (i_max, lim_min), 
+                                        (lim_min, lim_min),
+                                        (lim_min, lim_max)  ])
+                    geom_mask = geom_mask.intersection(limit_mask)
                 geometry_masked = geometry.intersection(geom_mask)
             elif direction == 'left':
                 check_geom = Polygon(list(linestring.coords) + 
-                                        [(i1, 0), 
-                                         (0, 0), 
-                                         (0, 100000), 
-                                         (i0, 100000)])
+                                        [(i1, lim_min), 
+                                         (lim_min, lim_min), 
+                                         (lim_min, lim_max), 
+                                         (i0, lim_max)])
                 geometry_masked = geometry
             return check_geom.contains(geometry_masked)
         
