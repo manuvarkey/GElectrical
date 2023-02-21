@@ -871,6 +871,9 @@ class FieldDict(MutableMapping):
 
 class Element:
     def __init__(self, element):
+        # Copy all variables
+        self.__dict__.update(vars(element))
+        # Add convinence variables
         self.r = FieldDict(element.res_fields)
         self.f = FieldDict(element.fields)
 

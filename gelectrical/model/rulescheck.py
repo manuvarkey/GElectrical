@@ -67,13 +67,14 @@ electrical_rules = {
                     (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.r.loading_percent_max'),
                     ('constant', 100)),
-'Line loss % < x%': ('arg1 <= sr.line_max_loss', 
+'Line loss % < X%': ('arg1 <= sr.line_max_loss', 
                     (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.r.pl_mw_max')),
-'Line overload protection by upstream switch': ('arg1 <= arg2', 
+'Line overload protection by upstream switch': ("arg2[0].contains(arg1[0], curve='upper', direction='right', i_max=arg3) and arg1[1] >= arg2[1]", 
                     (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
-                    ('self', 'e.f.max_i_ka'),
-                    ('upstream', misc.SWITCH_ELEMENT_CODES, 'e.f.In')),
+                    ('self', '(e.damage_model.linestring_upper_log, e.f.max_i_ka * e.f.df * e.f.parallel * 1000)'),
+                    ('upstream', misc.PROTECTION_ELEMENT_CODES, '(e.line_protection_model, e.f.In)'),
+                    ('downstream_node', 'max(e.r.ikss_ka_3ph_max, e.r.ikss_ka_1ph_max)*1000')),
 'Transformer loading % < 100%': ('arg1 <= 100', 
                     (misc.TRAFO_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.r.loading_percent_max'))
@@ -190,14 +191,18 @@ def rules_check(network, sim_settings, rules_settings, rules):
                     # Setup argument pairs for evaluation
                     args_eval_pair = []
                     for arg1 in  args_eval[0]:
-                        if len(args) == 2:
+                        if len(args) == 3:
                             for arg2 in  args_eval[1]:
-                                args_eval_pair.append((arg1, arg2))
+                                for arg3 in  args_eval[2]:
+                                    args_eval_pair.append((arg1, arg2, arg3))
+                        elif len(args) == 2:
+                            for arg2 in  args_eval[1]:
+                                args_eval_pair.append((arg1, arg2, 0))
                         else:
-                            args_eval_pair.append((arg1, 0))
+                            args_eval_pair.append((arg1, 0, 0))
                     # Evaluate argument pairs
-                    for (arg1, arg2) in args_eval_pair:
-                        if eval(check_expression, {'arg1':arg1, 'arg2':arg2,'sr':sr,'ss':ss}):
+                    for (arg1, arg2, arg3) in args_eval_pair:
+                        if eval(check_expression, {'arg1':arg1, 'arg2':arg2, 'arg3':arg3, 'sr':sr, 'ss':ss}):
                             if match_type in ('any', 'any_ifexist'):
                                 break
                         else:
