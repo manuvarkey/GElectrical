@@ -359,18 +359,15 @@ class ProtectionModel():
             if direction == 'right':
                 check_geom = Polygon(list(linestring.coords) + 
                                         [(i1, lim_max), (i0, lim_max)])
-                geom_mask = Polygon([   (i0, lim_max), 
-                                        (i1, lim_max), 
-                                        (i1, t1), 
-                                        (i0, t1),
-                                        (i0, lim_max)  ])
                 if i_max:
-                    limit_mask = Polygon([(lim_min, lim_max), 
-                                        (i_max, lim_max), 
-                                        (i_max, lim_min), 
-                                        (lim_min, lim_min),
-                                        (lim_min, lim_max)  ])
-                    geom_mask = geom_mask.intersection(limit_mask)
+                    lim_i_max = min(np.log10(i_max), i1)
+                else:
+                    lim_i_max = i1
+                geom_mask = Polygon([   (i0, lim_max), 
+                                        (lim_i_max, lim_max), 
+                                        (lim_i_max, lim_min), 
+                                        (i0, lim_min),
+                                        (i0, lim_max)  ])
                 geometry_masked = geometry.intersection(geom_mask)
             elif direction == 'left':
                 check_geom = Polygon(list(linestring.coords) + 
