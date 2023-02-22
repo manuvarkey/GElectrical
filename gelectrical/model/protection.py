@@ -339,7 +339,7 @@ class ProtectionModel():
             values = tuple()
         return tuple(sorted(set(values)))
     
-    def contains(self, geometry, curve='upper', direction='right', i_max=None):
+    def contains(self, geometry, curve='upper', direction='right', i_max=None, scale=1):
         """
         Check if geometry lies completely to the given direction of selected curve
         """
@@ -350,6 +350,11 @@ class ProtectionModel():
             linestring = self.linestring_upper_log
         elif curve == 'lower':
             linestring = self.linestring_lower_log
+
+        # Scale data
+        ls_x = np.array(linestring.xy[0])
+        ls_y = np.array(linestring.xy[1])
+        linestring = LineString((np.vstack((ls_x + np.log10(scale), ls_y))).T)
 
         if linestring and geometry:
             i0 = linestring.xy[0][0]
@@ -363,11 +368,11 @@ class ProtectionModel():
                     lim_i_max = min(np.log10(i_max), i1)
                 else:
                     lim_i_max = i1
-                geom_mask = Polygon([   (i0, lim_max), 
+                geom_mask = Polygon([   (lim_min, lim_max), 
                                         (lim_i_max, lim_max), 
                                         (lim_i_max, lim_min), 
-                                        (i0, lim_min),
-                                        (i0, lim_max)  ])
+                                        (lim_min, lim_min),
+                                        (lim_min, lim_max)  ])
                 geometry_masked = geometry.intersection(geom_mask)
             elif direction == 'left':
                 check_geom = Polygon(list(linestring.coords) + 

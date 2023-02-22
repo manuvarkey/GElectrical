@@ -132,6 +132,7 @@ LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_
                      'element_async_motor_3ph', 'element_async_motor_1ph')
 LINE_ELEMENT_CODES = ('element_line', 'element_line_cable', 'element_line_custom')
 TRAFO_ELEMENT_CODES = ('element_transformer', 'element_transformer3w')
+MOTOR_ELEMENT_CODES = ('element_async_motor_3ph', 'element_async_motor_1ph')
 LOAD_ELEMENT_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 'element_async_motor_3ph', 'element_async_motor_1ph')
 SWITCH_ELEMENT_CODES = ('element_switch', 'element_circuitbreaker', 'element_fuse', 'element_contactor')
 PROTECTION_ELEMENT_CODES = ('element_circuitbreaker', 'element_fuse')
@@ -1323,7 +1324,9 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                              'grid_frequency': get_field_dict('float', 'Grid Frequency', 'Hz', 50, selection_list=[50,60], status_inactivate=False),
                              'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),
                              'x_fault_ohm': get_field_dict('float', 'Fault reactance', 'Ohm', 0, status_inactivate=False)},
-                             'Rules Check':{'line_max_loss' : get_field_dict('float', 'Maximum line loss', '%', 3, status_inactivate=False)}}
+                             'Rules Check':{'line_max_loss' : get_field_dict('float', 'Maximum line loss', '%', 3, status_inactivate=False),
+                                            'max_disc_time' : get_field_dict('float', 'Maximum disconnection time for faults', 's', 5, status_inactivate=False),
+                                            'max_voltage_drop' : get_field_dict('float', 'Maximum voltage drop at loads', '%', 5, status_inactivate=False)}}
 
 loadprofile_blank_fields = {'name': get_field_dict('str', 'Title', '', ''),
                             'name1': get_field_dict('str', 'Sub Title', '', '')}
