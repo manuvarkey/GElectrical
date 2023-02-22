@@ -21,7 +21,7 @@
 #
 #
 
-import logging, json, itertools
+import logging, json, itertools, copy
 import networkx as nx
 from networkx.algorithms.components.connected import connected_components
 from html import escape
@@ -74,6 +74,7 @@ class NetworkModel:
         self.graph = None
         self.graph_with_status = None
         self.graph_source_nodes = set()
+        self.graph_source_nodes_with_status = set()
         self.graph_sink_nodes = set()
 
     # Build models
@@ -209,8 +210,11 @@ class NetworkModel:
         """Build graph model for network"""
         self.graph = nx.Graph()
         self.graph_source_nodes = set()
+        self.graph_source_nodes_with_status = set()
         self.graph_sink_nodes = set()
 
+        disabled_sources = []
+        disabled_sources_edges = []
         disabled_lines = []
         disabled_switches = []
         term_node_count = max(self.global_nodes) + 1
@@ -231,6 +235,9 @@ class NetworkModel:
                     if code in misc.SUPPLY_ELEMENT_CODES:
                         self.graph.add_edge(term_node_count, gnodes[0], key=ekey, code=code, ref=ref)
                         self.graph_source_nodes.add(term_node_count)
+                        if element.fields['in_service']['value'] == False:
+                            disabled_sources.append(term_node_count)
+                            disabled_sources_edges.append((term_node_count, gnodes[0]))
                         term_node_count += 1
                     else:
                         self.graph.add_edge(gnodes[0], term_node_count, key=ekey, code=code, ref=ref)
@@ -247,6 +254,9 @@ class NetworkModel:
         self.graph_with_status = self.graph.copy()
         self.graph_with_status.remove_edges_from(disabled_lines)
         self.graph_with_status.remove_edges_from(disabled_switches)
+        self.graph_with_status.remove_edges_from(disabled_sources_edges)
+        self.graph_source_nodes_with_status = copy.copy(self.graph_source_nodes)
+        self.graph_source_nodes_with_status -= set(disabled_sources)
         log.info('NetworkModel - build_graph - model generated')
 
     # Graph analysis functions
@@ -255,14 +265,16 @@ class NetworkModel:
         # Select graph
         if ignore_disabled:
             graph = self.graph_with_status
+            graph_source_nodes = self.graph_source_nodes_with_status
         else:
             graph = self.graph
+            graph_source_nodes = self.graph_source_nodes
         # Setup
         gnodes = self.gnode_element_mapping_inverted[ekey]
         g0 = gnodes[0]
         result = set()
         # Search in a path from g0 to selected sources
-        search_set = [source_node] if source_node else self.graph_source_nodes
+        search_set = [source_node] if source_node else graph_source_nodes
         for source in search_set:
             simple_paths = nx.all_simple_paths(graph, g0, source)
             paths_comb = set(itertools.chain(*simple_paths))
@@ -277,8 +289,10 @@ class NetworkModel:
         # Select graph
         if ignore_disabled:
             graph = self.graph_with_status
+            graph_source_nodes = self.graph_source_nodes_with_status
         else:
             graph = self.graph
+            graph_source_nodes = self.graph_source_nodes
         # Setup
         gnodes = self.gnode_element_mapping_inverted[ekey]
         element = self.base_elements[ekey]
@@ -287,7 +301,7 @@ class NetworkModel:
         if element.code in misc.SUPPLY_ELEMENT_CODES:
             return results
         # Search in a path from g0 to all sources
-        for source in self.graph_source_nodes:
+        for source in graph_source_nodes:
             simple_paths = nx.all_simple_paths(graph, gnodes[0], source)
             for path in map(nx.utils.pairwise, simple_paths):  # For all elements in path
                 for e_pair in path:
@@ -297,7 +311,7 @@ class NetworkModel:
                     if set(e_pair) & self.graph_sink_nodes:
                         break
                     # Case 2 - 1 node supply elements; no need to check if current element
-                    elif set(e_pair) & self.graph_source_nodes:
+                    elif set(e_pair) & graph_source_nodes:
                         if (codes is None) or (element_check.code in codes):
                             results[ekey_check] = element_check
                             break
@@ -312,8 +326,10 @@ class NetworkModel:
         # Select graph
         if ignore_disabled:
             graph = self.graph_with_status
+            graph_source_nodes = self.graph_source_nodes_with_status
         else:
             graph = self.graph
+            graph_source_nodes = self.graph_source_nodes
         # Setup
         gnodes = self.gnode_element_mapping_inverted[ekey]
         element = self.base_elements[ekey]
@@ -322,7 +338,7 @@ class NetworkModel:
         if len(gnodes) == 1 and element.code not in misc.SUPPLY_ELEMENT_CODES:
             return results
         # Search in sink paths by excluding each path to source
-        for source in self.graph_source_nodes:
+        for source in graph_source_nodes:
             # If source element is selected, do not exclude upstream nodes
             if element.code in misc.SUPPLY_ELEMENT_CODES:
                 upstream_nodes = set()
@@ -344,7 +360,7 @@ class NetworkModel:
                             ekey_check = graph.edges[e_pair[0], e_pair[1]]['key']
                             element_check = self.base_elements[ekey_check]
                             # Case 1 - 1 node source elements; break as cannot be downstream
-                            if set(e_pair) & self.graph_source_nodes:
+                            if set(e_pair) & graph_source_nodes:
                                 break
                             # Case 2 - 1 node load elements; no need to check if current element
                             elif set(e_pair) & self.graph_sink_nodes:
