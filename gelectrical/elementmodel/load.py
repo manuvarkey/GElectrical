@@ -404,7 +404,8 @@ class Motor1ph(SinglePhaseLoad):
                                                     'TIME IN SECONDS', {})
         self.text_model = [[(5,2), "${ref}", True],
                            [(5,None), "${p_kw}kW, ${cos_phi}pf", True],
-                           [(5,None), "${name}", True]]
+                           [(5,None), "${name}", True],
+                           [(4,5), "${phase}", True]]
         self.schem_model = [ 
                              ['CIRCLE', (2,4), 2, False, []],
                              # M
