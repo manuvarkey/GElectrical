@@ -730,6 +730,8 @@ class ProjectModel:
         
         # General variables
         project_settings = self.get_project_fields()
+        sim_settings = self.get_project_fields(page='Simulation')
+        export_graphs_flag = sim_settings['export_graphs']['value']
         gen_variables = {'program_version'        : 'v' + misc.PROGRAM_VER,
                          'project_name'           : project_settings['project_name']['value'],
                          'drawing_field_approved' : project_settings['drawing_field_approved']['value'],
@@ -759,7 +761,7 @@ class ProjectModel:
             if 'ref' in model.fields and model.code not in misc.NON_ELEMENT_CODES:
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
-                element_tables[key] = misc.fields_to_table(model.fields)
+                element_tables[key] = misc.fields_to_table(model.fields, insert_graph=export_graphs_flag)
             # Lines
             if model.code in misc.LINE_ELEMENT_CODES:
                 element_lines.append(model)
@@ -794,7 +796,7 @@ class ProjectModel:
                 # Add element
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
-                element_tables[key] = misc.fields_to_table(assembly_fields)
+                element_tables[key] = misc.fields_to_table(assembly_fields, insert_graph=export_graphs_flag)
         # Sort by reference
         element_captions = dict(sorted(element_captions.items(), key=lambda item:item[1]))
         element_tables = {key:element_tables[key] for key in element_captions}
@@ -904,9 +906,9 @@ class ProjectModel:
         for key, model in base_elements.items():
             if 'ref' in model.fields and (model.code not in misc.REFERENCE_CODES) and (model.code != 'element_assembly'):
                 if model.res_fields:
-                    table = misc.fields_to_table(model.res_fields)
+                    table = misc.fields_to_table(model.res_fields, insert_graph=export_graphs_flag)
                     ana_res_captions[str(key)+'_res'] = model.fields['ref']['value'] + ' - ' + model.name
-                    ana_res_tables[str(key)+'_res'] = misc.fields_to_table(model.res_fields)
+                    ana_res_tables[str(key)+'_res'] = table
         # Sort by reference
         ana_res_captions = dict(sorted(ana_res_captions.items(), key=lambda item:item[1]))
         ana_res_tables = {key:ana_res_tables[key] for key in ana_res_captions}

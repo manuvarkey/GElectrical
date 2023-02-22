@@ -1268,8 +1268,8 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                     img_tag = graph_image.get_embedded_html_image(figsize=(200, 200))
                 # Add graph options
                 for caption, unit, value, value_list in field['value']['parameters'].values():
-                    graph_fields += '</br>' + caption + ' : ' + str(value) + ' ' + unit
-                table['Value'].append(img_tag + graph_fields)
+                    graph_fields += '</br>' + clean(caption + ' : ' + str(value) + ' ' + unit)
+                table['Value'].append(img_tag + graph_fields.lstrip('</br>'))
             else:
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
@@ -1277,15 +1277,17 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                 if field['selection_list']:
                     table['Value'].append(field['selection_list'][field['value']][0])
                 else:
+                    title = field['value'][0]
                     if insert_graph:
                         from .view.graph import GraphImage
                         xlim, ylim, xlabel, ylabel, graph_params = field['graph_options']
-                        title = field['value'][0]
                         graph_models = field['value'][1]
                         graph_image = GraphImage(xlim, ylim, title, xlabel, ylabel, graph_params)
                         graph_image.add_plots(graph_models)
                         img_tag = graph_image.get_embedded_html_image(figsize=(200, 200))
-                    table['Value'].append(img_tag)
+                        table['Value'].append(img_tag)
+                    else:
+                        table['Value'].append(clean(title))
             index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False, classes='element_fields')
     
@@ -1320,6 +1322,7 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                              'run_sc_sym' : get_field_dict('bool', 'Run symmetric short circuit calculation', '', False, status_inactivate=False),
                              'run_sc_gf' : get_field_dict('bool', 'Run line to ground short circuit calculation', '', False, status_inactivate=False),
                              'export_results' : get_field_dict('bool', 'Export results of simulation', '', False, status_inactivate=False),
+                             'export_graphs' : get_field_dict('bool', 'Include graphs in report', '', True, status_inactivate=False),
                              'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
                              'grid_frequency': get_field_dict('float', 'Grid Frequency', 'Hz', 50, selection_list=[50,60], status_inactivate=False),
                              'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),
