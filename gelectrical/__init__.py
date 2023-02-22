@@ -710,7 +710,7 @@ class MainWindow():
                 self.project.link_references((selected_page, selected_slno), selected_dict)
                 self.display_status(misc.INFO, "References linked")
         else:
-            self.display_status(misc.WARNING, "Invalid selection")
+            self.display_status(misc.WARNING, "Invalid selection - Select a cross reference element to link.")
         
     def on_draw_drawwire(self, widget):
         """Start drawing wire"""
