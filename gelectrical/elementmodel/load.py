@@ -43,7 +43,7 @@ class Load(ElementModel):
                       
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'X?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kVA', 0),
+                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kVA', 1),
                        'cos_phi':       self.get_field_dict('float', 'PF', '', 0.8),
                        'scaling':          self.get_field_dict('float', 'DF', '', 1),
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
@@ -112,8 +112,8 @@ class AsymmetricLoad(ElementModel):
                       
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'X?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kVA', 0),
-                       'p_a_kw':       self.get_field_dict('float', 'Pa', 'kW', 0),
+                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kVA', 1),
+                       'p_a_kw':       self.get_field_dict('float', 'Pa', 'kW', 1),
                        'p_b_kw':       self.get_field_dict('float', 'Pb', 'kW', 0),
                        'p_c_kw':       self.get_field_dict('float', 'Pc', 'kW', 0),
                        'q_a_kvar':       self.get_field_dict('float', 'Qa', 'kVAr', 0),
@@ -190,7 +190,7 @@ class SinglePhaseLoad(Load):
                       
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'X?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kVA', 0),
+                       'sn_kva':        self.get_field_dict('float', 'Rated power', 'kVA', 1),
                        'cos_phi':       self.get_field_dict('float', 'PF', '', 0.8),
                        'scaling':          self.get_field_dict('float', 'DF', '', 1),
                        'phase':          self.get_field_dict('str', 'Phase', '', 'A', selection_list=['A','B','C']),
