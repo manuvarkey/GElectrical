@@ -43,9 +43,9 @@ class Generator(ElementModel):
                        'name':     self.get_field_dict('str', 'Name', '', 'GENERATOR'),
                        'vm_pu':    self.get_field_dict('str', 'Vm', 'pu', 1),
                        'vn_kv':    self.get_field_dict('float', 'Vn', 'kV', 0.415),
-                       'p_mw':    self.get_field_dict('float', 'P', 'MW', 0.5),
+                       'p_mw':    self.get_field_dict('float', 'P', 'MW', 0.8),
                        'sn_mva':    self.get_field_dict('float', 'Sn', 'MVA', 1),
-                       'cos_phi':    self.get_field_dict('float', 'PF', '', 0),
+                       'cos_phi':    self.get_field_dict('float', 'PF', '', 0.8),
                        'xdss_pu':      self.get_field_dict('float', 'Xdss', 'pu', 0.12),
                        'rdss_ohm':      self.get_field_dict('float', 'Rdss', 'pu', 0.01),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
@@ -102,7 +102,7 @@ class Generator(ElementModel):
 class StaticGenerator(ElementModel):
 
     code = 'element_staticgenerator'
-    name = 'Static Generator'
+    name = 'Static Generator 3ph'
     group = 'Sources'
     icon = misc.abs_path('icons', 'generator.svg')
 
@@ -163,6 +163,92 @@ class StaticGenerator(ElementModel):
                                        'p_mw': p_mw,
                                        'q_mvar': q_mvar,
                                        'k': self.fields['k']['value'],
+                                       'in_service': self.fields['in_service']['value']}),)
+        return power_model
+
+
+class SinglePhaseStaticGenerator(ElementModel):
+
+    code = 'element_single_phase_staticgenerator'
+    name = 'Static Generator 1ph'
+    group = 'Sources'
+    icon = misc.abs_path('icons', 'generator.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        ElementModel.__init__(self, cordinates, **kwargs)
+        self.model_width = 0
+        self.model_height = 0
+        self.ports = [[2, 6]]
+        self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'G?'),
+                       'name':     self.get_field_dict('str', 'Name', '', 'S.GENERATOR'),
+                       'p_kw':    self.get_field_dict('float', 'P', 'kW', 5),
+                       'q_kvar':    self.get_field_dict('float', 'Q', 'kVAr', 0),
+                       'k':    self.get_field_dict('float', 'In/Isc', '', 0.1),
+                       'phase':          self.get_field_dict('str', 'Phase', '', 'A', selection_list=['A','B','C']),
+                       'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
+                       'load_profile':  self.get_field_dict('graph', 'Generation Profile', '', 0, status_inactivate=True ) }
+        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
+        self.text_model = [[(5,0), "${name}, ${ref}", True],
+                           [(5,None), "${p_kw}+j${q_kvar}kVA", True],
+                           [(4,3), "${phase}", True]]
+        self.schem_model = [ 
+                             ['CIRCLE', (2,2), 2, False, []],
+                             # Sine
+                             ['ARC', (2.5,2), 0.5, 0, -180, [], 'thin'],
+                             ['ARC', (1.5,2), 0.5, -180, -360, [], 'thin'],
+                             # Connecting line
+                             ['LINE',(2,4),(2,6), []],
+                           ]
+    
+    def render_element(self, context):
+        """Render element to context"""
+        # Preprocessing
+        
+        # Render
+        if self.fields['in_service']['value']:
+            self.render_model(context, self.schem_model)
+            self.render_text(context, self.text_model)
+        else:
+            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+        # Post processing
+        self.modify_extends()
+        
+    def get_nodes(self, code):
+        """Return nodes for analysis"""
+        ports = tuple(tuple(x) for x in self.get_ports_global())
+        p0 = code + ':0'
+        nodes = ((p0, (ports[0],)),)
+        return nodes
+        
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+        """Return pandapower model for analysis"""
+        p0 = code + ':0'
+        p_mw = self.fields['p_kw']['value']/1000
+        q_mvar = self.fields['q_kvar']['value']/1000
+        sn_mva = (p_mw*p_mw+q_mvar*q_mvar)**0.5
+        p_a_mw = p_b_mw = p_c_mw = 0
+        q_a_mvar = q_b_mvar = q_c_mvar = 0
+        if self.fields['phase']['value'] == 'A':
+            p_a_mw = p_mw
+            q_a_mvar = q_mvar
+        elif self.fields['phase']['value'] == 'B':
+            p_b_mw = p_mw
+            q_b_mvar = q_mvar
+        elif self.fields['phase']['value'] == 'C':
+            p_c_mw = p_mw
+            q_c_mvar = q_mvar
+
+        power_model = (('asymmetric_sgen', (p0,), {'name': self.fields['ref']['value'],
+                                       'sn_mva': sn_mva,
+                                       'p_a_mw': p_a_mw,
+                                       'p_b_mw': p_b_mw,
+                                       'p_c_mw': p_c_mw,
+                                       'q_a_mvar': q_a_mvar,
+                                       'q_b_mvar': q_b_mvar,
+                                       'q_c_mvar': q_c_mvar,
+                                       'type': 'wye',
                                        'in_service': self.fields['in_service']['value']}),)
         return power_model
 

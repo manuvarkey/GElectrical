@@ -180,6 +180,12 @@ class PandaPowerModel:
                         power_model, bus=node, **model)
                     self.power_elements[e_code] = (elementcode, element)
                     self.power_elements_inverted[elementcode, element] = e_code
+                elif elementcode == 'asymmetric_sgen':
+                    node = get_node(local_nodes[0])
+                    element = pp.create_asymmetric_sgen(
+                        power_model, bus=node, **model)
+                    self.power_elements[e_code] = (elementcode, element)
+                    self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'storage':
                     node = get_node(local_nodes[0])
                     element = pp.create_storage(
@@ -583,6 +589,7 @@ class PandaPowerModel:
         """Run power flow time series simulation"""
     
         sgens = self.power_model.sgen.to_dict(orient='records')
+        asymmetric_sgens = self.power_model.asymmetric_sgen.to_dict(orient='records')
         loads = self.power_model.load.to_dict(orient='records')
         asymmetric_loads = self.power_model.asymmetric_load.to_dict(orient='records')
         dfdata_p = dict()
@@ -623,6 +630,81 @@ class PandaPowerModel:
         const_sgen_q = control.ConstControl(self.power_model, element='sgen', element_index=self.power_model.sgen.index,
                                             variable='q_mvar', data_source=ds_q, profile_name=self.power_model.sgen.index)
 
+        # Asymetric Sgen controller
+        for gen_index, values in enumerate(asymmetric_sgens):
+            col_pa = []
+            col_pb = []
+            col_pc = []
+            col_qa = []
+            col_qb = []
+            col_qc = []
+            dfdata_pa[gen_index] = col_pa
+            dfdata_pb[gen_index] = col_pb
+            dfdata_pc[gen_index] = col_pc
+            dfdata_qa[gen_index] = col_qa
+            dfdata_qb[gen_index] = col_qb
+            dfdata_qc[gen_index] = col_qc
+            pa_mw = values['p_a_mw']
+            pb_mw = values['p_b_mw']
+            pc_mw = values['p_c_mw']
+            qa_mvar = values['q_a_mvar']
+            qb_mvar = values['q_b_mvar']
+            qc_mvar = values['q_c_mvar']
+            e_code = self.power_elements_inverted['asymmetric_sgen', gen_index]
+            graph_uid = self.base_elements[e_code].fields['load_profile']['value']
+            if graph_uid not in self.loadprofiles:
+                graph_uid = list(self.loadprofiles.keys())[0]
+            load_profile = self.loadprofiles[graph_uid][1][0]
+            load_profile_func = GraphModel(load_profile).get_value_func()
+            for time_index in range(n_ts):
+                col_pa.append(load_profile_func(time_index)*pa_mw)
+                col_pb.append(load_profile_func(time_index)*pb_mw)
+                col_pc.append(load_profile_func(time_index)*pc_mw)
+                col_qa.append(load_profile_func(time_index)*qa_mvar)
+                col_qb.append(load_profile_func(time_index)*qb_mvar)
+                col_qc.append(load_profile_func(time_index)*qc_mvar)
+        df_pa = pd.DataFrame(data=dfdata_pa, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_sgen.index)
+        df_pb = pd.DataFrame(data=dfdata_pb, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_sgen.index)
+        df_pc = pd.DataFrame(data=dfdata_pc, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_sgen.index)
+        df_qa = pd.DataFrame(data=dfdata_qa, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_sgen.index)
+        df_qb = pd.DataFrame(data=dfdata_qb, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_sgen.index)
+        df_qc = pd.DataFrame(data=dfdata_qc, index=list(
+            range(n_ts)), columns=self.power_model.asymmetric_sgen.index)
+        ds_pa = DFData(df_pa)
+        ds_pb = DFData(df_pb)
+        ds_pc = DFData(df_pc)
+        ds_qa = DFData(df_qa)
+        ds_qb = DFData(df_qb)
+        ds_qc = DFData(df_qc)
+        const_asgen_pa = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+                                            element_index=self.power_model.asymmetric_sgen.index,
+                                            variable='p_a_mw', data_source=ds_pa, 
+                                            profile_name=self.power_model.asymmetric_sgen.index)
+        const_asgen_pb = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+                                            element_index=self.power_model.asymmetric_sgen.index,
+                                            variable='p_b_mw', data_source=ds_pb, 
+                                            profile_name=self.power_model.asymmetric_sgen.index)
+        const_asgen_pc = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+                                            element_index=self.power_model.asymmetric_sgen.index,
+                                            variable='p_c_mw', data_source=ds_pc, 
+                                            profile_name=self.power_model.asymmetric_sgen.index)
+        const_asgen_qa = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+                                            element_index=self.power_model.asymmetric_sgen.index,
+                                            variable='q_a_mvar', data_source=ds_qa, 
+                                            profile_name=self.power_model.asymmetric_sgen.index)
+        const_asgen_qb = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+                                            element_index=self.power_model.asymmetric_sgen.index,
+                                            variable='q_b_mvar', data_source=ds_qb, 
+                                            profile_name=self.power_model.asymmetric_sgen.index)
+        const_asgen_qc = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+                                            element_index=self.power_model.asymmetric_sgen.index,
+                                            variable='q_c_mvar', data_source=ds_qc, 
+                                            profile_name=self.power_model.asymmetric_sgen.index)
         # Load controller
         for load_index, values in enumerate(loads):
             col_p = []
@@ -744,7 +826,7 @@ class PandaPowerModel:
                     if elementcode in ['load', 'sgen', 'storage']:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_mvar'))
-                    elif elementcode in ['ext_grid', 'asymmetric_load']:
+                    elif elementcode in ['ext_grid', 'asymmetric_load', 'asymmetric_sgen']:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_a_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_b_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_c_mw'))
@@ -1102,7 +1184,7 @@ class PandaPowerModel:
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
                         combine_graphdata(element_result, elementcode, ['pf', element_id, 'PF', '', 2, None],
                             ['p_mw', 'q_mvar'], pf_1_1_func)
-                    elif elementcode in ['ext_grid', 'asymmetric_load']:
+                    elif elementcode in ['ext_grid', 'asymmetric_load', 'asymmetric_sgen']:
                         combine_graphdata(element_result, elementcode, ['p_mw', element_id, 'P', 'MW', 4, None],
                             ['p_a_mw', 'p_b_mw', 'p_c_mw'], sumfunc, stat_fields=['avg', 'max'])
                         combine_graphdata(element_result, elementcode, ['pf', element_id, 'PF', '', 2, None],

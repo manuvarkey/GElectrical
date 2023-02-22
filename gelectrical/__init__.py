@@ -584,7 +584,7 @@ class MainWindow():
                 progress.add_message('<b>Analysis run Successfully</b>')
                 progress.pulse(end=True)
             else:
-                raise RuntimeError("Diagnostics run returned critical errors. Please see <i>Warnings</i> pane.")
+                raise RuntimeError("Diagnostics run returned critical errors. Please see <i>Messages</i> pane.")
         
         if self.filename:
             ana_folder_path = misc.dir_from_path(self.filename)
@@ -882,6 +882,7 @@ class MainWindow():
         self.program_state['element_models'][load.Motor1ph.code] = load.Motor1ph
         self.program_state['element_models'][displayelements.DisplayElementNode.code] = displayelements.DisplayElementNode
         self.program_state['element_models'][generator.StaticGenerator.code] = generator.StaticGenerator
+        self.program_state['element_models'][generator.SinglePhaseStaticGenerator.code] = generator.SinglePhaseStaticGenerator
         self.program_state['element_models'][ward.Ward.code] = ward.Ward
         self.program_state['element_models'][ward.XWard.code] = ward.XWard
         self.program_state['element_models'][shunt.Shunt.code] = shunt.Shunt

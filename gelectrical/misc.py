@@ -128,7 +128,7 @@ ADVANCED_ELEMENTS = ('element_asymmetric_load', 'element_ward', 'element_xward',
                      'element_transformer3w', 'element_impedance', 'element_shunt')
 REFERENCE_CODES = ('element_reference', 'element_reference_box')
 LOADPROFILE_CODES = ('element_load', 'element_asymmetric_load', 'element_single_phase_load', 
-                     'element_staticgenerator', 'element_async_motor',
+                     'element_staticgenerator', 'element_single_phase_staticgenerator', 'element_async_motor',
                      'element_async_motor_3ph', 'element_async_motor_1ph')
 LINE_ELEMENT_CODES = ('element_line', 'element_line_cable', 'element_line_custom')
 TRAFO_ELEMENT_CODES = ('element_transformer', 'element_transformer3w')
@@ -137,7 +137,7 @@ LOAD_ELEMENT_CODES = ('element_load', 'element_asymmetric_load', 'element_single
 SWITCH_ELEMENT_CODES = ('element_switch', 'element_circuitbreaker', 'element_fuse', 'element_contactor')
 PROTECTION_ELEMENT_CODES = ('element_circuitbreaker', 'element_fuse')
 DAMAGE_ELEMENT_CODES = ('element_async_motor_3ph', 'element_async_motor_1ph','element_line','element_line_cable','element_line_custom','element_transformer')
-SUPPLY_ELEMENT_CODES = ('element_grid', 'element_generator', 'element_staticgenerator')
+SUPPLY_ELEMENT_CODES = ('element_grid', 'element_generator', 'element_staticgenerator', 'element_single_phase_staticgenerator')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
 NON_ELEMENT_CODES  = (*REFERENCE_CODES, *DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly')
 # Defaults
