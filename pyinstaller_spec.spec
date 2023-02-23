@@ -6,6 +6,10 @@ added_files = [
          ( 'gelectrical/interface/*.glade', 'gelectrical/interface' ),
          ( 'gelectrical/interface/*.png', 'gelectrical/interface' ),
          ( 'gelectrical/database/*.csv', 'gelectrical/database' ),
+         ( 'gelectrical/database/fuse_abb_cef/*.csv', 'gelectrical/database/fuse_abb_cef' ),
+         ( 'gelectrical/database/fuse_abb_cef/*.json', 'gelectrical/database/fuse_abb_cef' ),
+         ( 'gelectrical/database/fuse_lnt/*.csv', 'gelectrical/database/fuse_lnt' ),
+         ( 'gelectrical/database/fuse_lnt/*.json', 'gelectrical/database/fuse_lnt' ),
 		 ( 'gelectrical/icons/*.svg', 'gelectrical/icons' ),
 		 ( 'gelectrical/templates/*.css', 'gelectrical/templates' ),
 		 ( 'gelectrical/templates/*.html', 'gelectrical/templates' )		 ]

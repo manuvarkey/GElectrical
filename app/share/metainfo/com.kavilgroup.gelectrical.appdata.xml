@@ -10,10 +10,14 @@
       GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Program is in early development with following features currently implemented in active developmnet.
       <ul>
         <li>Schematic capture.</li>
-        <li>Network generation from schematic.</li>
-        <li>Power flow analysis.</li>
+        <li>Pandapower network generation from schematic.</li>
+        <li>Power flow time series analysis (Symmetric and Assymetric).</li>
         <li>Voltage drop analysis.</li>
-        <li>Short circuit analysis.</li>
+        <li>Short circuit analysis (Symmetric and SLG).</li>
+        <li>Coordination analysis for power supply protection devices with support for CB and fuse protection curves; damage curves for transformers, cables and motors.</li>
+        <li>Support for daily load curves for load elements.</li>
+        <li>Support for arriving network parameters for custom geometry OH lines.</li>
+        <li>Electrical rules check for checking conformity with IEC/ local electrical guidelines.</li>
         <li>Print and export of drawings to pdf.</li>
         <li>Generation of analysis reports.</li>
       </ul>
@@ -22,16 +26,29 @@
   <url type="homepage">https://github.com/manuvarkey/GElectrical</url>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1-beta-1.png</image>
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1.png</image>
     </screenshot>
     <screenshot type="source">
-      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1-beta-2.png</image>
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/2.png</image>
+    </screenshot>
+    <screenshot type="source">
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/3.png</image>
+    </screenshot>
+    <screenshot type="source">
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/4.png</image>
+    </screenshot>
+    <screenshot type="source">
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/5.png</image>
+    </screenshot>
+    <screenshot type="source">
+      <image>https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/6.png</image>
     </screenshot>
   </screenshots>
   <update_contact>manuvarkey@gmail.com</update_contact>
   <project_group>Office</project_group>
   <content_rating type="oars-1.1" />
   <releases>
+    <release date="2022-11-21" version="1-beta-2" />
     <release date="2022-11-16" version="1-beta-1" />
   </releases>
 </component>

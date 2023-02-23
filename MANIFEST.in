@@ -2,8 +2,13 @@ recursive-include gelectrical/interface *.glade
 recursive-include gelectrical/interface *.svg
 recursive-include gelectrical/interface *.png
 recursive-include gelectrical/database *.csv
+recursive-include gelectrical/database *.json
 recursive-include gelectrical/database *.svg
 recursive-include gelectrical/database *.png
+recursive-include gelectrical/database/fuse_abb_cef *.csv
+recursive-include gelectrical/database/fuse_abb_cef *.json
+recursive-include gelectrical/database/fuse_lnt *.csv
+recursive-include gelectrical/database/fuse_lnt *.json
 recursive-include gelectrical/icons *.svg
 recursive-include gelectrical/templates *.css
 recursive-include gelectrical/templates *.html

@@ -12,6 +12,22 @@
     ],
     "modules": [
         {
+            "name": "geos",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://download.osgeo.org/geos/geos-3.11.1.tar.bz2",
+                    "sha256": "6d0eb3cfa9f92d947731cc75f1750356b3bdfc07ea020553daf6af1c768e0be2",
+                    "x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 13493,
+                        "url-template": "http://download.osgeo.org/geos/geos-$version.tar.bz2",
+                        "stable-only": true
+                    }
+                }
+            ]
+        },
+        {
             "name": "python3-appdirs",
             "buildsystem": "simple",
             "build-commands": [
@@ -132,7 +148,7 @@
                     "type": "file",
                     "url": "https://files.pythonhosted.org/packages/e2/1e/de917b683bb5f0b6078fb1397293eab84c4eaa825fbf94d73d6488eb354f/numba-0.56.4.tar.gz",
                     "sha256": "32d9fef412c81483d7efe0ceb6cf4d3310fde8b624a9cecca00f790573ac96ee"
-                }  
+                }
             ]
         },
         {
@@ -179,8 +195,8 @@
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/6b/b3/b3b2b09abae96a946aa8d5c546b1bfd09bb498b618833c2cf23803d549e7/pandapower-2.10.1.zip",
-                    "sha256": "78c161141d22119b95e1ec0d53edc97abf140a2052e30ed26b280c33a8bc4919"
+                    "url": "https://files.pythonhosted.org/packages/3e/e5/2c2d67df6c8fcd1743b450502c8c91cb0dcef856e45e9a04a5cb5ab4488c/pandapower-2.11.1.zip",
+                    "sha256": "5ed3168033f6d5cd39d53e4f0846804b9f2c392869215ab2e9fcaaf6a3c1aec4"
                 },
                 {
                     "type": "file",
@@ -306,6 +322,25 @@
                     "type": "file",
                     "url": "https://files.pythonhosted.org/packages/1d/97/2288fe498044284f39ab8950703e88abbac2abbdf65524d576157af70556/MarkupSafe-2.1.1.tar.gz",
                     "sha256": "7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"
+                }
+            ]
+        },
+        {
+            "name": "python3-shapely",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"shapely\" --no-build-isolation"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/e4/a9/6704bb5e1d1d778d3a6ee1278a8d8134f0db160e09d52863a24edb58eab5/numpy-1.24.2.tar.gz",
+                    "sha256": "003a9f530e880cb2cd177cba1af7220b9aa42def9c4afc2a2fc3ee6be7eb2b22"
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/10/a7/de139da3ce303101c357a9ba801328cba85cf6ace157da31a4007bca85e4/shapely-2.0.1.tar.gz",
+                    "sha256": "66a6b1a3e72ece97fc85536a281476f9b7794de2e646ca8a4517e2e3c1446893"
                 }
             ]
         },
