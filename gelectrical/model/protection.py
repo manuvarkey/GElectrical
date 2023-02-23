@@ -312,8 +312,10 @@ class ProtectionModel():
     def get_time(self, I, mode='protection'):
         values = tuple()
         if mode == 'protection' and self.polygon:
-            if I > self.polygon.bounds[2] or I < self.polygon.bounds[0]:
-                values = tuple()
+            if I > self.polygon.bounds[2]:
+                values = (self.polygon.bounds[1],)
+            elif I < self.polygon.bounds[0]:
+                values = (1000000,)
             else:
                 vert_line = LineString(np.log10([[I, self.polygon.bounds[1]-0.0001],
                                                  [I, self.polygon.bounds[3]+0.0001]]))
