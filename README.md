@@ -28,7 +28,9 @@ Program is in early development with following features currently implemented/ i
 ## Samples
 
 [Sample schematic](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/sample_files/sample_drawing.pdf)
+
 [Sample report](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/sample_files/sample_report.pdf)
+
 [Sample project file](https://github.com/manuvarkey/GElectrical/raw/master/sample_files/sample.gepro)
 
 ## Dependencies:
