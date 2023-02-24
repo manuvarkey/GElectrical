@@ -56,3 +56,19 @@ Python Modules:
 * PyGObject - Not included
 
 ### GTK3  (v3.36+)
+
+## Installation
+
+### Binary
+
+Use packages available in under Releases. `.exe` file is available for Windows systems and `.flatpak` is available for Linux systems.
+
+### Source
+
+#### Linux
+
+* Install GTK3 from your distribution package manager.
+* Run `pip install appdirs, pycairo, numpy, numba, scipy, pandas, mako, networkx, matplotlib, pandapower, jinja2, weasyprint, openpyxl, shapely`
+* Clone this repository `git clone https://github.com/manuvarkey/GElectrical.git`
+* Run `gelectrical_launcher.py` from cloned directory.
+

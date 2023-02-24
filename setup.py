@@ -24,7 +24,8 @@ setup(
 
     long_description= 'GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.',
     
-    install_requires=["appdirs", "openpyxl", "mako", "numpy", "numba", "networkx", "pandapower", "pandas", "matplotlib", "jinja2", "weasyprint", "shapely", "pycairo", "PyGObject"],
+    install_requires=["appdirs", "pycairo", "numpy", "numba", "scipy", "pandas", "mako", "networkx", "matplotlib", "pandapower", "jinja2", "weasyprint", "openpyxl", "shapely", "PyGObject"],
+   
     
     classifiers=[
           'Development Status :: 4 - Beta',
