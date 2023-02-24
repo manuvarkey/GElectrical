@@ -46,6 +46,7 @@ Python Modules:
 * numpy - Not included
 * pandas - Not included
 * networkx - Not included
+* shapely - Not included
 * matplotlib (v3.5.1) - Not included
 * jinja2 - Not included
 * weasyprint - Not included
