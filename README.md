@@ -63,7 +63,7 @@ Python Modules:
 
 Use packages available in under Releases. `.EXE` file is available for Windows systems and `.flatpak` file is available for Linux systems.
 
-`osifont` is recomended for schematic capture. This can be downloaded from `https://github.com/hikikomori82/osifont/blob/master/osifont.ttf`.
+`osifont` is recomended for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
 
 ### Source
 

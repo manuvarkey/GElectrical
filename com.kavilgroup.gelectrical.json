@@ -411,8 +411,12 @@
             "buildsystem" : "simple",
             "cleanup" : [
                 "/screenshots",
-                "/build_flatpak.sh",
-                "/sample_files"
+                "/sample_files",
+                "/source",
+                "/mockups",
+                "/installer.nsi",
+                "/pyinstaller_spec.spec",
+                "/build_flatpak.sh"
             ],
             "build-commands" : [
                 "install -D gelectrical_launcher.py /app/bin/gelectrical_launcher.py",
@@ -428,9 +432,5 @@
                 }
             ]
         }
-    ],
-    "build-options" : {
-        "env" : {
-        }
-    }
+    ]
 }
