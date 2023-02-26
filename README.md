@@ -61,7 +61,9 @@ Python Modules:
 
 ### Binary
 
-Use packages available in under Releases. `.exe` file is available for Windows systems and `.flatpak` is available for Linux systems.
+Use packages available in under Releases. `.EXE` file is available for Windows systems and `.flatpak` file is available for Linux systems.
+
+`osifont` is recomended for schematic capture. This can be downloaded from `https://github.com/hikikomori82/osifont/blob/master/osifont.ttf`.
 
 ### Source
 
@@ -71,4 +73,3 @@ Use packages available in under Releases. `.exe` file is available for Windows s
 * Run `pip install appdirs, pycairo, numpy, numba, scipy, pandas, mako, networkx, matplotlib, pandapower, jinja2, weasyprint, openpyxl, shapely`
 * Clone this repository `git clone https://github.com/manuvarkey/GElectrical.git`
 * Run `gelectrical_launcher.py` from cloned directory.
-
