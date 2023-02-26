@@ -34,7 +34,7 @@ log = logging.getLogger(__name__)
   
 class AnalysisSettingsDialog:
     
-    def __init__(self, parent, ana_settings, library_dir):
+    def __init__(self, parent, ana_settings, library_dir=None):
 
         self.builder = Gtk.Builder()
         self.builder.add_from_file(misc.abs_path("interface", "analysissettings.glade"))
@@ -77,9 +77,9 @@ class AnalysisSettingsDialog:
             settings['sc_sym'] = self.switch_sc_sym.get_state()
             settings['sc_gf'] = self.switch_sc_gf.get_state()
             settings['export'] = self.switch_export.get_state()
-            folder = self.filechooser_export.get_file()
+            folder = self.filechooser_export.get_uri()
             if folder:
-                settings['folder'] = folder.get_path()
+                settings['folder'] = misc.uri_to_file(folder)
             else:
                 settings['folder'] = None
             self.dialog.destroy()

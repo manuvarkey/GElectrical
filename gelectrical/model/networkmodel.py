@@ -217,7 +217,10 @@ class NetworkModel:
         disabled_sources_edges = []
         disabled_lines = []
         disabled_switches = []
-        term_node_count = max(self.global_nodes) + 1
+        if self.global_nodes:
+            term_node_count = max(self.global_nodes) + 1
+        else:
+            term_node_count = 1
         for ekey, element in self.base_elements.items():
             code = element.code
             if code not in (*misc.NON_ELEMENT_CODES, 'element_busbar'):
