@@ -327,7 +327,8 @@ class FieldView:
                     hbox.pack_start(data_widget, True, True, 0)
 
                 elif field['type'] in ('path'):
-                    data_widget = Gtk.Button.new_with_label(field['value'])
+                    label = (field['value'][:20] + ' ... ' + field['value'][-20:] ) if len(field['value']) > 50 else field['value']
+                    data_widget = Gtk.Button.new_with_label(label)
                     data_widget.get_children()[0].set_xalign(0)
                     data_widget.connect("clicked", activate_callback_path, get_field, set_field, code)
                     # Pack
