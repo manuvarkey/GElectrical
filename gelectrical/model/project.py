@@ -153,7 +153,7 @@ class ProjectModel:
             # Populate curves
             for element in selected_elements:
                 element.calculate_parameters()
-                scale = voltages[element.gid]/max_voltage
+                scale = voltages[element.gid]/max_voltage if max_voltage != 0 and voltages[element.gid] != 0 else 1
 
                 if element.code in misc.PROTECTION_ELEMENT_CODES:
                     pcurve_l = element.line_protection_model
