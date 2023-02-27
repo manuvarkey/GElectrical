@@ -1,8 +1,6 @@
 # GElectrical
 
-GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.
-
-Program is in early development with following features currently implemented/ in active developmnet.
+GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Following features are currently implemented.
 
 * Schematic capture.
 * Pandapower network generation from schematic.
@@ -15,6 +13,8 @@ Program is in early development with following features currently implemented/ i
 * Electrical rules check for checking conformity with IEC/ local electrical guidelines.
 * Print and export of drawings to pdf.
 * Generation of analysis reports.
+
+**Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended.**
 
 ## Screenshots
 
