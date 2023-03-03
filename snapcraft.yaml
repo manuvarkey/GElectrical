@@ -1,0 +1,113 @@
+name: gelectrical
+adopt-info: gelectrical
+license: GPL-3.0+
+icon: snap/gui/gelectrical.svg
+description: |
+    GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Following features are currently implemented.
+
+    * Schematic capture.
+    * Pandapower network generation from schematic.
+    * Power flow time series analysis (Symmetric and Assymetric).
+    * Voltage drop analysis.
+    * Short circuit analysis (Symmetric and SLG).
+    * Coordination analysis for power supply protection devices with support for CB and fuse protection curves; damage curves for transformers, cables and motors.
+    * Support for daily load curves for load elements.
+    * Support for arriving network parameters for custom geometry OH lines.
+    * Electrical rules check for checking conformity with IEC/ local electrical guidelines.
+    * Print and export of drawings to pdf.
+    * Generation of analysis reports.
+    
+    
+grade: stable
+base: core22
+confinement: strict
+
+environment:
+  # WORKAROUND: Add python modules in Snap to search path
+  PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages:$PYTHONPATH
+
+apps:
+  gelectrical:
+    command: /bin/gelectrical_launcher.py
+    extensions: 
+      - gnome
+    plugs:
+      - home
+      - removable-media
+    slots:
+      - gelectrical
+    common-id: com.kavilgroup.gelectrical
+    
+slots:
+  gelectrical:
+    interface: dbus
+    bus: session
+    name: com.kavilgroup.gelectrical
+
+parts:
+  gelectrical:
+    plugin: python
+    source: .
+    python-packages:
+      - appdirs==1.4.4
+      - pandapower==2.11.1
+    build-environment:
+      # WORKAROUND: The python plugin is broken with gnome extension
+      - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
+      - PYTHONPATH: ""
+    stage:
+      # WORKAROUND: Skip venv from python plugin
+      - -bin/activate
+      - -bin/activate.csh
+      - -bin/activate.fish
+      - -bin/Activate.ps1
+      - -bin/python
+      - -bin/python3
+      - -bin/python3.10
+      - -bin/pip
+      - -bin/pip3
+      - -bin/pip3.10
+      - -pyvenv.cfg
+    build-packages:
+      - libgeos-dev
+      - python3-numba
+      - python3-numpy
+      - python3-scipy
+      - python3-pandas
+      - python3-mako
+      - python3-networkx
+      - python3-matplotlib
+      - python3-jinja2
+      - python3-openpyxl
+      - python3-shapely
+    stage-packages:
+      - geos-bin
+      - python3-numba
+      - python3-numpy
+      - python3-scipy
+      - python3-pandas
+      - python3-mako
+      - python3-networkx
+      - python3-matplotlib
+      - python3-jinja2
+      - python3-openpyxl
+      - python3-shapely
+      # pygi packages
+      - gobject-introspection
+      - gir1.2-gtk-3.0
+      - python3-configobj
+      - python3-cairo
+      - python3-gi
+      - python3-gi-cairo
+      - python3-setproctitle
+    parse-info: [app/share/metainfo/com.kavilgroup.gelectrical.appdata.xml]
+    
+  copyexec:
+   plugin: dump
+   source: .
+   organize:
+     gelectrical_launcher.py: bin/gelectrical_launcher.py
+   stage:
+     - bin/gelectrical_launcher.py
+
+

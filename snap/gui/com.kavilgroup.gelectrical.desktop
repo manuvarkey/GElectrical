@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=GElectrical
+Comment=GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.
+Exec=gelectrical
+StartupNotify=true
+Icon=${SNAP}/meta/gui/gelectrical.svg
+MimeType=application/gepro;
+Categories=GNOME;GTK;Science;
