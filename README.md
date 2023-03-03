@@ -33,9 +33,45 @@ GElectrical is a graphical frontend to pandapower for power supply simulation an
 
 [Sample project file](https://github.com/manuvarkey/GElectrical/raw/master/sample_files/sample.gepro)
 
-## Dependencies:
+## Installation
 
-### Python 3 (v3.10+)
+Application can be installed for use on your OS as below.
+
+It is reccomended to install `osifont` for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
+
+### Binary
+
+#### Windows
+
+Use `.EXE` installation packages available under Releases.
+
+#### Linux
+
+Application is published on `Flathub` repository at [GElectrical](https://flathub.org/apps/details/com.kavilgroup.gelectrical). 
+
+It should be possible to install the application using the default package manager on most linux systems if flathub is setup. Please see [https://flatpak.org/setup/](https://flatpak.org/setup/) to setup flahub for your linux distribution.
+
+### Source
+
+#### Linux
+
+* Install GTK3 from your distribution package manager.
+* Run `pip install appdirs pycairo numpy numba scipy pandas mako networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely`.
+* Clone this repository `git clone https://github.com/manuvarkey/GElectrical.git`
+* Run `gelectrical_launcher.py` from cloned directory.
+
+#### Windows
+
+* Install `git`, `msys2`, `visualstudio2022-workload-vctools` and `gvs_build` by folowing this link [gvsbuild](https://github.com/wingtk/gvsbuild).
+* Setup GTK3 and PyGObject development envirnonment using `gvs_build` by running `gvsbuild build --enable-gi --py-wheel gtk3 pygobject adwaita-icon-theme`.
+* Add required environment variables as suggested in the above link. Please see [Create and Modify Environment Variables on Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html).
+* Run `pip install appdirs pycairo numpy numba scipy pandas mako networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely` in powershell.
+* Clone this repository using `git clone https://github.com/manuvarkey/GElectrical.git`.
+* Run `python gelectrical_launcher.py` from the cloned directory.
+
+#### Dependencies:
+
+##### Python 3 (v3.10+)
 
 Python Modules:
 
@@ -55,21 +91,4 @@ Python Modules:
 * pycairo - Not included
 * PyGObject - Not included
 
-### GTK3  (v3.36+)
-
-## Installation
-
-### Binary
-
-Use packages available in under Releases. `.EXE` file is available for Windows systems and `.flatpak` file is available for Linux systems.
-
-`osifont` is recomended for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
-
-### Source
-
-#### Linux
-
-* Install GTK3 from your distribution package manager.
-* Run `pip install appdirs, pycairo, numpy, numba, scipy, pandas, mako, networkx, matplotlib, pandapower, jinja2, weasyprint, openpyxl, shapely`
-* Clone this repository `git clone https://github.com/manuvarkey/GElectrical.git`
-* Run `gelectrical_launcher.py` from cloned directory.
+##### GTK3  (v3.36+)
