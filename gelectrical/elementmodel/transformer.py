@@ -60,6 +60,13 @@ class Transformer(ElementModel):
                        'i0_percent':    self.get_field_dict('float', 'I0', '%', 0.1),
                        'sym_hv':        self.get_field_dict('str', 'HV Symbol', '', 'D'),
                        'sym_lv':        self.get_field_dict('str', 'LV Symbol', '', 'Yn'),
+                       'tap_side':      self.get_field_dict('str', 'Tap side', '', 'hv',
+                                                            selection_list=['hv','lv']),
+                       'tap_min':       self.get_field_dict('int', 'Minimum tap position', '', -4),
+                       'tap_max':       self.get_field_dict('int', 'Maximum tap position', '', 2),
+                       'tap_step_percent': self.get_field_dict('float', 'Tap step size', '%', 2.5),
+                       'oltc':          self.get_field_dict('bool', 'OLTC provided ?', '', False),
+                       'xn_ohm': self.get_field_dict('float', 'Impedance of the grounding reactor', 'Ohm', 0),
                        'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
                                                                     alter_structure=True),}
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
@@ -118,7 +125,14 @@ class Transformer(ElementModel):
                                             'mag0_percent': self.fields['mag0_percent']['value'],
                                             'mag0_rx': self.fields['mag0_rx']['value'],
                                             'si0_hv_partial': self.fields['si0_hv_partial']['value'],
-                                            'shift_degree': self.fields['shift_degree']['value']}),)
+                                            'tap_side': self.fields['tap_side']['value'],
+                                            'tap_neutral': 0,
+                                            'tap_max': self.fields['tap_max']['value'],
+                                            'tap_min': self.fields['tap_min']['value'],
+                                            'tap_step_percent': self.fields['tap_step_percent']['value'],
+                                            'oltc': self.fields['oltc']['value'],
+                                            'shift_degree': self.fields['shift_degree']['value'],
+                                            'xn_ohm': self.fields['xn_ohm']['value']}),)
         return power_model
     
     def set_text_field_value(self, code, value):

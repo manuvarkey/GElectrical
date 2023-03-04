@@ -518,11 +518,16 @@ class MainWindow():
             if ret_code != misc.ERROR:
                 
                 if settings['powerflow']:
-                    progress.add_message('Running Power Flow...')
-                    progress.set_fraction(0.3)
-                    #self.project.run_powerflow()
-                    self.project.run_powerflow_timeseries()
-                    self.program_state['analysis_run_timeseries'] = True
+                    if settings['pf_method'] == 'Diversity factor':
+                        progress.add_message('Running Power Flow...')
+                        progress.set_fraction(0.3)
+                        self.project.run_powerflow()
+                        self.program_state['analysis_run_timeseries'] = True
+                    elif settings['pf_method'] == 'Time series':
+                        progress.add_message('Running Time Series Power Flow...')
+                        progress.set_fraction(0.3)
+                        self.project.run_powerflow_timeseries()
+                        self.program_state['analysis_run_timeseries'] = True
                 
                 if settings['sc_sym']:
                     progress.add_message('Running Symmetric Short Circuit Calculation...')
@@ -595,6 +600,7 @@ class MainWindow():
             sim_settings['run_diagnostics']['value'] = ana_settings['diagnostics']
             sim_settings['power_flow_3ph']['value'] = ana_settings['3ph']
             sim_settings['run_powerflow']['value'] = ana_settings['powerflow']
+            sim_settings['pf_method']['value'] = ana_settings['pf_method']
             sim_settings['run_sc_sym']['value'] = ana_settings['sc_sym']
             sim_settings['run_sc_gf']['value'] = ana_settings['sc_gf']
             sim_settings['export_results']['value'] = ana_settings['export']

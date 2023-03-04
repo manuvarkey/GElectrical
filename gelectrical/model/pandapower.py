@@ -472,24 +472,78 @@ class PandaPowerModel:
         log.info('PandaPowerModel - run_diagnostics - diagnostic run')
         return self.diagnostic_results, ret_code
 
-    def run_powerflow_sym(self):
+    def run_powerflow(self, runpp_3ph=False):
         """Run symmetric power flow"""
 
-        pp.runpp(self.power_model)
+        # Run powerflow
+        if runpp_3ph:
+            pp.runpp_3ph(self.power_model, run_control=True)
+        else:
+            # Add transformer controller for OLTC simulation
+            trafos = self.power_model.trafo.to_dict(orient='records')
+            for trafo_index, values in enumerate(trafos):
+                if values['oltc']:
+                    trafo_controller = control.DiscreteTapControl.from_tap_step_percent(self.power_model, 
+                                                                                        trafo_index, 1)
+            pp.runpp(self.power_model, run_control=True)
+
+        # Data modification functions
+
+        R = round
+
+        def sum_func(x1,x2,x3, decimal): 
+            result = x1 + x2 + x3
+            return R(result, decimal)
+
+
+        def percentage_1_1_func(a,b, decimal): 
+            result = a/b*100 if abs(b)>1e-8 else 0
+            return R(result, decimal)
+        
+        def percentage_3_3_func(x1,x2,x3,y1,y2,y3, decimal): 
+            a = x1 + x2 + x3
+            b = y1 + y2 + y3
+            return percentage_1_1_func(a,b, decimal)
+
+        def pf_1_1_func(p,q, decimal): 
+            s = (p**2 + q**2)**0.5
+            result = p/s if abs(s)>1e-8 else 0
+            return R(result, decimal)
+
+        def pf_3_3_func(pa,pb,pc,qa,qb,qc, decimal): 
+            p = pa + pb + pc
+            q = qa + qb + qc
+            return pf_1_1_func(p,q, decimal)
 
         # Update nodes
-        for bus, result in self.power_model.res_bus.iterrows():
-            node = self.power_nodes_inverted[bus]
+        for bus_id, values in self.power_model.bus.iterrows():
+            node = self.power_nodes_inverted[bus_id]
             if node in self.node_results:
                 node_result = self.node_results[node]
             else:
                 node_result = dict()
                 self.node_results[node] = node_result
 
-            node_result['delv_perc'] = misc.get_field_dict(
-                'float', 'ΔV', '%', 100-result['vm_pu']*100, decimal=1)
-            # node_result['vm_pu'] = misc.get_field_dict('float', 'V', 'pu', result['vm_pu'], decimal=3)
-            # node_result['va_degree'] = misc.get_field_dict('float', 'V angle', 'degree', result['va_degree'], decimal=1)
+            if runpp_3ph:
+                result = getattr(self.power_model, 'res_bus_3ph').loc[bus_id]
+            else:
+                result = getattr(self.power_model, 'res_bus').loc[bus_id]
+
+            if runpp_3ph:
+                min_v = min(result['vm_a_pu'], result['vm_b_pu'], result['vm_c_pu'])
+                node_result['delv_perc_max'] = misc.get_field_dict(
+                    'float', 'ΔV', '%', 100-min_v*100, decimal=2)
+                node_result['delv_perc_a'] = misc.get_field_dict(
+                    'float', 'ΔVa', '%', 100-result['vm_a_pu']*100, decimal=2)
+                node_result['delv_perc_b'] = misc.get_field_dict(
+                    'float', 'ΔVb', '%', 100-result['vm_b_pu']*100, decimal=2)
+                node_result['delv_perc_c'] = misc.get_field_dict(
+                    'float', 'ΔVc', '%', 100-result['vm_c_pu']*100, decimal=2)
+            else:
+                node_result['delv_perc_max'] = misc.get_field_dict(
+                    'float', 'ΔV', '%', 100-result['vm_pu']*100, decimal=2)
+                # node_result['vm_pu'] = misc.get_field_dict('float', 'V', 'pu', result['vm_pu'], decimal=3)
+                # node_result['va_degree'] = misc.get_field_dict('float', 'V angle', 'degree', result['va_degree'], decimal=1)
 
         # Update elements
         for e_code, element in self.base_elements.items():
@@ -501,87 +555,142 @@ class PandaPowerModel:
                     element_result = dict()
                     self.element_results[e_code] = element_result
                 (elementcode, element_id) = self.power_elements[e_code]
-                # Remove elements without results
-                if elementcode != 'switch':
-                    result = getattr(self.power_model, 'res_' +
-                                     elementcode).loc[element_id]
+                
+                # Get result table
+                if elementcode != 'switch':  # Remove elements without results
+                    if runpp_3ph:
+                        result = getattr(self.power_model, 'res_' +
+                                        elementcode + '_3ph').loc[element_id]
+                    else:
+                        result = getattr(self.power_model, 'res_' +
+                                        elementcode).loc[element_id]
+                
                 # Populate element results
-                if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
-                    element_result['p_mw'] = misc.get_field_dict(
-                        'float', 'P', 'MW', result['p_mw'])
-                    element_result['q_mvar'] = misc.get_field_dict(
-                        'float', 'Q', 'MVAr', result['q_mvar'])
-                elif elementcode == 'trafo':
-                    element_result['p_hv_mw'] = misc.get_field_dict(
-                        'float', 'P HV', 'MW', result['p_hv_mw'])
-                    element_result['q_hv_mvar'] = misc.get_field_dict(
-                        'float', 'Q HV', 'MVAr', result['q_hv_mvar'])
-                    element_result['p_lv_mw'] = misc.get_field_dict(
-                        'float', 'P LV', 'MW', result['p_lv_mw'])
-                    element_result['q_lv_mvar'] = misc.get_field_dict(
-                        'float', 'Q LV', 'MVAr', result['q_lv_mvar'])
-                    element_result['pl_mw'] = misc.get_field_dict(
-                        'float', 'P loss', 'MW', result['pl_mw'])
-                    element_result['ql_mvar'] = misc.get_field_dict(
-                        'float', 'Q loss', 'MVAr', result['ql_mvar'])
-                    element_result['loading_percent'] = misc.get_field_dict(
-                        'float', '% Loading', '%', result['loading_percent'])
-                elif elementcode == 'trafo3w':
-                    element_result['p_hv_mw'] = misc.get_field_dict(
-                        'float', 'P HV', 'MW', result['p_hv_mw'])
-                    element_result['q_hv_mvar'] = misc.get_field_dict(
-                        'float', 'Q HV', 'MVAr', result['q_hv_mvar'])
-                    element_result['p_mv_mw'] = misc.get_field_dict(
-                        'float', 'P MV', 'MW', result['p_mv_mw'])
-                    element_result['q_mv_mvar'] = misc.get_field_dict(
-                        'float', 'Q MV', 'MVAr', result['q_mv_mvar'])
-                    element_result['p_lv_mw'] = misc.get_field_dict(
-                        'float', 'P LV', 'MW', result['p_lv_mw'])
-                    element_result['q_lv_mvar'] = misc.get_field_dict(
-                        'float', 'Q LV', 'MVAr', result['q_lv_mvar'])
-                    element_result['pl_mw'] = misc.get_field_dict(
-                        'float', 'P loss', 'MW', result['pl_mw'])
-                    element_result['ql_mvar'] = misc.get_field_dict(
-                        'float', 'Q loss', 'MVAr', result['ql_mvar'])
-                    element_result['loading_percent'] = misc.get_field_dict(
-                        'float', '% Loading', '%', result['loading_percent'])
-                elif elementcode == 'gen':
-                    element_result['p_mw'] = misc.get_field_dict(
-                        'float', 'P', 'MW', result['p_mw'])
-                    element_result['q_mvar'] = misc.get_field_dict(
-                        'float', 'Q', 'MVAr', result['q_mvar'])
-                    element_result['vm_pu'] = misc.get_field_dict(
-                        'float', 'V', 'pu', result['vm_pu'])
-                    element_result['va_degree'] = misc.get_field_dict(
-                        'float', 'V angle', 'degree', result['va_degree'])
-                elif elementcode in ['impedance', 'dcline']:
-                    element_result['p_from_mw'] = misc.get_field_dict(
-                        'float', 'P from', 'MW', result['p_from_mw'])
-                    element_result['q_from_mvar'] = misc.get_field_dict(
-                        'float', 'Q from', 'MVAr', result['q_from_mvar'])
-                    element_result['p_to_mw'] = misc.get_field_dict(
-                        'float', 'P to', 'MW', result['p_to_mw'])
-                    element_result['q_to_mvar'] = misc.get_field_dict(
-                        'float', 'Q to', 'MVAr', result['q_to_mvar'])
-                    element_result['pl_mw'] = misc.get_field_dict(
-                        'float', 'P loss', 'MW', result['pl_mw'])
-                    element_result['ql_mvar'] = misc.get_field_dict(
-                        'float', 'Q loss', 'MVAr', result['ql_mvar'])
-                elif elementcode in ['line']:
-                    element_result['p_from_mw'] = misc.get_field_dict(
-                        'float', 'P from', 'MW', result['p_from_mw'])
-                    element_result['q_from_mvar'] = misc.get_field_dict(
-                        'float', 'Q from', 'MVAr', result['q_from_mvar'])
-                    element_result['p_to_mw'] = misc.get_field_dict(
-                        'float', 'P to', 'MW', result['p_to_mw'])
-                    element_result['q_to_mvar'] = misc.get_field_dict(
-                        'float', 'Q to', 'MVAr', result['q_to_mvar'])
-                    element_result['pl_mw'] = misc.get_field_dict(
-                        'float', 'P loss', 'MW', result['pl_mw'])
-                    element_result['ql_mvar'] = misc.get_field_dict(
-                        'float', 'Q loss', 'MVAr', result['ql_mvar'])
-                    element_result['loading_percent'] = misc.get_field_dict(
-                        'float', '% Loading', '%', result['loading_percent'])
+                if runpp_3ph:
+                    if elementcode in ['load', 'sgen', 'storage']:
+                        element_result['p_mw'] = misc.get_field_dict(
+                            'float', 'P', 'MW', R(result['p_mw'],4))
+                        element_result['q_mvar'] = misc.get_field_dict(
+                            'float', 'Q', 'MVAr', R(result['q_mvar'],4))
+                        element_result['pf'] = misc.get_field_dict(
+                            'float', 'PF', '', 
+                            pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
+                    elif elementcode in ['ext_grid', 'asymmetric_load', 'asymmetric_sgen']:
+                        element_result['p_mw'] = misc.get_field_dict('float', 'P', '', 
+                            sum_func(result['p_a_mw'], result['p_b_mw'], result['p_c_mw'], 4))
+                        element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
+                            pf_3_3_func(result['p_a_mw'], result['p_b_mw'], result['p_c_mw'], 
+                                        result['q_a_mvar'], result['q_b_mvar'], result['q_c_mvar'], 2))
+                        element_result['p_a_mw'] = misc.get_field_dict(
+                            'float', 'Pa', 'MW', R(result['p_a_mw'],4))
+                        element_result['p_b_mw'] = misc.get_field_dict(
+                            'float', 'Pb', 'MW', R(result['p_b_mw'],4))
+                        element_result['p_c_mw'] = misc.get_field_dict(
+                            'float', 'Pc', 'MW', R(result['p_c_mw'],4))
+                    elif elementcode == 'trafo':
+                        element_result['p_hv_mw'] = misc.get_field_dict('float', 'P', 'MW', 
+                            sum_func(result['p_a_hv_mw'], result['p_b_hv_mw'], result['p_c_hv_mw'], 4))
+                        element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
+                            pf_3_3_func(result['p_a_hv_mw'], result['p_b_hv_mw'], result['p_c_hv_mw'], 
+                                        result['q_a_hv_mvar'], result['q_b_hv_mvar'], result['q_c_hv_mvar'], 2))
+                        element_result['loading_percent_max'] = misc.get_field_dict(
+                            'float', '% Loading', '%', R(result['loading_percent'], 1))
+                        element_result['pl_mw'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', 
+                            sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 4))
+                    elif elementcode == 'trafo3w':
+                        element_result['p_hv_mw'] = misc.get_field_dict(
+                            'float', 'P HV', 'MW', R(result['p_hv_mw'], 4))
+                        element_result['q_hv_mvar'] = misc.get_field_dict(
+                            'float', 'Q HV', 'MVAr', R(result['q_hv_mvar'], 4))
+                        element_result['p_mv_mw'] = misc.get_field_dict(
+                            'float', 'P MV', 'MW', R(result['p_mv_mw'], 4))
+                        element_result['q_mv_mvar'] = misc.get_field_dict(
+                            'float', 'Q MV', 'MVAr', R(result['q_mv_mvar'], 4))
+                        element_result['p_lv_mw'] = misc.get_field_dict(
+                            'float', 'P LV', 'MW', R(result['p_lv_mw'], 4))
+                        element_result['q_lv_mvar'] = misc.get_field_dict(
+                            'float', 'Q LV', 'MVAr', R(result['q_lv_mvar'], 4))
+                        element_result['pl_mw'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 4))
+                        element_result['loading_percent_max'] = misc.get_field_dict(
+                            'float', '% Loading', '%', R(result['loading_percent'], 1))
+                    elif elementcode in ['line']:                        
+                        element_result['p_from_mw'] = misc.get_field_dict('float', 'P', 'MW', 
+                            sum_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 4))
+                        element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
+                            pf_3_3_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 
+                                        result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 2))
+                        element_result['loading_percent_max'] = misc.get_field_dict(
+                            'float', '% Loading', '%', R(result['loading_percent'], 1))
+                        element_result['pl_mw_max'] = misc.get_field_dict('float', '% P Loss', '%', 
+                            percentage_3_3_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'],
+                                                result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 1))
+                else:
+                    if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
+                        element_result['p_mw'] = misc.get_field_dict(
+                            'float', 'P', 'MW', R(result['p_mw'],4))
+                        element_result['q_mvar'] = misc.get_field_dict(
+                            'float', 'Q', 'MVAr', R(result['q_mvar'],4))
+                        element_result['pf'] = misc.get_field_dict(
+                            'float', 'PF', '', 
+                            pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
+                    elif elementcode == 'trafo':
+                        element_result['p_hv_mw'] = misc.get_field_dict(
+                            'float', 'P', 'MW', R(result['p_hv_mw'], 4))
+                        element_result['q_hv_mvar'] = misc.get_field_dict(
+                            'float', 'Q', 'MVAr', R(result['q_hv_mvar'], 4))
+                        element_result['pl_mw'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 4))
+                        element_result['loading_percent_max'] = misc.get_field_dict(
+                            'float', '% Loading', '%', R(result['loading_percent'], 1))
+                    elif elementcode == 'trafo3w':
+                        element_result['p_hv_mw'] = misc.get_field_dict(
+                            'float', 'P HV', 'MW', R(result['p_hv_mw'], 4))
+                        element_result['q_hv_mvar'] = misc.get_field_dict(
+                            'float', 'Q HV', 'MVAr', R(result['q_hv_mvar'], 4))
+                        element_result['p_mv_mw'] = misc.get_field_dict(
+                            'float', 'P MV', 'MW', R(result['p_mv_mw'], 4))
+                        element_result['q_mv_mvar'] = misc.get_field_dict(
+                            'float', 'Q MV', 'MVAr', R(result['q_mv_mvar'], 4))
+                        element_result['p_lv_mw'] = misc.get_field_dict(
+                            'float', 'P LV', 'MW', R(result['p_lv_mw'], 4))
+                        element_result['q_lv_mvar'] = misc.get_field_dict(
+                            'float', 'Q LV', 'MVAr', R(result['q_lv_mvar'], 4))
+                        element_result['pl_mw'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 4))
+                        element_result['loading_percent_max'] = misc.get_field_dict(
+                            'float', '% Loading', '%', R(result['loading_percent'], 1))
+                    elif elementcode == 'gen':
+                        element_result['p_mw'] = misc.get_field_dict(
+                            'float', 'P', 'MW', R(result['p_mw'], 4))
+                        element_result['q_mvar'] = misc.get_field_dict(
+                            'float', 'Q', 'MVAr', R(result['q_mvar'], 4))
+                        element_result['pf'] = misc.get_field_dict(
+                            'float', 'PF', '', 
+                            pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
+                        element_result['vm_pu'] = misc.get_field_dict(
+                            'float', 'V', 'pu', R(result['vm_pu'], 2))
+                        element_result['va_degree'] = misc.get_field_dict(
+                            'float', 'V angle', 'degree', R(result['va_degree'], 1))
+                    elif elementcode in ['impedance', 'dcline']:
+                        element_result['p_from_mw'] = misc.get_field_dict(
+                            'float', 'P', 'MW', R(result['p_from_mw'], 4))
+                        element_result['q_from_mvar'] = misc.get_field_dict(
+                            'float', 'Q', 'MVAr', R(result['q_from_mvar'], 4))
+                        element_result['pl_mw'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 4))
+                    elif elementcode in ['line']:
+                        element_result['p_from_mw'] = misc.get_field_dict(
+                            'float', 'P', 'MW', R(result['p_from_mw'], 4))
+                        element_result['pf'] = misc.get_field_dict(
+                            'float', 'PF', '', 
+                            pf_1_1_func(result['p_from_mw'], result['q_from_mvar'], 2))
+                        element_result['loading_percent_max'] = misc.get_field_dict(
+                            'float', '% Loading', '%', R(result['loading_percent'], 1))
+                        element_result['pl_mw_max'] = misc.get_field_dict(
+                            'float', '% P Loss', '%', 
+                            percentage_1_1_func(result['pl_mw'], result['p_from_mw'], 1))
 
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
@@ -956,6 +1065,8 @@ class PandaPowerModel:
         else:
             timeseries.run_timeseries(self.power_model, time_steps=time_steps)
 
+        # Compile results
+
         def combine_graphdata(result, table, data, codes, combfunc, stat_fields=[]):
             codes_dict = dict()
             dst_code, element_id, caption, unit, decimal, modfunc = data
@@ -1092,6 +1203,56 @@ class PandaPowerModel:
                     subcaption = caption + ' (min)'
                     result[subcode] = misc.get_field_dict(
                         'float', subcaption, unit, val_min, decimal=decimal)
+                    
+        def modfunc(x): return 100-x*100
+
+        def maxfunc(value_dict): 
+            values_arr = np.array(list(value_dict.values()))
+            result = np.max(np.abs(values_arr), axis=0)
+            return list(result)
+        
+        def sumfunc(value_dict): 
+            values_arr = np.array(list(value_dict.values()))
+            result = np.sum(values_arr, axis=0)
+            return list(result)
+        
+        def percentage_1_1_func(value_dict): 
+            values = np.array(list(value_dict.values()))
+            values1 = values[0:1,:]
+            values2 = values[1:2,:]
+            a = np.sum(values1, axis=0)
+            b = np.sum(values2, axis=0)
+            result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
+            return list(result)
+        
+        def percentage_3_3_func(value_dict): 
+            values = np.array(list(value_dict.values()))
+            values1 = values[0:3,:]
+            values2 = values[3:6,:]
+            a = np.sum(values1, axis=0)
+            b = np.sum(values2, axis=0)
+            result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
+            return list(result)
+
+        def pf_1_1_func(value_dict): 
+            values = np.array(list(value_dict.values()))
+            values1 = values[0,:]
+            values2 = values[1,:]
+            p = np.abs(values1)
+            q = np.array(values2)
+            s = np.sqrt(p**2 + q**2)
+            result = np.divide(p, s, out=np.ones_like(p), where=(np.abs(s)>1e-8))
+            return list(result)
+
+        def pf_3_3_func(value_dict): 
+            values = np.array(list(value_dict.values()))
+            values1 = values[0:3,:]
+            values2 = values[3:6,:]
+            p = np.abs(np.sum(values1, axis=0))
+            q = np.sum(values2, axis=0)
+            s = np.sqrt(p**2 + q**2)
+            result = np.divide(p, s, out=np.ones_like(p), where=(np.abs(s)>1e-8))
+            return list(result)
 
         # Update nodes
         for bus, node in self.power_nodes_inverted.items():
@@ -1100,56 +1261,6 @@ class PandaPowerModel:
             else:
                 node_result = dict()
                 self.node_results[node] = node_result
-
-            def modfunc(x): return 100-x*100
-
-            def maxfunc(value_dict): 
-                values_arr = np.array(list(value_dict.values()))
-                result = np.max(np.abs(values_arr), axis=0)
-                return list(result)
-            
-            def sumfunc(value_dict): 
-                values_arr = np.array(list(value_dict.values()))
-                result = np.sum(values_arr, axis=0)
-                return list(result)
-            
-            def percentage_1_1_func(value_dict): 
-                values = np.array(list(value_dict.values()))
-                values1 = values[0:1,:]
-                values2 = values[1:2,:]
-                a = np.sum(values1, axis=0)
-                b = np.sum(values2, axis=0)
-                result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
-                return list(result)
-            
-            def percentage_3_3_func(value_dict): 
-                values = np.array(list(value_dict.values()))
-                values1 = values[0:3,:]
-                values2 = values[3:6,:]
-                a = np.sum(values1, axis=0)
-                b = np.sum(values2, axis=0)
-                result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
-                return list(result)
-
-            def pf_1_1_func(value_dict): 
-                values = np.array(list(value_dict.values()))
-                values1 = values[0,:]
-                values2 = values[1,:]
-                p = np.abs(values1)
-                q = np.array(values2)
-                s = np.sqrt(p**2 + q**2)
-                result = np.divide(p, s, out=np.ones_like(p), where=(np.abs(s)>1e-8))
-                return list(result)
-
-            def pf_3_3_func(value_dict): 
-                values = np.array(list(value_dict.values()))
-                values1 = values[0:3,:]
-                values2 = values[3:6,:]
-                p = np.abs(np.sum(values1, axis=0))
-                q = np.sum(values2, axis=0)
-                s = np.sqrt(p**2 + q**2)
-                result = np.divide(p, s, out=np.ones_like(p), where=(np.abs(s)>1e-8))
-                return list(result)
 
             if runpp_3ph:
                 set_graphdata(node_result, 'bus', [
@@ -1213,8 +1324,7 @@ class PandaPowerModel:
                                                                     ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
                         set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
                                                                     ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
@@ -1266,8 +1376,7 @@ class PandaPowerModel:
                                                                     ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
                         set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
                                                                     ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw'],
-                                                                    ['ql_mvar', element_id, 'Q loss', 'MVAr', 4, None, 'ql_mvar']])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
