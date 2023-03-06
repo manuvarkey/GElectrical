@@ -93,6 +93,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="halign">start</property>
+                        <signal name="notify" handler="pf_type_toggle" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -223,11 +224,13 @@
                         <property name="sensitive">False</property>
                         <property name="can-focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="active">1</property>
+                        <property name="active">0</property>
                         <items>
+                          <item id="Power flow" translatable="yes">Power flow</item>
+                          <item id="Power flow with diversity" translatable="yes">Power flow with diversity</item>
                           <item id="Time series" translatable="yes">Time series</item>
-                          <item id="Diversity factor" translatable="yes">Diversity factor</item>
                         </items>
+                        <signal name="changed" handler="pf_method_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -340,6 +343,24 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="message_label">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-top">12</property>
+                <property name="hexpand">True</property>
+                <property name="wrap">True</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="foreground" value="#a5a51d1d2d2d"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>

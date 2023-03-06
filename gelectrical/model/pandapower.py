@@ -472,11 +472,48 @@ class PandaPowerModel:
         log.info('PandaPowerModel - run_diagnostics - diagnostic run')
         return self.diagnostic_results, ret_code
 
-    def run_powerflow(self, runpp_3ph=False):
+    def run_powerflow(self, pf_type, runpp_3ph):
         """Run symmetric power flow"""
 
         # Run powerflow
         if runpp_3ph:
+            # if pf_type == 'Power flow with diversity':
+            #     # Add diversity factor simulation elements
+            #     for e_code, element in self.base_elements.items():
+            #         if element.code == 'element_busbar':
+            #             lnode = element.get_nodes(str(e_code))[0][0]
+            #             gnode = self.node_mapping[lnode]
+            #             bus_index = self.power_nodes[gnode]
+            #             DF = element.fields['DF']['value']
+            #             lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
+            #             if lines:
+            #                 for line_code in lines:
+            #                     (linecode, line_index) = self.power_elements[line_code]
+            #                     # Add phantom power injection elements to take up balance power
+            #                     sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index, 
+            #                         p_a_mw=0, p_b_mw=0, p_c_mw=0,
+            #                         q_a_mvar=0, q_b_mvar=0, q_c_mvar=0)
+            #                     # Add control elements
+            #                     char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
+            #                         [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
+            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+            #                         'asymmetric_sgen', 'p_a_mw', sgen_index, 'res_line_3ph', 'p_a_from_mw', line_index, 
+            #                         char_index, tol=0.0001, order=1)
+            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+            #                         'asymmetric_sgen', 'p_b_mw', sgen_index, 'res_line_3ph', 'p_b_from_mw', line_index, 
+            #                         char_index, tol=0.0001, order=1)
+            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+            #                         'asymmetric_sgen', 'p_c_mw', sgen_index, 'res_line_3ph', 'p_c_from_mw', line_index, 
+            #                         char_index, tol=0.0001, order=1)
+            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+            #                         'asymmetric_sgen', 'q_a_mvar', sgen_index, 'res_line_3ph', 'q_a_from_mvar', line_index, 
+            #                         char_index, tol=0.0001, order=1)
+            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+            #                         'asymmetric_sgen', 'q_b_mvar', sgen_index, 'res_line_3ph', 'q_b_from_mvar', line_index, 
+            #                         char_index, tol=0.0001, order=1)
+            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+            #                         'asymmetric_sgen', 'q_c_mvar', sgen_index, 'res_line_3ph', 'q_c_from_mvar', line_index, 
+            #                         char_index, tol=0.0001, order=1)
             pp.runpp_3ph(self.power_model, run_control=True)
         else:
             # Add transformer controller for OLTC simulation
@@ -484,7 +521,30 @@ class PandaPowerModel:
             for trafo_index, values in enumerate(trafos):
                 if values['oltc']:
                     trafo_controller = control.DiscreteTapControl.from_tap_step_percent(self.power_model, 
-                                                                                        trafo_index, 1)
+                        trafo_index, 1, order=1)
+            if pf_type == 'Power flow with diversity':
+                # Add diversity factor simulation elements
+                for e_code, element in self.base_elements.items():
+                    if element.code == 'element_busbar':
+                        lnode = element.get_nodes(str(e_code))[0][0]
+                        gnode = self.node_mapping[lnode]
+                        bus_index = self.power_nodes[gnode]
+                        DF = element.fields['DF']['value']
+                        lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
+                        if lines:
+                            for line_code in lines:
+                                (linecode, line_index) = self.power_elements[line_code]
+                                # Add phantom power injection elements to take up balance power
+                                sgen_index = pp.create_sgen(self.power_model, bus_index, p_mw=0, q_mvar=0)
+                                # Add control elements
+                                char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
+                                    [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
+                                pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                                    'sgen', 'p_mw', sgen_index, 'res_line', 'p_from_mw', line_index, 
+                                    char_index, tol=0.0001, order=2)
+                                pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                                    'sgen', 'q_mvar', sgen_index, 'res_line', 'q_from_mvar', line_index, 
+                                    char_index, tol=0.0001, order=2)
             pp.runpp(self.power_model, run_control=True)
 
         # Data modification functions
@@ -621,6 +681,12 @@ class PandaPowerModel:
                         element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
                             pf_3_3_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 
                                         result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 2))
+                        element_result['p_a_from_mw'] = misc.get_field_dict(
+                            'float', 'Pa', 'MW', R(result['p_a_from_mw'],4))
+                        element_result['p_b_from_mw'] = misc.get_field_dict(
+                            'float', 'Pb', 'MW', R(result['p_b_from_mw'],4))
+                        element_result['p_c_from_mw'] = misc.get_field_dict(
+                            'float', 'Pc', 'MW', R(result['p_c_from_mw'],4))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict('float', '% P Loss', '%', 
@@ -691,7 +757,6 @@ class PandaPowerModel:
                         element_result['pl_mw_max'] = misc.get_field_dict(
                             'float', '% P Loss', '%', 
                             percentage_1_1_func(result['pl_mw'], result['p_from_mw'], 1))
-
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
     def run_powerflow_timeseries(self, runpp_3ph=False):

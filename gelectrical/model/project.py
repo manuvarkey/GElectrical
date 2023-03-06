@@ -421,15 +421,15 @@ class ProjectModel:
         else:
             raise RuntimeError('ProjectModel - run_diagnostics - Power model not built')
         
-    def run_powerflow(self):
+    def run_powerflow(self, pf_type):
         """Run power flow"""
         if self.status['power_model']:
             sim_settings = self.get_project_fields(page='Simulation')
             if sim_settings['power_flow_3ph']['value']:
-                self.powermodel.run_powerflow(runpp_3ph=True)
+                self.powermodel.run_powerflow(pf_type, runpp_3ph=True)
                 log.info('ProjectModel - run_powerflow (3ph) - calculation run')
             else:
-                self.powermodel.run_powerflow(runpp_3ph=False)
+                self.powermodel.run_powerflow(pf_type, runpp_3ph=False)
                 log.info('ProjectModel - run_powerflow - calculation run')
             self.status['power_analysis'] = True
         else:

@@ -31,6 +31,17 @@ from .. import misc
 # Setup logger object
 log = logging.getLogger(__name__)
 
+ASSYM_MESSAGE = """Assymetric power power flow method do not support the following features
+    1. Generator, Impedance, Shunt elements.
+    2. OLTC controller for transformers.
+    3. Bus diversity."""
+
+DIV_PF_MESSAGE = """Power flow with diversity method do not support the following features
+    1. Multiple source paths."""
+
+TIMESERIES_PF_MESSAGE = """Time series power flow method do not support the following features
+    1. OLTC controller for transformers."""
+
   
 class AnalysisSettingsDialog:
     
@@ -42,6 +53,7 @@ class AnalysisSettingsDialog:
         self.dialog.set_transient_for(parent)
         self.dialog.set_modal(True)
         self.builder.connect_signals(self)
+        self.messages = ['','']
         
         # Get objects
         self.switch_diagnostics = self.builder.get_object('switch_diagnostics')
@@ -52,6 +64,7 @@ class AnalysisSettingsDialog:
         self.pf_method_combo = self.builder.get_object('pf_method_combo')
         self.switch_export = self.builder.get_object('switch_export')
         self.filechooser_export = self.builder.get_object('filechooser_export')
+        self.message_label = self.builder.get_object('message_label')
         
         # Set values
         self.switch_diagnostics.set_state(ana_settings['run_diagnostics']['value'])
@@ -89,6 +102,13 @@ class AnalysisSettingsDialog:
             return settings
             
         self.dialog.destroy()
+
+    def update_message(self):
+        if self.messages[0] or self.messages[1]:
+            message = 'Notes:\n' + (self.messages[0] + '\n' + self.messages[1]).lstrip('\n').rstrip('\n')
+            self.message_label.set_label(message)
+        else:
+            self.message_label.set_label('')
     
     def export_toggle(self, switch, gparam):
         if switch.get_state() == True:
@@ -101,4 +121,23 @@ class AnalysisSettingsDialog:
             self.pf_method_combo.set_sensitive(True)
         else:
             self.pf_method_combo.set_sensitive(False)
-            
+            self.messages[1] = ''
+            self.update_message()
+    
+    def pf_type_toggle(self, switch, gparam):
+        if switch.get_state() == True:
+            self.messages[0] = ASSYM_MESSAGE
+        else:
+            self.messages[0] = ''
+        self.update_message()
+
+    def pf_method_changed(self, combo):
+        pf_method = combo.get_active_id()
+        if pf_method == 'Power flow':
+            self.messages[1] = ''
+        elif pf_method == 'Power flow with diversity':
+            self.messages[1] = DIV_PF_MESSAGE
+        elif pf_method == 'Time series':
+            self.messages[1] = TIMESERIES_PF_MESSAGE
+        self.update_message()
+        

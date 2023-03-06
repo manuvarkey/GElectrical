@@ -518,10 +518,10 @@ class MainWindow():
             if ret_code != misc.ERROR:
                 
                 if settings['powerflow']:
-                    if settings['pf_method'] == 'Diversity factor':
+                    if settings['pf_method'] in ('Power flow with diversity', 'Power flow'):
                         progress.add_message('Running Power Flow...')
                         progress.set_fraction(0.3)
-                        self.project.run_powerflow()
+                        self.project.run_powerflow(settings['pf_method'])
                         self.program_state['analysis_run_timeseries'] = True
                     elif settings['pf_method'] == 'Time series':
                         progress.add_message('Running Time Series Power Flow...')

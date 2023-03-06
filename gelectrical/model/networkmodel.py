@@ -338,7 +338,7 @@ class NetworkModel:
         element = self.base_elements[ekey]
         results = dict()
         # If load node, return null
-        if len(gnodes) == 1 and element.code not in misc.SUPPLY_ELEMENT_CODES:
+        if len(gnodes) == 1 and element.code not in (misc.SUPPLY_ELEMENT_CODES + ('element_busbar',)):
             return results
         # Search in sink paths by excluding each path to source
         for source in graph_source_nodes:
@@ -346,6 +346,12 @@ class NetworkModel:
             if element.code in misc.SUPPLY_ELEMENT_CODES:
                 upstream_nodes = set()
                 start_gnodes = [gnodes[0]]
+            # If busbar element is selected, do not exclude upstream nodes
+            elif element.code in ('element_busbar',):
+                upstream_nodes = self.get_upstream_nodes(ekey, source_node=source, ignore_disabled=ignore_disabled)
+                upstream_nodes.remove(gnodes[0])
+                start_gnodes = [gnodes[0]]
+            # Else remove upstream element node from start paths
             else:
                 upstream_nodes = self.get_upstream_nodes(ekey, source_node=source, ignore_disabled=ignore_disabled)
                 if not upstream_nodes:  # If upstream nodes in null, skip source for calculation
