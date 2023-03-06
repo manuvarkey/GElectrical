@@ -14,7 +14,7 @@ GElectrical is a graphical frontend to pandapower for power supply simulation an
 * Print and export of drawings to pdf.
 * Generation of analysis reports.
 
-**Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended.**
+**Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended. See [Roadmap](https://github.com/manuvarkey/GElectrical/issues/1) for current limitations.**
 
 ## Screenshots
 
