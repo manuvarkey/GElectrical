@@ -33,8 +33,7 @@ log = logging.getLogger(__name__)
 
 ASSYM_MESSAGE = """Assymetric power power flow method do not support the following features
     1. Generator, Impedance, Shunt elements.
-    2. OLTC controller for transformers.
-    3. Bus diversity."""
+    2. OLTC controller for transformers."""
 
 DIV_PF_MESSAGE = """Power flow with diversity method do not support the following features
     1. Multiple source paths."""

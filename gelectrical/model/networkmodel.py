@@ -63,6 +63,7 @@ class NetworkModel:
         self.virtual_global_nodes = set()
         self.gnode_element_mapping = dict()  # Maps global_node -> [element1, ..]
         self.gnode_element_mapping_inverted = dict()  # Maps element -> [global_node1, ..]
+        self.gnode_df_mapping = dict()  # Maps global_node -> DF
         self.node_mapping = dict()  # Maps local_node -> global_node i.e. ('(page,element):port') -> global_node
         self.port_mapping = dict()  # Maps (page,x,y) -> global_node
         self.port_mapping_inverted = dict()  # Maps global_node -> (page,x,y)
@@ -97,6 +98,7 @@ class NetworkModel:
         self.node_mapping = dict()
         self.port_mapping = dict()
         self.port_mapping_inverted = dict()
+        self.gnode_df_mapping = dict()
 
         duplicate_ports_list = []
         cur_gnode_num = 1
@@ -151,7 +153,9 @@ class NetworkModel:
                 self.port_mapping_inverted[gnode] = set()
             self.port_mapping_inverted[gnode].add(eid)
 
-        # Populate self.node_mapping, self.gnode_element_mapping, self.gnode_element_mapping_inverted
+        # Populate self.node_mapping, self.gnode_element_mapping, self.gnode_element_mapping_inverted,
+        #   self.gnode_df_mapping
+        self.gnode_df_mapping = {gnode:1 for gnode in self.global_nodes}
         for k1, drawing_model in enumerate(self.drawing_models):
             for k2, element in enumerate(drawing_model.elements):
                 code = str((k1, k2))
@@ -173,7 +177,9 @@ class NetworkModel:
                     else:
                         self.gnode_element_mapping[gnode] = [(k1, k2)]
                     self.gnode_element_mapping_inverted[(k1, k2)].append(gnode)
-
+                    # Update diversity factors
+                    if element.code == 'element_busbar':
+                        self.gnode_df_mapping[gnode] = element.fields['DF']['value']
         log.info('NetworkModel - setup_global_nodes - updated')
 
     def setup_node_elements(self):
@@ -263,6 +269,17 @@ class NetworkModel:
         log.info('NetworkModel - build_graph - model generated')
 
     # Graph analysis functions
+
+    def get_nodes_between_gnodes(self, gnode1, gnode2, ignore_disabled=True):
+        # Select graph
+        if ignore_disabled:
+            graph = self.graph_with_status
+        else:
+            graph = self.graph
+        # Search in a path from gnode1 to gnode2
+        simple_paths = nx.all_simple_paths(graph, gnode1, gnode2)
+        result = set(itertools.chain(*simple_paths))
+        return result
 
     def get_upstream_nodes(self, ekey, source_node=None, ignore_disabled=True):
         # Select graph

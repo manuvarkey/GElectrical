@@ -477,43 +477,85 @@ class PandaPowerModel:
 
         # Run powerflow
         if runpp_3ph:
-            # if pf_type == 'Power flow with diversity':
-            #     # Add diversity factor simulation elements
-            #     for e_code, element in self.base_elements.items():
-            #         if element.code == 'element_busbar':
-            #             lnode = element.get_nodes(str(e_code))[0][0]
-            #             gnode = self.node_mapping[lnode]
-            #             bus_index = self.power_nodes[gnode]
-            #             DF = element.fields['DF']['value']
-            #             lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
-            #             if lines:
-            #                 for line_code in lines:
-            #                     (linecode, line_index) = self.power_elements[line_code]
-            #                     # Add phantom power injection elements to take up balance power
-            #                     sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index, 
-            #                         p_a_mw=0, p_b_mw=0, p_c_mw=0,
-            #                         q_a_mvar=0, q_b_mvar=0, q_c_mvar=0)
-            #                     # Add control elements
-            #                     char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
-            #                         [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
-            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-            #                         'asymmetric_sgen', 'p_a_mw', sgen_index, 'res_line_3ph', 'p_a_from_mw', line_index, 
-            #                         char_index, tol=0.0001, order=1)
-            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-            #                         'asymmetric_sgen', 'p_b_mw', sgen_index, 'res_line_3ph', 'p_b_from_mw', line_index, 
-            #                         char_index, tol=0.0001, order=1)
-            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-            #                         'asymmetric_sgen', 'p_c_mw', sgen_index, 'res_line_3ph', 'p_c_from_mw', line_index, 
-            #                         char_index, tol=0.0001, order=1)
-            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-            #                         'asymmetric_sgen', 'q_a_mvar', sgen_index, 'res_line_3ph', 'q_a_from_mvar', line_index, 
-            #                         char_index, tol=0.0001, order=1)
-            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-            #                         'asymmetric_sgen', 'q_b_mvar', sgen_index, 'res_line_3ph', 'q_b_from_mvar', line_index, 
-            #                         char_index, tol=0.0001, order=1)
-            #                     pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-            #                         'asymmetric_sgen', 'q_c_mvar', sgen_index, 'res_line_3ph', 'q_c_from_mvar', line_index, 
-            #                         char_index, tol=0.0001, order=1)
+            if pf_type == 'Power flow with diversity':
+                # Add diversity factor simulation elements
+                # Method 1: Use controller and sgen power injection to reduce power at Bus
+                # for e_code, element in self.base_elements.items():
+                #     if element.code == 'element_busbar':
+                #         lnode = element.get_nodes(str(e_code))[0][0]
+                #         gnode = self.node_mapping[lnode]
+                #         bus_index = self.power_nodes[gnode]
+                #         DF = element.fields['DF']['value']
+                #         lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
+                #         if lines:
+                #             for line_code in lines:
+                #                 (linecode, line_index) = self.power_elements[line_code]
+                #                 # Add phantom power injection elements to take up balance power
+                #                 sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index, 
+                #                     p_a_mw=0, p_b_mw=0, p_c_mw=0,
+                #                     q_a_mvar=0, q_b_mvar=0, q_c_mvar=0)
+                #                 # Add control elements
+                #                 char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
+                #                     [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'asymmetric_sgen', 'p_a_mw', sgen_index, 'res_line_3ph', 'p_a_from_mw', line_index, 
+                #                     char_index, tol=0.0001, order=1)
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'asymmetric_sgen', 'p_b_mw', sgen_index, 'res_line_3ph', 'p_b_from_mw', line_index, 
+                #                     char_index, tol=0.0001, order=1)
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'asymmetric_sgen', 'p_c_mw', sgen_index, 'res_line_3ph', 'p_c_from_mw', line_index, 
+                #                     char_index, tol=0.0001, order=1)
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'asymmetric_sgen', 'q_a_mvar', sgen_index, 'res_line_3ph', 'q_a_from_mvar', line_index, 
+                #                     char_index, tol=0.0001, order=1)
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'asymmetric_sgen', 'q_b_mvar', sgen_index, 'res_line_3ph', 'q_b_from_mvar', line_index, 
+                #                     char_index, tol=0.0001, order=1)
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'asymmetric_sgen', 'q_c_mvar', sgen_index, 'res_line_3ph', 'q_c_from_mvar', line_index, 
+                #                     char_index, tol=0.0001, order=1)
+                # Method 2: Calculate net diversity factor per load and calculate sgen power
+                #   injection at each bus
+                for e_code, element in self.base_elements.items():
+                    if element.code == 'element_busbar':
+                        gnode_bus =  self.network_model.gnode_element_mapping_inverted[e_code][0]
+                        bus_index = self.power_nodes[gnode_bus]
+                        DF_bus = self.network_model.gnode_df_mapping[gnode_bus]
+                        loads = self.network_model.get_downstream_element(e_code, codes=misc.LOAD_ELEMENT_CODES)
+                        if loads:
+                            p_a_mw = 0
+                            p_b_mw = 0
+                            p_c_mw = 0
+                            q_a_mvar = 0
+                            q_b_mvar = 0
+                            q_c_mvar = 0
+                            for load_code in loads:
+                                gnode_load = self.network_model.gnode_element_mapping_inverted[load_code][0]
+                                path_gnodes = self.network_model.get_nodes_between_gnodes(gnode_bus, gnode_load)
+                                path_gnodes.remove(gnode_bus)
+                                DF_downstream = [self.network_model.gnode_df_mapping[gnode] for gnode in path_gnodes]
+                                RF = np.prod(DF_downstream)*(1-DF_bus)
+                                (loadcode, load_index) = self.power_elements[load_code]
+                                if loadcode == 'load':
+                                    p_a_mw += self.power_model['load']['p_mw'][load_index]/3*RF
+                                    p_b_mw += self.power_model['load']['p_mw'][load_index]/3*RF
+                                    p_c_mw += self.power_model['load']['p_mw'][load_index]/3*RF
+                                    q_a_mvar += self.power_model['load']['q_mvar'][load_index]/3*RF
+                                    q_b_mvar += self.power_model['load']['q_mvar'][load_index]/3*RF
+                                    q_c_mvar += self.power_model['load']['q_mvar'][load_index]/3*RF
+                                elif loadcode == 'asymmetric_load':
+                                    p_a_mw += self.power_model['asymmetric_load']['p_a_mw'][load_index]*RF
+                                    p_b_mw += self.power_model['asymmetric_load']['p_b_mw'][load_index]*RF
+                                    p_c_mw += self.power_model['asymmetric_load']['p_c_mw'][load_index]*RF
+                                    q_a_mvar += self.power_model['asymmetric_load']['q_a_mvar'][load_index]*RF
+                                    q_b_mvar += self.power_model['asymmetric_load']['q_b_mvar'][load_index]*RF
+                                    q_c_mvar += self.power_model['asymmetric_load']['q_c_mvar'][load_index]*RF
+                            # Add phantom power injection element to take up balance power
+                            sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index, 
+                                p_a_mw=p_a_mw, p_b_mw=p_b_mw, p_c_mw=p_c_mw,
+                                q_a_mvar=q_a_mvar, q_b_mvar=q_b_mvar, q_c_mvar=q_c_mvar)
+
             pp.runpp_3ph(self.power_model, run_control=True)
         else:
             # Add transformer controller for OLTC simulation
@@ -524,27 +566,58 @@ class PandaPowerModel:
                         trafo_index, 1, order=1)
             if pf_type == 'Power flow with diversity':
                 # Add diversity factor simulation elements
+                # Method 1: Use controller and sgen power injection to reduce power at Bus
+                # for e_code, element in self.base_elements.items():
+                #     if element.code == 'element_busbar':
+                #         gnode =  self.network_model.gnode_element_mapping_inverted[e_code][0]
+                #         bus_index = self.power_nodes[gnode]
+                #         DF = element.fields['DF']['value']
+                #         lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
+                #         if lines:
+                #             for line_code in lines:
+                #                 (linecode, line_index) = self.power_elements[line_code]
+                #                 # Add phantom power injection elements to take up balance power
+                #                 sgen_index = pp.create_sgen(self.power_model, bus_index, p_mw=0, q_mvar=0)
+                #                 # Add control elements
+                #                 char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
+                #                     [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'sgen', 'p_mw', sgen_index, 'res_line', 'p_from_mw', line_index, 
+                #                     char_index, tol=0.0001, order=2)
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
+                #                     'sgen', 'q_mvar', sgen_index, 'res_line', 'q_from_mvar', line_index, 
+                #                     char_index, tol=0.0001, order=2)
+                # Method 2: Calculate net diversity factor per load and calculate sgen power
+                #   injection at each bus
                 for e_code, element in self.base_elements.items():
                     if element.code == 'element_busbar':
-                        lnode = element.get_nodes(str(e_code))[0][0]
-                        gnode = self.node_mapping[lnode]
-                        bus_index = self.power_nodes[gnode]
-                        DF = element.fields['DF']['value']
-                        lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
-                        if lines:
-                            for line_code in lines:
-                                (linecode, line_index) = self.power_elements[line_code]
-                                # Add phantom power injection elements to take up balance power
-                                sgen_index = pp.create_sgen(self.power_model, bus_index, p_mw=0, q_mvar=0)
-                                # Add control elements
-                                char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
-                                    [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
-                                pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                                    'sgen', 'p_mw', sgen_index, 'res_line', 'p_from_mw', line_index, 
-                                    char_index, tol=0.0001, order=2)
-                                pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                                    'sgen', 'q_mvar', sgen_index, 'res_line', 'q_from_mvar', line_index, 
-                                    char_index, tol=0.0001, order=2)
+                        gnode_bus =  self.network_model.gnode_element_mapping_inverted[e_code][0]
+                        bus_index = self.power_nodes[gnode_bus]
+                        DF_bus = self.network_model.gnode_df_mapping[gnode_bus]
+                        loads = self.network_model.get_downstream_element(e_code, codes=misc.LOAD_ELEMENT_CODES)
+                        if loads:
+                            p_mw = 0
+                            q_mvar = 0
+                            for load_code in loads:
+                                gnode_load = self.network_model.gnode_element_mapping_inverted[load_code][0]
+                                path_gnodes = self.network_model.get_nodes_between_gnodes(gnode_bus, gnode_load)
+                                path_gnodes.remove(gnode_bus)
+                                DF_downstream = [self.network_model.gnode_df_mapping[gnode] for gnode in path_gnodes]
+                                RF = np.prod(DF_downstream)*(1-DF_bus)
+                                (loadcode, load_index) = self.power_elements[load_code]
+                                if loadcode == 'load':
+                                    p_mw += self.power_model['load']['p_mw'][load_index]*RF
+                                    q_mvar += self.power_model['load']['q_mvar'][load_index]*RF
+                                elif loadcode == 'asymmetric_load':
+                                    p_mw += self.power_model['asymmetric_load']['p_a_mw'][load_index]*RF
+                                    p_mw += self.power_model['asymmetric_load']['p_b_mw'][load_index]*RF
+                                    p_mw += self.power_model['asymmetric_load']['p_c_mw'][load_index]*RF
+                                    q_mvar += self.power_model['asymmetric_load']['q_a_mvar'][load_index]*RF
+                                    q_mvar += self.power_model['asymmetric_load']['q_b_mvar'][load_index]*RF
+                                    q_mvar += self.power_model['asymmetric_load']['q_c_mvar'][load_index]*RF
+                            # Add phantom power injection element to take up balance power
+                            sgen_index = pp.create_sgen(self.power_model, bus_index, 
+                                p_mw=p_mw, q_mvar=q_mvar)
             pp.runpp(self.power_model, run_control=True)
 
         # Data modification functions
