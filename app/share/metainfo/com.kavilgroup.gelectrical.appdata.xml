@@ -49,6 +49,7 @@
   <project_group>Office</project_group>
   <content_rating type="oars-1.1" />
   <releases>
+    <release date="2023-02-26" version="1-RC-1" />
     <release date="2022-11-21" version="1-beta-2" />
     <release date="2022-11-16" version="1-beta-1" />
   </releases>
