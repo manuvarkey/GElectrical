@@ -48,8 +48,7 @@ class Generator(ElementModel):
                        'cos_phi':    self.get_field_dict('float', 'PF', '', 0.8),
                        'xdss_pu':      self.get_field_dict('float', 'Xdss', 'pu', 0.12),
                        'rdss_ohm':      self.get_field_dict('float', 'Rdss', 'pu', 0.01),
-                       'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
-                       'slack':    self.get_field_dict('bool', 'Slack ?', '', True)}
+                       'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = [[(5,0), "${name}, ${ref}", True],
                            [(5,None), "${sn_mva}MVA, ${cos_phi}pf", True],
                            [(5,None), "${vm_pu}pu, ${vn_kv}kV", True]]
@@ -94,8 +93,7 @@ class Generator(ElementModel):
                                        'cos_phi': self.fields['cos_phi']['value'],
                                        'xdss_pu': self.fields['xdss_pu']['value'],
                                        'rdss_ohm': self.fields['rdss_ohm']['value'],
-                                       'in_service': self.fields['in_service']['value'],
-                                       'slack': self.fields['slack']['value'],}),)
+                                       'in_service': self.fields['in_service']['value']}),)
         return power_model
 
 

@@ -618,7 +618,7 @@ class PandaPowerModel:
                             # Add phantom power injection element to take up balance power
                             sgen_index = pp.create_sgen(self.power_model, bus_index, 
                                 p_mw=p_mw, q_mvar=q_mvar)
-            pp.runpp(self.power_model, run_control=True)
+            pp.runpp(self.power_model, run_control=True, calculate_voltage_angles = True)
 
         # Data modification functions
 
