@@ -630,7 +630,7 @@ class PandaPowerModel:
 
 
         def percentage_1_1_func(a,b, decimal): 
-            result = a/b*100 if abs(b)>1e-8 else 0
+            result = a/b*100 if abs(b)>1e-4 else 0
             return R(result, decimal)
         
         def percentage_3_3_func(x1,x2,x3,y1,y2,y3, decimal): 
@@ -640,7 +640,7 @@ class PandaPowerModel:
 
         def pf_1_1_func(p,q, decimal): 
             s = (p**2 + q**2)**0.5
-            result = p/s if abs(s)>1e-8 else 0
+            result = p/s if abs(s)>1e-4 else 0
             return R(result, decimal)
 
         def pf_3_3_func(pa,pb,pc,qa,qb,qc, decimal): 
@@ -751,6 +751,8 @@ class PandaPowerModel:
                     elif elementcode in ['line']:                        
                         element_result['p_from_mw'] = misc.get_field_dict('float', 'P', 'MW', 
                             sum_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 4))
+                        element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr', 
+                            sum_func(result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 4))
                         element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
                             pf_3_3_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 
                                         result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 2))
@@ -822,6 +824,8 @@ class PandaPowerModel:
                     elif elementcode in ['line']:
                         element_result['p_from_mw'] = misc.get_field_dict(
                             'float', 'P', 'MW', R(result['p_from_mw'], 4))
+                        element_result['q_from_mvar'] = misc.get_field_dict(
+                            'float', 'Q', 'MW', R(result['q_from_mvar'], 4))
                         element_result['pf'] = misc.get_field_dict(
                             'float', 'PF', '', 
                             pf_1_1_func(result['p_from_mw'], result['q_from_mvar'], 2))

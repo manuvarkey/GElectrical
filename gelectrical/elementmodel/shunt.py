@@ -42,8 +42,8 @@ class Shunt(ElementModel):
         self.ports = [[1, 0]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'Z?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'p_kw':        self.get_field_dict('float', 'P', 'kW', 0),
-                       'q_kvar':       self.get_field_dict('float', 'Q', 'kVAr', 10),
+                       'p_kw':        self.get_field_dict('float', 'P', 'kW', 10),
+                       'q_kvar':       self.get_field_dict('float', 'Q', 'kVAr', 0),
                        'vn_kv':       self.get_field_dict('float', 'Vn', 'kV', 0.415),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = [[(3,1), "${ref}", True],
@@ -102,9 +102,11 @@ class ShuntCapacitor(Shunt):
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Shunt.__init__(self, cordinates, **kwargs)
-        self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'C?')
+        self.fields['ref']['value'] = 'C?'
+        self.fields['p_kw']['value'] = 0
+        self.fields['q_kvar']['value'] = -10
         self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${q_kvar}kVAr", True],
+                           [(3,None), "${-q_kvar}kVAr", True],
                            [(3,None), "${name}", True]]
         self.schem_model = [ 
                              ['LINE',(1,0),(1,3), []],

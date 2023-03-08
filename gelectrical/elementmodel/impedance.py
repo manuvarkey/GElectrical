@@ -42,11 +42,11 @@ class Impedance(ElementModel):
         self.ports = [[1, 0], [1, 8]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'Z?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
-                       'rft_pu':     self.get_field_dict('float', 'R', 'pu', 0.001),
-                       'xft_pu':  self.get_field_dict('float', 'X', 'pu', 0.001),
-                       'rft0_pu':     self.get_field_dict('float', 'R0', 'pu', 0.001),
-                       'xft0_pu':  self.get_field_dict('float', 'X0', 'pu', 0.001),
-                       'sn_kva':  self.get_field_dict('float', 'Base kVA', 'kVA', 100),
+                       'rft_pu':     self.get_field_dict('float', 'R', 'pu', 0),
+                       'xft_pu':  self.get_field_dict('float', 'X', 'pu', 0.01),
+                       'rft0_pu':     self.get_field_dict('float', 'R0', 'pu', 0),
+                       'xft0_pu':  self.get_field_dict('float', 'X0', 'pu', 0.01),
+                       'sn_kva':  self.get_field_dict('float', 'Base kVA', 'kVA', 10),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = []
         self.schem_model = [ 
@@ -108,6 +108,11 @@ class Inductance(Impedance):
         Impedance.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0], [1, 8]]
         self.fields['ref']['value'] = 'L?'
+        self.fields['rft_pu']['value'] = 0
+        self.fields['xft_pu']['value'] = 0.07
+        self.fields['rft_pu']['value'] = 0
+        self.fields['xft_pu']['value'] = 0.07
+        self.fields['sn_kva']['value'] = 10
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,1.75), []],
