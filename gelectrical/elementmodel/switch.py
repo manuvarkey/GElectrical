@@ -279,7 +279,7 @@ class ProtectionDevice(Switch):
             
         # Set ground protection model
         parameters, curve_u, curve_l = self.get_ground_protection_model()
-        subtitle = title + ' - ' + 'L'
+        subtitle = title + ' - ' + 'G'
         if curve_l and curve_u:
             self.ground_protection_model = ProtectionModel(subtitle, parameters, curve_u, curve_l)
             if not init:
