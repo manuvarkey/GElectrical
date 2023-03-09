@@ -34,7 +34,7 @@ from ..misc import undoable, group
 from .drawing import DrawingModel
 from ..view.drawing import DrawingView
 from ..view.graph import GraphViewDialog, GraphImage
-from ..model.graph import GraphModel
+from ..view.protection import ProtectionViewDialog
 from .networkmodel import NetworkModel
 from .pandapower import PandaPowerModel
 from .rulescheck import electrical_rules_check
@@ -128,79 +128,28 @@ class ProjectModel:
             self.modify_loadprofiles(loadprofiles_copy)
 
     def view_protection_coordination(self):
+        selected_element_codes = self.drawing_model.get_selected_codes(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES)
         selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES)
         if selected_elements:
-            l_models = []
-            g_models = []
-            d_models = []
-            graph_model = {}
-            voltages = {}
-
             # Populate voltage levels for breakers
             if self.status['power_results'] == False:
                 self.setup_base_model()
                 self.build_power_model()
                 self.update_results()
-
-            for element in selected_elements:
-                if element.code in (misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES):
-                    if element.code in misc.TRAFO_ELEMENT_CODES:
-                        voltages[element.gid] = element.fields['vn_lv_kv']['value']
-                    else:
-                        voltages[element.gid] = element.res_fields['vn_kv']['value']
-            max_voltage = max(voltages.values())
-
-            # Populate curves
-            for element in selected_elements:
-                element.calculate_parameters()
-                scale = voltages[element.gid]/max_voltage if max_voltage != 0 and voltages[element.gid] != 0 else 1
-
-                if element.code in misc.PROTECTION_ELEMENT_CODES:
-                    pcurve_l = element.line_protection_model
-                    pcurve_g = element.ground_protection_model
-                    if pcurve_l:
-                        curve_eval = pcurve_l.get_evaluated(element.fields, scale=scale)
-                        if curve_eval:
-                            model = curve_eval.get_graph_model()[1][0]
-                            l_models.append(model)
-                    if pcurve_g:
-                        curve_eval = pcurve_g.get_evaluated(element.fields, scale=scale)
-                        if curve_eval:
-                            model = curve_eval.get_graph_model()[1][0]
-                            g_models.append(model)
-
-                if element.code in misc.DAMAGE_ELEMENT_CODES:
-                    dcurve = element.damage_model
-                    if dcurve:
-                        curve_eval = dcurve.get_evaluated(element.fields, scale=scale)
-                        if curve_eval:
-                            model1 = curve_eval.get_graph_model()[1][0]
-                            model2 = curve_eval.get_graph_model()[1][1]
-                            if model1:
-                                d_models.append(model1)
-                            if model2:
-                                d_models.append(model2)
-
-            if l_models or d_models:
-                graph_model['Line protection'] = ['Line protection', l_models+d_models]
-            if g_models or d_models:
-                graph_model['Ground protection'] = ['Ground protection', g_models+d_models]
-            xlim = misc.GRAPH_PROT_CURRENT_LIMITS 
-            ylim = misc.GRAPH_PROT_TIME_LIMITS
-            xlabel = 'CURRENT IN AMPERES'
-            ylabel = 'TIME IN SECONDS'
-            # Show curves
-            dialog = GraphViewDialog(self.window, 
-                                    'View Graph',
-                                    graph_model, 
-                                    xlim, ylim, xlabel, ylabel,
-                                    read_only=True)
-            dialog.run()
+            dialog = ProtectionViewDialog(self.window, selected_elements)
+            modified_parameters = dialog.run()
+            if modified_parameters:
+                for (el_index, el_class), modified_fields in modified_parameters.items():
+                    element = selected_elements[el_index]
+                    el_no = selected_element_codes[el_index]
+                    data_new = copy.deepcopy(element.fields[el_class]['value'])
+                    parameters = data_new['parameters']
+                    for key, field in modified_fields.items():
+                        parameters[key][2] = field['value']
+                    self.drawing_model.update_element_field_at_index(el_no ,el_class, data_new)
         else:
             return (misc.WARNING, 'No protection elements selected.')
-
-
-
+        
     @undoable
     def modify_loadprofiles(self, loadprofiles):
         loadprofiles_old = copy.deepcopy(self.loadprofiles)

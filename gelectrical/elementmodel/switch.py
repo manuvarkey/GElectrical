@@ -250,25 +250,27 @@ class ProtectionDevice(Switch):
 
     def calculate_parameters(self, init=False):
         # Form title
-        if self.fields['custom']['value']:
-            title = (self.fields['ref']['value'] + ', ' + 
-                '%g'%(self.fields['In']['value']) + 'A, ' + 
-                    self.fields['type']['value'])
-        else:
-            title = (self.fields['ref']['value'] + ', ' + 
-                '%g'%(self.fields['In']['value']) + 'A, ' + 
-                    self.fields['type']['value'] + ' - ' + 
-                    self.fields['subtype']['value'])
+        # if self.fields['custom']['value']:
+        #     title = (self.fields['ref']['value'] + ', ' + 
+        #         '%g'%(self.fields['In']['value']) + 'A, ' + 
+        #             self.fields['type']['value'])
+        # else:
+        #     title = (self.fields['ref']['value'] + ', ' + 
+        #         '%g'%(self.fields['In']['value']) + 'A, ' + 
+        #             self.fields['type']['value'] + ' - ' + 
+        #             self.fields['subtype']['value'])
+        title = self.fields['ref']['value']
 
         # Set line protection model
         parameters, curve_u, curve_l = self.get_line_protection_model()
+        subtitle = title + ' - ' + 'L'
         if curve_l and curve_u:
-            self.line_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
+            self.line_protection_model = ProtectionModel(subtitle, parameters, curve_u, curve_l)
             if not init:
                 self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_l']['value']:
-            self.line_protection_model = ProtectionModel(title, {}, 
+            self.line_protection_model = ProtectionModel(subtitle, {}, 
                                     self.fields['pcurve_l']['value']['data']['curve_u'],
                                     self.fields['pcurve_l']['value']['data']['curve_l'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
@@ -277,13 +279,14 @@ class ProtectionDevice(Switch):
             
         # Set ground protection model
         parameters, curve_u, curve_l = self.get_ground_protection_model()
+        subtitle = title + ' - ' + 'L'
         if curve_l and curve_u:
-            self.ground_protection_model = ProtectionModel(title, parameters, curve_u, curve_l)
+            self.ground_protection_model = ProtectionModel(subtitle, parameters, curve_u, curve_l)
             if not init:
                 self.ground_protection_model.update_parameters(self.fields['pcurve_g']['value']['parameters'])
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_g']['value']:
-            self.ground_protection_model = ProtectionModel(title, {}, 
+            self.ground_protection_model = ProtectionModel(subtitle, {}, 
                                     self.fields['pcurve_g']['value']['data']['curve_u'],
                                     self.fields['pcurve_g']['value']['data']['curve_l'])
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)

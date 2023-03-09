@@ -20,4 +20,4 @@
 #  
 #  
 
-from . import analysis, database, drawing, field, graph, message
+from . import analysis, database, drawing, field, graph, message, protection

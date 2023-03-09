@@ -296,6 +296,18 @@ class DrawingModel:
         # Undo action
         self.update_element_at_index(old_element, index)
         self.update_elements()
+
+    @undoable            
+    def update_element_field_at_index(self, index, code, data):
+        element = self.elements[index]
+        data_old = element.fields[code]['value']
+        element.set_text_field_value(code, data)
+        self.update_elements()
+            
+        yield "Update draw element at '{}'".format(index)
+        # Undo action
+        self.update_element_field_at_index(index, code, data_old)
+        self.update_elements()
             
     @undoable            
     def insert_element_at_index(self, element, index=None):

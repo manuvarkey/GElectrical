@@ -158,11 +158,15 @@ class ProtectionModel():
             graph_model = [title, graphs]
             self.data_struct['graph_model'] = graph_model
             
-
     def update_parameters(self, parameters):
         for key, field in parameters.items():
             if key in self.data_struct['parameters']:
                 self.data_struct['parameters'][key][2] = field[2]
+
+    def update_parameters_from_fields(self, fields):
+        for key, field in fields.items():
+            if key in self.data_struct['parameters']:
+                self.data_struct['parameters'][key][2] = field['value']
 
     def evaluate_curves(self, fields, data_fields=None, scale=1):
         
