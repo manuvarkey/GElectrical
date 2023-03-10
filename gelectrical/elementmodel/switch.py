@@ -276,6 +276,7 @@ class ProtectionDevice(Switch):
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         else:
             self.fields['pcurve_l']['value'] = None
+            self.line_protection_model = None
             
         # Set ground protection model
         parameters, curve_u, curve_l = self.get_ground_protection_model()
@@ -292,6 +293,7 @@ class ProtectionDevice(Switch):
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
         else:
             self.fields['pcurve_g']['value'] = None
+            self.ground_protection_model = None
 
 
 class Fuse(ProtectionDevice):
@@ -690,13 +692,13 @@ class CircuitBreaker(ProtectionDevice):
                                 'tol_i'     : ['Current pickup tolerance', '%', 20, None],
                                 'tol_t'     : ['Time delay tolerance', '%', 20, None]}
                     curve_u = [ ('point', 'd.i_f*f.In*f.In_set', 'd.t_conv*3600'),
-                                ('iec', 1, 'd.i_f*f.In*f.In_set', 'd.k*(100+d.tol_t)/100', 'd.c', 'd.alpha', 
+                                ('iec', 'd.tms', 'd.i_f*f.In*f.In_set', 'd.k*(100+d.tol_t)/100', 'd.c', 'd.alpha', 
                                     'd.i_f*f.In*f.In_set*1.1', '(d.i_m*(100+d.tol_i)/100)*f.In', 
                                     'd.t_delay*(100+d.tol_t)/100 + d.t_ins_max', 50),
                                 ('point', '(d.i_m*(100+d.tol_i)/100)*f.In', 'd.t_ins_max'),
                                 ('point', '1000*f.Isc', 'd.t_ins_max')]
                     curve_l = [ ('point', 'd.i_nf*f.In*f.In_set', 'd.t_conv*3600'),
-                                ('iec', 1, 'd.i_nf*f.In*f.In_set', 'd.k*(100-d.tol_t)/100', 'd.c', 'd.alpha', 
+                                ('iec', 'd.tms', 'd.i_nf*f.In*f.In_set', 'd.k*(100-d.tol_t)/100', 'd.c', 'd.alpha', 
                                     'd.i_nf*f.In*f.In_set*1.1', '(d.i_m*(100-d.tol_i)/100)*f.In', 
                                     'd.t_delay*(100-d.tol_t)/100 + d.t_ins_max', 50),
                                 ('point', '(d.i_m*(100-d.tol_i)/100)*f.In', 'd.t_ins_min'),
@@ -715,13 +717,13 @@ class CircuitBreaker(ProtectionDevice):
                                 'tol_i'     : ['Current pickup tolerance', '%', 15, None],
                                 'tol_t'     : ['Time delay tolerance', '%', 15, None]}
                     curve_u = [ ('point', 'd.i_f*f.In*f.In_set', 'd.t_conv*3600'),
-                                ('iec', 1, 'd.i_f*f.In*f.In_set', str(k) + '*(100+d.tol_t)/100', c, alpha, 
+                                ('iec', 'd.tms', 'd.i_f*f.In*f.In_set', str(k) + '*(100+d.tol_t)/100', c, alpha, 
                                     'd.i_f*f.In*f.In_set*1.1', '(d.i_m*(100+d.tol_i)/100)*f.In', 
                                     'd.t_delay*(100+d.tol_t)/100 + d.t_ins_max', 50),
                                 ('point', '(d.i_m*(100+d.tol_i)/100)*f.In', 'd.t_ins_max'),
                                 ('point', '1000*f.Isc', 'd.t_ins_max')]
                     curve_l = [ ('point', 'd.i_nf*f.In*f.In_set', 'd.t_conv*3600'),
-                                ('iec', 1, 'd.i_nf*f.In*f.In_set', str(k) + '*(100-d.tol_t)/100', c, alpha, 
+                                ('iec', 'd.tms', 'd.i_nf*f.In*f.In_set', str(k) + '*(100-d.tol_t)/100', c, alpha, 
                                     'd.i_nf*f.In*f.In_set*1.1', '(d.i_m*(100-d.tol_i)/100)*f.In', 
                                     'd.t_delay*(100-d.tol_t)/100 + d.t_ins_max', 50),
                                 ('point', '(d.i_m*(100-d.tol_i)/100)*f.In', 'd.t_ins_min'),
@@ -793,16 +795,26 @@ class CircuitBreaker(ProtectionDevice):
                               't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None],
                               't_delay'   : ['Ground fault delay', 's', t_delay, None],
                               'tol_t'     : ['Time delay tolerance', '%', 20, None]}
-
-            elif f.prot_0_curve_type in ('EF Trip' , 'EF Trip I2t'):
+            if f.prot_0_curve_type in ('EF Trip',):
                 t_ins_min = 0.001
                 t_ins_max = 0.01
-                if f.prot_0_curve_type in ('EF Trip',):
-                    k = 0
-                    t_delay = 0.1
-                else:
-                    k = 1
-                    t_delay = 0.1
+                t_delay = 0.1
+                curve_u = [ ('point', 'f.I0*f.I0_set*(100+d.tol_i)/100', 3600),
+                            ('point', 'f.I0*f.I0_set*(100+d.tol_i)/100', 'd.t_delay*(100+d.tol_t)/100 + d.t_ins_max'),
+                            ('point', '1000*f.Isc', 'd.t_delay*(100+d.tol_t)/100 + d.t_ins_max')]
+                curve_l = [ ('point', 'f.I0*f.I0_set*(100-d.tol_i)/100', 3600),
+                            ('point', 'f.I0*f.I0_set*(100-d.tol_i)/100', 'd.t_delay*(100-d.tol_t)/100 + d.t_ins_min'),
+                            ('point', '1000*f.Isc', 'd.t_delay*(100-d.tol_t)/100 + d.t_ins_min')]
+                parameters = {'t_ins_min' : ['Instantaneous trip time (min)', 's', t_ins_min, None],
+                              't_ins_max' : ['Instantaneous trip time (max)', 's', t_ins_max, None],
+                              't_delay'   : ['Ground fault delay', 's', t_delay, None],
+                              'tol_i'     : ['Current pickup tolerance', '%', 10, None],
+                              'tol_t'     : ['Time delay tolerance', '%', 20, None]}
+            elif f.prot_0_curve_type in ('EF Trip I2t',):
+                t_ins_min = 0.001
+                t_ins_max = 0.01
+                k = 1
+                t_delay = 0.1
                 curve_u = [ ('point', 'f.I0*f.I0_set*(100+d.tol_i)/100', 3600),
                             ('i2t', 'd.tms', 'f.I0*f.I0_set', 'd.k*(100+d.tol_t)/100', 2, 
                                 'f.I0*f.I0_set*(100+d.tol_i)/100', '1000*f.Isc', 

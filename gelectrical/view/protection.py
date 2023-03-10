@@ -208,9 +208,9 @@ class ProtectionViewDialog():
             para_index = list(self.para_fields.keys()).index(title)
             el_index = self.element_mapping_inverted[para_index]
             element = self.elements[el_index]
-            model = self.prot_models[para_index]
             scale = self.voltages[element.gid]/self.max_voltage if self.max_voltage != 0 and self.voltages[element.gid] != 0 else 1
             for model_id, sub_model_id, el_class, g_index in self.element_mapping[el_index]:
+                model = self.prot_models[model_id]
                 if sub_model_id is not None:
                     if el_class == 'pcurve_l':
                         sub_model_list = self.l_models
@@ -222,6 +222,7 @@ class ProtectionViewDialog():
                     if curve_eval:
                         sub_model_list[sub_model_id] = curve_eval.get_graph_model()[1][g_index]
         # Populate curves
+        self.graph_database = {}
         if self.l_models or self.d_models:
             self.graph_database['Line protection'] = ['Line protection', self.l_models+self.d_models]
         if self.g_models or self.d_models:
