@@ -22,11 +22,12 @@
 #  
 # 
 
-import logging
+import logging, copy
 from gi.repository import Gtk, Gdk, GLib
 
 # local files import
 from .. import misc
+from ..misc import undoable, group
 from ..model.graph import GraphModel
 from .database import DatabaseView
 from .graph import GraphView
@@ -43,24 +44,31 @@ class ProtectionViewDialog():
             parent: Parent Window
     """
     
-    def __init__(self, parent, elements):
+    def __init__(self, parent, program_state, elements):
         
         # Dialog variables
         self.toplevel = parent
+        self.program_state = program_state
+        self.stack = program_state['stack']
         self.elements = elements
+
         self.graph_database = {}
         self.graph_uids = []
+
         self.fieldviews = []
-        self.element_mapping = []  # Maps element index -> prot_models/ para_fields index
-        self.element_mapping_inverted = []  # Maps prot_models/ para_fields index -> element index
+        self.fieldviews_graph = []
+        self.fields = []
+        self.para_fields = []
+
+        self.element_mapping = []  # Maps element index -> model_id, sub_model_id, el_class, g_index
+        self.para_element_mapping = []  # Maps prot_models/ para_fields index -> element index, el_class
+        self.field_element_mapping = []  # Maps fields index -> element index
         self.prot_models = []
         self.l_models = []
         self.g_models = []
-        self.d_models = []
-        self.para_fields = {}
+        self.d_models = [] 
         self.voltages = {}
         self.max_voltage = 0
-        self.changed_parameters = {}
         
         # Setup widgets
         self.builder = Gtk.Builder()
@@ -100,7 +108,7 @@ class ProtectionViewDialog():
                 pcurve_g = element.ground_protection_model
                 if pcurve_l:
                     self.prot_models.append(pcurve_l)
-                    self.element_mapping_inverted.append(el_no)
+                    self.para_element_mapping.append((el_no, 'pcurve_l'))
                     curve_eval = pcurve_l.get_evaluated(element.fields, scale=scale)
                     if curve_eval:
                         model = curve_eval.get_graph_model()[1][0]
@@ -110,7 +118,7 @@ class ProtectionViewDialog():
                         element_ids.append((len(self.prot_models)-1, None, 'pcurve_l', 0))
                 if pcurve_g:
                     self.prot_models.append(pcurve_g)
-                    self.element_mapping_inverted.append(el_no)
+                    self.para_element_mapping.append((el_no, 'pcurve_g'))
                     curve_eval = pcurve_g.get_evaluated(element.fields, scale=scale)
                     if curve_eval:
                         model = curve_eval.get_graph_model()[1][0]
@@ -122,7 +130,7 @@ class ProtectionViewDialog():
                 dcurve = element.damage_model
                 if dcurve:
                     self.prot_models.append(dcurve)
-                    self.element_mapping_inverted.append(el_no)
+                    self.para_element_mapping.append((el_no, 'dcurve'))
                     curve_eval = dcurve.get_evaluated(element.fields, scale=scale)
                     if curve_eval:
                         model1 = curve_eval.get_graph_model()[1][0]
@@ -137,39 +145,79 @@ class ProtectionViewDialog():
                         element_ids.append((len(self.prot_models)-1, None, 'dcurve', 0))
             self.element_mapping.append(element_ids)
 
-        # Setup fieldview and populate para_fields
-        duplicate_index = 1
-        for model in self.prot_models:
+        # Setup fieldview and populate fields
+        for prot_index, model in enumerate(self.prot_models):
+            el_index, el_class = self.para_element_mapping[prot_index]
+            element = self.elements[el_index]
+            self.field_element_mapping.append(el_index)
+            
             title = model.title
-            if title in self.para_fields:
-                title += ' (' + str(duplicate_index) + ')'
-                duplicate_index += 1
-            fields = model.get_data_fields()
-            if fields:
-                def get_field_func(title):
+            para_fields = model.get_data_fields()
+            self.para_fields.append(para_fields)
+
+            if el_class == 'pcurve_l':
+                fields = copy.deepcopy({'In': element.fields['In'],  
+                          'In_set': element.fields['In_set'],
+                          'Isc': element.fields['Isc']})
+            elif el_class == 'pcurve_g':
+                fields = copy.deepcopy({'I0': element.fields['I0'],  
+                          'I0_set': element.fields['I0_set'],
+                          'Isc': element.fields['Isc']})
+            else:
+                fields = {}
+            self.fields.append(fields)
+            
+            if para_fields:
+                box = Gtk.Box(orientation= Gtk.Orientation.VERTICAL)
+                tab_label = Gtk.Label(title)
+                self.field_notebook.append_page(box, tab_label)
+
+                if fields:
+                    def get_field_func(prot_index):
+                        def get_field(code):
+                            return self.fields[prot_index][code]
+                        return get_field
+
+                    def get_set_field(el_no, prot_index):
+                        def set_field(code, value):
+                            self.fields[prot_index][code]['value'] = value
+                            self.update_fields(el_no, prot_index)
+                            self.update_models(prot_index)
+                            self.update_graphs()
+                        return set_field
+                
+                    listbox = Gtk.ListBox()
+                    listbox.props.margin_top = 6
+                    listbox.props.margin_start = 6
+                    box.pack_start(listbox, False, True, 6)
+                    field_view = FieldView(self.dialog_window, listbox, 
+                                        'status_enable', 'status_inactivate',
+                                        caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
+                    field_view.update(fields, None, get_field_func(prot_index), get_set_field(el_index, prot_index))
+                    self.fieldviews.append(field_view)   
+                
+                def get_field_func_para(prot_index):
                     def get_field(code):
-                        return self.para_fields[title][code]
+                        return self.para_fields[prot_index][code]
                     return get_field
                 
-                def get_set_field(title):
+                def get_set_field_para(prot_index):
                     def set_field(code, value):
-                        self.para_fields[title][code]['value'] = value
-                        self.update_parameters(title)
-                        self.update_models(title)
+                        self.para_fields[prot_index][code]['value'] = value
+                        self.update_parameters(prot_index)
+                        self.update_models(prot_index)
                         self.update_graphs()
                     return set_field
-            
-                listbox = Gtk.ListBox()
-                listbox.props.margin_top = 6
-                listbox.props.margin_start = 6
-                tab_label = Gtk.Label(title)
-                self.field_notebook.append_page(listbox, tab_label)
-                field_view = FieldView(self.dialog_window, listbox, 
+                
+                listbox_parameters = Gtk.ListBox()
+                listbox_parameters.props.margin_top = 6
+                listbox_parameters.props.margin_start = 6
+                box.pack_start(listbox_parameters, True, True, 6)
+                field_view_graph = FieldView(self.dialog_window, listbox_parameters, 
                                     'status_enable', 'status_inactivate',
                                     caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
-                field_view.update(fields, None, get_field_func(title), get_set_field(title))
-                self.fieldviews.append(field_view)
-            self.para_fields[title] = fields
+                field_view_graph.update(para_fields, None, get_field_func_para(prot_index), get_set_field_para(prot_index))
+                self.fieldviews_graph.append(field_view_graph)
 
         # Update models
         self.update_models()
@@ -188,25 +236,40 @@ class ProtectionViewDialog():
                     
     # Functions
 
-    def update_parameters(self, title=None):
-        if title:
-            fields = self.para_fields[title]
-            para_index = list(self.para_fields.keys()).index(title)
-            el_index = self.element_mapping_inverted[para_index]
+    def update_parameters(self, para_index):
+        fields = self.para_fields[para_index]
+        el_index, el_class = self.para_element_mapping[para_index]
+        element = self.elements[el_index]
+        set_text_field = misc.get_undoable_set_field(self.stack, None, element)
+        with group(self, 'Update protection parameters - ' + element.name):
             for model_id, sub_model_id, el_class, g_index in self.element_mapping[el_index]:
                 if model_id == para_index:
-                    model = self.prot_models[para_index]
-                    model.update_parameters_from_fields(fields)
-                    self.changed_parameters[el_index, el_class] = fields
+                    data_new = copy.deepcopy(element.fields[el_class]['value'])
+                    parameters = data_new['parameters']
+                    for key, field in fields.items():
+                        parameters[key][2] = field['value']
+                    set_text_field(el_class, data_new)
+                    self.update_fields(el_index, para_index)
                     break
-        else:
-            for model, fields in zip(self.prot_models, self.para_fields.values()):
-                model.update_parameters_from_fields(fields)
-    
-    def update_models(self, title=None):
-        if title:  # Update elements for title
-            para_index = list(self.para_fields.keys()).index(title)
-            el_index = self.element_mapping_inverted[para_index]
+
+    def update_fields(self, el_index, prot_index):
+        element = self.elements[el_index]
+        set_text_field = misc.get_undoable_set_field(self.stack, None, element)
+        with group(self, 'Update protection fields - ' + element.name):
+            for code, field in self.fields[prot_index].items():
+                set_text_field(code, field['value'])
+        element.calculate_parameters()
+        for model_id, sub_model_id, el_class, g_index in self.element_mapping[el_index]:
+            if el_class == 'pcurve_l':
+                self.prot_models[model_id] = element.line_protection_model
+            elif el_class == 'pcurve_g':
+                self.prot_models[model_id] = element.ground_protection_model
+            elif el_class == 'dcurve':
+                self.prot_models[model_id] = element.damage_model
+
+    def update_models(self, para_index=None):
+        if para_index is not None:  # Update elements for title
+            el_index, el_class = self.para_element_mapping[para_index]
             element = self.elements[el_index]
             scale = self.voltages[element.gid]/self.max_voltage if self.max_voltage != 0 and self.voltages[element.gid] != 0 else 1
             for model_id, sub_model_id, el_class, g_index in self.element_mapping[el_index]:
@@ -242,12 +305,5 @@ class ProtectionViewDialog():
         """
         # Run dialog
         self.dialog_window.show_all()
-        response = self.dialog_window.run()
-        
-        if response == Gtk.ResponseType.OK and self.graph_database:
-            # Get formated text and update item_values
-            self.dialog_window.destroy()
-            return self.changed_parameters
-        else:
-            self.dialog_window.destroy()
-            return None
+        self.dialog_window.run()
+        self.dialog_window.destroy()

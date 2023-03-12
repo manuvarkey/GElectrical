@@ -153,23 +153,7 @@ class DrawingView:
             if element.code in misc.LOADPROFILE_CODES:
                 element.fields['load_profile']['selection_list'] = self.drawing_model.parent.loadprofiles
             
-            # Special class implementing undo for set text function
-            class UndoableSetTextValue:
-                def __init__(self, stack, refresh):
-                    self.stack = stack
-                    self.refresh = refresh
-            
-                @undoable
-                def set_text_field_value_undo(self, code, value):
-                    oldval = element.get_text_field(code)['value']
-                    element.set_text_field_value(code, value)
-                    self.refresh() 
-                    yield "Modify '{}' '{}' element field".format(code, element.name)
-                    # Undo action
-                    element.set_text_field_value(code, oldval)
-                    self.refresh() 
-
-            set_text_field = UndoableSetTextValue(self.program_state['stack'], self.refresh).set_text_field_value_undo
+            set_text_field = misc.get_undoable_set_field(self.program_state['stack'], self.refresh, element)
 
             def select_action():
                 if self.properties_view:

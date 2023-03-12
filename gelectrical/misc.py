@@ -260,6 +260,26 @@ def group(self, desc):
     of `stack.undo
     '''
     return _Group(desc, self.stack)
+
+def get_undoable_set_field(stack, refresh, element):
+    # Special class implementing undo for set text function
+    class UndoableSetTextValue:
+        def __init__(self, stack, refresh):
+            self.stack = stack
+            self.refresh = refresh
+    
+        @undoable
+        def set_text_field_value_undo(self, code, value):
+            oldval = element.get_text_field(code)['value']
+            element.set_text_field_value(code, value)
+            if self.refresh:
+                self.refresh() 
+            yield "Modify '{}' '{}' element field".format(code, element.name)
+            # Undo action
+            element.set_text_field_value(code, oldval)
+            if self.refresh:
+                self.refresh() 
+    return UndoableSetTextValue(stack, refresh).set_text_field_value_undo
     
 ## GLOBAL VARIABLES
 

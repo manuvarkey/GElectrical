@@ -128,7 +128,6 @@ class ProjectModel:
             self.modify_loadprofiles(loadprofiles_copy)
 
     def view_protection_coordination(self):
-        selected_element_codes = self.drawing_model.get_selected_codes(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES)
         selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES)
         if selected_elements:
             # Populate voltage levels for breakers
@@ -136,17 +135,8 @@ class ProjectModel:
                 self.setup_base_model()
                 self.build_power_model()
                 self.update_results()
-            dialog = ProtectionViewDialog(self.window, selected_elements)
-            modified_parameters = dialog.run()
-            if modified_parameters:
-                for (el_index, el_class), modified_fields in modified_parameters.items():
-                    element = selected_elements[el_index]
-                    el_no = selected_element_codes[el_index]
-                    data_new = copy.deepcopy(element.fields[el_class]['value'])
-                    parameters = data_new['parameters']
-                    for key, field in modified_fields.items():
-                        parameters[key][2] = field['value']
-                    self.drawing_model.update_element_field_at_index(el_no ,el_class, data_new)
+            dialog = ProtectionViewDialog(self.window, self.program_state, selected_elements)
+            dialog.run()
         else:
             return (misc.WARNING, 'No protection elements selected.')
         
