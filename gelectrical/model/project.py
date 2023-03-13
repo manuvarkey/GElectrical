@@ -51,12 +51,12 @@ class ProjectModel:
         self.drawing_models = []
         program_settings = program_state['program_settings_main']
         self.fields = misc.default_project_settings
-        self.fields['Information']['drawing_field_dept']['value'] = program_settings['drawing_field_dept']['value']
-        self.fields['Information']['drawing_field_techref']['value'] =  program_settings['drawing_field_techref']['value']
-        self.fields['Information']['drawing_field_created']['value'] =  program_settings['drawing_field_created']['value']
-        self.fields['Information']['drawing_field_approved']['value'] = program_settings['drawing_field_approved']['value']
-        self.fields['Information']['drawing_field_lang']['value'] = program_settings['drawing_field_lang']['value']
-        self.fields['Information']['drawing_field_address']['value'] = program_settings['drawing_field_address']['value']
+        self.fields['Information']['drawing_field_dept']['value'] = copy.deepcopy(program_settings['drawing_field_dept']['value'])
+        self.fields['Information']['drawing_field_techref']['value'] =  copy.deepcopy(program_settings['drawing_field_techref']['value'])
+        self.fields['Information']['drawing_field_created']['value'] =  copy.deepcopy(program_settings['drawing_field_created']['value'])
+        self.fields['Information']['drawing_field_approved']['value'] = copy.deepcopy(program_settings['drawing_field_approved']['value'])
+        self.fields['Information']['drawing_field_lang']['value'] = copy.deepcopy(program_settings['drawing_field_lang']['value'])
+        self.fields['Information']['drawing_field_address']['value'] = copy.deepcopy(program_settings['drawing_field_address']['value'])
         program_state['project_settings_main'] = self.fields['Information']
         program_state['project_settings'] = self.fields
         self.loadprofiles = misc.DEFAULT_LOAD_PROFILE
@@ -103,6 +103,9 @@ class ProjectModel:
     def update_project_fields(self, new_fields):
         old_fields = self.fields
         self.fields = new_fields
+
+        self.program_state['project_settings_main'] = self.fields['Information']
+        self.program_state['project_settings'] = self.fields
         
         self.update_tabs()
         self.update_title_blocks()

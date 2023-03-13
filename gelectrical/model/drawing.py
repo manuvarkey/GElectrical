@@ -49,9 +49,6 @@ class DrawingModel:
         # State variables
         self.parent = parent
         self.program_state = program_state
-        self.program_settings = program_state['program_settings_main']
-        self.project_settings = program_state['project_settings']
-        self.project_settings_main = program_state['project_settings_main']
         self.grid_width = misc.GRID_WIDTH
         self.element_models = self.program_state['element_models']
         self.floating_model = None
@@ -125,7 +122,7 @@ class DrawingModel:
                     elif code == 'element_wire':
                         element = Wire()
                     else:
-                        element = self.program_state['element_models'][code](project_settings=self.project_settings)
+                        element = self.program_state['element_models'][code](project_settings=self.program_state['project_settings'])
                         if code in misc.LOADPROFILE_CODES:
                             element.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     element.set_model(base_model, self.get_gid())
@@ -345,7 +342,7 @@ class DrawingModel:
             if grid_constraint:  # Modify x,y to correspond to grid
                 x,y = self.get_grid_point(x,y)
             model = self.element_models[code]
-            element = model((x, y), project_settings=self.project_settings)
+            element = model((x, y), project_settings=self.program_state['project_settings'])
             if select:
                 element.set_selection(True)
             self.insert_element_at_index(element)
@@ -397,13 +394,13 @@ class DrawingModel:
         title_fields['sheet_no'] = self.fields['sheet_no']
         title_fields['rev'] = self.fields['rev']
         title_fields['date_of_issue'] = self.fields['date_of_issue']
-        title_fields['project_name'] = self.project_settings_main['project_name']
-        title_fields['drawing_field_dept'] = self.project_settings_main['drawing_field_dept']
-        title_fields['drawing_field_techref'] = self.project_settings_main['drawing_field_techref']
-        title_fields['drawing_field_created'] = self.project_settings_main['drawing_field_created']
-        title_fields['drawing_field_approved'] = self.project_settings_main['drawing_field_approved']
-        title_fields['drawing_field_lang'] = self.project_settings_main['drawing_field_lang']
-        title_fields['drawing_field_address'] = self.project_settings_main['drawing_field_address']
+        title_fields['project_name'] = self.program_state['project_settings_main']['project_name']
+        title_fields['drawing_field_dept'] = self.program_state['project_settings_main']['drawing_field_dept']
+        title_fields['drawing_field_techref'] = self.program_state['project_settings_main']['drawing_field_techref']
+        title_fields['drawing_field_created'] = self.program_state['project_settings_main']['drawing_field_created']
+        title_fields['drawing_field_approved'] = self.program_state['project_settings_main']['drawing_field_approved']
+        title_fields['drawing_field_lang'] = self.program_state['project_settings_main']['drawing_field_lang']
+        title_fields['drawing_field_address'] = self.program_state['project_settings_main']['drawing_field_address']
         self.title_block.set_fields(title_fields)
     
     def add_assembly_from_selection(self):
@@ -457,7 +454,7 @@ class DrawingModel:
         """Add a floating model"""
         if code is not None:
             model = self.element_models[code]
-            element = model(project_settings=self.project_settings)
+            element = model(project_settings=self.program_state['project_settings'])
             element.set_gid(self.get_gid())
             self.floating_model = ElementGroup()
             self.floating_model.add_elements([element])
@@ -497,7 +494,7 @@ class DrawingModel:
                     elif code == 'element_wire':
                         element_copy = Wire()
                     else:
-                        element_copy = self.element_models[code](project_settings=self.project_settings)
+                        element_copy = self.element_models[code](project_settings=self.program_state['project_settings'])
                     element_copy.set_model(element_model, self.get_gid())
                     if element_copy.code in misc.LOADPROFILE_CODES:
                         element_copy.fields['load_profile']['selection_list'] = self.parent.loadprofiles
