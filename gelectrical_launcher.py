@@ -31,6 +31,17 @@ from gi.repository import Gtk, Gdk, GLib, GObject
 # Get logger object
 log = logging.getLogger()
 
+# Override stdout and stderr with NullWriter in GUI --noconsole mode
+# This allow to avoid a bug where tqdm try to write on NoneType
+# https://github.com/tqdm/tqdm/issues/794#issuecomment-1426204074
+class NullWriter:
+    def write(self, data):
+        pass
+if sys.stdout is None:
+    sys.stdout = NullWriter()
+if sys.stderr is None:
+    sys.stderr = NullWriter()
+
 from gelectrical import MainApp
 
 if __name__ == '__main__':
