@@ -618,7 +618,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="tooltip-markup" translatable="yes">Run Analysis</property>
                         <property name="halign">start</property>
                         <property name="is-important">True</property>
-                        <property name="label" translatable="yes">Analyse</property>
+                        <property name="label" translatable="yes">Analysis</property>
                         <property name="use-underline">True</property>
                         <property name="icon-widget">image2</property>
                         <signal name="clicked" handler="on_run_analysis" swapped="no"/>
@@ -1329,19 +1329,75 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
           </packing>
         </child>
         <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <child>
+              <object class="GtkButton" id="button_show_leftpane">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="tooltip-text" translatable="yes">Show/ Hide Left Panel</property>
+                <signal name="clicked" handler="on_show_leftpane_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="pixbuf">../icons/pane-left.svg</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_show_rightpane">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="tooltip-text" translatable="yes">Show/ Hide Right Panel</property>
+                <signal name="clicked" handler="on_show_rightpane_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="pixbuf">../icons/pane-right.svg</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <style>
+              <class name="linked"/>
+            </style>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButton" id="button_project_save">
-            <property name="label">gtk-save</property>
+            <property name="label">Save</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="tooltip-text" translatable="yes">Save current project</property>
-            <property name="use-stock">True</property>
             <signal name="clicked" handler="on_save" swapped="no"/>
             <accelerator key="s" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
           </object>
           <packing>
             <property name="pack-type">end</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>

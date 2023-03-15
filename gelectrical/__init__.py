@@ -294,22 +294,6 @@ class MainWindow():
             self.set_title(self.filename)
             # Save point in stack for checking change state
             self.stack.savepoint()
-            
-    def on_print(self, button):
-        """Implement printing support"""
-        
-        def print_callback(print_operation, context, page_nr):
-            cr = context.get_cairo_context()
-            self.project.print_drawing(cr, page_nr)
-            
-        print_operation = Gtk.PrintOperation()
-        print_operation.connect("draw_page", print_callback)
-        print_operation.set_n_pages(self.project.get_page_nos())
-        cur_page = self.project.get_drawing_model_index(self.project.drawing_model)
-        print_operation.set_current_page(cur_page)
-        print_operation.set_use_full_page(True)
-        print_operation.set_embed_page_setup(True)
-        print_operation.run(Gtk.PrintOperationAction.PRINT_DIALOG, self.window)
 
     def on_saveas(self, button):
         """Save project to file selected by the user"""
@@ -350,6 +334,34 @@ class MainWindow():
             log.info("cancelled: FileChooserAction.OPEN")
         # Destroy dialog
         open_dialog.destroy()
+
+    def on_print(self, button):
+        """Implement printing support"""
+        
+        def print_callback(print_operation, context, page_nr):
+            cr = context.get_cairo_context()
+            self.project.print_drawing(cr, page_nr)
+            
+        print_operation = Gtk.PrintOperation()
+        print_operation.connect("draw_page", print_callback)
+        print_operation.set_n_pages(self.project.get_page_nos())
+        cur_page = self.project.get_drawing_model_index(self.project.drawing_model)
+        print_operation.set_current_page(cur_page)
+        print_operation.set_use_full_page(True)
+        print_operation.set_embed_page_setup(True)
+        print_operation.run(Gtk.PrintOperationAction.PRINT_DIALOG, self.window)
+
+    def on_show_leftpane_clicked(self, widget):
+        if self.stack_toolbar_left.get_visible():
+            self.stack_toolbar_left.hide()
+        else:
+            self.stack_toolbar_left.show()
+
+    def on_show_rightpane_clicked(self, widget):
+        if self.properties_notebook.get_visible():
+            self.properties_notebook.hide()
+        else:
+            self.properties_notebook.show()
         
     def on_export(self, widget):
         """Export project report"""
@@ -900,6 +912,8 @@ class MainWindow():
         self.program_state['window'] = self.window
         self.program_state['drawing_notebook'] = self.drawing_notebook
         self.zoom_display = self.builder.get_object("zoom_display")
+        self.stack_toolbar_left = self.builder.get_object("stack_toolbar_left")
+        self.properties_notebook = self.builder.get_object("properties_notebook")
         
         # Setup element addition toolbar
         self.draw_element_groups = dict()

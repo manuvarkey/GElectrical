@@ -1,5 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-  <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-  <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   fill="currentColor"
+   class="bi bi-clipboard-check"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="clipboard-check.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     id="namedview10"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="46.5625"
+     inkscape:cx="8"
+     inkscape:cy="7.9892617"
+     inkscape:window-width="1846"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <g
+     id="g16836"
+     transform="translate(-300.02048,-682.51965)"
+     inkscape:label="build todo fixme">
+    <title
+       id="title17226">builder-todo</title>
+    <rect
+       style="color:#bebebe;overflow:visible;opacity:0.514644;fill:none;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;marker:none;enable-background:accumulate"
+       id="rect15803"
+       width="16"
+       height="16"
+       x="300.02048"
+       y="682.51965" />
+    <g
+       style="display:inline"
+       inkscape:label="object select selection mode check approve done good active"
+       id="g9445-6"
+       transform="rotate(90,-3.6903365,515.69351)">
+      <title
+         id="title9439-0">selection-mode</title>
+      <path
+         style="color:#000000;fill:#2e3436;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+         d="m 165.79297,196.25 a 1,1 0 0 0 -1.41211,0.0937 1,1 0 0 0 0.0937,1.41211 l 7.19531,6.29687 -2.24414,2.24414 a 1,1 0 0 0 0,1.41407 1,1 0 0 0 1.41602,0 l 3,-3 a 1.0001,1.0001 0 0 0 -0.0488,-1.46094 z"
+         id="path8923-6-6" />
+      <path
+         style="color:#000000;fill:#2e3436;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:26.4;-inkscape-stroke:none"
+         d="m 143,321 c -1.6447,0 -3,1.3553 -3,3 v 8 c 0,1.6447 1.3553,3 3,3 h 8 c 1.6447,0 3,-1.3553 3,-3 v -4 c 0,-0.55228 -0.44772,-1 -1,-1 -0.55228,0 -1,0.44772 -1,1 v 4 c 0,0.5713 -0.4287,1 -1,1 h -8 c -0.5713,0 -1,-0.4287 -1,-1 v -8 c 0,-0.5713 0.4287,-1 1,-1 h 7 c 0.55228,0 1,-0.44772 1,-1 0,-0.55228 -0.44772,-1 -1,-1 z"
+         transform="rotate(-90,97.069489,253.93368)"
+         sodipodi:nodetypes="sssssssssssssssssss"
+         id="path419" />
+    </g>
+  </g>
 </svg>
