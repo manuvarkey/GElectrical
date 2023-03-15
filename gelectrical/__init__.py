@@ -636,6 +636,7 @@ class MainWindow():
         """Zoom in draw view"""
         if self.project.drawing_view.scale <= 2.4:
             self.project.drawing_view.scale += 0.2
+            self.zoom_display.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
             self.project.drawing_view.drawing_area.queue_draw()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached maximum scale).")
@@ -644,6 +645,7 @@ class MainWindow():
         """Zoom out draw view"""
         if self.project.drawing_view.scale >= 0.6:
             self.project.drawing_view.scale -= 0.2
+            self.zoom_display.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
             self.project.drawing_view.drawing_area.queue_draw()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached minimum scale).")
@@ -683,7 +685,7 @@ class MainWindow():
             selected = rounding_combo.get_active_text()
             self.project.renumber_elements(selected)
             self.display_status(misc.INFO, "Elements renumbered")
-            
+
         # Destroy dialog
         dialog_window.destroy()
     
@@ -897,6 +899,7 @@ class MainWindow():
         self.drawing_notebook = self.builder.get_object("drawing_notebook")
         self.program_state['window'] = self.window
         self.program_state['drawing_notebook'] = self.drawing_notebook
+        self.zoom_display = self.builder.get_object("zoom_display")
         
         # Setup element addition toolbar
         self.draw_element_groups = dict()

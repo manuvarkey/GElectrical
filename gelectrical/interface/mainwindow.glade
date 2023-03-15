@@ -20,7 +20,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
 
 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk+" version="3.24"/>
   <!-- interface-license-type gplv3 -->
   <object class="GtkListStore" id="element_icon_store">
     <columns>
@@ -333,13 +333,15 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkToolbar" id="on_run_analysis">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="toolbar-style">icons</property>
+                    <property name="toolbar-style">both-horiz</property>
+                    <property name="icon_size">2</property>
                     <child>
                       <object class="GtkToolButton" id="toolbutton_draw_add_tab">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Open &lt;u&gt;N&lt;/u&gt;ew Sheet</property>
                         <property name="halign">start</property>
+                        <property name="is-important">True</property>
                         <property name="label" translatable="yes">New Tab</property>
                         <property name="use-underline">True</property>
                         <property name="icon-name">tab-new-symbolic</property>
@@ -463,6 +465,23 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <packing>
                         <property name="expand">False</property>
                         <property name="homogeneous">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolItem" id="toolbutton_zoom_display">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel" id="zoom_display">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">160%</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
                       </packing>
                     </child>
                     <child>
@@ -598,6 +617,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Run Analysis</property>
                         <property name="halign">start</property>
+                        <property name="is-important">True</property>
                         <property name="label" translatable="yes">Analyse</property>
                         <property name="use-underline">True</property>
                         <property name="icon-widget">image2</property>
@@ -614,7 +634,8 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Run electrical rules check</property>
                         <property name="halign">start</property>
-                        <property name="label" translatable="yes">Rules</property>
+                        <property name="is-important">True</property>
+                        <property name="label" translatable="yes">Rules check</property>
                         <property name="use-underline">True</property>
                         <property name="icon-widget">image1</property>
                         <signal name="clicked" handler="on_run_rulescheck" swapped="no"/>
@@ -630,6 +651,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Export Drawing</property>
                         <property name="halign">start</property>
+                        <property name="is-important">True</property>
                         <property name="label" translatable="yes">Export</property>
                         <property name="use-underline">True</property>
                         <property name="icon-name">document-save-as-symbolic</property>
@@ -695,6 +717,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="tooltip-markup" translatable="yes">Delete Selected Items</property>
+                        <property name="is-important">True</property>
                         <property name="label" translatable="yes">Delete</property>
                         <property name="use-underline">True</property>
                         <property name="icon-widget">image8</property>

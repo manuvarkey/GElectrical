@@ -598,7 +598,7 @@ class ProjectModel:
                     refs[prefix_code_ref] += 1
                     base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
-        
+        self.drawing_view.refresh()
         yield "Renumber Elements - " + mode
         # Undo action
         for key, ref in changed:
