@@ -952,3 +952,4 @@ class ProjectModel:
         """Refresh display on switching between views"""
         log.info('ProjectModel - on_switch_tab called - ' + str(pagenum))
         self.set_page(pagenum, switch_tab=False)
+        self.program_state['zoom_display_label'].set_label(str(int(self.drawing_view.scale*100)) + '%')

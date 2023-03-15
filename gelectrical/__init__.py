@@ -648,7 +648,7 @@ class MainWindow():
         """Zoom in draw view"""
         if self.project.drawing_view.scale <= 2.4:
             self.project.drawing_view.scale += 0.2
-            self.zoom_display.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
+            self.zoom_display_label.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
             self.project.drawing_view.drawing_area.queue_draw()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached maximum scale).")
@@ -657,7 +657,7 @@ class MainWindow():
         """Zoom out draw view"""
         if self.project.drawing_view.scale >= 0.6:
             self.project.drawing_view.scale -= 0.2
-            self.zoom_display.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
+            self.zoom_display_label.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
             self.project.drawing_view.drawing_area.queue_draw()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached minimum scale).")
@@ -911,9 +911,10 @@ class MainWindow():
         self.drawing_notebook = self.builder.get_object("drawing_notebook")
         self.program_state['window'] = self.window
         self.program_state['drawing_notebook'] = self.drawing_notebook
-        self.zoom_display = self.builder.get_object("zoom_display")
+        self.zoom_display_label = self.builder.get_object("zoom_display_label")
         self.stack_toolbar_left = self.builder.get_object("stack_toolbar_left")
         self.properties_notebook = self.builder.get_object("properties_notebook")
+        self.program_state['zoom_display_label'] = self.zoom_display_label
         
         # Setup element addition toolbar
         self.draw_element_groups = dict()
