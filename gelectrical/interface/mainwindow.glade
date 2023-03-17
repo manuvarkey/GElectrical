@@ -50,6 +50,11 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
     <property name="can-focus">False</property>
     <property name="pixbuf">../icons/clipboard-check.svg</property>
   </object>
+  <object class="GtkImage" id="image10">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/page-new.svg</property>
+  </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
@@ -84,6 +89,11 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="pixbuf">../icons/trash.svg</property>
+  </object>
+  <object class="GtkImage" id="image9">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="pixbuf">../icons/page-remove.svg</property>
   </object>
   <object class="GtkImage" id="image_assembly">
     <property name="visible">True</property>
@@ -342,9 +352,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="tooltip-markup" translatable="yes">Open &lt;u&gt;N&lt;/u&gt;ew Sheet</property>
                         <property name="halign">start</property>
                         <property name="is-important">True</property>
-                        <property name="label" translatable="yes">New Tab</property>
+                        <property name="label" translatable="yes">New Sheet</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">tab-new-symbolic</property>
+                        <property name="icon-widget">image10</property>
                         <signal name="clicked" handler="on_new_tab" swapped="no"/>
                         <accelerator key="n" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
@@ -472,7 +482,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <child>
-                          <object class="GtkLabel" id="zoom_display">
+                          <object class="GtkLabel" id="zoom_display_label">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="label" translatable="yes">160%</property>
@@ -722,6 +732,22 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="use-underline">True</property>
                         <property name="icon-widget">image8</property>
                         <signal name="clicked" handler="on_draw_delete" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="toolbutton_draw_deletetab">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="tooltip-markup" translatable="yes">Remove current page</property>
+                        <property name="is-important">True</property>
+                        <property name="label" translatable="yes">Delete Sheet</property>
+                        <property name="use-underline">True</property>
+                        <property name="icon-widget">image9</property>
+                        <signal name="clicked" handler="on_delete_tab" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1301,7 +1327,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="icon-name">document-new-symbolic</property>
+                <property name="icon-name">window-new-symbolic</property>
               </object>
             </child>
           </object>

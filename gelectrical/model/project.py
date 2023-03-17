@@ -74,6 +74,7 @@ class ProjectModel:
         self.drawing_model = None
         self.drawing_view = None
         self.stack = program_state['stack']
+        self.page_no = 0
         # Analysis varables
         self.status = {}
         self.clear_status()
@@ -246,6 +247,7 @@ class ProjectModel:
                 self.drawing_notebook.set_current_page(slno)
             self.drawing_view.select_page()
             self.update_tabs(slno)
+            self.page_no = slno
                 
     def mark_page(self, slno):
         page = self.drawing_notebook.get_nth_page(slno)
@@ -256,40 +258,23 @@ class ProjectModel:
     
     def update_tabs(self, slno=None):
     
-        def set_label(page, sheet_name, slno, close_button=True):
-            
-            def remove_page_callback(button, slno):
-                self.remove_page(slno)
-                
+        def set_label(page, sheet_name, slno):                
             label_hbox = Gtk.Box()
             page_label = Gtk.Label(sheet_name)
             label_hbox.pack_start(page_label, True, True, 0)
-            if close_button:
-                close_button = Gtk.Button.new_from_icon_name('window-close-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
-                close_button.set_relief(Gtk.ReliefStyle.NONE)
-                close_button.connect("clicked", remove_page_callback, slno)
-                label_hbox.pack_start(close_button, True, True, 0)
             self.drawing_notebook.set_tab_label(page, label_hbox)
             label_hbox.show_all()
             
         if slno:
             page = self.drawing_notebook.get_nth_page(slno)
             sheet_name = self.drawing_models[slno].fields['name']['value']
-            if slno == 0:
-                set_label(page, sheet_name, slno, close_button=False)
-            else:
-                set_label(page, sheet_name, slno)
+            set_label(page, sheet_name, slno)
             
         else:
             for slno in range(0, self.get_page_nos()):
                 page = self.drawing_notebook.get_nth_page(slno)
                 sheet_name = self.drawing_models[slno].fields['name']['value']
-                self.drawing_notebook.set_tab_label_text(page, sheet_name)
                 set_label(page, sheet_name, slno)
-                if slno == 0:
-                    set_label(page, sheet_name, slno, close_button=False)
-                else:
-                    set_label(page, sheet_name, slno)
                 
     def update_title_blocks(self):
         for drawing_model in self.drawing_models:

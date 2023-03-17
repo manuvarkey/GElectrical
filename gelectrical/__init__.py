@@ -498,6 +498,28 @@ class MainWindow():
     
     def on_new_tab(self, button):
         self.project.append_page()
+
+    def on_delete_tab(self, button):
+        slno = self.project.page_no
+        if slno > 0:
+            message = '\nAre you sure you want to delete drawing sheet number {} ?'.format(slno+1)
+            title = 'Confirm delete ...'
+            dialogWindow = Gtk.MessageDialog(self.window,
+                                        Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                        Gtk.MessageType.QUESTION,
+                                        Gtk.ButtonsType.YES_NO,
+                                        message)
+            dialogWindow.set_transient_for(self.window)
+            dialogWindow.set_title(title)
+            dialogWindow.set_default_response(Gtk.ResponseType.NO)
+            dialogWindow.show_all()
+            response = dialogWindow.run()
+            dialogWindow.destroy()
+            if response == Gtk.ResponseType.YES:
+                self.project.remove_page(slno)
+                log.info('MainWindow - remove_page_callback - removed page no ' + str(slno+1))
+        else:
+            self.display_status(misc.INFO, 'Deleting sheet number 1 not permitted.')
         
     def on_edit_loadprofiles(self, button):
         self.project.edit_loadprofiles()
@@ -877,6 +899,7 @@ class MainWindow():
         self.program_state['element_models'][switch.Fuse.code] = switch.Fuse
         self.program_state['element_models'][switch.CircuitBreaker.code] = switch.CircuitBreaker
         self.program_state['element_models'][switch.Contactor.code] = switch.Contactor
+        self.program_state['element_models'][switch.ChangeOver.code] = switch.ChangeOver
         self.program_state['element_models'][busbar.BusBar.code] = busbar.BusBar
         self.program_state['element_models'][grid.Grid.code] = grid.Grid
         self.program_state['element_models'][reference.Reference.code] = reference.Reference

@@ -865,3 +865,116 @@ class Contactor(Switch):
                              # Circle
                              ['ARC', (1,1.5), 0.5, -90, 90, []],
                            ]
+
+
+class ChangeOver(ElementModel):
+    """Generic circuit breaker element"""
+
+    code = 'element_co_switch'
+    name = 'Changeover switch'
+    group = 'Switching Devices'
+    icon = misc.abs_path('icons', 'coswitch.svg')
+
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        ElementModel.__init__(self, cordinates, **kwargs)
+        self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'K?'),
+                       'name':     self.get_field_dict('str', 'Name', '', ''),
+                       'type':    self.get_field_dict('str', 'Type', '', 'AC-23a'),
+                       'poles':   self.get_field_dict('str', 'Poles', '', 'TP'),
+                       'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
+                       'In':      self.get_field_dict('float', 'In', 'A', 63),
+                       'model':  self.get_field_dict('str', 'Model', '', 'Model 1',
+                                                    selection_list=['Model 1', 'Model 2']),
+                       'position':  self.get_field_dict('int', 'Position', '', 1,
+                                                        selection_list=[1,2])}
+        self.text_model = [[(5.5,1), "${poles}, ${ref}", True],
+                           [(5.5,None), "${'%g'%(In)}A, ${type}", True],
+                           [(5.5,None), "${name}", True]]
+        self.calculate_parameters()
+        
+    def set_text_field_value(self, code, value):
+        ElementModel.set_text_field_value(self, code, value)
+        self.calculate_parameters()
+
+    def calculate_parameters(self, init=False):
+        if self.fields['model']['value'] == 'Model 1':
+            self.ports = [[2, 0],
+                        [0, 6],
+                        [4, 6]]
+            if self.fields['position']['value'] == 1:
+                self.schem_model = [ 
+                             ['LINE',(2,0),(2,1.5), []],
+                             ['LINE',(0,4.5),(0,6), []],
+                             ['LINE',(4,4.5),(4,6), []],
+                             ['LINE',(2,2),(0,4), []],
+                             ['LINE',(2,2),(4,4), [5,5], 'thin'],
+                             # Circle
+                             ['CIRCLE', (2,2), 0.5, False, []],
+                             ['CIRCLE', (0,4), 0.5, False, []],
+                             ['CIRCLE', (4,4), 0.5, False, []],
+                           ]
+            else:
+                self.schem_model = [ 
+                             ['LINE',(2,0),(2,1.5), []],
+                             ['LINE',(0,4.5),(0,6), []],
+                             ['LINE',(4,4.5),(4,6), []],
+                             ['LINE',(2,2),(0,4), [5,5], 'thin'],
+                             ['LINE',(2,2),(4,4), []],
+                             # Circle
+                             ['CIRCLE', (2,2), 0.5, False, []],
+                             ['CIRCLE', (0,4), 0.5, False, []],
+                             ['CIRCLE', (4,4), 0.5, False, []],
+                           ]
+        elif self.fields['model']['value'] == 'Model 2':
+            self.ports = [[2, 6],
+                        [0, 0],
+                        [4, 0]]
+            if self.fields['position']['value'] == 1:
+                self.schem_model = [ 
+                             ['LINE',(2,6),(2,4.5), []],
+                             ['LINE',(0,1.5),(0,0), []],
+                             ['LINE',(4,1.5),(4,0), []],
+                             ['LINE',(2,4),(0,2), []],
+                             ['LINE',(2,4),(4,2), [5,5], 'thin'],
+                             # Circle
+                             ['CIRCLE', (2,4), 0.5, False, []],
+                             ['CIRCLE', (0,2), 0.5, False, []],
+                             ['CIRCLE', (4,2), 0.5, False, []],
+                           ]
+            else:
+                self.schem_model = [ 
+                              ['LINE',(2,6),(2,4.5), []],
+                             ['LINE',(0,1.5),(0,0), []],
+                             ['LINE',(4,1.5),(4,0), []],
+                             ['LINE',(2,4),(0,2), [5,5], 'thin'],
+                             ['LINE',(2,4),(4,2), []],
+                             # Circle
+                             ['CIRCLE', (2,4), 0.5, False, []],
+                             ['CIRCLE', (0,2), 0.5, False, []],
+                             ['CIRCLE', (4,2), 0.5, False, []],
+                           ]
+        
+    def get_nodes(self, code):
+        """Return nodes for analysis"""
+        ports = tuple(tuple(x) for x in self.get_ports_global())
+        p0 = code + ':0'
+        p1 = code + ':1'
+        p2 = code + ':2'
+        nodes = ((p0, (ports[0],)),
+                 (p1, (ports[1],)),
+                 (p2, (ports[2],)))
+        return nodes
+        
+    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+        """Return pandapower model for analysis"""
+        p0 = code + ':0'
+        p1 = code + ':1'
+        p2 = code + ':2'
+        power_model = ( ('switch', (p0, p1), {'name': self.fields['ref']['value'],
+                                             'closed': self.fields['position']['value'] == 1,
+                                             'et': 'b'}),
+                        ('switch', (p0, p2), {'name': self.fields['ref']['value'],
+                                             'closed': self.fields['position']['value'] == 2,
+                                             'et': 'b'}))
+        return power_model
