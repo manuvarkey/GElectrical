@@ -67,6 +67,7 @@ class ProtectionViewDialog():
         self.l_models = []
         self.g_models = []
         self.d_models = [] 
+        self.n_models = []
         self.voltages = {}
         self.max_voltage = 0
         
@@ -97,11 +98,17 @@ class ProtectionViewDialog():
                     self.voltages[element.gid] = element.fields['vn_lv_kv']['value']
                 else:
                     self.voltages[element.gid] = element.res_fields['vn_kv']['value']
-        self.max_voltage = max(self.voltages.values())
+        if self.voltages:
+            self.max_voltage = max(self.voltages.values())
+        else:
+            self.max_voltage = 0.415
         
         # Populate prot_models
         for el_no, element in enumerate(self.elements):
-            scale = self.voltages[element.gid]/self.max_voltage if self.max_voltage != 0 and self.voltages[element.gid] != 0 else 1
+            if element.code in (misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES):
+                scale = self.voltages[element.gid]/self.max_voltage if self.max_voltage != 0 and self.voltages[element.gid] != 0 else 1
+            else:
+                scale = 1
             element_ids = []
             if element.code in misc.PROTECTION_ELEMENT_CODES:
                 pcurve_l = element.line_protection_model
@@ -143,6 +150,24 @@ class ProtectionViewDialog():
                             element_ids.append((len(self.prot_models)-1, len(self.d_models)-1, 'dcurve', 1))
                     else:
                         element_ids.append((len(self.prot_models)-1, None, 'dcurve', 0))
+            if element.code == 'element_display_node':
+                if ('ikss_ka_3ph_min' in element.res_fields and 
+                    'ikss_ka_1ph_min' in element.res_fields and 
+                    'ikss_ka_3ph_max' in element.res_fields and 
+                    'ikss_ka_1ph_max' in element.res_fields):
+                    ref = element.fields['ref']['value']
+                    i_min = min(element.res_fields['ikss_ka_3ph_min']['value'], element.res_fields['ikss_ka_1ph_min']['value'])*1000
+                    i_max = max(element.res_fields['ikss_ka_3ph_max']['value'], element.res_fields['ikss_ka_1ph_max']['value'])*1000
+                    model1 = {'mode':misc.GRAPH_DATATYPE_MARKER, 
+                                    'title': 'If min ({})'.format(ref), 
+                                    'xval':[i_min, i_min], 
+                                    'yval':[1e-8, 1e8]}
+                    model2 = {'mode':misc.GRAPH_DATATYPE_MARKER, 
+                                    'title': 'If max ({})'.format(ref), 
+                                    'xval':[i_max, i_max], 
+                                    'yval':[1e-8, 1e8]}
+                    self.n_models.append(model1)    
+                    self.n_models.append(model2)
             self.element_mapping.append(element_ids)
 
         # Setup fieldview and populate fields
@@ -285,11 +310,17 @@ class ProtectionViewDialog():
                     if curve_eval:
                         sub_model_list[sub_model_id] = curve_eval.get_graph_model()[1][g_index]
         # Populate curves
+        # disconnection time vertical line
+        disc_time = self.program_state['project_settings']['Rules Check']['max_disc_time']['value']
+        disc_time_model = [{'mode':misc.GRAPH_DATATYPE_MARKER, 
+                                    'title': 'Max disc. time', 
+                                    'xval':[1e-8, 1e8], 
+                                    'yval':[disc_time, disc_time]}]
         self.graph_database = {}
-        if self.l_models or self.d_models:
-            self.graph_database['Line protection'] = ['Line protection', self.l_models+self.d_models]
-        if self.g_models or self.d_models:
-            self.graph_database['Ground protection'] = ['Ground protection', self.g_models+self.d_models]
+        if self.l_models or self.d_models or self.n_models:
+            self.graph_database['Line protection'] = ['Line protection', self.l_models + self.d_models + disc_time_model + self.n_models]
+        if self.g_models or self.d_models or self.n_models:
+            self.graph_database['Ground protection'] = ['Ground protection', self.g_models + self.d_models + disc_time_model + self.n_models]
 
     def update_graphs(self):
         index = self.combobox_title.get_active()

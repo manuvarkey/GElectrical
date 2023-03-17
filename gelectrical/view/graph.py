@@ -114,6 +114,9 @@ class GraphImage():
                 self.plot.fill(model.xval, model.yval, label=model.title, 
                                 color=color, edgecolor='black',
                                 alpha=0.5, hatch='////')
+            elif model.mode == misc.GRAPH_DATATYPE_MARKER:
+                self.plot.plot(model.xval, model.yval, label=model.title, color=color, 
+                               linestyle='dashed', alpha=0.5)
 
         self.plot.set_title(self.title, fontname=misc.REPORT_FONT_FACE, fontsize=misc.REPORT_FONT_SIZE)
         self.plot.set_xlabel(self.xlabel, fontname=misc.REPORT_FONT_FACE, fontsize=misc.REPORT_FONT_SIZE)
@@ -269,6 +272,9 @@ class GraphView():
                 self.plot.fill(model.xval, model.yval, label=model.title, 
                                 color=color, edgecolor='black',
                                 alpha=0.5, hatch='////')
+            elif model.mode == misc.GRAPH_DATATYPE_MARKER:
+                self.plot.plot(model.xval, model.yval, label=model.title, color=color, 
+                               linestyle='dashed', alpha=0.5)
         # Set legends title and stuff
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
