@@ -349,7 +349,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_add_tab">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Open &lt;u&gt;N&lt;/u&gt;ew Sheet</property>
+                        <property name="tooltip-markup" translatable="yes">Open &lt;u&gt;n&lt;/u&gt;ew sheet</property>
                         <property name="halign">start</property>
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">New Sheet</property>
@@ -378,7 +378,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_wire">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Draw &lt;u&gt;W&lt;/u&gt;ire</property>
+                        <property name="tooltip-markup" translatable="yes">Draw &lt;u&gt;w&lt;/u&gt;ire</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Wire</property>
                         <property name="use-underline">True</property>
@@ -395,7 +395,15 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_group">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Create &lt;u&gt;G&lt;/u&gt;roup</property>
+                        <property name="tooltip-markup" translatable="yes">&lt;b&gt;&lt;u&gt;G&lt;/u&gt;roup selected elements into an assembly&lt;/b&gt;
+
+Assemblies may be used for panels, enclosures or any other logical grouping of elements.
+
+&lt;b&gt;Add new assembly:&lt;/b&gt; 
+Select the elements to be grouped.
+
+&lt;b&gt;Edit existing assembly: &lt;/b&gt;
+Select the new elements to be grouped, existing assembly elements, exisitng assembly.</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Assembly</property>
                         <property name="use-underline">True</property>
@@ -422,7 +430,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_renumber">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Assign automatic numbering for items</property>
+                        <property name="tooltip-markup" translatable="yes">&lt;b&gt;Assign reference numbers to elements&lt;/b&gt;
+
+Reference numbers helps to identify elements. Numbering can be carried out for selected elements only/ new elements only/ for all elements.</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">#</property>
                         <property name="use-underline">True</property>
@@ -438,7 +448,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_linkref">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Link reference</property>
+                        <property name="tooltip-markup" translatable="yes">&lt;b&gt;Link cross reference element&lt;/b&gt;
+
+Cross reference elements allows connecting different parts of the scheme within/ across sheets. Option links the selected cross reference element with other cross reference element(s).</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Link</property>
                         <property name="use-underline">True</property>
@@ -464,13 +476,13 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_zoomin">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Zoom In</property>
+                        <property name="tooltip-markup" translatable="yes">Zoom in</property>
                         <property name="label" translatable="yes">Zoom In</property>
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-in-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -498,13 +510,13 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_zoomout">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Zoom Out</property>
+                        <property name="tooltip-markup" translatable="yes">Zoom out</property>
                         <property name="label" translatable="yes">Zoom Out</property>
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-out-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -525,7 +537,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_copy1">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Cut Items</property>
+                        <property name="tooltip-markup" translatable="yes">Cut elements</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Cut</property>
                         <property name="use-underline">True</property>
@@ -541,7 +553,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_copy">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Copy Items</property>
+                        <property name="tooltip-markup" translatable="yes">Copy elements</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Copy</property>
                         <property name="use-underline">True</property>
@@ -557,7 +569,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_schedule_paste">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Paste Items</property>
+                        <property name="tooltip-markup" translatable="yes">Paste elements</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Paste</property>
                         <property name="use-underline">True</property>
@@ -583,7 +595,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_editloadprofiles">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Edit load profiles</property>
+                        <property name="tooltip-markup" translatable="yes">&lt;b&gt;Add/ edit daily load profiles&lt;/b&gt;
+
+Daily load profiles can be assigned to load elements or static generation elements. This can be used in time series power simulation to model variation of load/ power generation over the day.</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Edit Load Profiles</property>
                         <property name="use-underline">True</property>
@@ -599,7 +613,9 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_protectioncord">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Protection Coordination</property>
+                        <property name="tooltip-markup" translatable="yes">&lt;b&gt;Protection coordination&lt;/b&gt;
+
+Allows viewing and editing element parameters for protection coordination. Select breakers/ fuses, lines, transformers, motors or node elements.</property>
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Protection Coordination</property>
                         <property name="use-underline">True</property>
@@ -625,7 +641,11 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_analyse">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Run Analysis</property>
+                        <property name="tooltip-markup" translatable="yes">&lt;b&gt;Run analysis&lt;/b&gt;
+
+Runs diagnostics on scheme to identify common issues, power flow (with diversity factors/ without diversity factors/ time series), short circuit (symmetric/ line to ground).
+
+Results of the analysis will be displayed in the results tab of the right pane for each element. Results may also be exported to a PDF report.</property>
                         <property name="halign">start</property>
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Analysis</property>
@@ -642,7 +662,13 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_rulescheck">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Run electrical rules check</property>
+                        <property name="tooltip-markup" translatable="yes">&lt;b&gt;Run electrical rules check&lt;/b&gt;
+
+Checks the scheme for violations of common wiring rules like loading limits, protection coordination between elements, automatic disconnection of supply etc.
+
+Powerflow and shortcircuit (symmetric and line to ground) analysis functions should be run before running this module.
+
+Results of the rules check will be displayed in the messages tab of the right pane.</property>
                         <property name="halign">start</property>
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Rules check</property>
@@ -659,7 +685,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_export">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Export Drawing</property>
+                        <property name="tooltip-markup" translatable="yes">Export drawing to PDF</property>
                         <property name="halign">start</property>
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Export</property>
@@ -711,7 +737,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_clear_project">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Clear analysis results</property>
+                        <property name="tooltip-markup" translatable="yes">Clear analysis results and node elements</property>
                         <property name="label" translatable="yes">Clear Analysis</property>
                         <property name="use-underline">True</property>
                         <property name="icon-widget">image7</property>
@@ -726,7 +752,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_delete">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Delete Selected Items</property>
+                        <property name="tooltip-markup" translatable="yes">Delete selected elements</property>
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Delete</property>
                         <property name="use-underline">True</property>
@@ -742,7 +768,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolButton" id="toolbutton_draw_deletetab">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="tooltip-markup" translatable="yes">Remove current page</property>
+                        <property name="tooltip-markup" translatable="yes">Remove current sheet</property>
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Delete Sheet</property>
                         <property name="use-underline">True</property>
@@ -1280,7 +1306,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Open a project</property>
+            <property name="tooltip-text" translatable="yes">Open project file</property>
             <property name="popover">popup_open</property>
             <child>
               <object class="GtkBox">
@@ -1321,7 +1347,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Open New Project</property>
+            <property name="tooltip-text" translatable="yes">Create new project</property>
             <property name="action-name">app.new</property>
             <child>
               <object class="GtkImage">
@@ -1365,7 +1391,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes">Show/ Hide Left Panel</property>
+                <property name="tooltip-text" translatable="yes">Show/ hide left panel</property>
                 <signal name="clicked" handler="on_show_leftpane_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage">
@@ -1386,7 +1412,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes">Show/ Hide Right Panel</property>
+                <property name="tooltip-text" translatable="yes">Show/ hide right panel</property>
                 <signal name="clicked" handler="on_show_rightpane_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage">
@@ -1435,7 +1461,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes">Undo Action</property>
+                <property name="tooltip-text" translatable="yes">Undo action</property>
                 <signal name="clicked" handler="on_undo" swapped="no"/>
                 <child>
                   <object class="GtkImage">
@@ -1457,7 +1483,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes">Redo Action</property>
+                <property name="tooltip-text" translatable="yes">Redo action</property>
                 <signal name="clicked" handler="on_redo" swapped="no"/>
                 <child>
                   <object class="GtkImage">
