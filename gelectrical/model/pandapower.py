@@ -1233,9 +1233,7 @@ class PandaPowerModel:
             val_min = round(min(values_combined), decimal)
             delta = (val_max - val_min)*0.1
             ylimits = (val_min - delta, val_max + delta)
-            title = caption + \
-                ': [{}, {}, {}]'.format(
-                    val_max, val_avg, val_min)
+            title = '[max: {}, avg: {}, min: {}]'.format(val_max, val_avg, val_min)
             model = [{'mode': misc.GRAPH_DATATYPE_PROFILE,
                               'title': caption, 'xval': time_steps, 'yval': values_combined},]
             # Add combined graph
@@ -1287,7 +1285,7 @@ class PandaPowerModel:
                 val_min = round(min(values), decimal)
                 delta = (val_max - val_min)*0.1
                 title = caption + \
-                    ': [{}, {}, {}]'.format(
+                    ': [max: {}, avg: {}, min: {}]'.format(
                         val_max, val_avg, val_min)
                 ylimits_min.append(val_min - delta)
                 ylimits_max.append(val_max + delta)
@@ -1300,7 +1298,7 @@ class PandaPowerModel:
                 maincode += modcode + ','
 
             maintitle = maintitle.strip('\n') if len(
-                data) > 1 else 'max: {}, min: {}, avg: {}'.format(val_max, val_min, val_avg)
+                data) > 1 else '[max: {}, avg: {}, min: {}]'.format(val_max, val_min, val_avg)
             maincaption = maincaption.strip(', ')
             mainunit = mainunit.strip(', ')
             maincode = maincode.strip(',')
