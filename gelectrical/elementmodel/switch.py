@@ -346,9 +346,9 @@ Adds a fuse element used for the protection of circuit elements.
         self.fields['In']['value'] = 63
         self.fields['Isc']['value'] = 50
 
-        self.text_model = [[(3.5,0.5), "${poles}, ${ref}", True],
-                           [(3.5,None), "${'%g'%(In)}A, ${type}", True],
-                           [(3.5,None), "${'%g'%(Isc)}kA", True],
+        self.text_model = [[(3.5,0.5), "${ref}", True],
+                           [(3.5,None), "${'%g'%(In) + 'A' if In_set == 1 else str(round(In*In_set)) + '/' + '%g'%(In) + 'A'}, ${'%g'%(Isc)}kA", True],
+                           [(3.5,None), "${poles}, ${type}", True],
                            [(3.5,None), "${name}", True]]
         self.schem_model_fuse = [ 
                              ['LINE',(1,0),(1,6), []],
@@ -567,9 +567,9 @@ Adds a circuit breaker element used for the protection of circuit elements.
         self.fields['In']['value'] = 63
         self.fields['Isc']['value'] = 10
 
-        self.text_model = [[(3.5,0.5), "${subtype}, ${poles}, ${ref}", True],
-                           [(3.5,None), "${'%g'%(In) + 'A' if In_set == 1 else '%g'%(In) + 'A(' + str(round(In*In_set)) + 'A)'}", True],
-                           [(3.5,None), "${'%g'%(Isc)} kA", True],
+        self.text_model = [[(3.5,0.5), "${ref}", True],
+                           [(3.5,None), "${'%g'%(In) + 'A' if In_set == 1 else str(round(In*In_set)) + '/' + '%g'%(In) + 'A'}, ${'%g'%(Isc)}kA", True],
+                           [(3.5,None), "${poles}, ${subtype}", True],
                            [(3.5,None), "${name}", True]]
         self.schem_model_do = [ 
                              ['LINE',(1,0.5),(1,2), []],
@@ -873,8 +873,9 @@ Adds a contactor element used for on-load switching of loads.
                        'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
                        'In':      self.get_field_dict('float', 'In', 'A', 16),
                        'closed':  self.get_field_dict('bool', 'Closed ?', '', True)}
-        self.text_model = [[(3.5,1), "${poles}, ${ref}", True],
+        self.text_model = [[(3.5,1), "${ref}", True],
                            [(3.5,None), "${'%g'%(In)}A, ${type}", True],
+                           [(3.5,None), "${poles}", True],
                            [(3.5,None), "${name}", True]]
         self.schem_model = [ 
                              ['LINE',(1,0),(1,2), []],
@@ -910,8 +911,9 @@ Adds a changeover switch element used for on-load switching of sources/ loads.
                                                     selection_list=['Model 1', 'Model 2']),
                        'position':  self.get_field_dict('int', 'Position', '', 1,
                                                         selection_list=[1,2])}
-        self.text_model = [[(5.5,1), "${poles}, ${ref}", True],
+        self.text_model = [[(5.5,1), "${ref}", True],
                            [(5.5,None), "${'%g'%(In)}A, ${type}", True],
+                           [(5.5,None), "${poles}", True],
                            [(5.5,None), "${name}", True]]
         self.calculate_parameters()
         
