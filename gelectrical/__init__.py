@@ -982,10 +982,12 @@ class MainWindow():
                                      'status_floating', 'status_inactivate')
         self.draw_properties_listbox = self.builder.get_object("draw_properties_listbox")
         self.properties_view = FieldView(self.window, self.draw_properties_listbox, 
-                                         'status_enable', 'status_inactivate')
+                    'status_enable', 'status_inactivate',
+                    show_graphs=self.program_settings['Interface']['show_graphs']['value'])
         self.draw_result_listbox = self.builder.get_object("draw_result_listbox")
         self.results_view = FieldView(self.window, self.draw_result_listbox, 
-                                      'status_enable', 'status_inactivate')
+                    'status_enable', 'status_inactivate',
+                    show_graphs=self.program_settings['Interface']['show_graphs']['value'])
         self.draw_diagnostic_listbox = self.builder.get_object("draw_diagnostic_listbox")
         self.diagnostics_view = MessageView(self.window, 
                                             self.draw_diagnostic_listbox)

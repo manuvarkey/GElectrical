@@ -1325,6 +1325,7 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
                             'Interface':{'advanced_mode' : get_field_dict('bool', 'Enable advanced mode (Requires restart)', '', False, status_inactivate=False),
+                                         'show_graphs' : get_field_dict('bool', 'Show graphs in field view (Requires restart)', '', True, status_inactivate=False),
                                          'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
                                          'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False),
                                          'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)},

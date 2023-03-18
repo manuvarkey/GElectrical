@@ -35,7 +35,7 @@ log = logging.getLogger(__name__)
 class FieldView:
     """Class for drawing onto Gtk.DrawingArea using cairo"""
     
-    def __init__(self, window, listbox, enable_code, inactivate_code, caption_width=misc.FIELD_CAPTION_WIDTH):
+    def __init__(self, window, listbox, enable_code, inactivate_code, caption_width=misc.FIELD_CAPTION_WIDTH, show_graphs=True):
         self.window = window
         self.listbox = listbox
         self.fields = None
@@ -45,6 +45,7 @@ class FieldView:
         self.enable_code = enable_code
         self.inactivate_code = inactivate_code
         self.caption_width = caption_width
+        self.show_graphs = show_graphs
         
         self.field_rows = []
         self.name_row = None
@@ -342,12 +343,13 @@ class FieldView:
                     
                     data_widget = Gtk.Box()
 
-                    if field['type'] in ('graph'):
-                        graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
-                                          inactivate=field[self.inactivate_code], graph_params=graph_params)
-                    else:
-                        graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
-                                          inactivate=True, graph_params=graph_params)
+                    if self.show_graphs:
+                        if field['type'] in ('graph'):
+                            graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
+                                            inactivate=field[self.inactivate_code], graph_params=graph_params)
+                        else:
+                            graphview = GraphView(data_widget, xlim, ylim, xlabel=xlabel, ylabel=ylabel,
+                                            inactivate=True, graph_params=graph_params)
                     
                     if field['selection_list']:
                         title_widget = Gtk.ComboBoxText.new()
@@ -371,22 +373,23 @@ class FieldView:
                         elif field['type'] == 'data':
                             title, models = self.fields[code]['selection_list'][cur_uid]['graph_model']
 
-                        graphview.clear_plots()
-                        for model in models:
-                            graphview.add_plot(model)
-                        GLib.idle_add(graphview.plot_curves)
-                        
-                        def set_field_graph(code, graphview, index):
-                            graph_uid = graph_uids[index]
-                            (title, models) = self.fields[code]['selection_list'][graph_uid]
-                            self.set_field(code, graph_uid)
+                        if self.show_graphs:
                             graphview.clear_plots()
                             for model in models:
                                 graphview.add_plot(model)
-                            graphview.model.title = text
                             GLib.idle_add(graphview.plot_curves)
-                            
-                        title_widget.connect("changed", activate_callback_graphlist, set_field_graph, graphview, code)
+                        
+                            def set_field_graph(code, graphview, index):
+                                graph_uid = graph_uids[index]
+                                (title, models) = self.fields[code]['selection_list'][graph_uid]
+                                self.set_field(code, graph_uid)
+                                graphview.clear_plots()
+                                for model in models:
+                                    graphview.add_plot(model)
+                                graphview.model.title = text
+                                GLib.idle_add(graphview.plot_curves)
+                                
+                            title_widget.connect("changed", activate_callback_graphlist, set_field_graph, graphview, code)
                     else:
                         # Load graph models
                         if field['type'] == 'graph':
@@ -394,9 +397,10 @@ class FieldView:
                         elif field['type'] == 'data':
                             title, models = field['value']['graph_model']
 
-                        for model in models:
-                            graphview.add_plot(model)
-                        GLib.idle_add(graphview.plot_curves)
+                        if self.show_graphs:
+                            for model in models:
+                                graphview.add_plot(model)
+                            GLib.idle_add(graphview.plot_curves)
                         title_widget = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
                         text_buffer = Gtk.TextBuffer()
                         text_buffer.set_text(title)
@@ -413,7 +417,8 @@ class FieldView:
                                 def set_title(code, text):
                                     field = self.fields[code]
                                     field['value'][0][0] = text
-                                    graphview.model.title = text
+                                    if self.show_graphs:
+                                        graphview.model.title = text
                                 edit_title_widget = Gtk.Entry()
                                 edit_title_widget.set_text(title)
                                 edit_title_widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
