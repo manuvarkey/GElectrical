@@ -33,6 +33,10 @@ class Impedance(ElementModel):
     name = 'Impedance'
     group = 'Components'
     icon = misc.abs_path('icons', 'impedance.svg')
+    tooltip = """<b>Impedance</b>
+
+Creates a per unit impedance element connected in series with other elements.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -102,6 +106,10 @@ class Inductance(Impedance):
     name = 'Inductance'
     group = 'Components'
     icon = misc.abs_path('icons', 'inductance.svg')
+    tooltip = """<b>Inductance</b>
+
+Creates a per unit inductance element connected in series with other elements.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

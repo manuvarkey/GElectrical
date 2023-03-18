@@ -32,6 +32,13 @@ class BusBar(ElementModel):
     name = 'Bus Bar'
     group = 'Components'
     icon = misc.abs_path('icons', 'busbar.svg')
+    tooltip = """<b>Bus</b>
+
+Busses are the nodes of the network that all other elements connect to. Number of connections to the bus can be modified as per requirement.
+
+For powerflow with diversity analysis, the diversity factors are defined at bus elements.
+"""
+
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

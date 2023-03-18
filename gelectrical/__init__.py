@@ -958,6 +958,7 @@ class MainWindow():
             name = model.name
             group = model.group
             icon_path = model.icon
+            tooltip = model.tooltip
             if group and name and icon_path:
                 icon = Gtk.Image.new_from_file(icon_path)
                 icon.set_size_request(40, 40)
@@ -969,6 +970,7 @@ class MainWindow():
                 row.props.name = code
                 row.set_activatable(True)
                 row.add(hbox)
+                row.set_tooltip_markup(tooltip)
                 self.draw_element_groups[code] = group
                 self.draw_element_names[code] = name
                 self.draw_element_listbox.add(row)

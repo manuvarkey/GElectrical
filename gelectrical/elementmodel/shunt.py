@@ -33,6 +33,10 @@ class Shunt(ElementModel):
     name = 'Shunt'
     group = 'Loads'
     icon = misc.abs_path('icons', 'shunt.svg')
+    tooltip = """<b>Shunt</b>
+
+Creates a shunt element at the selected node.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -98,6 +102,10 @@ class ShuntCapacitor(Shunt):
     name = 'Shunt Capacitor'
     group = 'Loads'
     icon = misc.abs_path('icons', 'shuntcap.svg')
+    tooltip = """<b>Shunt Capacitor</b>
+
+Creates a shunt capacitor element at the selected node.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

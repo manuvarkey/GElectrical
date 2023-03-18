@@ -35,6 +35,12 @@ class Switch(ElementModel):
     name = 'Switch'
     group = 'Switching Devices'
     icon = misc.abs_path('icons', 'switch.svg')
+    tooltip = """<b>Switch</b>
+
+Adds a generic switch element.
+    
+Two elements that are connected through a closed switche are fused in the power flow if the switch is closed or separated if the switch is open.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -303,6 +309,10 @@ class Fuse(ProtectionDevice):
     name = 'Fuse'
     group = 'Switching Devices'
     icon = misc.abs_path('icons', 'fuse.svg')
+    tooltip = """<b>Fuse</b>
+
+Adds a fuse element used for the protection of circuit elements.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -499,6 +509,10 @@ class CircuitBreaker(ProtectionDevice):
     name = 'Circuit Breaker'
     group = 'Switching Devices'
     icon = misc.abs_path('icons', 'circuitbreaker.svg')
+    tooltip = """<b>Circuit Breaker</b>
+
+Adds a circuit breaker element used for the protection of circuit elements.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -842,6 +856,10 @@ class Contactor(Switch):
     name = 'Contactor'
     group = 'Switching Devices'
     icon = misc.abs_path('icons', 'contactor.svg')
+    tooltip = """<b>Contactor</b>
+
+Adds a contactor element used for on-load switching of loads.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -874,6 +892,10 @@ class ChangeOver(ElementModel):
     name = 'Changeover switch'
     group = 'Switching Devices'
     icon = misc.abs_path('icons', 'coswitch.svg')
+    tooltip = """<b>Changeover switch</b>
+
+Adds a changeover switch element used for on-load switching of sources/ loads.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

@@ -33,6 +33,10 @@ class Transformer(ElementModel):
     name = 'Transformer'
     group = 'Transformers'
     icon = misc.abs_path('icons', 'transformer.svg')
+    tooltip = """<b>Two-winding Transformer</b>
+
+Creates a two-winding transformer.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -170,6 +174,10 @@ class Transformer3w(ElementModel):
     name = '3W Transformer'
     group = 'Transformers'
     icon = misc.abs_path('icons', 'transformer3w.svg')
+    tooltip = """<b>Three-winding Transformer</b>
+
+Creates a three-winding transformer.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

@@ -32,6 +32,12 @@ class Grid(ElementModel):
     name = 'External Grid'
     group = 'Sources'
     icon = misc.abs_path('icons', 'grid.svg')
+    tooltip = """<b>External Grid</b>
+
+Creates an external grid connection.
+
+External grids represent the higher level power grid connection and are modelled as the slack bus in the power flow calculation.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

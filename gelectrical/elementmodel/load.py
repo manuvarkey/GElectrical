@@ -33,6 +33,10 @@ class Load(ElementModel):
     name = 'Load 3ph'
     group = 'Loads'
     icon = misc.abs_path('icons', 'load.svg')
+    tooltip = """<b>Load 3ph</b>
+
+Creates a generic three phase load element.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -102,6 +106,10 @@ class AsymmetricLoad(ElementModel):
     name = 'Load 3ph Asymmetric'
     group = 'Loads'
     icon = misc.abs_path('icons', 'load.svg')
+    tooltip = """<b>Load 3ph Asymmetric</b>
+
+Creates a generic three phase assymetric load element.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -180,6 +188,10 @@ class SinglePhaseLoad(Load):
     name = 'Load 1ph'
     group = 'Loads'
     icon = misc.abs_path('icons', 'load.svg')
+    tooltip = """<b>Load 1ph</b>
+
+Creates a generic single phase load element.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -278,6 +290,10 @@ class Motor3ph(Load):
     name = 'Motor 3ph'
     group = 'Loads'
     icon = misc.abs_path('icons', 'motor.svg')
+    tooltip = """<b>Motor 3ph</b>
+
+Creates a generic three phase motor element.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -384,6 +400,10 @@ class Motor1ph(SinglePhaseLoad):
     name = 'Motor 1ph'
     group = 'Loads'
     icon = misc.abs_path('icons', 'motor.svg')
+    tooltip = """<b>Motor 1ph</b>
+
+Creates a generic single phase motor element.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

@@ -32,6 +32,10 @@ class Ward(ElementModel):
     name = 'Ward Equivalent'
     group = 'Loads'
     icon = misc.abs_path('icons', 'ward.svg')
+    tooltip = """<b>Ward Equivalent</b>
+
+A ward equivalent is a combination of an impedance load and a PQ load.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -99,6 +103,10 @@ class XWard(ElementModel):
     name = 'XWard Equivalent'
     group = 'Loads'
     icon = misc.abs_path('icons', 'ward.svg')
+    tooltip = """<b>Extended Ward Equivalent</b>
+
+An extended ward equivalent is a combination of an impedance load, a PQ load and a voltage source with an internal impedance.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

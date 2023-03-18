@@ -41,6 +41,12 @@ class Reference(ElementModel):
     name = 'Cross Reference'
     group = 'Miscellaneous'
     icon = misc.abs_path('icons', 'reference.svg')
+    tooltip = """<b>Cross Reference</b>
+
+Cross reference elements allows connecting different parts of the scheme within/ across sheets.
+
+Use the <b>Link</b> toolbar function to link cross reference elements.
+"""
 
     def __init__(self, **kwargs):
         # Global
@@ -99,6 +105,12 @@ class ReferenceBox(Reference):
     name = 'Cross Reference'
     group = 'Miscellaneous'
     icon = misc.abs_path('icons', 'reference_box.svg')
+    tooltip = """<b>Cross Reference</b>
+
+Cross reference elements allows connecting different parts of the scheme within/ across sheets.
+
+Use the <b>Link</b> toolbar function to link cross reference elements.
+"""
 
     def __init__(self, **kwargs):
         # Global

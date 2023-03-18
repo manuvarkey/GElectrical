@@ -35,6 +35,7 @@ log = logging.getLogger(__name__)
 
 class ElementModel:
     """Base class for all drawing elements"""
+    tooltip = ''
     
     def __init__(self, cordinates=(0,0), **kwargs):
         # Data

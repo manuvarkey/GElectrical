@@ -32,6 +32,12 @@ class Generator(ElementModel):
     name = 'Generator'
     group = 'Sources'
     icon = misc.abs_path('icons', 'generator.svg')
+    tooltip = """<b>Generator</b>
+
+Generators are modelled as voltage controlled PV nodes, with input parameters active power and a voltage set point. 
+
+If you want to model a generator as PQ load with fixed reactive power and variable voltage, please use a static generator instead.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -103,6 +109,12 @@ class StaticGenerator(ElementModel):
     name = 'Static Generator 3ph'
     group = 'Sources'
     icon = misc.abs_path('icons', 'generator.svg')
+    tooltip = """<b>Static Generator</b>
+
+Static generators are modelled as positive and constant PQ power. This element is used to model generators with a constant active and reactive power feed-in. 
+
+If you want to model a voltage controlled generator, use the generator element instead.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -171,6 +183,10 @@ class SinglePhaseStaticGenerator(ElementModel):
     name = 'Static Generator 1ph'
     group = 'Sources'
     icon = misc.abs_path('icons', 'generator.svg')
+    tooltip = """<b>Asymmetric Static Generator</b>
+
+Static generators are modelled as positive and constant PQ power. This element is used to model generators with a constant active and reactive power feed-in. 
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global

@@ -33,6 +33,12 @@ class Line(ElementModel):
     name = 'Line'
     group = 'Components'
     icon = misc.abs_path('icons', 'line.svg')
+    tooltip = """<b>Line</b>
+
+Creates a generic line element.
+
+Use this element for MV/ HV cables and overhead lines if the parameters of the lines are known. 
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -221,6 +227,10 @@ class LTCableIEC(Line):
     name = 'LV Cable (IEC)'
     group = 'Components'
     icon = misc.abs_path('icons', 'line.svg')
+    tooltip = """<b>LV Cable (IEC)</b>
+
+Creates a low voltage cable element. The parameters of the line are evaluated as per IEC standards.
+"""
         
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
@@ -857,6 +867,12 @@ class LTCableCustom(Line):
     name = 'Line (Custom Geometry)'
     group = 'Components'
     icon = misc.abs_path('icons', 'line.svg')
+    tooltip = """<b>Line (Custom Geometry)</b>
+
+Creates a line element of custom geometry. The parameters of the line are evaluated from the line geometry.
+
+Use this element for overhead lines where parameters of the line are not known but geometry is known.
+"""
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
