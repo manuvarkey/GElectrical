@@ -159,11 +159,11 @@ class ProtectionViewDialog():
                     i_min = min(element.res_fields['ikss_ka_3ph_min']['value'], element.res_fields['ikss_ka_1ph_min']['value'])*1000
                     i_max = max(element.res_fields['ikss_ka_3ph_max']['value'], element.res_fields['ikss_ka_1ph_max']['value'])*1000
                     model1 = {'mode':misc.GRAPH_DATATYPE_MARKER, 
-                                    'title': 'If min ({})'.format(ref), 
+                                    'title': 'If min ({}) = {:0.1f} kA'.format(ref, i_min/1000), 
                                     'xval':[i_min, i_min], 
                                     'yval':[1e-8, 1e8]}
                     model2 = {'mode':misc.GRAPH_DATATYPE_MARKER, 
-                                    'title': 'If max ({})'.format(ref), 
+                                    'title': 'If max ({}) = {:0.1f} kA'.format(ref, i_max/1000),
                                     'xval':[i_max, i_max], 
                                     'yval':[1e-8, 1e8]}
                     self.n_models.append(model1)    
@@ -313,7 +313,7 @@ class ProtectionViewDialog():
         # disconnection time vertical line
         disc_time = self.program_state['project_settings']['Rules Check']['max_disc_time']['value']
         disc_time_model = [{'mode':misc.GRAPH_DATATYPE_MARKER, 
-                                    'title': 'Max disc. time', 
+                                    'title': 'Max disc. time = {} s'.format(disc_time), 
                                     'xval':[1e-8, 1e8], 
                                     'yval':[disc_time, disc_time]}]
         self.graph_database = {}
