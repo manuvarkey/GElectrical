@@ -373,23 +373,25 @@ class FieldView:
                         elif field['type'] == 'data':
                             title, models = self.fields[code]['selection_list'][cur_uid]['graph_model']
 
-                        if self.show_graphs:
-                            graphview.clear_plots()
-                            for model in models:
-                                graphview.add_plot(model)
-                            GLib.idle_add(graphview.plot_curves)
-                        
-                            def set_field_graph(code, graphview, index):
-                                graph_uid = graph_uids[index]
-                                (title, models) = self.fields[code]['selection_list'][graph_uid]
-                                self.set_field(code, graph_uid)
+                        def set_field_graph(code, graphview, index):
+                            graph_uid = graph_uids[index]
+                            (title, models) = self.fields[code]['selection_list'][graph_uid]
+                            self.set_field(code, graph_uid)
+                            if graphview:
                                 graphview.clear_plots()
                                 for model in models:
                                     graphview.add_plot(model)
                                 graphview.model.title = text
                                 GLib.idle_add(graphview.plot_curves)
-                                
+
+                        if self.show_graphs:
+                            graphview.clear_plots()
+                            for model in models:
+                                graphview.add_plot(model)
+                            GLib.idle_add(graphview.plot_curves)
                             title_widget.connect("changed", activate_callback_graphlist, set_field_graph, graphview, code)
+                        else:
+                            title_widget.connect("changed", activate_callback_graphlist, set_field_graph, None, code)
                     else:
                         # Load graph models
                         if field['type'] == 'graph':
