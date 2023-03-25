@@ -40,7 +40,7 @@ Creates a generic line element.
 Use this element for MV/ HV cables and overhead lines if the parameters of the lines are known. 
 """
 
-    def __init__(self, cordinates=(0,0), **kwargs):
+    def __init__(self, cordinates=(0,0), calculate=True, **kwargs):
         # Global
         ElementModel.__init__(self, cordinates, **kwargs)
         self.database_path = misc.open_library('line.csv')
@@ -106,7 +106,8 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                            [(3,None), "${parallel}#${designation}", True],
                            [(3,None), "${length_km}km", True],
                            [(3,None), "${name}", True]]
-        self.calculate_damage_curve()
+        if calculate:
+            self.calculate_damage_curve()
     
     def render_element(self, context):
         """Render element to context"""
@@ -1146,3 +1147,122 @@ Use this element for overhead lines where parameters of the line are not known b
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000, 3)
 
         self.calculate_damage_curve()
+
+
+class BusTrunking(Line):
+    """Cable element"""
+
+    code = 'element_line_bus'
+    name = 'Bus Trunking'
+    group = 'Components'
+    icon = misc.abs_path('icons', 'line_bus.svg')
+    tooltip = """<b>Bus Trunking</b>
+
+Creates a bus trunking element with known parameters.
+"""
+
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        Line.__init__(self, cordinates, calculate=False, **kwargs)
+        self.database_path = misc.open_library('line_busbar.csv')
+        # Modify existing fields
+        self.fields['conductor_material']['status_enable'] = False
+        self.fields['insulation_material']['status_enable'] = False
+        self.fields['c_nf_per_km']['status_enable'] = False
+        self.fields['g_us_per_km']['status_enable'] = False
+        self.fields['c0g_nf_per_km']['status_enable'] = False
+        self.fields['c0n_nf_per_km']['status_enable'] = False
+        self.fields['phase_sc_current_rating']['status_enable'] = False
+        self.fields['cpe_sc_current_rating']['status_enable'] = False
+        self.fields['parallel']['status_enable'] = False
+        self.fields['type']['status_enable'] = False
+        self.fields['type']['value'] = 'Under Ground'
+
+        self.fields['r0g_ohm_per_km']['status_inactivate'] = True
+        self.fields['x0g_ohm_per_km']['status_inactivate'] = True
+        self.fields['r0n_ohm_per_km']['status_inactivate'] = True
+        self.fields['x0n_ohm_per_km']['status_inactivate'] = True
+
+        self.fields['endtemp_degree']['value'] = 155
+        self.fields['r_ohm_per_km']['alter_structure'] = True
+        self.fields['x_ohm_per_km']['alter_structure'] = True
+        # New fields
+        self.fields['r_n_ohm_per_km'] = self.get_field_dict('float', 'Rn', 'Ohm/km', 0.1,
+                                                          alter_structure=True)
+        self.fields['x_n_ohm_per_km'] = self.get_field_dict('float', 'Xn', 'Ohm/km', 0.1,
+                                                          alter_structure=True)
+        self.fields['r_pe_ohm_per_km'] = self.get_field_dict('float', 'Rpe', 'Ohm/km', 0.1,
+                                                          alter_structure=True)
+        self.fields['x_p_pe_ohm_per_km'] = self.get_field_dict('float', 'Xp-pe', 'Ohm/km', 0.5,
+                                                          alter_structure=True)
+        self.fields['i_cw'] = self.get_field_dict('float', 'Icw (1s)', 'kA', 1,
+                                                          alter_structure=True)
+        self.fields['i_pk'] = self.get_field_dict('float', 'Ipk', 'kA', 2,
+                                                          alter_structure=True)
+        self.text_model = [[(4,1), "${ref}", True],
+                           [(4,None), "${designation}", True],
+                           [(4,None), "${length_km}km", True],
+                           [(4,None), "${name}", True]]
+        self.calculate_parameters()
+                
+    def calculate_parameters(self):
+        r_1 = self.fields['r_ohm_per_km']['value']
+        x_1 = self.fields['x_ohm_per_km']['value']
+        r_n_1 = self.fields['r_n_ohm_per_km']['value']
+        x_n_1 = self.fields['x_n_ohm_per_km']['value']
+        r_pe = self.fields['r_pe_ohm_per_km']['value']
+        x_p_pe = self.fields['x_p_pe_ohm_per_km']['value']
+        r_0n = r_1 + 3*r_n_1
+        x_0n = x_1 + 3*x_n_1
+        r_0 = r_1 + 3*r_pe
+        x_0 = x_1 + 3*(x_p_pe - x_1)
+        # Update fields
+        self.fields['r0n_ohm_per_km']['value'] = round(r_0n, 3)
+        self.fields['x0n_ohm_per_km']['value'] = round(x_0n, 3)
+        self.fields['r0g_ohm_per_km']['value'] = round(r_0, 3)
+        self.fields['x0g_ohm_per_km']['value'] = round(x_0, 3)
+        self.fields['phase_sc_current_rating']['value'] = self.fields['i_pk']['value']
+        self.fields['cpe_sc_current_rating']['value'] = self.fields['i_pk']['value']
+
+        self.calculate_damage_curve()
+
+    def calculate_damage_curve(self):
+        # Damage curve
+        title = (self.fields['ref']['value'])
+        i_n = self.fields['max_i_ka']['value']*1000 * self.fields['df']['value'] * self.fields['parallel']['value']
+        i_z = i_n*1.45
+        i_cw = self.fields['i_cw']['value']*1000 * self.fields['parallel']['value']
+        i_pk = self.fields['i_pk']['value']*1000 * self.fields['parallel']['value']
+        curve_u = [('point', i_z, 3600),
+                    ('point', i_cw/math.sqrt(10), 10),
+                    #('point', i_cw, 1),
+                    ('point', i_pk, i_cw**2/i_pk**2),
+                    ('point', i_pk, 0.01)]
+        curve_l = []
+        param = {}
+        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
+
+
+    def render_element(self, context):
+        """Render element to context"""
+        # Preprocessing
+        self.schem_model = [ 
+                            ['LINE',(2,0),(2,8), []],
+                            # Symbol
+                            ['LINE',(1.5,2),(1.5,6), [], 'thin'],
+                            ['LINE',(1.5,2),(1,1.5), [], 'thin'],
+                            ['LINE',(1,6.5),(1.5,6), [], 'thin'],
+                            ['LINE',(2.5,2),(2.5,6), [], 'thin'],
+                            ['LINE',(2.5,2),(3,1.5), [], 'thin'],
+                            ['LINE',(3,6.5),(2.5,6), [], 'thin'],
+                        ]
+        # Render
+        if self.fields['in_service']['value']:
+            self.render_model(context, self.schem_model)
+            self.render_text(context, self.text_model)
+        else:
+            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+        # Post processing
+        self.modify_extends()
