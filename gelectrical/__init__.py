@@ -1068,6 +1068,10 @@ class MainApp(Gtk.Application):
         action.connect("activate", self.on_help)
         self.add_action(action)
 
+        action = Gio.SimpleAction.new("keyboardshortcuts", None)
+        action.connect("activate", self.on_keyboardshortcuts)
+        self.add_action(action)
+
         action = Gio.SimpleAction.new("about", None)
         action.connect("activate", self.on_about)
         self.add_action(action)
@@ -1112,9 +1116,9 @@ class MainApp(Gtk.Application):
         """Show about dialog"""
         log.info('MainApp - Show About window')
         # Setup about dialog
-        self.builder = Gtk.Builder()
-        self.builder.add_from_file(misc.abs_path("interface", "aboutdialog.glade"))
-        self.about_dialog = self.builder.get_object("aboutdialog")
+        self.about_builder = Gtk.Builder()
+        self.about_builder.add_from_file(misc.abs_path("interface", "aboutdialog.glade"))
+        self.about_dialog = self.about_builder.get_object("aboutdialog")
         self.about_dialog.set_transient_for(self.get_active_window())
         self.about_dialog.set_modal(True)
         self.about_dialog.run()
@@ -1122,9 +1126,20 @@ class MainApp(Gtk.Application):
         
     def on_help(self, action, param):
         """Launch help file"""
-        log.info('onHelpClick - Launch Help file')
+        log.info('MainApp - Launch Help file')
         misc.open_file('https://github.com/manuvarkey/GElectrical', abs=False)
-        
+
+    def on_keyboardshortcuts(self, action, param):
+        """Launch shortcuts window"""
+        log.info('MainApp - Launch shortcut window')
+        self.shortcut_builder = Gtk.Builder()
+        self.shortcut_builder.add_from_file(misc.abs_path("interface", "shortcuts-overlay.ui"))
+        self.shortcuts_dialog = self.shortcut_builder.get_object("shortcuts_overlay")
+        self.shortcuts_dialog.set_transient_for(self.get_active_window())
+        self.shortcuts_dialog.set_modal(True)
+        self.shortcuts_dialog.show_all()
+        self.shortcuts_dialog.props.section_name = 'shortcuts'
+
     def on_new(self, action, param):
         log.info('MainApp - Raise new window')
         self.do_activate()
