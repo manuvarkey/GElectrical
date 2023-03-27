@@ -59,6 +59,7 @@ Two elements that are connected through a closed switche are fused in the power 
                              ['LINE',(1,4),(2.5,2), []],
                              ['LINE',(1,4),(1,6), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -151,6 +152,7 @@ class ProtectionDevice(Switch):
                                                     'TIME IN SECONDS', {})
         self.line_protection_model = None
         self.ground_protection_model = None
+        self.assign_tootltips()
 
     def get_line_protection_model(self):
         curve_u = []
@@ -366,6 +368,7 @@ Adds a fuse element used for the protection of circuit elements.
                              ['RECT', (0.5,6), 1, 3, False, []]
                            ]
         self.calculate_parameters(init=True)
+        self.assign_tootltips()
 
     def render_element(self, context):
         """Render element to context"""
@@ -612,6 +615,7 @@ Adds a circuit breaker element used for the protection of circuit elements.
                              ['LINE',(3.1,3.7),(2.8,4.1), [], 'thin'],
                            ]
         self.calculate_parameters(init=True)
+        self.assign_tootltips()
 
     def render_element(self, context):
         """Render element to context"""
@@ -884,6 +888,7 @@ Adds a contactor element used for on-load switching of loads.
                              # Circle
                              ['ARC', (1,1.5), 0.5, -90, 90, []],
                            ]
+        self.assign_tootltips()
 
 
 class ChangeOver(ElementModel):
@@ -916,6 +921,7 @@ Adds a changeover switch element used for on-load switching of sources/ loads.
                            [(5.5,None), "${poles}", True],
                            [(5.5,None), "${name}", True]]
         self.calculate_parameters()
+        self.assign_tootltips()
         
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)

@@ -62,6 +62,7 @@ Creates a per unit impedance element connected in series with other elements.
                            [(3,None), "${rft_pu}+j${xft_pu}pu", True],
                            [(3,None), "${sn_kva}kVA", True],
                            [(3,None), "${name}", True]]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -137,3 +138,4 @@ Creates a per unit inductance element connected in series with other elements.
                            [(3.5,None), "j${xft_pu}pu", True],
                            [(3.5,None), "${sn_kva}kVA", True],
                            [(3.5,None), "${name}", True]]
+        self.assign_tootltips()

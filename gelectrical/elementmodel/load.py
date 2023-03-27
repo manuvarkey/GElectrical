@@ -61,6 +61,7 @@ Creates a generic three phase load element.
                              ['LINE',(0.5,5),(1,8), []],
                              ['LINE',(1.5,5),(1,8), []]
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -139,6 +140,7 @@ Creates a generic three phase assymetric load element.
                              ['LINE',(0.5,5),(1,8), []],
                              ['LINE',(1.5,5),(1,8), []]
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -217,6 +219,7 @@ Creates a generic single phase load element.
                              ['LINE',(0.5,5),(1,8), []],
                              ['LINE',(1.5,5),(1,8), []]
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -331,6 +334,7 @@ Creates a generic three phase motor element.
                            ]
         self.damage_model = None
         self.calculate_parameters()
+        self.assign_tootltips()
 
     def set_text_field_value(self, code, value):
         Load.set_text_field_value(self, code, value)
@@ -414,7 +418,7 @@ Creates a generic single phase motor element.
         self.fields['sn_kva']['status_enable'] = False
         self.fields['mode']['status_enable'] = False
         self.fields['ref'] = self.get_field_dict('str', 'Reference', '', 'M?')
-        self.fields.update({'p_kw'  : self.get_field_dict('float', 'P', 'kW', 1, alter_structure=True),
+        self.fields.update({'p_kw'  : self.get_field_dict('float', 'Mechanical rated power', 'kW', 1, alter_structure=True),
                             'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85, alter_structure=True),
                             'k'     : self.get_field_dict('float', 'Isc/In', '', 5, alter_structure=True),
                             'dcurve': self.get_field_dict('data', 'Damage curve', '', None)})
@@ -440,6 +444,7 @@ Creates a generic single phase motor element.
                              ['LINE',(2,0),(2,2), []],
                            ]
         self.calculate_parameters()
+        self.assign_tootltips()
 
     def set_text_field_value(self, code, value):
         Load.set_text_field_value(self, code, value)

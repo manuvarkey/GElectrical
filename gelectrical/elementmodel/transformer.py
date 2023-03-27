@@ -92,6 +92,7 @@ Creates a two-winding transformer.
                              ['LINE',(2,8.5),(2,10), []],
                            ]
         self.calculate_parameters(init=True)
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -225,6 +226,7 @@ Creates a three-winding transformer.
                              ['LINE',(2,8.5),(2,10), []],
                              ['LINE',(6,8.5),(6,10), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""

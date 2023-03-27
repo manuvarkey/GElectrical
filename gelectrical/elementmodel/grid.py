@@ -73,6 +73,7 @@ External grids represent the higher level power grid connection and are modelled
                              # Connect line
                              ['LINE',(2,4),(2,6), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""

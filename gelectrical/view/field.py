@@ -218,6 +218,7 @@ class FieldView:
         for code, field in self.fields.items():
             if field[self.enable_code]:
                 row = Gtk.ListBoxRow()
+                row.set_tooltip_markup(field['tooltip'])
                 data_widget = None
                 # Create widgets
                 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)

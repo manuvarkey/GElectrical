@@ -60,6 +60,7 @@ A ward equivalent is a combination of an impedance load and a PQ load.
                              ['LINE',(0.5,7.5),(1.5,7.5), []],
                              ['LINE',(0.75,8),(1.25,8), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -134,6 +135,7 @@ An extended ward equivalent is a combination of an impedance load, a PQ load and
                              ['LINE',(0.5,7.5),(1.5,7.5), []],
                              ['LINE',(0.75,8),(1.25,8), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""

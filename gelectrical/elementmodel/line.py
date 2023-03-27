@@ -108,6 +108,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                            [(3,None), "${name}", True]]
         if calculate:
             self.calculate_damage_curve()
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -545,6 +546,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
         self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
         self.calculate_parameters()
+        self.assign_tootltips()
         
     def render_element(self, context):
         """Render element to context"""
@@ -953,6 +955,7 @@ Use this element for overhead lines where parameters of the line are not known b
         self.fields['user_df'] = self.get_field_dict(
             'float', 'Additional DF', '', 1, alter_structure=True)
         self.calculate_parameters()
+        self.assign_tootltips()
         
     def set_text_field_value(self, code, value):
         if self.fields and code in self.fields:
@@ -1204,6 +1207,7 @@ Creates a bus trunking element with known parameters.
                            [(4,None), "${length_km}km", True],
                            [(4,None), "${name}", True]]
         self.calculate_parameters()
+        self.assign_tootltips()
                 
     def calculate_parameters(self):
         r_1 = self.fields['r_ohm_per_km']['value']

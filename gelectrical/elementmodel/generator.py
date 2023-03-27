@@ -53,7 +53,7 @@ If you want to model a generator as PQ load with fixed reactive power and variab
                        'sn_mva':    self.get_field_dict('float', 'Sn', 'MVA', 1),
                        'cos_phi':    self.get_field_dict('float', 'PF', '', 0.8),
                        'xdss_pu':      self.get_field_dict('float', 'Xdss', 'pu', 0.12),
-                       'rdss_ohm':      self.get_field_dict('float', 'Rdss', 'pu', 0.01),
+                       'rdss_ohm':      self.get_field_dict('float', 'Rdss', 'Ohm', 0),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = [[(5,0), "${name}, ${ref}", True],
                            [(5,None), "${sn_mva}MVA, ${cos_phi}pf", True],
@@ -66,6 +66,7 @@ If you want to model a generator as PQ load with fixed reactive power and variab
                              # Connecting line
                              ['LINE',(2,4),(2,6), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -140,6 +141,7 @@ If you want to model a voltage controlled generator, use the generator element i
                              # Connecting line
                              ['LINE',(2,4),(2,6), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -214,6 +216,7 @@ Static generators are modelled as positive and constant PQ power. This element i
                              # Connecting line
                              ['LINE',(2,4),(2,6), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -303,6 +306,7 @@ class Motor(StaticGenerator):
                              # Connecting line
                              ['LINE',(2,0),(2,2), []],
                            ]
+        self.assign_tootltips()
         
     def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""

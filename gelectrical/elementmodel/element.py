@@ -28,6 +28,7 @@ import cairo
 
 # local files import
 from .. import misc
+from .tooltips import tooltips
 
 # Get logger object
 log = logging.getLogger(__name__) 
@@ -36,6 +37,7 @@ log = logging.getLogger(__name__)
 class ElementModel:
     """Base class for all drawing elements"""
     tooltip = ''
+    element_tooltips = tooltips
     
     def __init__(self, cordinates=(0,0), **kwargs):
         # Data
@@ -536,8 +538,15 @@ class ElementModel:
         #
         power_model = tuple()
         return power_model
+    
+    def assign_tootltips(self):
+        if self.code in self.element_tooltips:
+            code_tooltips = self.element_tooltips[self.code]
+            for code, field in self.fields.items():
+                if code in code_tooltips:
+                    field['tooltip'] = code_tooltips[code]
 
-            
+
 class ElementGroup:
     """Group of drawing elements"""
     

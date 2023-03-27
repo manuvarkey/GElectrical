@@ -1137,7 +1137,8 @@ def get_field_dict(field_type, caption, unit, value,
                         status_inactivate=True,
                         status_floating=False,
                         click_to_edit_message=None,
-                        alter_structure=False):
+                        alter_structure=False,
+                        tooltip=''):
     """
     ARGUMENTS:
     field_type:             Any of ('int','float','str','multiline_str','bool', 'font', 'graph')
@@ -1165,6 +1166,7 @@ def get_field_dict(field_type, caption, unit, value,
     field_dict['status_floating'] = status_floating
     field_dict['click_to_edit_message'] = click_to_edit_message
     field_dict['alter_structure'] = alter_structure
+    field_dict['tooltip'] = tooltip
     return field_dict
 
 def get_fields_trunc(fields):

@@ -58,6 +58,7 @@ For powerflow with diversity analysis, the diversity factors are defined at bus 
         self.widths = []
         # Set parameters
         self.set_model_from_param()
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""

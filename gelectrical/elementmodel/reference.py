@@ -62,6 +62,7 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
                            [(3,3+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sheet}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
                            [(7,3-misc.SCHEM_FONT_SPACING/misc.M), "${title}", True],
                            [(7,3+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sub_title}", True]]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -123,7 +124,7 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
                        'sub_title': self.get_field_dict('str', 'Sub Title', '', ''),
                        'width':   self.get_field_dict('int', 'Bay Width', 'pt', 12)}
         self.set_model_from_param()
-        
+        self.assign_tootltips()        
         
     def render_element(self, context):
         """Render element to context"""

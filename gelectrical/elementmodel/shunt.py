@@ -62,6 +62,7 @@ Creates a shunt element at the selected node.
                              ['LINE',(0.5,7.5),(1.5,7.5), []],
                              ['LINE',(0.75,8),(1.25,8), []],
                            ]
+        self.assign_tootltips()
     
     def render_element(self, context):
         """Render element to context"""
@@ -126,4 +127,5 @@ Creates a shunt capacitor element at the selected node.
                              ['LINE',(0.5,7.5),(1.5,7.5), []],
                              ['LINE',(0.75,8),(1.25,8), []],
                            ]
+        self.assign_tootltips()
 
