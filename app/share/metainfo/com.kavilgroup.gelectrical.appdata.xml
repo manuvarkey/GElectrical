@@ -49,7 +49,36 @@
   <project_group>Office</project_group>
   <content_rating type="oars-1.1" />
   <releases>
-    <release date="2023-02-26" version="0.3" />
+    <release date="2023-03-28" version="0.5">
+      <description>
+        <ul>
+          <li>Interface improvements.</li>
+          <li>Better on-screen tooltips.</li>
+          <li>Implement change over switch and busbar trunking elements.</li>
+          <li>Updates to standard library.</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-03-13" version="0.4">
+      <description>
+        <ul>
+          <li>Support for powerflow analysis with diversity factors.</li>
+          <li>Interface improvements for protection coordination.</li>
+          <li>Bug fixes.</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-02-26" version="0.3">
+      <description>
+        <ul>
+          <li>Support for asymmetric powerflow analysis for elements supported by pandapower.</li>
+          <li>Coordination analysis for power supply protection devices with support for CB and fuse protection curves; damage curves for transformers, cables and motors.</li>
+          <li>Electrical rules check for checking conformity with IEC/ local electrical guidelines.</li>
+          <li>Improvements to reporting module. Now supports export of result graphs.</li>
+          <li>Bug fixes and performance improvements.</li>
+        </ul>
+      </description>
+    </release>
     <release date="2022-11-21" version="0.2" />
     <release date="2022-11-16" version="0.1" />
   </releases>
