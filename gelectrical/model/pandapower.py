@@ -439,7 +439,7 @@ class PandaPowerModel:
                                 gnodeid = self.power_nodes_inverted[n_id]
                                 elementids = self.gnode_element_mapping[gnodeid]
                                 for elementid in elementids:
-                                    if self.base_elements[elementid].code in ['element_reference', 'element_wire', 'element_busbar']:
+                                    if self.base_elements[elementid].code not in ['element_reference', 'element_wire', 'element_busbar']:
                                         elementids_added.append(elementid)
                             message = 'Multiple voltage sources connected to bus \nElements: ' + ref_eid(elementids_added)
                             model = [['elements', elementids_added]]
