@@ -533,7 +533,7 @@ class PandaPowerModel:
                             for load_code in loads:
                                 gnode_load = self.network_model.gnode_element_mapping_inverted[load_code][0]
                                 path_gnodes = self.network_model.get_nodes_between_gnodes(gnode_bus, gnode_load)
-                                path_gnodes.remove(gnode_bus)
+                                path_gnodes.discard(gnode_bus)
                                 DF_downstream = [self.network_model.gnode_df_mapping[gnode] for gnode in path_gnodes]
                                 RF = np.prod(DF_downstream)*(1-DF_bus)
                                 (loadcode, load_index) = self.power_elements[load_code]
@@ -601,7 +601,7 @@ class PandaPowerModel:
                             for load_code in loads:
                                 gnode_load = self.network_model.gnode_element_mapping_inverted[load_code][0]
                                 path_gnodes = self.network_model.get_nodes_between_gnodes(gnode_bus, gnode_load)
-                                path_gnodes.remove(gnode_bus)
+                                path_gnodes.discard(gnode_bus)
                                 DF_downstream = [self.network_model.gnode_df_mapping[gnode] for gnode in path_gnodes]
                                 RF = np.prod(DF_downstream)*(1-DF_bus)
                                 (loadcode, load_index) = self.power_elements[load_code]
