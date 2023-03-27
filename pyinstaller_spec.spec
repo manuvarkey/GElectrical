@@ -4,6 +4,7 @@ block_cipher = None
 
 added_files = [
          ( 'gelectrical/interface/*.glade', 'gelectrical/interface' ),
+		 ( 'gelectrical/interface/*.ui', 'gelectrical/interface' ),
          ( 'gelectrical/interface/*.png', 'gelectrical/interface' ),
          ( 'gelectrical/database/*.csv', 'gelectrical/database' ),
          ( 'gelectrical/database/fuse_abb_cef/*.csv', 'gelectrical/database/fuse_abb_cef' ),
