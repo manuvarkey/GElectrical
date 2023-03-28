@@ -1,7 +1,7 @@
 # GElectrical
 
 [![Release](https://img.shields.io/github/release/manuvarkey/GElectrical.svg)](https://github.com/manuvarkey/GElectrical/releases/latest)
-![License](https://img.shields.io/github/license/manuvarkey/Earthing)
+![License](https://img.shields.io/github/license/manuvarkey/GElectrical)
 
 <a href="https://beta.flathub.org/apps/com.kavilgroup.gelectrical"><img height="51" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.svg"/> </a>
 
