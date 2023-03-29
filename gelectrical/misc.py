@@ -1437,13 +1437,11 @@ def draw_line(context, x0, y0, x1, y1, color=COLOR_NORMAL, dash_pattern=[], stro
 
 def draw_text(context, text, x, y, color=COLOR_NORMAL, fontname='Sans', fontsize=12, fontweight=SCHEM_FONT_WEIGHT, alignment='left'):
     """Draw text using Pango"""
-
     context.save()
     context.translate(x,y)
     (r,g,b,a) = hex2rgb(color)
     context.set_source_rgba(r, g, b, a)
     layout = PangoCairo.create_layout(context)
-    layout.set_line_spacing(1.5)
     font = Pango.FontDescription(fontname + " " + str(fontsize))
     font.set_weight(fontweight)
     layout.set_font_description(font)
