@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg7"
+   sodipodi:docname="trash-symbolic.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview9"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="46.5625"
+     inkscape:cx="8"
+     inkscape:cy="7.9892617"
+     inkscape:window-width="1846"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg7" />
+  <defs
+     id="defs3">
+    <style
+       id="current-color-scheme"
+       type="text/css">
+   .ColorScheme-Text { color:#444444; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style>
+  </defs>
+  <path
+     style="fill:#000000;fill-opacity:1"
+     class="ColorScheme-Text"
+     d="M 6 1 C 5 1 5 2 5 2 L 2 2 C 2 2 1 2 1 3 L 1 4 L 14 4 L 14 3 C 14 2 13 2 13 2 L 10 2 C 10 2 10 1 9 1 L 6 1 z M 2 5 L 2 14 C 2 14.52 2.48 15 3 15 L 12 15 C 12.52 15 13 14.52 13 14 L 13 5 L 2 5 z M 4 7 L 4.90625 7 C 5.1896143 7 5.441896 7.094451 5.5878906 7.2226562 L 7.5 8.890625 L 9.4121094 7.2226562 C 9.5581045 7.0944527 9.810385 7 10.09375 7 L 11 7 L 11 7.7363281 C 11 7.9375667 10.918222 8.1210684 10.771484 8.25 L 8.7695312 10 L 10.771484 11.75 C 10.898603 11.861628 10.96343 12.04569 11 12.3125 L 11 13 L 10.09375 13 C 9.810385 13 9.5581045 12.90555 9.4121094 12.777344 L 7.5 11.099609 L 5.5878906 12.777344 C 5.441896 12.905551 5.1896143 13 4.90625 13 L 4 13 L 4 12.263672 C 4 12.062433 4.0819193 11.878734 4.2285156 11.75 L 6.2304688 10 L 4.2285156 8.25 C 4.0814864 8.1206723 4 7.9375667 4 7.7363281 L 4 7 z"
+     id="path5" />
+</svg>

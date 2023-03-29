@@ -7,7 +7,7 @@
    viewBox="0 0 16 16"
    version="1.1"
    id="svg6"
-   sodipodi:docname="box-arrow-in-right.svg"
+   sodipodi:docname="pane-right-symbolic.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -32,44 +32,39 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg6" />
+     inkscape:current-layer="g2600" />
   <g
      id="g8514"
      inkscape:label=""
-     transform="matrix(0,-1,-1,0,311.99997,35.99975)">
+     transform="matrix(0,-1,-1,0,311.99997,35.99975)"
+     style="fill:#000000;fill-opacity:1">
     <title
        id="title1408">builder-view-right-pane</title>
-    <rect
-       y="296"
-       x="19.99975"
-       height="16"
-       width="16"
-       id="rect8516"
-       style="color:#bebebe;overflow:visible;fill:none;stroke-width:2;marker:none" />
     <g
        id="g2600"
-       transform="matrix(1,0,0,-1,-4.0000166,612.9999)">
+       transform="matrix(1,0,0,-1,-4.0000166,612.9999)"
+       style="fill:#000000;fill-opacity:1">
       <g
          id="layer1-3-7"
          transform="matrix(0,-3.7795275,-3.7795275,0,1334.5646,146.14277)"
-         style="display:inline;fill:#3584e4">
+         style="display:inline;fill:#000000;fill-opacity:0.50196081">
         <rect
            transform="matrix(0,-1,-1,0,0,0)"
-           style="color:#bebebe;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#2e3436;fill-opacity:0.35;stroke:none;stroke-width:0.264583;marker:none"
-           id="rect10511-5"
+           style="color:#bebebe;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#000000;fill-opacity:0.50196081;stroke:none;stroke-width:0.264583;marker:none"
+           id="rect850"
            width="3.1750002"
            height="1.3229166"
            x="-346.22159"
            y="43.486164" />
       </g>
       <path
-         style="color:#000000;display:inline;fill:#2e3436;stroke-linecap:square;stroke-linejoin:round;enable-background:new"
+         style="color:#000000;display:inline;fill:#000000;stroke-linecap:square;stroke-linejoin:round;enable-background:new;fill-opacity:1"
          d="m 39.01057,313.99995 c 0,1.6447 -1.3553,3 -3,3 h -8 c -1.6447,0 -3,-1.3553 -3,-3 v -10 c 0,-1.6447 1.3553,-3 3,-3 h 8 c 1.6447,0 3,1.3553 3,3 z m -2,0 v -10 c 0,-0.5713 -0.4287,-1 -1,-1 h -8 c -0.5713,0 -1,0.4287 -1,1 v 10 c 0,0.5713 0.4287,1 1,1 h 8 c 0.5713,0 1,-0.4287 1,-1 z"
-         id="path130646-6-3"
+         id="path847"
          sodipodi:nodetypes="ssssssssssssssssss" />
       <rect
-         style="display:inline;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-dashoffset:26.4;stroke-opacity:1"
-         id="rect29147-5"
+         style="display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-dashoffset:26.4;stroke-opacity:1"
+         id="rect844"
          width="1"
          height="12"
          x="-310.99994"

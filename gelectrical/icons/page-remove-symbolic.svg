@@ -3,7 +3,7 @@
    version="1.1"
    viewBox="0 0 16 16.003"
    id="svg6"
-   sodipodi:docname="page-remove.svg"
+   sodipodi:docname="page-remove-symbolic.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -28,7 +28,7 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g4" />
+     inkscape:current-layer="g2687" />
   <g
      transform="translate(-152 -180)"
      id="g4"
@@ -52,12 +52,12 @@
        id="g2687"
        transform="matrix(1.0704579,0,0,1.0704579,-11.273264,-11.463057)">
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.665175;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 157.15734,185.15884 5.68532,5.68532"
+         style="color:#000000;-inkscape-stroke:none;fill:#000000;fill-opacity:1"
+         d="m 157.48828,184.82812 -0.66211,0.66016 5.68555,5.68555 0.66211,-0.66016 z"
          id="path2385" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.665175;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 162.84266,185.15884 -5.68532,5.68532"
+         style="color:#000000;-inkscape-stroke:none;fill:#000000;fill-opacity:1"
+         d="m 162.51172,184.82812 -5.68555,5.68555 0.66211,0.66016 5.68555,-5.68555 z"
          id="path2385-3" />
     </g>
   </g>

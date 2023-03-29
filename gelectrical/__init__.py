@@ -1079,6 +1079,10 @@ class MainApp(Gtk.Application):
         action = Gio.SimpleAction.new("quit", None)
         action.connect("activate", self.on_quit)
         self.add_action(action)
+
+        # Initialise theming
+        theme = Gtk.IconTheme.get_default()
+        theme.append_search_path(misc.abs_path("icons"))
         
         log.info('MainApp - do_startup - End')
     

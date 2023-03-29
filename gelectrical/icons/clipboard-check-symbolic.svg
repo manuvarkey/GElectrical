@@ -7,7 +7,7 @@
    viewBox="0 0 16 16"
    version="1.1"
    id="svg8"
-   sodipodi:docname="clipboard-check.svg"
+   sodipodi:docname="clipboard-check-symbolic.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -32,37 +32,31 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="g16836" />
   <g
      id="g16836"
      transform="translate(-300.02048,-682.51965)"
-     inkscape:label="build todo fixme">
+     inkscape:label="build todo fixme"
+     style="fill:#000000;fill-opacity:1">
     <title
        id="title17226">builder-todo</title>
-    <rect
-       style="color:#bebebe;overflow:visible;opacity:0.514644;fill:none;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;marker:none;enable-background:accumulate"
-       id="rect15803"
-       width="16"
-       height="16"
-       x="300.02048"
-       y="682.51965" />
     <g
-       style="display:inline"
+       style="display:inline;fill:#000000;fill-opacity:1"
        inkscape:label="object select selection mode check approve done good active"
        id="g9445-6"
        transform="rotate(90,-3.6903365,515.69351)">
       <title
          id="title9439-0">selection-mode</title>
       <path
-         style="color:#000000;fill:#2e3436;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+         style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;fill-opacity:1"
          d="m 165.79297,196.25 a 1,1 0 0 0 -1.41211,0.0937 1,1 0 0 0 0.0937,1.41211 l 7.19531,6.29687 -2.24414,2.24414 a 1,1 0 0 0 0,1.41407 1,1 0 0 0 1.41602,0 l 3,-3 a 1.0001,1.0001 0 0 0 -0.0488,-1.46094 z"
-         id="path8923-6-6" />
+         id="path844" />
       <path
-         style="color:#000000;fill:#2e3436;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:26.4;-inkscape-stroke:none"
+         style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:26.4;-inkscape-stroke:none;fill-opacity:1"
          d="m 143,321 c -1.6447,0 -3,1.3553 -3,3 v 8 c 0,1.6447 1.3553,3 3,3 h 8 c 1.6447,0 3,-1.3553 3,-3 v -4 c 0,-0.55228 -0.44772,-1 -1,-1 -0.55228,0 -1,0.44772 -1,1 v 4 c 0,0.5713 -0.4287,1 -1,1 h -8 c -0.5713,0 -1,-0.4287 -1,-1 v -8 c 0,-0.5713 0.4287,-1 1,-1 h 7 c 0.55228,0 1,-0.44772 1,-1 0,-0.55228 -0.44772,-1 -1,-1 z"
          transform="rotate(-90,97.069489,253.93368)"
          sodipodi:nodetypes="sssssssssssssssssss"
-         id="path419" />
+         id="path841" />
     </g>
   </g>
 </svg>

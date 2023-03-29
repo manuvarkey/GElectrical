@@ -45,66 +45,6 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
       <mime-type>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</mime-type>
     </mime-types>
   </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/clipboard-check.svg</property>
-  </object>
-  <object class="GtkImage" id="image10">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/page-new.svg</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/code-square.svg</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/diagram-2.svg</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/graph-up.svg</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/hash.svg</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/link.svg</property>
-  </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/eraser.svg</property>
-  </object>
-  <object class="GtkImage" id="image8">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/trash.svg</property>
-  </object>
-  <object class="GtkImage" id="image9">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/page-remove.svg</property>
-  </object>
-  <object class="GtkImage" id="image_assembly">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/assembly.svg</property>
-  </object>
-  <object class="GtkImage" id="image_wire">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="pixbuf">../icons/wire.svg</property>
-  </object>
   <object class="GtkPopoverMenu" id="popup_menu">
     <property name="can-focus">False</property>
     <child>
@@ -370,7 +310,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">New Sheet</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image10</property>
+                        <property name="icon-name">page-new-symbolic</property>
                         <signal name="clicked" handler="on_new_tab" swapped="no"/>
                         <accelerator key="n" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
@@ -398,7 +338,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Wire</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image_wire</property>
+                        <property name="icon-name">wire-symbolic</property>
                         <signal name="clicked" handler="on_draw_drawwire" swapped="no"/>
                         <accelerator key="w" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
@@ -423,7 +363,7 @@ Select the new elements to be grouped, existing assembly elements, exisitng asse
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Assembly</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image_assembly</property>
+                        <property name="icon-name">assembly-symbolic</property>
                         <signal name="clicked" handler="on_draw_addassembly" swapped="no"/>
                         <accelerator key="g" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
@@ -452,7 +392,7 @@ Reference numbers helps to identify elements. Numbering can be carried out for s
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">#</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image5</property>
+                        <property name="icon-name">hash-symbolic</property>
                         <signal name="clicked" handler="on_draw_renumber" swapped="no"/>
                       </object>
                       <packing>
@@ -470,7 +410,7 @@ Cross reference elements allows connecting different parts of the scheme within/
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Link</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image6</property>
+                        <property name="icon-name">link-symbolic</property>
                         <signal name="clicked" handler="on_draw_linkref" swapped="no"/>
                       </object>
                       <packing>
@@ -497,8 +437,8 @@ Cross reference elements allows connecting different parts of the scheme within/
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-in-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -531,8 +471,8 @@ Cross reference elements allows connecting different parts of the scheme within/
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-out-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -617,7 +557,7 @@ Daily load profiles can be assigned to load elements or static generation elemen
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Edit Load Profiles</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image4</property>
+                        <property name="icon-name">graph-up-symbolic</property>
                         <signal name="clicked" handler="on_edit_loadprofiles" swapped="no"/>
                       </object>
                       <packing>
@@ -635,7 +575,7 @@ Allows viewing and editing element parameters for protection coordination. Selec
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Protection Coordination</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image3</property>
+                        <property name="icon-name">diagram-2-symbolic</property>
                         <signal name="clicked" handler="on_protection_coordination" swapped="no"/>
                       </object>
                       <packing>
@@ -666,7 +606,7 @@ Results of the analysis will be displayed in the results tab of the right pane f
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Analysis</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image2</property>
+                        <property name="icon-name">code-square-symbolic</property>
                         <signal name="clicked" handler="on_run_analysis" swapped="no"/>
                       </object>
                       <packing>
@@ -689,7 +629,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Rules check</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image1</property>
+                        <property name="icon-name">clipboard-check-symbolic</property>
                         <signal name="clicked" handler="on_run_rulescheck" swapped="no"/>
                       </object>
                       <packing>
@@ -757,7 +697,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Clear</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image7</property>
+                        <property name="icon-name">eraser-symbolic</property>
                         <signal name="clicked" handler="on_draw_clear_results" swapped="no"/>
                       </object>
                       <packing>
@@ -773,7 +713,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Delete</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image8</property>
+                        <property name="icon-name">trash-symbolic</property>
                         <signal name="clicked" handler="on_draw_delete" swapped="no"/>
                       </object>
                       <packing>
@@ -789,7 +729,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                         <property name="is-important">True</property>
                         <property name="label" translatable="yes">Delete Sheet</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-widget">image9</property>
+                        <property name="icon-name">page-remove-symbolic</property>
                         <signal name="clicked" handler="on_delete_tab" swapped="no"/>
                       </object>
                       <packing>
@@ -878,6 +818,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                             <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <property name="toolbar-style">both-horiz</property>
+                            <property name="icon_size">2</property>
                             <child>
                               <object class="GtkToolButton">
                                 <property name="visible">True</property>
@@ -886,7 +827,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                                 <property name="is-important">True</property>
                                 <property name="label" translatable="yes">Rotate (R)</property>
                                 <property name="use-underline">True</property>
-                                <property name="icon-name">object-rotate-left</property>
+                                <property name="icon-name">object-rotate-left-symbolic</property>
                                 <signal name="clicked" handler="on_insert_element_rotate" swapped="no"/>
                               </object>
                               <packing>
@@ -902,7 +843,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                                 <property name="is-important">True</property>
                                 <property name="label" translatable="yes">Cycle Port (C)</property>
                                 <property name="use-underline">True</property>
-                                <property name="icon-name">view-refresh</property>
+                                <property name="icon-name">go-jump-symbolic</property>
                                 <signal name="clicked" handler="on_insert_element_cycle_port" swapped="no"/>
                               </object>
                               <packing>
@@ -1414,7 +1355,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">../icons/pane-left.svg</property>
+                    <property name="icon-name">pane-left-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -1435,7 +1376,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">../icons/pane-right.svg</property>
+                    <property name="icon-name">pane-right-symbolic</property>
                   </object>
                 </child>
               </object>
