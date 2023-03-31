@@ -32,7 +32,7 @@ import pandas as pd
 import numpy as np
 from scipy.interpolate import interp1d
 
-from gi.repository import Gtk, Gdk, GLib, Pango, PangoCairo
+from gi.repository import Gtk, Gdk, GLib, Pango, PangoCairo, GdkPixbuf
 import openpyxl
 
 # Setup logger object
@@ -63,6 +63,27 @@ COLOR_GRID_MINOR = '#00ff0020'
 COLOR_SELECTED = '#729fcf'
 COLOR_SELECTED_WARNING = '#cc0000'
 COLOR_SELECTION_BAND = '#729fcf'
+COLOR_PLOT_BG = '#FFFFFF'
+
+def set_dark_mode_drawing_values():
+    global COLOR_NORMAL, COLOR_OVERLAY_TEXT, COLOR_PLOT_BG
+    COLOR_NORMAL = '#FFFFFF'
+    COLOR_OVERLAY_TEXT = '#FFFFFF80'
+    COLOR_PLOT_BG = '#000000'
+
+def reset_dark_mode_drawing_values():
+    global COLOR_NORMAL, COLOR_OVERLAY_TEXT, COLOR_PLOT_BG
+    COLOR_NORMAL = '#000000'
+    COLOR_OVERLAY_TEXT = '#00000080'
+    COLOR_PLOT_BG = '#FFFFFF'
+
+def check_dark_mode():
+    global COLOR_NORMAL
+    if COLOR_NORMAL == '#FFFFFF':
+        return True
+    else:
+        return False
+    
 # Default stroke widths
 STROKE_WIDTH_NORMAL = 0.5/0.3527
 STROKE_WIDTH_THIN = 0.25/0.3527
@@ -1326,8 +1347,9 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                             'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
-                            'Interface':{'advanced_mode' : get_field_dict('bool', 'Enable advanced mode (Requires restart)', '', False, status_inactivate=False),
-                                         'show_graphs' : get_field_dict('bool', 'Show graphs in field view (Requires restart)', '', True, status_inactivate=False),
+                            'Interface':{'dark_mode' : get_field_dict('bool', 'Enable dark theme', '(Requires program restart to take effect)', False, status_inactivate=False),
+                                         'advanced_mode' : get_field_dict('bool', 'Enable advanced mode', '(Requires program restart to take effect)', False, status_inactivate=False),
+                                         'show_graphs' : get_field_dict('bool', 'Show graphs in field view', '(Requires program restart to take effect)', True, status_inactivate=False),
                                          'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
                                          'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False),
                                          'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)},
@@ -1365,8 +1387,11 @@ for slno in range(0,24):
 
 # Cairo drawing functions
 
-def rgb2hex(r,g,b,a=1):
-    return "#{:02x}{:02x}{:02x}{:02x}".format(int(r*255),int(g*255),int(b*255))
+def rgb2hex(r,g,b,a=None):
+    if a:
+        return "#{:02x}{:02x}{:02x}{:02x}".format(int(r*255),int(g*255),int(b*255),int(a*255))
+    else:
+        return "#{:02x}{:02x}{:02x}".format(int(r*255),int(g*255),int(b*255))
 
 def hex2rgb(hexcode):
     if len(hexcode) == 7:
@@ -1464,3 +1489,43 @@ def draw_text(context, text, x, y, color=COLOR_NORMAL, fontname='Sans', fontsize
     context.restore()
 
     return (x+dx, y, w, h)
+
+def get_image_from_path(path, height=None, inverted=False, mode='image'):
+            
+    def draw_pixel(pixels, x, y, rgba, width, height):
+        # make sure pixel data is reasonable
+        x = min(x, width)
+        y = min(y, height)
+        r = min(rgba[0], 255)
+        g = min(rgba[1], 255)
+        b = min(rgba[2], 255)
+        a = min(rgba[3], 255)
+        # insert pixel data at right location in bytes array
+        i = y*width + x
+        pixels[i*4 + 0] = r
+        pixels[i*4 + 1] = g
+        pixels[i*4 + 2] = b
+        pixels[i*4 + 3] = a
+    if height:
+        img = GdkPixbuf.Pixbuf.new_from_file_at_scale(path, -1, 400,True)
+    else:
+        img = GdkPixbuf.Pixbuf.new_from_file(path)
+    if inverted:
+        pixels = bytearray(img.get_pixels())
+        width = img.props.width
+        height = img.props.height
+        for row_num, row in enumerate(zip(*(iter(img.get_pixels()),) *img.get_rowstride())):
+            for col_num, pixel in enumerate(zip(*(iter(row),) * 4)):
+                r, g, b, a = pixel
+                draw_pixel(pixels, col_num, row_num, [255-r, 255-g, 255-b, a], width, height)
+        img_new = GdkPixbuf.Pixbuf.new_from_bytes(GLib.Bytes(pixels), GdkPixbuf.Colorspace.RGB, True, 8,
+                                                width, height, img.get_rowstride())
+    else:
+        img_new = img
+    if mode == 'pixbuf':
+        return img_new
+    elif mode == 'image':
+        icon = Gtk.Image()
+        icon.set_from_pixbuf(img_new)
+        return icon
+

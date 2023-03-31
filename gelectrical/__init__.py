@@ -868,7 +868,6 @@ class MainWindow():
             os.makedirs(settings_dir)
         if not os.path.exists(self.user_library_dir):
             os.makedirs(self.user_library_dir)
-        
         default_program_settings = copy.deepcopy(misc.default_program_settings)
         # Update static program setting values
         default_program_settings['Paths']['library_path']['value'] = self.user_library_dir
@@ -887,8 +886,8 @@ class MainWindow():
             # If an error load default program preference
             self.program_settings = default_program_settings
             log.info('Program settings initialisation failed - falling back on default values')
-
         self.program_state['program_settings_main'] = self.program_settings['Defaults']
+        self.program_state['program_settings'] = self.program_settings
         # Setup program settings
         self.update_program_settings()
         log.info('Program settings initialised')
@@ -939,6 +938,22 @@ class MainWindow():
         self.stack_toolbar_left = self.builder.get_object("stack_toolbar_left")
         self.properties_notebook = self.builder.get_object("properties_notebook")
         self.program_state['zoom_display_label'] = self.zoom_display_label
+
+        # Setup darkmode
+        text_color = self.window.get_style_context().get_color(Gtk.StateFlags.NORMAL)
+        back_color = self.window.get_style_context().get_background_color(Gtk.StateFlags.NORMAL)
+        textavg = (text_color.red + text_color.green + text_color.blue)/3
+        backavg = (back_color.red + back_color.green + back_color.blue)/3
+        if textavg > backavg:  # Darkish theme
+            self.program_state['dark_mode'] = True
+        else:  # Lightish theme
+            self.program_state['dark_mode'] = False
+        if self.program_settings['Interface']['dark_mode']['value']:
+            self.program_state['dark_mode'] = True
+            Gtk.Settings.get_default().props.gtk_application_prefer_dark_theme = True
+        # Setup program parameters if dark mode
+        if self.program_state['dark_mode']:
+            misc.set_dark_mode_drawing_values()
         
         # Setup element addition toolbar
         self.draw_element_groups = dict()
@@ -952,6 +967,7 @@ class MainWindow():
         self.draw_element_listbox.set_filter_func(self.draw_element_add_filter_func, self.draw_element_groups, self.draw_element_names, self.draw_element_searchbox)
         self.draw_element_listbox.connect("row_activated", self.on_draw_element_add)
         self.draw_element_searchbox.connect("search-changed", self.on_draw_element_search_changed)
+        
         for code, model in self.program_state['element_models'].items():
             # Dont add advanced elements to toolbar if advanced mode enabled
             if self.program_settings['Interface']['advanced_mode']['value'] is False and code in misc.ADVANCED_ELEMENTS:
@@ -961,7 +977,10 @@ class MainWindow():
             icon_path = model.icon
             tooltip = model.tooltip
             if group and name and icon_path:
-                icon = Gtk.Image.new_from_file(icon_path)
+                if self.program_state['dark_mode']:
+                    icon = misc.get_image_from_path(icon_path, inverted=True)
+                else:
+                    icon = misc.get_image_from_path(icon_path)
                 icon.set_size_request(40, 40)
                 caption = Gtk.Label(name, xalign=0)
                 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
@@ -1028,7 +1047,7 @@ class MainWindow():
                   [Gtk.TargetEntry.new("text/uri-list", 0, 80)], 
                   Gdk.DragAction.COPY)
         self.window.connect('drag-data-received', self.drag_data_received)
-        
+
         self.window.show_all()
         log.info('MainWindow - Initialised')
         

@@ -29,7 +29,7 @@
      fit-margin-bottom="2"
      lock-margins="true"
      inkscape:zoom="7.508744"
-     inkscape:cx="30.630955"
+     inkscape:cx="30.697544"
      inkscape:cy="35.958078"
      inkscape:window-width="1846"
      inkscape:window-height="1016"
@@ -59,6 +59,14 @@
             <g
                id="g1141"
                transform="matrix(1.0773021,0,0,1,-11.411776,0)">
+              <rect
+                 style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.961325;stroke-linecap:square"
+                 id="rect1008"
+                 width="20.553595"
+                 height="23.064913"
+                 x="137.35768"
+                 y="70.286606"
+                 ry="0" />
               <g
                  id="g812"
                  transform="matrix(0.30257928,0,0,-0.30257928,153.87986,84.37888)">

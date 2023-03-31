@@ -20,7 +20,7 @@
      borderopacity="1.0"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
+     inkscape:pagecheckerboard="true"
      inkscape:document-units="mm"
      showgrid="false"
      fit-margin-top="2"
@@ -28,9 +28,9 @@
      fit-margin-right="2"
      fit-margin-bottom="2"
      lock-margins="true"
-     inkscape:zoom="3.754372"
-     inkscape:cx="65.789964"
-     inkscape:cy="60.196486"
+     inkscape:zoom="5.3094838"
+     inkscape:cx="51.511599"
+     inkscape:cy="53.677535"
      inkscape:window-width="1846"
      inkscape:window-height="1016"
      inkscape:window-x="0"
@@ -56,6 +56,14 @@
       <g
          id="g29106"
          transform="translate(0.15553397)">
+        <rect
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.01188;stroke-linecap:square"
+           id="rect1008"
+           width="21.626942"
+           height="24.286352"
+           x="138.82318"
+           y="69.581818"
+           ry="0" />
         <g
            id="g1216"
            transform="matrix(1.0714286,0,0,1.0714286,-8.6117235,-5.8375017)">

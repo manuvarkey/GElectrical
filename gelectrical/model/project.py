@@ -883,10 +883,16 @@ class ProjectModel:
         surface.set_metadata(cairo.PDFMetadata.CREATE_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
         surface.set_metadata(cairo.PDFMetadata.MOD_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
         context = cairo.Context(surface)
+        # If dark mode, load correct values while drawing
+        if self.program_state['dark_mode']:
+            misc.reset_dark_mode_drawing_values()
         for drawing_model in self.drawing_models:
             surface.set_size(drawing_model.fields['page_width']['value'], drawing_model.fields['page_height']['value'])
             drawing_model.export_drawing(context)
             surface.show_page()
+        # If dark mode, restore original values
+        if self.program_state['dark_mode']:
+            misc.set_dark_mode_drawing_values()  
         surface.finish()
         if call_at_exit:
             call_at_exit()

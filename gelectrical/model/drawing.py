@@ -553,8 +553,8 @@ class DrawingModel:
         
     def draw_model(self, context, select=False, whitelist=None):
         """Draw the schematic model"""
-        self.title_block.draw(context)
-        self.template.draw(context)
+        self.title_block.draw(context, override_color=misc.COLOR_NORMAL)
+        self.template.draw(context, override_color=misc.COLOR_NORMAL)
         for elno, element in enumerate(self.elements):
             # If reference not linked display error
             if element.code in misc.REFERENCE_CODES:
@@ -566,7 +566,7 @@ class DrawingModel:
             if whitelist is not None and (elno not in whitelist):
                 element.draw(context, select, override_color=misc.COLOR_INACTIVE)
             else:
-                element.draw(context, select)
+                element.draw(context, select, override_color=misc.COLOR_NORMAL)
         self.draw_selected_ports(context)
         self.models_drawn = True
             

@@ -188,6 +188,18 @@ class GraphView():
         
         # Plot
         self.plot = self.figure.add_subplot(111)
+
+        # Setup colors
+        self.plot.set_facecolor(misc.COLOR_PLOT_BG)
+        self.figure.patch.set_facecolor(misc.COLOR_PLOT_BG)
+        self.plot.xaxis.label.set_color(misc.COLOR_NORMAL)
+        self.plot.yaxis.label.set_color(misc.COLOR_NORMAL)
+        self.plot.spines['bottom'].set_color(misc.COLOR_NORMAL)
+        self.plot.spines['top'].set_color(misc.COLOR_NORMAL)
+        self.plot.spines['left'].set_color(misc.COLOR_NORMAL)
+        self.plot.spines['right'].set_color(misc.COLOR_NORMAL)
+        self.plot.tick_params(axis='x', colors=misc.COLOR_NORMAL)
+        self.plot.tick_params(axis='y', colors=misc.COLOR_NORMAL)
         
     # Functions
     

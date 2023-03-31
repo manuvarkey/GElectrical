@@ -207,7 +207,6 @@ class FieldView:
                 image_file_name = model[tree_iter][2]
                 if image_file_name:
                     pixbuf =  GdkPixbuf.Pixbuf.new_from_file_at_scale(image_file_name, -1,400,True)
-                    pixbuf =  pixbuf.add_alpha(True,255,255,255)
                     width = pixbuf.get_width()
                     pixbuf =  pixbuf.composite_color_simple(width, 400, GdkPixbuf.InterpType.NEAREST, 255, 64, 0xFFFFFF, 0xFFFFFF)
                     tooltip.set_icon(pixbuf)
@@ -247,7 +246,6 @@ class FieldView:
                                 if image_file_name:
                                     image_file_name_abs = misc.abs_path('icons', image_file_name)
                                     pixbuf =  GdkPixbuf.Pixbuf.new_from_file(image_file_name_abs)
-                                    pixbuf =  pixbuf.add_alpha(True,255,255,255)
                                 else:
                                     pixbuf = None
                                     image_file_name_abs = None
@@ -317,9 +315,12 @@ class FieldView:
                     data_widget.set_state(field['value'])
                     data_widget.set_valign(Gtk.Align.CENTER)
                     data_widget.connect("state-set", activate_callback_bool, get_field, set_field, code)
+                    unit_widget = Gtk.Label(field['unit'], xalign=0)
+                    unit_widget.set_size_request(misc.FIELD_UNIT_WIDTH, -1)
                     # Pack
                     hbox.pack_start(caption_widget, False, False, 0)
                     hbox.pack_start(data_widget, False, False, 0)
+                    hbox.pack_start(unit_widget, False, False, 0)
                     
                 elif field['type'] in ('font'):
                     data_widget = Gtk.FontButton.new_with_font(field['value'])
