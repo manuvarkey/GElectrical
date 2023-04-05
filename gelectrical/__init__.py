@@ -135,6 +135,17 @@ class MainWindow():
         self.results_view.clean()
         self.insert_view.clean()
         
+    def check_for_bad_font_settings(self):
+        """Check master font settings for invalid fonts. If so reset to defaults"""
+        pango_context = self.window.get_pango_context()
+        font_list = [x.get_name().lower() for x in pango_context.list_families()]
+        if misc.SCHEM_FONT_FACE not in font_list:
+            misc.SCHEM_FONT_FACE = 'monospace'
+        if misc.GRAPH_FONT_FACE not in font_list:
+            misc.GRAPH_FONT_FACE = 'monospace'
+        if misc.REPORT_FONT_FACE not in font_list:
+            misc.REPORT_FONT_FACE = 'monospace'
+        
     def open_project(self, filename):
         """Get filename and set project as active"""
         
@@ -437,6 +448,7 @@ class MainWindow():
             with open(self.settings_filename, 'w') as fp:
                 json.dump(self.program_settings, fp, indent = 4)
                 self.update_program_settings()
+                self.check_for_bad_font_settings()
                 log.info('MainWindow - on_project_settings - Program settings saved at ' + str(self.settings_filename))
 
     def on_infobar_close(self, widget, response=0):
@@ -962,14 +974,7 @@ class MainWindow():
             cssprovider.load_from_data(str.encode("*{font-family:'segoe ui';}"))
             self.window.get_style_context().add_provider_for_screen(Gdk.Screen.get_default(), cssprovider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
         # Check master font settings for invalid fonts. If so reset to defaults
-        pango_context = self.window.get_pango_context()
-        font_list = [x.get_name().lower() for x in pango_context.list_families()]
-        if misc.SCHEM_FONT_FACE not in font_list:
-            misc.SCHEM_FONT_FACE = 'monospace'
-        if misc.GRAPH_FONT_FACE not in font_list:
-            misc.GRAPH_FONT_FACE = 'monospace'
-        if misc.REPORT_FONT_FACE not in font_list:
-            misc.REPORT_FONT_FACE = 'monospace'
+        self.check_for_bad_font_settings()
         
         # Setup element addition toolbar
         self.draw_element_groups = dict()
