@@ -954,6 +954,22 @@ class MainWindow():
         # Setup program parameters if dark mode
         if self.program_state['dark_mode']:
             misc.set_dark_mode_drawing_values()
+
+        # Setup font settings
+        # Set default application font for windows
+        if platform.system() == 'Windows':
+            cssprovider = Gtk.CssProvider()
+            cssprovider.load_from_data(str.encode("*{font-family:'segoe ui';}"))
+            self.window.get_style_context().add_provider_for_screen(Gdk.Screen.get_default(), cssprovider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+        # Check master font settings for invalid fonts. If so reset to defaults
+        pango_context = self.window.get_pango_context()
+        font_list = [x.get_name().lower() for x in pango_context.list_families()]
+        if misc.SCHEM_FONT_FACE not in font_list:
+            misc.SCHEM_FONT_FACE = 'monospace'
+        if misc.GRAPH_FONT_FACE not in font_list:
+            misc.GRAPH_FONT_FACE = 'monospace'
+        if misc.REPORT_FONT_FACE not in font_list:
+            misc.REPORT_FONT_FACE = 'monospace'
         
         # Setup element addition toolbar
         self.draw_element_groups = dict()
