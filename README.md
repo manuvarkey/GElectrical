@@ -24,6 +24,8 @@ GElectrical is a graphical frontend to pandapower for power supply simulation an
 
 ## Screenshots
 
+**See [Screencasts](https://www.youtube.com/playlist?list=PLyFdF5OlDZHI8DBi42qsmUeiiD2Cd0eLU) for application screencasts**
+
 ![Properties display](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1.png)
 ![Results display](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/2.png)
 ![Electrical rules check](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/3.png)
