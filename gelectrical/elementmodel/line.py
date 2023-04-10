@@ -938,7 +938,7 @@ Use this element for overhead lines where parameters of the line are not known b
         self.fields['dims_d1'] = self.get_field_dict('float', 'D1', 'm', 0.9, alter_structure=True)
         self.fields['dims_d2'] = self.get_field_dict('float', 'D2', 'm', 0.6, alter_structure=True)
         self.fields['dims_d3'] = self.get_field_dict('float', 'D3', 'm', 0.6, alter_structure=True)
-        self.fields['cpe'] = self.get_field_dict('str', 'Current return', '', self.cpe_list[0], 
+        self.fields['cpe'] = self.get_field_dict('str', 'Fault current return path', '', self.cpe_list[0], 
                                                  selection_list=self.cpe_list,
                                                  alter_structure=True)
         self.fields['armour_material'] = self.get_field_dict('str', 'Armour material', '', self.cpe_materials[2], 
@@ -1091,6 +1091,23 @@ Use this element for overhead lines where parameters of the line are not known b
         elif code_laying_type == 5:
             d_e = d
             d_en = d
+            # Positive sequence
+            r_1 = r_ph
+            x_1 = reactance_ll(r, d_e)
+            c_1 = 0
+            # Zero sequence
+            if cpe == self.cpe_list[0]:  # Neutral return
+                r_0 = r_0n = 4*r_ph
+                x_0 = x_0n = 4*reactance_ll(r, d_en)
+            elif cpe == self.cpe_list[1]:  # Ground return
+                r_0n = 4*r_ph
+                x_0n = 4*reactance_ll(r, d_en)
+                r_0 = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+                x_0 = reactance_lg(r, d_e)
+        # 3ph cable
+        elif code_laying_type == 6:
+            d_e = d1
+            d_en = d2
             B_ar = self.conductor_B_dict[armour_material]
             resistivity_20_ar = self.conductor_delta20_dict[armour_material]
             resistivity_working_ar = resistivity_20_ar*(1+1/B_ar*(phase_working_temp-20))
@@ -1101,26 +1118,9 @@ Use this element for overhead lines where parameters of the line are not known b
             x_1 = reactance_ll(r, d_e)
             c_1 = capacitance_ll(r, d_e)
             # Zero sequence
-            if cpe == self.cpe_list[0]:  # Neutral return
+            if cpe == self.armour_list[0]:  # Armour return
                 r_0 = r_0n = r_ph + 3*r_ar
                 x_0 = x_0n = reactance0_ln_ar_3ph(r, d_e, d_en)
-            elif cpe == self.cpe_list[1]:  # Ground return
-                r_0n = r_ph + 3*r_ar
-                x_0n = reactance0_ln_ar_3ph(r, d_e, d_en)
-                r_0 = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
-                x_0 = reactance_lg(r, d_e)
-        # 3ph cable
-        elif code_laying_type == 6:
-            d_e = d1
-            d_en = d2
-            # Positive sequence
-            r_1 = r_ph
-            x_1 = reactance_ll(r, d_e)
-            c_1 = 0
-            # Zero sequence
-            if cpe == self.armour_list[0]:  # Armour return
-                r_0 = r_0n = 4*r_ph
-                x_0 = x_0n = 4*reactance_ll(r, d_en)
             elif cpe == self.armour_list[1]:  # Ground return
                 r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
                 x_0 = x_0n = reactance_lg(r, d_e)
