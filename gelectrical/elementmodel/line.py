@@ -19,7 +19,6 @@
 # 
 
 import os, cairo, math, copy
-from gi.repository import PangoCairo
 
 # local files import
 from .. import misc
@@ -662,15 +661,14 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         resistivity_working_ph = resistivity_20_ph*(1+1/B_ph*(phase_working_temp-20))
         
         # Impedence
-        
-        # Positive sequence
-        r_ph = open_imp_value if Sph == 0 else resistivity_working_ph*10**6/Sph
-        r_1 = r_ph
 
+        r_ph = open_imp_value if Sph == 0 else resistivity_working_ph*10**6/Sph
+        r_n = open_imp_value if neutral_xsec_times == 0 else r_ph/neutral_xsec_times
+        # Positive sequence
+        r_1 = r_ph
         # Zero sequence for neutral return
-        r_0n = r_ph + 3*r_ph*neutral_xsec_times
+        r_0n = r_ph + 3*r_n
         x_0n = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
-        
         # Zero sequence for ground return
         if code_cpe == 0:
             r_0 = open_imp_value
@@ -680,7 +678,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                            [(3,None), "${int(length_km*1000)}m", True],
                            [(3,None), "${name}", True]]
         elif code_cpe == 1:
-            r_0 = r_ph + 3*r_ph*neutral_xsec_times
+            r_0 = r_ph + 3*r_n
             x_0 = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
             self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
