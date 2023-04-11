@@ -663,6 +663,12 @@ class PandaPowerModel:
                 result = getattr(self.power_model, 'res_bus').loc[bus_id]
 
             if runpp_3ph:
+                node_result['vm_a_pu'] = misc.get_field_dict('str', 'Va', 'pu < deg', 
+                                        str(round(result['vm_a_pu'],2)) + ' < ' + str(round(result['va_a_degree'], 2)))
+                node_result['vm_b_pu'] = misc.get_field_dict('str', 'Vb', 'pu < deg', 
+                                        str(round(result['vm_b_pu'],2)) + ' < ' + str(round(result['va_b_degree'], 2)))
+                node_result['vm_c_pu'] = misc.get_field_dict('str', 'Vc', 'pu < deg', 
+                                        str(round(result['vm_c_pu'],2)) + ' < ' + str(round(result['va_c_degree'], 2)))
                 min_v = min(result['vm_a_pu'], result['vm_b_pu'], result['vm_c_pu'])
                 node_result['delv_perc_max'] = misc.get_field_dict(
                     'float', 'ΔV', '%', 100-min_v*100, decimal=2)
@@ -672,11 +678,13 @@ class PandaPowerModel:
                     'float', 'ΔVb', '%', 100-result['vm_b_pu']*100, decimal=2)
                 node_result['delv_perc_c'] = misc.get_field_dict(
                     'float', 'ΔVc', '%', 100-result['vm_c_pu']*100, decimal=2)
+                node_result['unbalance_perc'] = misc.get_field_dict(
+                    'float', 'Voltage unbalance', '%', result['unbalance_percent'], decimal=2)
             else:
+                node_result['vm_pu'] = misc.get_field_dict('str', 'V', 'pu < deg', 
+                                        str(round(result['vm_pu'],2)) + ' < ' + str(round(result['va_degree'], 2)))
                 node_result['delv_perc_max'] = misc.get_field_dict(
                     'float', 'ΔV', '%', 100-result['vm_pu']*100, decimal=2)
-                # node_result['vm_pu'] = misc.get_field_dict('float', 'V', 'pu', result['vm_pu'], decimal=3)
-                # node_result['va_degree'] = misc.get_field_dict('float', 'V angle', 'degree', result['va_degree'], decimal=1)
 
         # Update elements
         for e_code, element in self.base_elements.items():
