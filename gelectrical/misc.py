@@ -1259,7 +1259,7 @@ def elements_to_table(elements, col_codes, col_captions, code_sources, table_cla
                     else:
                         table[col_caption].append(field['value'][0].replace('\n','</br>'))
                 elif field['type'] == 'float':
-                    table[col_caption].append(str(round(field['value'], 4)))
+                    table[col_caption].append(str(round(field['value'], field['decimal'])))
                 else:
                     table[col_caption].append(clean(field['value']))
             else:
@@ -1280,7 +1280,7 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                 table['Description'].append(clean(field['caption']))
                 table['Unit'].append(field['unit'])
                 if field['type'] == 'float':
-                    value = str(round(field['value'], 4))
+                    value = str(round(field['value'], field['decimal']))
                 else:
                     value = clean(field['value'])
                 if field['selection_list'] and field['selection_image_list'] and insert_image:

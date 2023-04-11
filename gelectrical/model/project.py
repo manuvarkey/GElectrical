@@ -797,9 +797,9 @@ class ProjectModel:
             boq_captions['element_switches'] = 'Switches'
          # Nodes
         if element_nodes:
-            col_codes = ['ref', 'vn_kv', 'delv_perc_max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
-            col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (L-G, max)', 'Isc (L-G, min)']
-            code_sources = [E,R,R,R,R,R,R]
+            col_codes = ['ref', 'vn_kv', 'delv_perc_max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ipss_ka_3ph_max', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
+            col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (pk, max)', 'Isc (L-G, max)', 'Isc (L-G, min)']
+            code_sources = [E,R,R,R,R,R,R,R]
             table = misc.elements_to_table(element_nodes.values(), col_codes, col_captions, code_sources, 'boq_nodes',
                                            show_slno=False, show_element_class=False)
             boq_tables['element_nodes'] = table

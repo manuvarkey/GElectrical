@@ -1558,12 +1558,13 @@ class PandaPowerModel:
         """Run symmetric short circuit calculation"""
 
         sc.calc_sc(self.power_model_lf, fault='3ph', case='max', lv_tol_percent=lv_tol_percent,
-                   check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
+                   check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm,
+                   ip=True)
         res_3ph_max = self.power_model_lf.res_bus_sc.to_dict()
         sc.calc_sc(self.power_model_lf, fault='3ph', case='min', lv_tol_percent=lv_tol_percent,
-                   check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm)
+                   check_connectivity=True, r_fault_ohm=r_fault_ohm, x_fault_ohm=x_fault_ohm,
+                   ip=True)
         res_3ph_min = self.power_model_lf.res_bus_sc.to_dict()
-
         # Update nodes
         for bus in res_3ph_max['ikss_ka']:
             node = self.power_nodes_inverted[bus]
@@ -1576,7 +1577,8 @@ class PandaPowerModel:
                 'float', 'Isc (sym, max)', 'kA', res_3ph_max['ikss_ka'][bus], decimal=2)
             node_result['ikss_ka_3ph_min'] = misc.get_field_dict(
                 'float', 'Isc (sym, min)', 'kA', res_3ph_min['ikss_ka'][bus], decimal=2)
-
+            node_result['ipss_ka_3ph_max'] = misc.get_field_dict(
+                'float', 'Isc (pk, max)', 'kA', res_3ph_max['ip_ka'][bus], decimal=2)
         log.info('PandaPowerModel - run_sym_sccalc - calculation run')
 
     def run_linetoground_sccalc(self, lv_tol_percent=6, r_fault_ohm=0.0, x_fault_ohm=0.0):
