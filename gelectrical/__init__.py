@@ -501,6 +501,7 @@ class MainWindow():
         """Clear project results"""
         self.project.clear_status()
         self.project.clear_results()
+        self.diagnostics_view.clean()
         self.program_state['analysis_build_networkmodel'] = False
         self.program_state['analysis_run_timeseries'] = False
         self.program_state['analysis_run_sc_sym'] = False
