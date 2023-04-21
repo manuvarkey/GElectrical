@@ -103,6 +103,11 @@ tooltips = {
 'n_btm': 'Number of connection points at bottom',
 'width': 'Width of each bay',
 'DF': 'Diversity factor at bus to be used in <b>Power flow with diversity</b> analysis. Do not have any effect in other power flow analysis modes.',
+'r_grid': """<b>Net resistance of eathing system including resistance of local earth grid and source earth grid.</b>
+
+This parameter is of significance only if return path of fault current is through earth and may be used to model TT &amp; IT earthing systems. If a value of 0 is specified, this parameter is ignored.
+
+The resistance value (x3) specified will be added to the zero sequence impedance for all downstream nodes of same voltage level during single line to ground short circuit calculation.""",
 },
 'element_grid': {
 'ref': '',

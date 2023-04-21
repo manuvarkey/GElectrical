@@ -54,7 +54,8 @@ For powerflow with diversity analysis, the diversity factors are defined at bus 
                        'n_top':   self.get_field_dict('int', '#P(T)', '', 1, status_floating=True, status_enable=True, max_chars=2),
                        'n_btm':   self.get_field_dict('int', '#P(B)', '', 3, status_floating=True, status_enable=True, max_chars=2),
                        'width':   self.get_field_dict('int', 'Bay Width', 'pt', 12),
-                       'DF':      self.get_field_dict('float', 'DF', '', 1),}
+                       'DF':      self.get_field_dict('float', 'DF', '', 1),
+                       'r_grid':  self.get_field_dict('float', 'Earthing resistance', '', 0),}
         self.widths = []
         # Set parameters
         self.set_model_from_param()

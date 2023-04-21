@@ -1599,10 +1599,35 @@ class PandaPowerModel:
             else:
                 node_result = dict()
                 self.node_results[node] = node_result
+            vn_kv = node_result['vn_kv']['value']
+            r_grid = self.network_model.gnode_res_mapping[node]
+            
+            def find_ikss(case='max'):
+                if case == 'max':
+                    res = res_1ph_max
+                    if vn_kv <= 1 and lv_tol_percent == 6:
+                        c = 1.05
+                    else:
+                        c = 1.1
+                else:
+                    res = res_1ph_min
+                    if vn_kv <= 1 and lv_tol_percent == 6:
+                        c = 0.95
+                    else:
+                        c = 1
+                r1 = res['rk_ohm'][bus]
+                x1 = res['xk_ohm'][bus]
+                r0 = res['rk0_ohm'][bus] + r_grid*3
+                x0 = res['xk0_ohm'][bus]
+                z_eff = ((r1*2 + r0)**2 + (x1*2 + x0)**2)**0.5
+                return c*vn_kv/((3**0.5)*z_eff)*3
+            
+            ikss_max = find_ikss('max')
+            ikss_min = find_ikss('min')
             node_result['ikss_ka_1ph_max'] = misc.get_field_dict(
-                'float', 'Isc (L-G, max)', 'kA', res_1ph_max['ikss_ka'][bus], decimal=2)
+                'float', 'Isc (L-G, max)', 'kA', ikss_max, decimal=2)
             node_result['ikss_ka_1ph_min'] = misc.get_field_dict(
-                'float', 'Isc (L-G, min)', 'kA', res_1ph_min['ikss_ka'][bus], decimal=2)
+                'float', 'Isc (L-G, min)', 'kA', ikss_min, decimal=2)
 
         log.info('PandaPowerModel - run_linetoground_sccalc - calculation run')
 

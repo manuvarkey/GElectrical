@@ -24,6 +24,7 @@
 import logging, json, itertools, copy
 import networkx as nx
 from networkx.algorithms.components.connected import connected_components
+import numpy as np
 from html import escape
 
 # local files import
@@ -64,6 +65,7 @@ class NetworkModel:
         self.gnode_element_mapping = dict()  # Maps global_node -> [element1, ..]
         self.gnode_element_mapping_inverted = dict()  # Maps element -> [global_node1, ..]
         self.gnode_df_mapping = dict()  # Maps global_node -> DF
+        self.gnode_res_mapping = dict()  # Maps global_node -> r_grid resistance applicable
         self.node_mapping = dict()  # Maps local_node -> global_node i.e. ('(page,element):port') -> global_node
         self.port_mapping = dict()  # Maps (page,x,y) -> global_node
         self.port_mapping_inverted = dict()  # Maps global_node -> (page,x,y)
@@ -99,6 +101,7 @@ class NetworkModel:
         self.port_mapping = dict()
         self.port_mapping_inverted = dict()
         self.gnode_df_mapping = dict()
+        self.gnode_res_mapping = dict()
 
         duplicate_ports_list = []
         cur_gnode_num = 1
@@ -177,9 +180,11 @@ class NetworkModel:
                     else:
                         self.gnode_element_mapping[gnode] = [(k1, k2)]
                     self.gnode_element_mapping_inverted[(k1, k2)].append(gnode)
+
                     # Update diversity factors
                     if element.code == 'element_busbar':
                         self.gnode_df_mapping[gnode] = element.fields['DF']['value']
+
         log.info('NetworkModel - setup_global_nodes - updated')
 
     def setup_node_elements(self):
@@ -223,6 +228,7 @@ class NetworkModel:
         disabled_sources_edges = []
         disabled_lines = []
         disabled_switches = []
+        tranformers = []
         if self.global_nodes:
             term_node_count = max(self.global_nodes) + 1
         else:
@@ -239,6 +245,8 @@ class NetworkModel:
                     disabled_lines.append(gnodes)
                 if code in misc.SWITCH_ELEMENT_CODES and element.fields['closed']['value'] == False:
                     disabled_switches.append(gnodes)
+                if code in misc.TRAFO_ELEMENT_CODES:
+                    tranformers.append(gnodes)
                 # Single port elements
                 if len(gnodes) == 1:
                     if code in misc.SUPPLY_ELEMENT_CODES:
@@ -266,6 +274,42 @@ class NetworkModel:
         self.graph_with_status.remove_edges_from(disabled_sources_edges)
         self.graph_source_nodes_with_status = copy.copy(self.graph_source_nodes)
         self.graph_source_nodes_with_status -= set(disabled_sources)
+
+        # Populate self.gnode_res_mapping
+        self.gnode_res_mapping = {}
+        # Populate bus_gnodes
+        bus_gnodes = {}  # Maps gnode of element_busbar to r_grid
+        for e_code, element in self.base_elements.items():
+            if element.code == 'element_busbar' and element.fields['r_grid']['value'] != 0:
+                r_grid = element.fields['r_grid']['value']
+                gnode = self.gnode_element_mapping_inverted[e_code][0]
+                bus_gnodes[gnode] = r_grid
+        # Populate tranformers_gnodes
+        tranformers_gnodes = set(list(itertools.chain(*tranformers)))
+        # Evaluate r_grid
+        for gnode in self.global_nodes:
+            # Finad all paths from current node to each source
+            r_grids = {}
+            for source in self.graph_source_nodes:
+                simple_paths = nx.all_simple_paths(self.graph, gnode, source)
+                for simple_path in simple_paths:
+                    # Iterate over each gnode of path
+                    for path_gnode in simple_path:
+                        # If bus is found update and break
+                        if path_gnode in bus_gnodes:
+                            r_grids[path_gnode] = bus_gnodes[path_gnode]
+                            break
+                        # If transformer is found break
+                        # Current gnode excluded from tranformer list for cases when gnode is upstream node of transformer
+                        if path_gnode in (tranformers_gnodes - set([gnode])):
+                            break
+            # If r_grids populated, find parallel resistance of all grids
+            if r_grids:
+                r_grids_array = np.array(list(r_grids.values()))
+                r_grid = 1/(np.sum(1/r_grids_array))
+            else:
+                r_grid = 0
+            self.gnode_res_mapping[gnode] = r_grid
         log.info('NetworkModel - build_graph - model generated')
 
     # Graph analysis functions
@@ -399,6 +443,32 @@ class NetworkModel:
                                 if (codes is None) or (element_check.code in codes):
                                     results[ekey_check] = element_check
                                     break
+        return results
+    
+    def get_downstream_element_of_node(self, gnode, codes=None, ignore_disabled=True):
+        # Select graph
+        if ignore_disabled:
+            graph = self.graph_with_status
+            graph_source_nodes = self.graph_source_nodes_with_status
+        else:
+            graph = self.graph
+            graph_source_nodes = self.graph_source_nodes
+        # Find upstream nodes
+        upstream_nodes = set()
+        for source in graph_source_nodes:
+            simple_paths = nx.all_simple_paths(graph, gnode, source)
+            paths_comb = set(itertools.chain(*simple_paths))
+            upstream_nodes = upstream_nodes | paths_comb
+        upstream_nodes.discard(gnode)
+        # Search for all downstream elements
+        element_keys = self.gnode_element_mapping[gnode]
+        results = dict() 
+        for ekey in element_keys:
+            element_gnodes = set(self.gnode_element_mapping_inverted[ekey])
+            element = self.base_elements[ekey]
+            if not (element_gnodes & upstream_nodes) and element.code not in codes:
+                el_results = self.get_downstream_element(ekey, codes=codes, ignore_disabled=ignore_disabled)
+                results.update(el_results)
         return results
 
     def get_upstream_node_of_element(self, ekey, ignore_disabled=True):
