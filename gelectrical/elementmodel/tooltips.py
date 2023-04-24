@@ -281,7 +281,9 @@ The resistance value (x3) specified will be added to the zero sequence impedance
 'conductor_cross_section': '',
 'neutral_xsec': '',
 'type_of_cable': '',
-'cpe': 'Type of ciruit protective earthing conductor',
+'cpe': """Type of ciruit protective earthing conductor provided.
+
+If <i>None</i> is selected, it is assumed that no dedicated CPE is provided and return current is through earth.""",
 'armour_material': '',
 'armour_cross_section': '',
 'cpe_material': '',

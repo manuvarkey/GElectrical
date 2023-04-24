@@ -659,6 +659,10 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         B_ph = self.conductor_B_dict[phase_material]
         resistivity_20_ph = self.conductor_delta20_dict[phase_material]
         resistivity_working_ph = resistivity_20_ph*(1+1/B_ph*(phase_working_temp-20))
+
+        f_hz = self.kwargs['project_settings']['Simulation']['grid_frequency']['value']
+        mu_0 = 4*math.pi*10**-7
+        omega = 2*math.pi*f_hz
         
         # Impedence
 
@@ -671,8 +675,13 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         x_0n = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
         # Zero sequence for ground return
         if code_cpe == 0:
-            r_0 = open_imp_value
-            x_0 = open_imp_value
+            # As per IEC 60909-2 eq.(1 & 3) following equation for earth return path can be derived
+            # omega*mu_0/(2*math.pi)*(math.log(delta/(d_e)))
+            # Value of this equation evaluats to around 0.7 for normal values of delta (930-10,000) 
+            # and seperation distance (0.01-0.05) applicable to cables. 
+            # This approxiate value is assumed here for simplified analysis.
+            r_0 = r_1 + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+            x_0 = x_1 + 3*0.7
             self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${parallel}#${designation}", True],
                            [(3,None), "${int(length_km*1000)}m", True],
