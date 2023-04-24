@@ -300,6 +300,12 @@ class ProjectModel:
                         self.mark_page(k1)
             self.drawing_view.refresh()
         log.info('ProjectModel - select_powermodel - select')
+
+    def de_select_all(self):
+        for k1, drawing_model in enumerate(self.drawing_models):
+            for k2, element in enumerate(drawing_model.elements):
+                element.set_selection(select=False)
+        log.info('ProjectModel - de_select_all - deselected')
     
     ## Analysis functions
     
