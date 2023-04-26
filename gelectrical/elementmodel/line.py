@@ -452,13 +452,13 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.schem_model_surface = [ ['LINE',(2,0),(2,8), []],
                                      # Symbol
                                      ['LINE',(1.5,0.5),(1.5,1.5), [], 'thin'],
-                                     ['LINE',(1,0),(1.5,0.5), [], 'thin'],
-                                     ['LINE',(1,0.5),(1.5,1), [], 'thin'],
-                                     ['LINE',(1,1),(1.5,1.5), [], 'thin'],
+                                     ['LINE',(1,1),(1.5,0.5), [], 'thin'],
+                                     ['LINE',(1,1.5),(1.5,1), [], 'thin'],
+                                     ['LINE',(1,2),(1.5,1.5), [], 'thin'],
                                      ['LINE',(1.5,6.5),(1.5,7.5), [], 'thin'],
-                                     ['LINE',(1,6),(1.5,6.5), [], 'thin'],
-                                     ['LINE',(1,6.5),(1.5,7), [], 'thin'],
-                                     ['LINE',(1,7),(1.5,7.5), [], 'thin'], ]
+                                     ['LINE',(1,7),(1.5,6.5), [], 'thin'],
+                                     ['LINE',(1,7.5),(1.5,7), [], 'thin'],
+                                     ['LINE',(1,8),(1.5,7.5), [], 'thin'], ]
         self.schem_models_dict = {self.laying_types[0]: self.schem_model_conduit,
                                  self.laying_types[1]: self.schem_model_conduit,
                                  self.laying_types[2]: self.schem_model_conduit,
@@ -550,7 +550,21 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
     def render_element(self, context):
         """Render element to context"""
         # Preprocessing
-        self.schem_model = self.schem_models_dict[self.fields['laying_type']['value']]
+        self.schem_model = copy.deepcopy(self.schem_models_dict[self.fields['laying_type']['value']])
+        ## Add symbols
+        SYMBOL_P = [['LINE',(1.25,5),(2.75,4.5), [], 'thin'],
+                    ['LINE',(2.75,4.25),(2.75,5), [], 'thin']]
+        SYMBOL_N = [['LINE',(1.25,6),(2.75,5.5), [], 'thin'],
+                    ['CIRCLE', (2.75,5.5), 0.2, True, [], 'thin']]
+        SYMBOL_PEN = [['LINE',(1.25,5.25),(2.75,4.75), [], 'thin'],
+                      ['LINE',(2.75,4.5),(2.75,5.25), [], 'thin'],
+                      ['CIRCLE', (2.375,4.875), 0.2, True, [], 'thin']]
+        if self.fields['cpe']['value'] not in ['None', 'Neutral']:
+            self.schem_model += SYMBOL_P
+        if self.fields['cpe']['value'] == 'Neutral':
+            self.schem_model += SYMBOL_PEN
+        if self.fields['neutral_xsec']['value'] != 0 and self.fields['cpe']['value'] != 'Neutral':
+            self.schem_model += SYMBOL_N
         # Render
         if self.fields['in_service']['value']:
             self.render_model(context, self.schem_model)
