@@ -127,6 +127,7 @@ class DrawingView:
         self.scrolled_window.get_vadjustment().set_value(self.vadjustment)
     
     def refresh(self):
+        self.program_state['zoom_display_label'].set_label(str(int(self.scale*100)) + '%')
         self.drawing_area.queue_draw()
     
     def select_page(self):

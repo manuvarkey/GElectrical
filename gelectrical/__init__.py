@@ -685,8 +685,7 @@ class MainWindow():
         """Zoom in draw view"""
         if self.project.drawing_view.scale <= 2.4:
             self.project.drawing_view.scale += 0.2
-            self.zoom_display_label.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
-            self.project.drawing_view.drawing_area.queue_draw()
+            self.project.drawing_view.refresh()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached maximum scale).")
         
@@ -694,8 +693,7 @@ class MainWindow():
         """Zoom out draw view"""
         if self.project.drawing_view.scale >= 0.6:
             self.project.drawing_view.scale -= 0.2
-            self.zoom_display_label.set_label(str(int(self.project.drawing_view.scale*100)) + '%')
-            self.project.drawing_view.drawing_area.queue_draw()
+            self.project.drawing_view.refresh()
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached minimum scale).")
             
