@@ -291,7 +291,10 @@ class NetworkModel:
             # Finad all paths from current node to each source
             r_grids = {}
             for source in self.graph_source_nodes:
-                simple_paths = nx.all_simple_paths(self.graph, gnode, source)
+                try:
+                    simple_paths = nx.all_simple_paths(self.graph, gnode, source)
+                except nx.NodeNotFound:
+                    continue
                 for simple_path in simple_paths:
                     # Iterate over each gnode of path
                     for path_gnode in simple_path:
@@ -321,7 +324,10 @@ class NetworkModel:
         else:
             graph = self.graph
         # Search in a path from gnode1 to gnode2
-        simple_paths = nx.all_simple_paths(graph, gnode1, gnode2)
+        try:
+            simple_paths = nx.all_simple_paths(graph, gnode1, gnode2)
+        except nx.NodeNotFound:
+            return set()
         result = set(itertools.chain(*simple_paths))
         return result
 
@@ -340,8 +346,11 @@ class NetworkModel:
         # Search in a path from g0 to selected sources
         search_set = [source_node] if source_node else graph_source_nodes
         for source in search_set:
-            simple_paths = nx.all_simple_paths(graph, g0, source)
-            paths_comb = set(itertools.chain(*simple_paths))
+            try:
+                simple_paths = nx.all_simple_paths(graph, g0, source)
+                paths_comb = set(itertools.chain(*simple_paths))
+            except nx.NodeNotFound:
+                continue
             result = result | paths_comb
         # If upstream nodes do not include selected gnode, remove gnode from set
         adj_nodes_g0 = set(graph.adj[g0]) - set(gnodes)
@@ -366,7 +375,10 @@ class NetworkModel:
             return results
         # Search in a path from g0 to all sources
         for source in graph_source_nodes:
-            simple_paths = nx.all_simple_paths(graph, gnodes[0], source)
+            try:
+                simple_paths = nx.all_simple_paths(graph, gnodes[0], source)
+            except nx.NodeNotFound:
+                continue
             for path in map(nx.utils.pairwise, simple_paths):  # For all elements in path
                 for e_pair in path:
                     ekey_check = graph.edges[e_pair[0], e_pair[1]]['key']
@@ -420,7 +432,10 @@ class NetworkModel:
                 # Select start nodes from nodes not in upstream_nodes
                 start_gnodes = [gnode for gnode in gnodes if gnode not in upstream_nodes]
             for start_gnode in start_gnodes:
-                simple_paths = nx.all_simple_paths(graph, start_gnode, self.graph_sink_nodes)
+                try:
+                    simple_paths = nx.all_simple_paths(graph, start_gnode, self.graph_sink_nodes)
+                except nx.NodeNotFound:
+                    continue
                 for path in map(nx.utils.pairwise, simple_paths):
                     path_it1, path_it2 =  itertools.tee(path, 2)
                     path_nodes = set(itertools.chain(*path_it1))
@@ -456,8 +471,11 @@ class NetworkModel:
         # Find upstream nodes
         upstream_nodes = set()
         for source in graph_source_nodes:
-            simple_paths = nx.all_simple_paths(graph, gnode, source)
-            paths_comb = set(itertools.chain(*simple_paths))
+            try:
+                simple_paths = nx.all_simple_paths(graph, gnode, source)
+                paths_comb = set(itertools.chain(*simple_paths))
+            except nx.NodeNotFound:
+                continue
             upstream_nodes = upstream_nodes | paths_comb
         upstream_nodes.discard(gnode)
         # Search for all downstream elements
