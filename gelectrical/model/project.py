@@ -280,7 +280,10 @@ class ProjectModel:
         for drawing_model in self.drawing_models:
             drawing_model.update_title_block()            
                 
-    def select_networkmodel(self, model):
+    def select_networkmodel(self, model, clear=True):
+        if clear:
+            self.de_select_all()
+            self.update_tabs()
         if model:
             for code, elementids in model:
                 if code == 'node':
