@@ -49,6 +49,16 @@
   <project_group>Office</project_group>
   <content_rating type="oars-1.1" />
   <releases>
+    <release date="2023-04-28" version="0.6">
+      <description>
+        <ul>
+          <li>Implement support for modeling networks with mixed TN-S/ TT/ IT earthing systems.</li>
+          <li>Implement text display element.</li>
+          <li>Bug fixes and corrections in in-built models.</li>
+          <li>Updates to standard library.</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-03-28" version="0.5">
       <description>
         <ul>

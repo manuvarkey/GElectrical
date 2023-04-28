@@ -16,6 +16,7 @@ GElectrical is a graphical frontend to pandapower for power supply simulation an
 * Coordination analysis for power supply protection devices with support for CB and fuse protection curves; damage curves for transformers, cables and motors.
 * Support for daily load curves for load elements.
 * Support for arriving network parameters for custom geometry OH lines.
+* Support for modeling networks with mixed TN-S/ TN-C/ TT/ IT earthing systems.
 * Electrical rules check for checking conformity with IEC/ local electrical guidelines.
 * Print and export of drawings to pdf.
 * Generation of analysis reports.
