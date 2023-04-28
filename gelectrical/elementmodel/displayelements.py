@@ -60,4 +60,44 @@ class DisplayElementNode(ElementModel):
         self.modify_extends()
 
 
+class DisplayElementText(ElementModel):
+    """Class for rendering cross reference elements"""
+    
+    code = 'element_display_text'
+    name = 'Text Display Element'
+    group = 'Miscellaneous'
+    icon = misc.abs_path('icons', 'display-text.svg')
+    tooltip = """<b>Text Display Element</b>"""
+    
+    def __init__(self, cordinates=(0,0), **kwargs):
+        # Global
+        ElementModel.__init__(self, cordinates, **kwargs)
+        self.model_width = 0
+        self.model_height = 0
+        self.ports = [(0,0)]
+        self.fields = {'text'       : self.get_field_dict('multiline_str', 'Text', '', 'Notes:\n', status_floating=True),
+                       'background' : self.get_field_dict('bool', 'Fill', '', True, status_floating=True),
+                       'border'     : self.get_field_dict('bool', 'Border', '', False, status_floating=True)}
+        self.text_model = [[(0.5,0.5), "${text}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'left'],]
+        self.schem_model = []
+    
+    def render_element(self, context):
+        """Render element to context"""
+        self.render_model(context, self.schem_model)
+        self.render_text(context, self.text_model)
+        if self.fields['border']['value'] or self.fields['background']['value']:
+            self.modify_extends()
+            width = self.model_width + 1*misc.M
+            height = self.model_height + 1*misc.M
+            if self.fields['background']['value']:
+                schem_model_border = [['RECT', (0,0), width/misc.M, height/misc.M, True, []]]
+                self.render_model(context, schem_model_border, color=misc.COLOR_OVERLAY_BG)
+            if self.fields['border']['value']:
+                schem_model_border = [['RECT', (0,0), width/misc.M, height/misc.M, False, [], 'thin']]
+                self.render_model(context, schem_model_border)
+            
+        # Post processing
+        self.modify_extends()
+
+
         

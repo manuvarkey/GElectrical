@@ -938,6 +938,7 @@ class MainWindow():
         self.program_state['element_models'][ward.Ward.code] = ward.Ward
         self.program_state['element_models'][ward.XWard.code] = ward.XWard
         self.program_state['element_models'][shunt.Shunt.code] = shunt.Shunt
+        self.program_state['element_models'][displayelements.DisplayElementText.code] = displayelements.DisplayElementText
         # Setup main window
         self.builder = Gtk.Builder()
         self.builder.add_from_file(misc.abs_path("interface", "mainwindow.glade"))
