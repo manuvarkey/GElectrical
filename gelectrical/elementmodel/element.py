@@ -89,8 +89,8 @@ class ElementModel:
         if select == True and self.selected == True:
             (x, y, width, height) = self.get_dimensions()
             misc.draw_rectangle(context,
-                                self.x,
-                                self.y,
+                                x,
+                                y,
                                 width,
                                 height,
                                 radius=misc.RECTANGLE_RADIUS,
@@ -127,7 +127,7 @@ class ElementModel:
                     int(self.model_height))
         elif self.orientation == 'horizontal': 
             rect = (int(self.x), 
-                    int(self.y), 
+                    int(self.y-self.model_width), 
                     int(self.model_height), 
                     int(self.model_width))
         return rect
@@ -152,7 +152,7 @@ class ElementModel:
         elif self.orientation == 'horizontal':
             ports_h = []
             for port in self.ports:
-                ports_h.append([int(port[1]*misc.M), int(self.model_width-port[0]*misc.M)])
+                ports_h.append([int(port[1]*misc.M), -int(port[0]*misc.M)])
             return ports_h
         
     def get_ports_global(self):
@@ -164,7 +164,7 @@ class ElementModel:
         elif self.orientation == 'horizontal':
             ports_h = []
             for port in self.ports:
-                ports_h.append([int(self.x + port[1]*misc.M), int(self.y + self.model_width-port[0]*misc.M)])
+                ports_h.append([int(self.x + port[1]*misc.M), int(self.y - port[0]*misc.M)])
             return ports_h
         
     def get_model(self):
@@ -293,7 +293,7 @@ class ElementModel:
         if self.orientation == 'vertical':
             pass
         elif self.orientation == 'horizontal':
-            matrix = cairo.Matrix(0, -1, 1, 0, 0, self.model_width)
+            matrix = cairo.Matrix(0, -1, 1, 0, 0, 0)
             context.transform (matrix)
         self.schem_extends = []
         M = lambda x: [i*misc.M for i in x]
@@ -456,7 +456,7 @@ class ElementModel:
         if self.orientation == 'vertical':
             pass
         elif self.orientation == 'horizontal':
-            matrix = cairo.Matrix(0, -1, 1, 0, 0, self.model_width)
+            matrix = cairo.Matrix(0, -1, 1, 0, 0, 0)
             context.transform (matrix)
         self.text_extends = []
         # Render
