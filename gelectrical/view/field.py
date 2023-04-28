@@ -196,6 +196,13 @@ class FieldView:
             button.props.image.set_from_icon_name(None, Gtk.IconSize.BUTTON)
             if field['alter_structure'] == True:
                 self.update_widgets()
+
+        def on_key_press_callback_multiline(widget, event, set_button, text_buffer, get_field, set_field, code):
+            # Check for Ctrl+Enter key combination
+            if event.keyval == Gdk.KEY_Return and event.state & Gdk.ModifierType.CONTROL_MASK:
+                activate_callback_multiline(set_button, text_buffer, get_field, set_field, code)
+                return True  # To indicate that the event has been handled and should not be propagated further
+            return False
             
         def changed_callback_multiline(textbuffer, textview, button):
             button.props.image.set_from_icon_name('dialog-error', Gtk.IconSize.BUTTON)
@@ -297,6 +304,7 @@ class FieldView:
                     data_widget.set_size_request(-1,50)
                     set_button = Gtk.Button.new_from_icon_name(None, Gtk.IconSize.BUTTON)
                     if field[self.inactivate_code] == False:
+                        data_widget.connect("key-press-event", on_key_press_callback_multiline, set_button, text_buffer, get_field, set_field, code)
                         set_button.connect("clicked", activate_callback_multiline, text_buffer, get_field, set_field, code)
                         text_buffer.connect("changed", changed_callback_multiline, data_widget, set_button)
                         # Code to overcome BUG in Gtk see https://gitlab.gnome.org/GNOME/gtk/-/issues/964   
