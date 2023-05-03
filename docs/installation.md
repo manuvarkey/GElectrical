@@ -2,13 +2,15 @@
 
 Application can be installed for use on your OS as below.
 
-It is reccomended to install `osifont` for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
+```{admonition} Font for schematic drawings
+It is recommended to install `osifont` for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
+```
 
 ## Binary
 
 ### Windows
 
-Use `.EXE` installation packages available under Releases.
+Use `.EXE` installation packages available under the latest [Release](https://github.com/manuvarkey/GElectrical/releases/latest).
 
 ### Linux
 

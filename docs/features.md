@@ -30,12 +30,16 @@ The interface is divided into three section which are indicated by the numbered 
 ## Run analysis
 (run_analysis)=
 
-![Run analysis](assets/images/run_analysis.png)
+```{figure} assets/images/run_analysis.png
+:align: center
+:width: 500px
+```
 
 This module allows various analysis functions to be run for simulating the behaviour of the electrical network at various conditions. Results of the analysis will be displayed in the results tab of the right pane for each element. Results may also be exported to a PDF report. The various options available are listed below.
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Option
@@ -86,6 +90,7 @@ Powerflow and shortcircuit (symmetric and line to ground) analysis functions sho
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Rule
@@ -111,6 +116,7 @@ Powerflow and shortcircuit (symmetric and line to ground) analysis functions sho
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Rule
@@ -130,6 +136,7 @@ Powerflow and shortcircuit (symmetric and line to ground) analysis functions sho
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Rule
@@ -146,6 +153,7 @@ Powerflow and shortcircuit (symmetric and line to ground) analysis functions sho
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Rule
@@ -162,6 +170,7 @@ Powerflow and shortcircuit (symmetric and line to ground) analysis functions sho
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Rule
@@ -178,6 +187,7 @@ Powerflow and shortcircuit (symmetric and line to ground) analysis functions sho
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Rule

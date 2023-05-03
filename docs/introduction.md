@@ -2,11 +2,6 @@
 
 ## General
 
-[![Release](https://img.shields.io/github/release/manuvarkey/GElectrical.svg)](https://github.com/manuvarkey/GElectrical/releases/latest)
-![License](https://img.shields.io/github/license/manuvarkey/GElectrical)
-
-<a href="https://beta.flathub.org/apps/com.kavilgroup.gelectrical"><img height="51" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.svg"/> </a>
-
 GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Following features are currently implemented.
 
 * Schematic capture.
@@ -23,23 +18,27 @@ GElectrical is a graphical frontend to pandapower for power supply simulation an
 * Print and export of drawings to pdf.
 * Generation of analysis reports.
 
-**Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended. See [Roadmap](https://github.com/manuvarkey/GElectrical/issues/1) for current limitations.**
+```{admonition} Read before using ...
+Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended. See [Roadmap](https://github.com/manuvarkey/GElectrical/issues/1) for current limitations.
+```
+
 
 ## Screenshots
 
-**See [Screencasts](https://www.youtube.com/playlist?list=PLyFdF5OlDZHI8DBi42qsmUeiiD2Cd0eLU) for application screencasts**
+```{admonition} Screencasts
+See [Screencasts](https://www.youtube.com/playlist?list=PLyFdF5OlDZHI8DBi42qsmUeiiD2Cd0eLU) for application screencasts
+```
 
-![Properties display](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/1.png)
-![Results display](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/2.png)
-![Electrical rules check](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/3.png)
-![Protection curve display](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/4.png)
-![Load profile display](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/5.png)
-![Database display](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/screenshots/6.png)
+![Properties display](assets/images/1.png)
+![Results display](assets/images/2.png)
+![Electrical rules check](assets/images/3.png)
+![Protection curve display](assets/images/4.png)
+![Load profile display](assets/images/5.png)
+![Database display](assets/images/6.png)
 
 ## Sample Files
 
-[Sample schematic](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/sample_files/sample_drawing.pdf)
+* [Sample schematic](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/sample_files/sample_drawing.pdf)
+* [Sample report](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/sample_files/sample_report.pdf)
+* [Sample project file](https://github.com/manuvarkey/GElectrical/raw/master/sample_files/sample.gepro)
 
-[Sample report](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/sample_files/sample_report.pdf)
-
-[Sample project file](https://github.com/manuvarkey/GElectrical/raw/master/sample_files/sample.gepro)

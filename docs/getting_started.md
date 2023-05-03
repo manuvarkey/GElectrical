@@ -38,15 +38,11 @@ The items in the application toolbar provides access to application management r
 ### Application Menu
 (application_menu)=
 
-```{figure} assets/images/application_menu.png
----
-align: left
----
-```
 The application menu provides access to less frequently used functionality of GElectrical. The items in the menu are described below.
 
 ```{list-table}
 :header-rows: 1
+:widths: 10 30 60
 
 * - Slno.
   - Menu Item
@@ -120,7 +116,10 @@ Results of the rules check will be displayed in the messages tab of the right pa
 ## Components side-bar
 (components_side_bar)=
 
-![Components side-bar](assets/images/components_side_bar.png)
+```{figure} assets/images/components_side_bar.png
+:align: center
+:width: 700px
+```
 
 Components side-bar allows insertion of elements into drawing view. On selecting an element in components side-bar, the insertion mode is activated and a floating model is enabled which follows the cursor on the drawing view. This floating model can be added to the drawing view by clicking the `Left Mouse Button`. Multiple models may be added by pressing down `Shift` while clicking the `Left Mouse Button`. To cancel insertion of element, use the `Right Mouse Button`. The components side-bar also incorporates a search bar for filtering the list of elements.
 
@@ -131,7 +130,10 @@ Insertion may also display fields which can be modified to modify the behaviour 
 ## Drawing View
 (drawing_view)=
 
-![Drawing View](assets/images/drawing_view.png)
+```{figure} assets/images/drawing_view.png
+:align: center
+:width: 700px
+```
 
 Drawing view allows defining the electrical single line diagram for the project by addition and modification of schematic elements and defining connectivity between elements. The elements are added into the drawing view using the [components side-bar](components_side_bar). The properties of the inserted elements can be viewed in the [properties side-bar](properties_side_bar) by selecting the element in the drawing view. Selected elements can be deleted by pressing the `Delete` button or by selecting the function available in the [project toolbar](project_toolbar).
 
@@ -148,9 +150,8 @@ All the sheets available in the project can be accessed using the tab bar at the
 
 
 ```{figure} assets/images/properties_sidebar.png
----
-align: left
----
+:align: left
+:width: 300px
 ```
 
 This sidebar allows has three tabs which are described below.
