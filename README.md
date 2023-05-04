@@ -1,5 +1,11 @@
 # GElectrical
 
+[Website](https://github.com/manuvarkey/GElectrical) • 
+[Documentation](https://manuvarkey.github.io/GElectrical/) •
+[Forum](https://github.com/manuvarkey/GElectrical/discussions/) •
+[Bug tracker](https://github.com/manuvarkey/GElectrical/issues) •
+[Git repository](https://github.com/manuvarkey/GElectrical)
+
 [![Release](https://img.shields.io/github/release/manuvarkey/GElectrical.svg)](https://github.com/manuvarkey/GElectrical/releases/latest)
 ![License](https://img.shields.io/github/license/manuvarkey/GElectrical)
 
