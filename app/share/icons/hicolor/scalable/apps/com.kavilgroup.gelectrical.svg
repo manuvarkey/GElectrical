@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
+   viewBox="0 0 512 512"
    width="512"
    height="512"
-   id="svg2"
    version="1.1"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   id="svg24"
    sodipodi:docname="com.kavilgroup.gelectrical.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/eee/Projects/GElectrical/source/artwork/com.kavilgroup.gelectrical.png"
+   inkscape:export-xdpi="46.880001"
+   inkscape:export-ydpi="46.880001"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs4">
+     id="defs28">
     <linearGradient
        id="linearGradient5244">
       <stop
@@ -53,15 +52,18 @@
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-3"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-7"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-4"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <linearGradient
        id="linearGradient3963-8">
       <stop
@@ -76,23 +78,28 @@
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-4"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-5"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-3"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-4"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <linearGradient
        id="linearGradient3909-02">
       <stop
@@ -177,7 +184,7 @@
     </filter>
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-7"
+       xlink:href="#linearGradient3963-8"
        id="linearGradient3969-0-3"
        x1="27.075081"
        y1="20.256975"
@@ -185,38 +192,6 @@
        y2="20.256975"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-7">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-2" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-1" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3963-6">
-      <stop
-         id="stop3965-9"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0"
-       xlink:href="#linearGradient3963-6"
-       inkscape:collect="always" />
     <filter
        color-interpolation-filters="sRGB"
        inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
@@ -257,176 +232,86 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0">
-      <stop
-         id="stop3911-9"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5"
-       xlink:href="#linearGradient3909-0"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909">
-      <stop
-         id="stop3911"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963">
-      <stop
-         id="stop3965"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-3-5"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-7-1"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-4-0"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3963-8-4">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-4-4" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-4-7" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-4-3"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-5-7"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-3-1"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-4-1"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-8-1"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3909-02-2">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-91-5" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-6-3" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4501-8-8">
-      <stop
-         id="stop4503-4-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop4505-0-3"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-0-0-9"
-       id="linearGradient3915-5-5-6"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3909-0-0-9">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3911-9-5-7" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-7-2-9" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <filter
        id="filter4080-8-6"
        inkscape:label="Fancy blur"
@@ -467,48 +352,6 @@
          k2="2"
          in="result1" />
     </filter>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-7-4"
-       id="linearGradient3969-0-3-8"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-7-4">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-2-7" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-1-5" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3963-6-2">
-      <stop
-         id="stop3965-9-9"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7-2"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0-8"
-       xlink:href="#linearGradient3963-6-2"
-       inkscape:collect="always" />
     <filter
        color-interpolation-filters="sRGB"
        inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
@@ -549,112 +392,46 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0-6">
-      <stop
-         id="stop3911-9-2"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7-9"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5-7"
-       xlink:href="#linearGradient3909-0-6"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501-4">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503-45" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505-6" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909-3">
-      <stop
-         id="stop3911-3"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913-1"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829-9"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855-7"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889-31"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938-52"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960-2"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-2">
-      <stop
-         id="stop3965-98"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-8"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085-0"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147-0"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181-32"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-6-1">
-      <stop
-         id="stop3965-9-1"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7-3"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0-2"
-       xlink:href="#linearGradient3963-6-1"
-       inkscape:collect="always" />
+       effect="spiro"
+       lpeversion="0" />
     <filter
        color-interpolation-filters="sRGB"
        inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
@@ -695,176 +472,86 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0-2">
-      <stop
-         id="stop3911-9-8"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7-3"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5-2"
-       xlink:href="#linearGradient3909-0-2"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501-6">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503-2" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505-2" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909-5">
-      <stop
-         id="stop3911-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913-76"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829-4"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855-43"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889-0"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938-8"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960-7"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-1">
-      <stop
-         id="stop3965-8"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-89"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085-6"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147-6"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181-6"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-4"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-78"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-7"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3963-5">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-2" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-6" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-3"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-6"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-2"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-46"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-89"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3909-2">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-98" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-79" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4501-81">
-      <stop
-         id="stop4503-7"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop4505-03"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-0-05"
-       id="linearGradient3915-5-4"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3909-0-05">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3911-9-54" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-7-26" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <filter
        id="filter4080-53"
        inkscape:label="Fancy blur"
@@ -905,112 +592,46 @@
          k2="2"
          in="result1" />
     </filter>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-74"
-       id="linearGradient3969-0-89"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-74">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-5" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-0" />
-    </linearGradient>
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-9"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-65"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3963-0">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-21" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-42" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-21"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-0"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-4"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-6"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-47"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3909-22">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-1" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-15" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4501-84">
-      <stop
-         id="stop4503-41"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop4505-4"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-0-4"
-       id="linearGradient3915-5-3"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3909-0-4">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3911-9-24" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-7-7" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <filter
        id="filter4080-2"
        inkscape:label="Fancy blur"
@@ -1052,37 +673,6 @@
          in="result1" />
     </filter>
     <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-23"
-       id="linearGradient3969-0-34"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-23">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-0" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-8" />
-    </linearGradient>
-    <linearGradient
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient10285"
-       xlink:href="#linearGradient3963-0-2"
-       inkscape:collect="always" />
-    <linearGradient
        y2="956.23987"
        x2="155.98544"
        y1="956.23987"
@@ -1090,28 +680,7 @@
        gradientTransform="matrix(0,1,1,0,-858.6356,859.68809)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient10283"
-       xlink:href="#linearGradient3909-22-6"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient3963-6-78">
-      <stop
-         id="stop3965-9-7"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7-10"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0-9"
-       xlink:href="#linearGradient3963-6-78"
+       xlink:href="#linearGradient3909-02"
        inkscape:collect="always" />
     <filter
        color-interpolation-filters="sRGB"
@@ -1153,175 +722,46 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0-8">
-      <stop
-         id="stop3911-9-6"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7-99"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5-0"
-       xlink:href="#linearGradient3909-0-8"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501-48">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503-3" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505-3" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909-8">
-      <stop
-         id="stop3911-16"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913-61"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829-5"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855-0"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889-40"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938-58"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960-9"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-22">
-      <stop
-         id="stop3965-87"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-44"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085-5"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147-5"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181-86"
-       effect="spiro" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-22-3"
-       id="linearGradient3915-21"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,1,1,0,-858.6356,859.68809)" />
-    <linearGradient
-       id="linearGradient3909-22-3">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-1-9" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-15-1" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-0-27"
-       id="linearGradient3969-4"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-0-27">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-21-0" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-42-2" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-22-6"
-       id="linearGradient3915-21-6"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,1,1,0,-858.6356,859.68809)" />
-    <linearGradient
-       id="linearGradient3909-22-6">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-1-0" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-15-3" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-0-2"
-       id="linearGradient3969-4-5"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-0-2">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-21-9" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-42-6" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <linearGradient
        gradientUnits="userSpaceOnUse"
        y2="46.363636"
@@ -1354,70 +794,6 @@
          style="stop-color:#ffffff;stop-opacity:0.31690142;" />
     </linearGradient>
     <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="46.363636"
-       x2="63.801449"
-       y1="46.363636"
-       x1="-0.16508403"
-       id="linearGradient5164-9"
-       xlink:href="#linearGradient5158-6"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient5158-6">
-      <stop
-         id="stop5160-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-8"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-6">
-      <stop
-         id="stop5256-1"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.62676054;" />
-      <stop
-         id="stop5258-1"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.31690142;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-8">
-      <stop
-         id="stop5160-3"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-1"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-7">
-      <stop
-         id="stop5256-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.62676054;" />
-      <stop
-         id="stop5258-8"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.31690142;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-6-1">
-      <stop
-         id="stop5160-5-1"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-8-7"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
        id="linearGradient5254-6-8">
       <stop
          id="stop5256-1-8"
@@ -1427,17 +803,6 @@
          id="stop5258-1-5"
          offset="1"
          style="stop-color:#ffffff;stop-opacity:0.12765957;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-9">
-      <stop
-         id="stop5160-59"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-2"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
     </linearGradient>
     <linearGradient
        id="linearGradient5254-0">
@@ -1451,39 +816,6 @@
          style="stop-color:#ffffff;stop-opacity:0.17605634;" />
     </linearGradient>
     <linearGradient
-       id="linearGradient5158-96">
-      <stop
-         id="stop5160-0"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-9"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-1">
-      <stop
-         id="stop5256-9"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.48591548;" />
-      <stop
-         id="stop5258-3"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.17605634;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-1">
-      <stop
-         id="stop5160-50"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-82"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
        id="linearGradient5254-5">
       <stop
          id="stop5256-98"
@@ -1493,28 +825,6 @@
          id="stop5258-68"
          offset="1"
          style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-0">
-      <stop
-         id="stop5160-8"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-4"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-2">
-      <stop
-         id="stop5256-0"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.62676054;" />
-      <stop
-         id="stop5258-83"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.31690142;" />
     </linearGradient>
     <linearGradient
        id="linearGradient3914">
@@ -1614,10 +924,10 @@
        r="2" />
     <inkscape:perspective
        sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 12 : 1"
+       inkscape:vp_x="0 : 424 : 1"
        inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="24 : 12 : 1"
-       inkscape:persp3d-origin="12 : 8 : 1"
+       inkscape:vp_z="24 : 424 : 1"
+       inkscape:persp3d-origin="12 : 420 : 1"
        id="perspective3810" />
     <linearGradient
        id="linearGradient4671">
@@ -1635,133 +945,72 @@
        id="clipPath3718">
       <path
          id="path3720"
-         d="m 114.16802,-3.0757622 c -2.54232,0 -4.58759,2.0452705 -4.58759,4.587589 l 0,56.9031682 c 0,2.54232 2.04527,4.592609 4.58759,4.592609 l 38.32192,0 0,-20.955344 c -4.95113,-1.785078 -8.49256,-6.51995 -8.49256,-12.086339 0,-5.566448 3.54135,-10.306325 8.49256,-12.091359 l 0,-20.9503242 -38.32192,0 z"
-         style="color:#000000;fill:#00ffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="m 114.16802,-3.0757622 c -2.54232,0 -4.58759,2.0452705 -4.58759,4.587589 V 58.414995 c 0,2.54232 2.04527,4.592609 4.58759,4.592609 h 38.32192 V 42.05226 c -4.95113,-1.785078 -8.49256,-6.51995 -8.49256,-12.086339 0,-5.566448 3.54135,-10.306325 8.49256,-12.091359 V -3.0757622 Z"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#00ffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate"
          inkscape:connector-curvature="0" />
     </clipPath>
     <clipPath
        id="clipPath4128"
        clipPathUnits="userSpaceOnUse">
-      <path
-         sodipodi:type="arc"
+      <circle
          style="fill:#656e7e;fill-opacity:1;fill-rule:evenodd;stroke:none"
          id="path4130"
-         sodipodi:cx="-536.32001"
-         sodipodi:cy="239.36"
-         sodipodi:rx="157.44"
-         sodipodi:ry="157.44"
-         d="m -378.88,239.36 a 157.44,157.44 0 1 1 -314.88001,0 157.44,157.44 0 1 1 314.88001,0 z"
-         transform="matrix(0.118891,0,0,0.118891,191.68187,-2.9744718)" />
+         transform="matrix(0.118891,0,0,0.118891,191.68187,-2.9744718)"
+         cx="-536.32001"
+         cy="239.36"
+         r="157.44" />
     </clipPath>
     <clipPath
        id="clipPath4118"
        clipPathUnits="userSpaceOnUse">
-      <path
-         sodipodi:type="arc"
+      <circle
          style="fill:#656e7e;fill-opacity:1;fill-rule:evenodd;stroke:none"
          id="path4120"
-         sodipodi:cx="-536.32001"
-         sodipodi:cy="239.36"
-         sodipodi:rx="157.44"
-         sodipodi:ry="157.44"
-         d="m -378.88,239.36 a 157.44,157.44 0 1 1 -314.88001,0 157.44,157.44 0 1 1 314.88001,0 z"
-         transform="translate(-268.8,-17.92)" />
+         transform="translate(-268.8,-17.92)"
+         cx="-536.32001"
+         cy="239.36"
+         r="157.44" />
     </clipPath>
-    <linearGradient
-       gradientTransform="translate(3.76576e-6,5.4305801)"
-       gradientUnits="userSpaceOnUse"
-       y2="421.03781"
-       x2="386.47629"
-       y1="145.8884"
-       x1="137.57469"
-       id="linearGradient4677-8"
-       xlink:href="#linearGradient4671-1"
-       inkscape:collect="always" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-3-50"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-7-3"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-4-6"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3963-8-3">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-4-7" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-4-2" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-4-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-5-0"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-3-9"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-4-3"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-8-4"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3909-02-3">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-91-6" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-6-0" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4501-8-6">
-      <stop
-         id="stop4503-4-0"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop4505-0-30"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-0-0-8"
-       id="linearGradient3915-5-5-3"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3909-0-0-8">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3911-9-5-9" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-7-2-0" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <filter
        id="filter4080-8-4"
        inkscape:label="Fancy blur"
@@ -1802,48 +1051,6 @@
          k2="2"
          in="result1" />
     </filter>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-7-5"
-       id="linearGradient3969-0-3-3"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-7-5">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-2-3" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-1-4" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3963-6-5">
-      <stop
-         id="stop3965-9-15"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7-11"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0-96"
-       xlink:href="#linearGradient3963-6-5"
-       inkscape:collect="always" />
     <filter
        color-interpolation-filters="sRGB"
        inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
@@ -1884,176 +1091,86 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0-3">
-      <stop
-         id="stop3911-9-3"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7-70"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5-6"
-       xlink:href="#linearGradient3909-0-3"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501-3">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503-47" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505-09" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909-7">
-      <stop
-         id="stop3911-8"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913-68"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829-3"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855-9"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889-8"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938-7"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960-94"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-20">
-      <stop
-         id="stop3965-48"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-0"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085-78"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147-91"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181-2"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-3-5-5"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-7-1-6"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-4-0-1"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3963-8-4-7">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-4-4-1" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-4-7-4" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-4-3-2"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-5-7-7"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-3-1-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-4-1-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-8-1-4"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3909-02-2-7">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-91-5-2" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-6-3-9" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4501-8-8-3">
-      <stop
-         id="stop4503-4-5-4"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop4505-0-3-9"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-0-0-9-2"
-       id="linearGradient3915-5-5-6-7"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3909-0-0-9-2">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3911-9-5-7-5" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-7-2-9-5" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <filter
        id="filter4080-8-6-4"
        inkscape:label="Fancy blur"
@@ -2094,48 +1211,6 @@
          k2="2"
          in="result1" />
     </filter>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-7-4-1"
-       id="linearGradient3969-0-3-8-3"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-7-4-1">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-2-7-2" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-1-5-4" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3963-6-2-1">
-      <stop
-         id="stop3965-9-9-3"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7-2-1"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0-8-9"
-       xlink:href="#linearGradient3963-6-2-1"
-       inkscape:collect="always" />
     <filter
        color-interpolation-filters="sRGB"
        inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
@@ -2176,112 +1251,46 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0-6-6">
-      <stop
-         id="stop3911-9-2-0"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7-9-5"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5-7-1"
-       xlink:href="#linearGradient3909-0-6-6"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501-4-8">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503-45-9" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505-6-9" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909-3-9">
-      <stop
-         id="stop3911-3-3"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913-1-3"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829-9-8"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855-7-8"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889-31-3"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938-52-4"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960-2-8"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-2-2">
-      <stop
-         id="stop3965-98-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-8-7"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085-0-3"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147-0-7"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181-32-9"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-6-1-2">
-      <stop
-         id="stop3965-9-1-8"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7-3-9"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0-2-3"
-       xlink:href="#linearGradient3963-6-1-2"
-       inkscape:collect="always" />
+       effect="spiro"
+       lpeversion="0" />
     <filter
        color-interpolation-filters="sRGB"
        inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
@@ -2322,176 +1331,86 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0-2-7">
-      <stop
-         id="stop3911-9-8-8"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7-3-4"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5-2-1"
-       xlink:href="#linearGradient3909-0-2-7"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501-6-9">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503-2-4" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505-2-6" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909-5-5">
-      <stop
-         id="stop3911-5-4"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913-76-4"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829-4-2"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855-43-0"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889-0-4"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938-8-9"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960-7-4"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-1-0">
-      <stop
-         id="stop3965-8-7"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-89-4"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085-6-1"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147-6-7"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181-6-7"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-4-4"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-78-6"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-7-1"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3963-5-2">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-2-5" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-6-5" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-3-0"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-6-1"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-2-7"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-46-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-89-0"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3909-2-2">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-98-3" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-79-2" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4501-81-3">
-      <stop
-         id="stop4503-7-7"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop4505-03-0"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-0-05-0"
-       id="linearGradient3915-5-4-2"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3909-0-05-0">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3911-9-54-9" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-7-26-4" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <filter
        id="filter4080-53-2"
        inkscape:label="Fancy blur"
@@ -2532,112 +1451,46 @@
          k2="2"
          in="result1" />
     </filter>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-74-4"
-       id="linearGradient3969-0-89-3"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-74-4">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-5-8" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-0-5" />
-    </linearGradient>
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4181-8-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4147-9-1"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect4085-65-7"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3963-0-25">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-21-2" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-42-3" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3960-21-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3938-0-3"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3889-4-2"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3855-6-8"
-       is_visible="true" />
+       is_visible="true"
+       lpeversion="0" />
     <inkscape:path-effect
        effect="spiro"
        id="path-effect3829-47-2"
-       is_visible="true" />
-    <linearGradient
-       id="linearGradient3909-22-35">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-1-7" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-15-4" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4501-84-9">
-      <stop
-         id="stop4503-41-0"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop4505-4-2"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-0-4-8"
-       id="linearGradient3915-5-3-8"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3909-0-4-8">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3911-9-24-9" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-7-7-8" />
-    </linearGradient>
+       is_visible="true"
+       lpeversion="0" />
     <filter
        id="filter4080-2-5"
        inkscape:label="Fancy blur"
@@ -2678,68 +1531,6 @@
          k2="2"
          in="result1" />
     </filter>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-6-23-9"
-       id="linearGradient3969-0-34-7"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-6-23-9">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-9-0-5" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-7-8-7" />
-    </linearGradient>
-    <linearGradient
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient10285-0"
-       xlink:href="#linearGradient3963-0-2-7"
-       inkscape:collect="always" />
-    <linearGradient
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       gradientTransform="matrix(0,1,1,0,-858.6356,859.68809)"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient10283-8"
-       xlink:href="#linearGradient3909-22-6-0"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient3963-6-78-0">
-      <stop
-         id="stop3965-9-7-2"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-7-10-1"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="translate(31.452455,17.777475)"
-       gradientUnits="userSpaceOnUse"
-       y2="20.256975"
-       x2="111.84587"
-       y1="20.256975"
-       x1="27.075081"
-       id="linearGradient3969-0-9-0"
-       xlink:href="#linearGradient3963-6-78-0"
-       inkscape:collect="always" />
     <filter
        color-interpolation-filters="sRGB"
        inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
@@ -2780,393 +1571,49 @@
          k3="0"
          k4="0" />
     </filter>
-    <linearGradient
-       id="linearGradient3909-0-8-4">
-      <stop
-         id="stop3911-9-6-2"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         id="stop3913-7-99-5"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="956.23987"
-       x2="155.98544"
-       y1="956.23987"
-       x1="46.709709"
-       id="linearGradient3915-5-0-1"
-       xlink:href="#linearGradient3909-0-8-4"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient4501-48-5">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop4503-3-0" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4505-3-9" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3909-8-3">
-      <stop
-         id="stop3911-16-1"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.6241135;" />
-      <stop
-         id="stop3913-61-9"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3829-5-9"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3855-0-8"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3889-40-1"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3938-58-0"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect3960-9-9"
-       effect="spiro" />
-    <linearGradient
-       id="linearGradient3963-22-7">
-      <stop
-         id="stop3965-87-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.42957747;" />
-      <stop
-         id="stop3967-44-5"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4085-5-6"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4147-5-8"
-       effect="spiro" />
+       effect="spiro"
+       lpeversion="0" />
     <inkscape:path-effect
        is_visible="true"
        id="path-effect4181-86-8"
-       effect="spiro" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-22-3-1"
-       id="linearGradient3915-21-1"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,1,1,0,-858.6356,859.68809)" />
-    <linearGradient
-       id="linearGradient3909-22-3-1">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-1-9-9" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-15-1-9" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-0-27-9"
-       id="linearGradient3969-4-4"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-0-27-9">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-21-0-4" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-42-2-7" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3909-22-6-0"
-       id="linearGradient3915-21-6-5"
-       x1="46.709709"
-       y1="956.23987"
-       x2="155.98544"
-       y2="956.23987"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,1,1,0,-858.6356,859.68809)" />
-    <linearGradient
-       id="linearGradient3909-22-6-0">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.6241135;"
-         offset="0"
-         id="stop3911-1-0-4" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop3913-15-3-8" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3963-0-2-7"
-       id="linearGradient3969-4-5-3"
-       x1="27.075081"
-       y1="20.256975"
-       x2="111.84587"
-       y2="20.256975"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(31.452455,17.777475)" />
-    <linearGradient
-       id="linearGradient3963-0-2-7">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.42957747;"
-         offset="0"
-         id="stop3965-21-9-0" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3967-42-6-4" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="46.363636"
-       x2="63.801449"
-       y1="46.363636"
-       x1="-0.16508403"
-       id="linearGradient5164-1"
-       xlink:href="#linearGradient5158-62"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient5158-62">
-      <stop
-         id="stop5160-1"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-0"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-59">
-      <stop
-         id="stop5256-25"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.62676054;" />
-      <stop
-         id="stop5258-38"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.31690142;" />
-    </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="46.363636"
-       x2="63.801449"
-       y1="46.363636"
-       x1="-0.16508403"
-       id="linearGradient5164-9-8"
-       xlink:href="#linearGradient5158-6-7"
-       inkscape:collect="always" />
-    <linearGradient
-       id="linearGradient5158-6-7">
-      <stop
-         id="stop5160-5-7"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-8-5"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-6-2">
-      <stop
-         id="stop5256-1-4"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.62676054;" />
-      <stop
-         id="stop5258-1-7"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.31690142;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-8-0">
-      <stop
-         id="stop5160-3-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-1-5"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-7-4">
-      <stop
-         id="stop5256-5-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.62676054;" />
-      <stop
-         id="stop5258-8-4"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.31690142;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-6-1-0">
-      <stop
-         id="stop5160-5-1-7"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-8-7-5"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-6-8-0">
-      <stop
-         id="stop5256-1-8-3"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.43971631;" />
-      <stop
-         id="stop5258-1-5-4"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.12765957;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-9-1">
-      <stop
-         id="stop5160-59-9"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-2-4"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-0-1">
-      <stop
-         id="stop5256-2-7"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.48591548;" />
-      <stop
-         id="stop5258-6-2"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.17605634;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-96-8">
-      <stop
-         id="stop5160-0-2"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-9-4"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-1-6">
-      <stop
-         id="stop5256-9-4"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.48591548;" />
-      <stop
-         id="stop5258-3-2"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.17605634;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-1-2">
-      <stop
-         id="stop5160-50-5"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-82-1"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-5-9">
-      <stop
-         id="stop5256-98-0"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.48591548;" />
-      <stop
-         id="stop5258-68-3"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5158-0-8">
-      <stop
-         id="stop5160-8-1"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.5;" />
-      <stop
-         id="stop5162-4-9"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.08450704;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5254-2-5">
-      <stop
-         id="stop5256-0-9"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:0.62676054;" />
-      <stop
-         id="stop5258-83-6"
-         offset="1"
-         style="stop-color:#ffffff;stop-opacity:0.31690142;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3914-4">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.14901961;"
-         offset="0"
-         id="stop3916-9" />
-      <stop
-         style="stop-color:#177ed5;stop-opacity:0;"
-         offset="1"
-         id="stop3918-2" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3914-4"
-       id="linearGradient3012-9"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-307.99999,1255.6545)"
-       x1="315.875"
-       y1="-244.04208"
-       x2="347.93805"
-       y2="-211.97903" />
+       effect="spiro"
+       lpeversion="0" />
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient4082-2"
+       xlink:href="#linearGradient4082"
        id="radialGradient3084-0-9"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
@@ -3177,7 +1624,7 @@
        r="2" />
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient4082-2"
+       xlink:href="#linearGradient4082"
        id="radialGradient3081-4"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
@@ -3188,7 +1635,7 @@
        r="2" />
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3982-8"
+       xlink:href="#linearGradient3982"
        id="radialGradient3079-9"
        gradientUnits="userSpaceOnUse"
        cx="-14"
@@ -3196,20 +1643,9 @@
        fx="-14"
        fy="30"
        r="10" />
-    <linearGradient
-       id="linearGradient3982-8">
-      <stop
-         style="stop-color:#000000;stop-opacity:0.80000001;"
-         offset="0"
-         id="stop3984-0" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.1;"
-         offset="1"
-         id="stop3986-0" />
-    </linearGradient>
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3982-8"
+       xlink:href="#linearGradient3982"
        id="radialGradient3095-6"
        gradientUnits="userSpaceOnUse"
        cx="-14"
@@ -3217,20 +1653,9 @@
        fx="-14"
        fy="30"
        r="10" />
-    <linearGradient
-       id="linearGradient4082-2">
-      <stop
-         style="stop-color:#4d4d4d;stop-opacity:1;"
-         offset="0"
-         id="stop4084-2" />
-      <stop
-         style="stop-color:#333333;stop-opacity:1;"
-         offset="1"
-         id="stop4086-5" />
-    </linearGradient>
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient4082-2"
+       xlink:href="#linearGradient4082"
        id="radialGradient3084-7"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
@@ -3241,35 +1666,21 @@
        r="2" />
     <inkscape:perspective
        sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 12 : 1"
+       inkscape:vp_x="0 : 424 : 1"
        inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="24 : 12 : 1"
-       inkscape:persp3d-origin="12 : 8 : 1"
+       inkscape:vp_z="24 : 424 : 1"
+       inkscape:persp3d-origin="12 : 420 : 1"
        id="perspective3810-0" />
-    <linearGradient
-       id="linearGradient4671-1">
-      <stop
-         id="stop4673-7"
-         offset="0"
-         style="stop-color:#000000;stop-opacity:0.27152318;" />
-      <stop
-         id="stop4675-0"
-         offset="1"
-         style="stop-color:#fd702a;stop-opacity:0;" />
-    </linearGradient>
     <clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath5201">
-      <path
+      <circle
          transform="matrix(1.3902439,0,0,1.3902439,2394.1846,218.55774)"
-         d="m -378.88,239.36 a 157.44,157.44 0 1 1 -314.88001,0 157.44,157.44 0 1 1 314.88001,0 z"
-         sodipodi:ry="157.44"
-         sodipodi:rx="157.44"
-         sodipodi:cy="239.36"
-         sodipodi:cx="-536.32001"
          id="path5203"
          style="fill:#474d58;fill-opacity:1;fill-rule:evenodd;stroke:none"
-         sodipodi:type="arc" />
+         cx="-536.32001"
+         cy="239.36"
+         r="157.44" />
     </clipPath>
     <linearGradient
        inkscape:collect="always"
@@ -3285,8 +1696,8 @@
        id="clipPath5238">
       <path
          id="path5240"
-         d="m 142.84375,240.9375 c -15.82857,0 -28.5625,12.73393 -28.5625,28.5625 l 0,354.28125 c 0,15.82858 12.73393,28.59375 28.5625,28.59375 l 238.59375,0 0,-130.46875 c -30.82594,-11.11396 -52.875,-40.59345 -52.875,-75.25 0,-34.65691 22.04855,-64.16756 52.875,-75.28125 l 0,-130.4375 -238.59375,0 z"
-         style="color:#000000;fill:#6bddba;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="m 142.84375,240.9375 c -15.82857,0 -28.5625,12.73393 -28.5625,28.5625 v 354.28125 c 0,15.82858 12.73393,28.59375 28.5625,28.59375 H 381.4375 V 521.90625 c -30.82594,-11.11396 -52.875,-40.59345 -52.875,-75.25 0,-34.65691 22.04855,-64.16756 52.875,-75.28125 V 240.9375 Z"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#6bddba;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate"
          inkscape:connector-curvature="0" />
     </clipPath>
     <linearGradient
@@ -3308,194 +1719,1606 @@
          height="411.42859"
          width="438.57141"
          id="rect5257"
-         style="color:#000000;fill:#44cca2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#44cca2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate" />
     </clipPath>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5220"
-       id="linearGradient5259"
-       gradientUnits="userSpaceOnUse"
-       x1="319.20819"
-       y1="577.08545"
-       x2="575.78693"
-       y2="577.08545" />
     <clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath5269">
       <path
          inkscape:connector-curvature="0"
          id="path5271"
-         d="m 66.072157,598.5315 c -15.82857,0 -28.5625,12.73393 -28.5625,28.5625 l 0,354.28125 c 0,15.82858 12.73393,28.59375 28.5625,28.59375 l 238.593753,0 0,-130.46875 c -30.82594,-11.11396 -52.875,-40.59345 -52.875,-75.25 0,-34.65691 22.04855,-64.16756 52.875,-75.28125 l 0,-130.4375 -238.593753,0 z"
-         style="color:#000000;fill:#6bddba;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         d="m 66.072157,598.5315 c -15.82857,0 -28.5625,12.73393 -28.5625,28.5625 v 354.28125 c 0,15.82858 12.73393,28.59375 28.5625,28.59375 H 304.66591 V 879.50025 c -30.82594,-11.11396 -52.875,-40.59345 -52.875,-75.25 0,-34.65691 22.04855,-64.16756 52.875,-75.28125 V 598.5315 Z"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#6bddba;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate" />
     </clipPath>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5220"
-       id="linearGradient5286"
-       gradientUnits="userSpaceOnUse"
-       x1="319.20819"
-       y1="577.08545"
-       x2="575.78693"
-       y2="577.08545" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5220"
-       id="linearGradient5288"
-       gradientUnits="userSpaceOnUse"
-       x1="39.395958"
-       y1="324.04221"
-       x2="383.85797"
-       y2="598.80371" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5220"
-       id="linearGradient3703"
-       gradientUnits="userSpaceOnUse"
-       x1="319.20819"
-       y1="577.08545"
-       x2="575.78693"
-       y2="577.08545" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5220"
-       id="linearGradient3705"
-       gradientUnits="userSpaceOnUse"
-       x1="39.395958"
-       y1="324.04221"
-       x2="383.85797"
-       y2="598.80371" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-3-8"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-7-4"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-4-5"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-4-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-5-1"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-3-0"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-4-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-8-3"
+       is_visible="true"
+       lpeversion="0" />
     <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter4909"
-       x="-0.058868712"
-       width="1.1177374"
-       y="-0.058731437"
-       height="1.1174629">
+       id="filter4080-8-7"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="5.0425981"
-         id="feGaussianBlur4911" />
+         id="feGaussianBlur4082-3-6"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-5-56"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
     </filter>
+    <filter
+       id="filter4080-1-7-9"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-7-37"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-9-4"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-5">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-25" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-4"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-74">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-43" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-07"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-86"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-8"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-84"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-3"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-49"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-2"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-0"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-3-5-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-7-1-8"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-4-0-9"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-4-3-26"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-5-7-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-3-1-4"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-4-1-9"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-8-1-5"
+       is_visible="true"
+       lpeversion="0" />
+    <filter
+       id="filter4080-8-6-0"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-3-7-48"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-5-5-7"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       id="filter4080-1-7-4-1"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-7-3-7"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-9-7-2"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-79-7">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-4-2" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-0-2"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-17-6">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-39-1" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-2-0"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-9-6"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-7-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-31-5"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-52-9"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-2-4"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-0-9"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-0-0"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-32-91"
+       effect="spiro"
+       lpeversion="0" />
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-2-7">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-5-7" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-6-1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-5-1">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-5-5" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-0-9"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-4-7"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-43-7"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-0-6"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-8-7"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-7-3"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-6-6"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-6-5"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-6-6"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-4-3"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-78-9"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-7-4"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-3-8"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-6-12"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-2-9"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-46-3"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-89-9"
+       is_visible="true"
+       lpeversion="0" />
+    <filter
+       id="filter4080-53-0"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-42-8"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-05-8"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       id="filter4080-1-6-5"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-3-0"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-1-9"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-8-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-9-3"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-65-8"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-21-5"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-0-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-4-1"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-6-1"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-47-5"
+       is_visible="true"
+       lpeversion="0" />
+    <filter
+       id="filter4080-2-9"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-0-84"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-51-8"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       id="filter4080-1-9-1"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-0-0"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-8-3"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-77-0">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-2-4" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-63-4"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-7-44">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-55-7" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-4-6"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-5-3"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-0-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-40-7"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-58-5"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-9-96"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-5-2"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-5-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-86-7"
+       effect="spiro"
+       lpeversion="0" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4082"
+       id="radialGradient3084-0-8"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
+       cx="3"
+       cy="21.5"
+       fx="3"
+       fy="21.5"
+       r="2" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4082"
+       id="radialGradient3081-9"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
+       cx="3"
+       cy="21.5"
+       fx="3"
+       fy="21.5"
+       r="2" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3982"
+       id="radialGradient3079-6"
+       gradientUnits="userSpaceOnUse"
+       cx="-14"
+       cy="30"
+       fx="-14"
+       fy="30"
+       r="10" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3982"
+       id="radialGradient3095-3"
+       gradientUnits="userSpaceOnUse"
+       cx="-14"
+       cy="30"
+       fx="-14"
+       fy="30"
+       r="10" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4082"
+       id="radialGradient3084-6"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
+       cx="3"
+       cy="21.5"
+       fx="3"
+       fy="21.5"
+       r="2" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 424 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="24 : 424 : 1"
+       inkscape:persp3d-origin="12 : 420 : 1"
+       id="perspective3810-04" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3718-8">
+      <path
+         id="path3720-9"
+         d="m 114.16802,-3.0757622 c -2.54232,0 -4.58759,2.0452705 -4.58759,4.587589 V 58.414995 c 0,2.54232 2.04527,4.592609 4.58759,4.592609 h 38.32192 V 42.05226 c -4.95113,-1.785078 -8.49256,-6.51995 -8.49256,-12.086339 0,-5.566448 3.54135,-10.306325 8.49256,-12.091359 V -3.0757622 Z"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#00ffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate"
+         inkscape:connector-curvature="0" />
+    </clipPath>
+    <clipPath
+       id="clipPath4128-7"
+       clipPathUnits="userSpaceOnUse">
+      <circle
+         style="fill:#656e7e;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path4130-7"
+         transform="matrix(0.118891,0,0,0.118891,191.68187,-2.9744718)"
+         cx="-536.32001"
+         cy="239.36"
+         r="157.44" />
+    </clipPath>
+    <clipPath
+       id="clipPath4118-6"
+       clipPathUnits="userSpaceOnUse">
+      <circle
+         style="fill:#656e7e;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path4120-4"
+         transform="translate(-268.8,-17.92)"
+         cx="-536.32001"
+         cy="239.36"
+         r="157.44" />
+    </clipPath>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-3-50-3"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-7-3-0"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-4-6-3"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-4-8-0"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-5-0-9"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-3-9-2"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-4-3-5"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-8-4-4"
+       is_visible="true"
+       lpeversion="0" />
+    <filter
+       id="filter4080-8-4-0"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-3-70-5"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-5-6-9"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       id="filter4080-1-7-1-4"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-7-2-6"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-9-1-9"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-1-2">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-8-2" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-15-4"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-0-7">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-1-7" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-1-5"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-3-4"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-9-8"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-8-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-7-2"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-94-8"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-78-9"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-91-3"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-2-6"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-3-5-5-8"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-7-1-6-0"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-4-0-1-2"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-4-3-2-1"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-5-7-7-0"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-3-1-8-5"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-4-1-8-1"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-8-1-4-1"
+       is_visible="true"
+       lpeversion="0" />
+    <filter
+       id="filter4080-8-6-4-0"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-3-7-4-8"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-5-5-0-5"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       id="filter4080-1-7-4-7-0"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-7-3-1-6"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-9-7-1-4"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-79-4-6">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-4-9-2" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-0-4-5"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-17-4-8">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-39-7-6" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-2-2-2"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-9-8-8"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-7-8-4"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-31-3-7"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-52-4-2"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-2-8-4"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-0-3-0"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-0-7-6"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-32-9-2"
+       effect="spiro"
+       lpeversion="0" />
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-2-8-9">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-5-9-9" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-6-0-0"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-5-5-8">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-5-7-1" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-0-5-3"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-4-2-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-43-0-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-0-4-0"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-8-9-3"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-7-4-4"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-6-1-0"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-6-7-3"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-6-7-9"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-4-4-1"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-78-6-9"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-7-1-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-3-0-9"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-6-1-3"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-2-7-3"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-46-8-8"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-89-0-0"
+       is_visible="true"
+       lpeversion="0" />
+    <filter
+       id="filter4080-53-2-5"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-42-0-6"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-05-3-6"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       id="filter4080-1-6-8-4"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-3-2-0"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-1-4-0"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4181-8-8-4"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4147-9-1-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4085-65-7-2"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3960-21-8-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3938-0-3-7"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3889-4-2-5"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3855-6-8-6"
+       is_visible="true"
+       lpeversion="0" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3829-47-2-9"
+       is_visible="true"
+       lpeversion="0" />
+    <filter
+       id="filter4080-2-5-8"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-0-8-7"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         id="feComposite4084-51-1-2"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       id="filter4080-1-9-5-8"
+       inkscape:label="Fancy blur"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4082-4-0-7-2"
+         stdDeviation="5"
+         result="result1" />
+      <feComposite
+         k4="0"
+         k3="0"
+         k1="0"
+         id="feComposite4084-9-8-8-9"
+         in2="result1"
+         operator="arithmetic"
+         k2="2"
+         in="result1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-1-77-9-9">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-4-2-8-6" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-9-63-1-0"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:menu-tooltip="Smooth colorized contour which allows desaturation and hue rotation"
+       inkscape:menu="Blurs"
+       inkscape:label="Fancy blur"
+       id="filter4080-7-4-2">
+      <feGaussianBlur
+         result="result1"
+         stdDeviation="5"
+         id="feGaussianBlur4082-55-9-7" />
+      <feComposite
+         in="result1"
+         k2="2"
+         operator="arithmetic"
+         in2="result1"
+         id="feComposite4084-4-4-6"
+         k1="0"
+         k3="0"
+         k4="0" />
+    </filter>
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3829-5-9-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3855-0-8-3"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3889-40-1-2"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3938-58-0-1"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect3960-9-9-5"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4085-5-6-9"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4147-5-8-9"
+       effect="spiro"
+       lpeversion="0" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4181-86-8-1"
+       effect="spiro"
+       lpeversion="0" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4082"
+       id="radialGradient3084-0-9-4"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
+       cx="3"
+       cy="21.5"
+       fx="3"
+       fy="21.5"
+       r="2" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4082"
+       id="radialGradient3081-4-9"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
+       cx="3"
+       cy="21.5"
+       fx="3"
+       fy="21.5"
+       r="2" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3982"
+       id="radialGradient3079-9-1"
+       gradientUnits="userSpaceOnUse"
+       cx="-14"
+       cy="30"
+       fx="-14"
+       fy="30"
+       r="10" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3982"
+       id="radialGradient3095-6-0"
+       gradientUnits="userSpaceOnUse"
+       cx="-14"
+       cy="30"
+       fx="-14"
+       fy="30"
+       r="10" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4082"
+       id="radialGradient3084-7-7"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.25,0,-5.375)"
+       cx="3"
+       cy="21.5"
+       fx="3"
+       fy="21.5"
+       r="2" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 424 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="24 : 424 : 1"
+       inkscape:persp3d-origin="12 : 420 : 1"
+       id="perspective3810-0-5" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5201-8">
+      <circle
+         transform="matrix(1.3902439,0,0,1.3902439,2394.1846,218.55774)"
+         id="path5203-7"
+         style="fill:#474d58;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         cx="-536.32001"
+         cy="239.36"
+         r="157.44" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5238-0">
+      <path
+         id="path5240-4"
+         d="m 142.84375,240.9375 c -15.82857,0 -28.5625,12.73393 -28.5625,28.5625 v 354.28125 c 0,15.82858 12.73393,28.59375 28.5625,28.59375 H 381.4375 V 521.90625 c -30.82594,-11.11396 -52.875,-40.59345 -52.875,-75.25 0,-34.65691 22.04855,-64.16756 52.875,-75.28125 V 240.9375 Z"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#6bddba;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate"
+         inkscape:connector-curvature="0" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5255-8">
+      <rect
+         ry="28.571428"
+         y="240.93362"
+         x="114.28571"
+         height="411.42859"
+         width="438.57141"
+         id="rect5257-0"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#44cca2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5269-4">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5271-2"
+         d="m 66.072157,598.5315 c -15.82857,0 -28.5625,12.73393 -28.5625,28.5625 v 354.28125 c 0,15.82858 12.73393,28.59375 28.5625,28.59375 H 304.66591 V 879.50025 c -30.82594,-11.11396 -52.875,-40.59345 -52.875,-75.25 0,-34.65691 22.04855,-64.16756 52.875,-75.28125 V 598.5315 Z"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#6bddba;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
-     id="base"
+     id="namedview26"
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="364.5"
-     inkscape:cy="430"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
      showgrid="false"
-     showguides="true"
-     inkscape:guide-bbox="true"
+     inkscape:zoom="0.93125"
+     inkscape:cx="374.22819"
+     inkscape:cy="353.28859"
      inkscape:window-width="1846"
      inkscape:window-height="1016"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:pagecheckerboard="0" />
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
+     inkscape:current-layer="g9658" />
+  <!-- Background -->
+  <!-- Grid and Nodes -->
+  <!-- Lightning Bolt -->
+  <!-- Analytics Element (Bar Chart) -->
   <g
-     inkscape:label="Capa 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-540.36218)">
-    <rect
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#465b61;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:60;marker:none;enable-background:accumulate"
-       id="rect2985"
-       width="447.18549"
-       height="419.50955"
-       x="35.237961"
-       y="592.25775"
-       ry="29.132605" />
+     id="g1982-9"
+     transform="matrix(0.75491887,0,0,0.43688854,3.851061,-12.933)">
     <g
-       id="g4866"
-       transform="matrix(0.80554563,0,0,0.80554563,33.817638,149.99327)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path4845"
-         d="m 131.52186,639.41182 0,113.13708"
-         style="fill:none;fill-rule:evenodd;stroke:#f4f4f4;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#f4f4f4;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 188.0904,695.98036 -113.13708,0"
-         id="path4847"
-         inkscape:connector-curvature="0" />
-    </g>
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#f4f4f4;stroke-width:15.49193382;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 412.76659,710.63721 -67.88225,0"
-       id="path4849"
-       inkscape:connector-curvature="0" />
+       id="g2212-3"
+       transform="matrix(0.67959165,0,0,0.67959165,3.2040841,68.514495)" />
+  </g>
+  <g
+     id="g4953"
+     transform="translate(1.539099,-2.263132)">
     <g
-       id="g4861"
-       transform="matrix(0.77019029,0,0,0.77019029,36.289216,192.64989)">
-      <path
-         inkscape:connector-curvature="0"
-         id="path4853"
-         d="m 190.91882,913.76925 -113.13708,0"
-         style="fill:none;fill-rule:evenodd;stroke:#f4f4f4;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <circle
-         r="19.091883"
-         cy="876.29254"
-         cx="134.35028"
-         id="path4857"
-         style="opacity:1;fill:#f4f4f4;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <circle
-         style="opacity:1;fill:#f4f4f4;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="circle4859"
-         cx="134.35028"
-         cy="951.24591"
-         r="19.091883" />
-    </g>
-    <path
-       inkscape:connector-curvature="0"
-       id="path4903"
-       d="m 285.91964,818.47909 12.9355,48.26758 a 102.78987,102.78987 0 0 0 -16.0918,55.00195 102.78987,102.78987 0 0 0 102.7891,102.79108 102.78987,102.78987 0 0 0 102.791,-102.79108 102.78987,102.78987 0 0 0 -102.791,-102.78906 102.78987,102.78987 0 0 0 -49.6445,12.91406 l -49.9883,-13.39453 z"
-       style="opacity:1;fill:#000000;fill-opacity:0.20108696;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter4909)" />
-    <path
-       style="opacity:1;fill:#1fa2d2;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 297.91964,832.47909 12.9355,48.26758 a 102.78987,102.78987 0 0 0 -16.0918,55.00195 102.78987,102.78987 0 0 0 102.7891,102.79108 102.78987,102.78987 0 0 0 102.791,-102.79108 102.78987,102.78987 0 0 0 -102.791,-102.78906 102.78987,102.78987 0 0 0 -49.6445,12.91406 l -49.9883,-13.39453 z"
-       id="path4159"
-       inkscape:connector-curvature="0" />
-    <g
-       id="g4899"
-       transform="matrix(1.3388221,0,0,1.3388221,-129.08273,-315.68185)" />
-    <g
-       id="g1554"
-       transform="matrix(11.245492,0,0,11.245492,307.58945,844.42091)">
-      <path
-         class="st0"
-         d="m 13.9,8.1 c 0,3.2 -2.6,5.8 -5.9,5.8 -3.3,0 -5.9,-2.6 -5.9,-5.8 0,-3.2 2.6,-5.8 5.9,-5.8 3.3,0 5.9,2.6 5.9,5.8 z"
-         id="path1539" />
+       id="g9658">
       <g
-         id="g1543">
-	<path
-   class="st1"
-   d="m 8.5,8.4 c -0.6,0 -1.8,0 -2.3,0 -0.2,0 -0.6,0 -0.7,0 L 7,5 h 3 L 9,7 c 0.6,0 2,0 2,0 l -4,5 c 0,0 -0.8,0 -0.8,0 0,0 2.2,-3.4 2.3,-3.6 z"
-   id="path1541" />
-
-</g>
+         id="g1419"
+         transform="matrix(0.92306964,0,0,0.92306964,19.575767,23.890262)">
+        <g
+           inkscape:label="Capa 1"
+           id="layer1"
+           transform="matrix(1.186531,0,0,1.186531,717.49914,211.36605)">
+          <rect
+             style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#465b61;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:55.8526;marker:none;enable-background:accumulate"
+             id="rect2985"
+             width="416.27414"
+             height="390.51129"
+             x="-598.38245"
+             y="-159.40332"
+             ry="27.118837" />
+          <g
+             id="g4899"
+             transform="matrix(1.3388221,0,0,1.3388221,-129.08273,-315.68185)" />
+        </g>
+        <g
+           style="fill:#000000"
+           id="g1577"
+           transform="matrix(12.961305,0,0,12.961305,47.080021,46.525053)">
+          <g
+             style="fill:#b3b3b3;fill-opacity:1"
+             id="g3552"
+             transform="matrix(0.19048246,0,0,0.19048246,37.688629,12.416479)">
+            <g
+               style="clip-rule:evenodd;fill:#b3b3b3;fill-opacity:1;fill-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421"
+               id="g3890"
+               transform="matrix(2.5118286,0,0,2.5118286,4.0514354,-37.270646)">
+              <g
+                 id="options_graph"
+                 style="fill:#b3b3b3;fill-opacity:1">
+                <path
+                   d="m -48.127516,26.143324 c 0,-1.172 0.953,-2.128 2.127,-2.128 0.209,0 0.413,0.031 0.607,0.089 l 4.158,-4.403 c -0.081,-0.227 -0.126,-0.472 -0.126,-0.727 0,-1.173 0.954,-2.128 2.129,-2.128 0.591,0 1.127,0.245 1.512,0.636 l 2.897,-0.934 c 0.157,-1.017 1.04,-1.803 2.104,-1.803 1.172,0 2.128,0.956 2.128,2.129 0,0.156 -0.017,0.308 -0.049,0.455 l 3.586,2.915 -0.009,-0.008 c 0.306,-0.17 0.657,-0.268 1.034,-0.268 0.209,0 0.413,0.032 0.607,0.089 l 4.015,-4.869 c -0.096,-0.242 -0.149,-0.509 -0.149,-0.788 0,-1.172 0.954,-2.127 2.129,-2.127 1.172,0 2.127,0.955 2.127,2.127 0,1.175 -0.955,2.129 -2.127,2.129 -0.19,0 -0.371,-0.024 -0.544,-0.068 l -4.062,4.924 0.007,-0.006 c 0.08,0.223 0.125,0.466 0.125,0.716 0,1.175 -0.955,2.129 -2.128,2.129 -1.175,0 -2.127,-0.954 -2.127,-2.129 0,-0.089 0.004,-0.18 0.016,-0.267 l 0.009,0.006 -3.722,-3.017 c -0.264,0.119 -0.558,0.184 -0.866,0.184 -0.592,0 -1.126,-0.24 -1.513,-0.629 l -2.903,0.936 c -0.157,1.017 -1.04,1.794 -2.097,1.794 -0.213,0 -0.418,-0.03 -0.611,-0.088 l -4.163,4.412 0.007,-0.007 c 0.081,0.226 0.127,0.471 0.127,0.724 0,1.175 -0.955,2.127 -2.128,2.127 -1.174,0 -2.127,-0.952 -2.127,-2.127 z m 3.192,0 c 0,-0.583 -0.482,-1.065 -1.065,-1.065 -0.585,0 -1.064,0.482 -1.064,1.065 0,0.585 0.479,1.064 1.064,1.064 0.583,0 1.065,-0.479 1.065,-1.064 z m 19.971,-4.048 c 0,-0.583 -0.482,-1.063 -1.065,-1.063 -0.585,0 -1.064,0.48 -1.064,1.063 0,0.585 0.479,1.065 1.064,1.065 0.583,0 1.065,-0.48 1.065,-1.065 z m -0.464,-2.029 0.006,-0.009 z m -12.741,-1.092 c 0,-0.584 -0.48,-1.064 -1.063,-1.064 -0.586,0 -1.065,0.48 -1.065,1.064 0,0.585 0.479,1.064 1.065,1.064 0.583,0 1.063,-0.479 1.063,-1.064 z m 1.03,0.334 h 0.004 z m 5.484,-2.434 c 0,-0.583 -0.481,-1.065 -1.064,-1.065 -0.585,0 -1.064,0.482 -1.064,1.065 0,0.585 0.479,1.063 1.064,1.063 0.583,0 1.064,-0.478 1.064,-1.063 z m 13.291,-2.474 c 0,-0.582 -0.481,-1.063 -1.063,-1.063 -0.586,0 -1.065,0.481 -1.065,1.063 0,0.586 0.479,1.065 1.065,1.065 0.582,0 1.063,-0.479 1.063,-1.065 z"
+                   id="options-9"
+                   style="clip-rule:evenodd;fill:#b3b3b3;fill-opacity:1;fill-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421" />
+              </g>
+            </g>
+          </g>
+          <path
+             id="connected--nodes--to--the--cloud_1_"
+             d="m 28,22.64 c -1.178,0 -2.149,0.87 -2.324,2 H 22 c -0.904,0 -1.64,-0.735 -1.64,-1.64 v -3.64 h 6.14 c 2.68,0 4.86,-2.181 4.86,-4.86 0,-2.679 -2.18,-4.86 -4.86,-4.86 h -0.146 c -0.19,-4.995 -4.313,-9 -9.354,-9 -3.485,0 -6.63,1.91 -8.261,5 H 7.5 c -3.783,0 -6.86,3.077 -6.86,6.86 0,3.783 3.077,6.86 6.86,6.86 h 4.14 V 23 c 0,0.904 -0.736,1.64 -1.64,1.64 H 6.323 c -0.175,-1.13 -1.146,-2 -2.323,-2 -1.301,0 -2.36,1.059 -2.36,2.36 0,1.301 1.059,2.36 2.36,2.36 1.178,0 2.148,-0.87 2.323,-2 H 10 c 1.301,0 2.36,-1.059 2.36,-2.36 v -3.64 h 3.28 v 6.302 c -1.408,0.178 -2.5,1.383 -2.5,2.838 0,1.577 1.283,2.86 2.86,2.86 1.577,0 2.86,-1.283 2.86,-2.86 0,-1.455 -1.093,-2.66 -2.5,-2.838 V 19.36 h 3.28 V 23 c 0,1.302 1.059,2.36 2.36,2.36 h 3.676 c 0.175,1.13 1.146,2 2.324,2 1.302,0 2.36,-1.059 2.36,-2.36 0,-1.301 -1.058,-2.36 -2.36,-2.36 z m -24,4 c -0.904,0 -1.64,-0.735 -1.64,-1.64 0,-0.905 0.736,-1.64 1.64,-1.64 0.904,0 1.64,0.736 1.64,1.64 0,0.904 -0.736,1.64 -1.64,1.64 z m 14.14,1.86 c 0,1.18 -0.96,2.14 -2.14,2.14 -1.18,0 -2.14,-0.96 -2.14,-2.14 0,-1.18 0.96,-2.14 2.14,-2.14 1.18,0 2.14,0.96 2.14,2.14 z M 1.36,12.5 C 1.36,9.114 4.114,6.36 7.5,6.36 H 8.959 C 9.096,6.36 9.22,6.283 9.281,6.161 10.758,3.2 13.715,1.36 17,1.36 c 4.764,0 8.64,3.876 8.64,8.64 0,0.199 0.161,0.36 0.36,0.36 h 0.5 c 2.283,0 4.14,1.857 4.14,4.14 0,2.283 -1.856,4.14 -4.14,4.14 H 7.5 C 4.114,18.64 1.36,15.886 1.36,12.5 Z M 28,26.64 c -0.904,0 -1.64,-0.735 -1.64,-1.64 0,-0.905 0.735,-1.64 1.64,-1.64 0.905,0 1.64,0.735 1.64,1.64 0,0.905 -0.736,1.64 -1.64,1.64 z"
+             style="fill:#1fa2d2;fill-opacity:1;stroke:#1fa2d2;stroke-width:1.27572;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <rect
+             id="_Transparent_Rectangle"
+             style="fill:none"
+             width="32"
+             height="32"
+             x="0"
+             y="0" />
+        </g>
+        <g
+           style="fill:#fce94f;fill-opacity:1"
+           id="g1337"
+           transform="matrix(0.3196844,0.08565919,-0.08565919,0.3196844,184.20892,79.548857)">
+          <g
+             id="g1327"
+             style="fill:#fce94f;fill-opacity:1">
+            <g
+               id="g1325"
+               style="fill:#fce94f;fill-opacity:1">
+              <path
+                 d="m 207.523,560.316 c 0,0 194.42,-421.925 194.444,-421.986 l 10.79,-23.997 c -41.824,12.02 -135.271,34.902 -135.57,35.833 C 286.96,122.816 329.017,0 330.829,0 290.853,0 250.877,0 210.902,0 L 198.735,57.938 147.559,267.933 282.75,231.127 Z"
+                 id="path1323"
+                 style="fill:#fce94f;fill-opacity:1" />
+            </g>
+          </g>
+        </g>
+      </g>
     </g>
   </g>
   <style
      type="text/css"
      id="style1537">
+	.st0{fill:none;stroke:#404040;stroke-width:1.5;stroke-miterlimit:1.4142;}
+	.st1{fill:#404040;}
+</style>
+  <style
+     type="text/css"
+     id="style1537-9">
 	.st0{fill:none;stroke:#404040;stroke-width:1.5;stroke-miterlimit:1.4142;}
 	.st1{fill:#404040;}
 </style>
