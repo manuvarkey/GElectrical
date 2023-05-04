@@ -161,7 +161,7 @@ PROTECTION_ELEMENT_CODES = ('element_circuitbreaker', 'element_fuse')
 DAMAGE_ELEMENT_CODES = ('element_async_motor_3ph', 'element_async_motor_1ph','element_line','element_line_cable','element_line_custom', 'element_line_bus','element_transformer')
 SUPPLY_ELEMENT_CODES = ('element_grid', 'element_generator', 'element_staticgenerator', 'element_single_phase_staticgenerator')
 DISPLAY_ELEMENT_CODES = ('element_display_node', )
-NON_ELEMENT_CODES  = (*REFERENCE_CODES, *DISPLAY_ELEMENT_CODES, 'element_wire', 'element_assembly')
+NON_ELEMENT_CODES  = (*REFERENCE_CODES, *DISPLAY_ELEMENT_CODES, 'element_display_text', 'element_wire', 'element_assembly')
 # Defaults
 DEFAULT_LOAD_PROFILE = {'load_prof_1': ['Flat', [{'mode':GRAPH_DATATYPE_PROFILE, 'title':'Default', 'xval':[0,23], 'yval':[1,1]}]],}
 # Constants

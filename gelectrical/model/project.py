@@ -457,7 +457,8 @@ class ProjectModel:
         changed = []  # Undo tracking of changed elements
         base_ref = dict()  # Base references dictionary
         for code, model in self.program_state['element_models'].items():
-            base_ref[code] = model(project_settings=self.get_project_fields(full=True)).fields['ref']['value'].strip('?')
+            if code not in misc.NON_ELEMENT_CODES:
+                base_ref[code] = model(project_settings=self.get_project_fields(full=True)).fields['ref']['value'].strip('?')
         base_ref['element_assembly'] = 'A'
         
         # Get selected elements
