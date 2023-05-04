@@ -42,3 +42,11 @@ See [Screencasts](https://www.youtube.com/playlist?list=PLyFdF5OlDZHI8DBi42qsmUe
 * [Sample report](https://raw.githubusercontent.com/manuvarkey/GElectrical/master/sample_files/sample_report.pdf)
 * [Sample project file](https://github.com/manuvarkey/GElectrical/raw/master/sample_files/sample.gepro)
 
+## Links
+
+* [Website](https://github.com/manuvarkey/GElectrical)
+* [Documentation](https://manuvarkey.github.io/GElectrical/)
+* [Forum](https://github.com/manuvarkey/GElectrical/discussions/)
+* [Bug tracker](https://github.com/manuvarkey/GElectrical/issues)
+* [Git repository](https://github.com/manuvarkey/GElectrical)
+
