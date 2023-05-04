@@ -45,7 +45,7 @@ See [Screencasts](https://www.youtube.com/playlist?list=PLyFdF5OlDZHI8DBi42qsmUe
 ## Links
 
 * [Website](https://github.com/manuvarkey/GElectrical)
-* [Documentation](https://manuvarkey.github.io/GElectrical/)
+* [Documentation](https://gelectrical.readthedocs.io)
 * [Forum](https://github.com/manuvarkey/GElectrical/discussions/)
 * [Bug tracker](https://github.com/manuvarkey/GElectrical/issues)
 * [Git repository](https://github.com/manuvarkey/GElectrical)
