@@ -318,7 +318,7 @@ class FieldView:
                     hbox.pack_start(data_widget, True, True, 0)
                     hbox.pack_start(set_button, False, False, 0)
                     
-                elif field['type'] in ('bool'):
+                elif field['type'] == 'bool':
                     data_widget = Gtk.Switch()
                     data_widget.set_state(field['value'])
                     data_widget.set_valign(Gtk.Align.CENTER)
@@ -330,14 +330,14 @@ class FieldView:
                     hbox.pack_start(data_widget, False, False, 0)
                     hbox.pack_start(unit_widget, False, False, 0)
                     
-                elif field['type'] in ('font'):
+                elif field['type'] == 'font':
                     data_widget = Gtk.FontButton.new_with_font(field['value'])
                     data_widget.connect("font-set", activate_callback_font, get_field, set_field, code)
                     # Pack
                     hbox.pack_start(caption_widget, False, False, 0)
                     hbox.pack_start(data_widget, True, True, 0)
 
-                elif field['type'] in ('path'):
+                elif field['type'] == 'path':
                     label = (field['value'][:20] + ' ... ' + field['value'][-20:] ) if len(field['value']) > 50 else field['value']
                     data_widget = Gtk.Button.new_with_label(label)
                     data_widget.get_children()[0].set_xalign(0)
@@ -502,6 +502,7 @@ class FieldView:
                     def reveal_child(button, revealer, field):
                         revealer.set_visible_child_name('content')
                         field['click_to_edit_message'] = None
+
                     reveal_button.connect("clicked", reveal_child, revealer, field)
                 else:
                     row.add(hbox)
