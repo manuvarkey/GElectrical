@@ -296,9 +296,35 @@ def get_undoable_set_field(stack, refresh, element):
             element.set_text_field_value(code, value)
             if self.refresh:
                 self.refresh() 
-            yield "Modify '{}' '{}' element field".format(code, element.name)
+            yield "Modify '{}' field  of '{}' element".format(code, element.name)
             # Undo action
             element.set_text_field_value(code, oldval)
+            if self.refresh:
+                self.refresh() 
+    return UndoableSetTextValue(stack, refresh).set_text_field_value_undo
+
+
+def get_undoable_set_field_multiple(stack, refresh, elements, multiselect_fields):
+    # Special class implementing undo for set text function
+    class UndoableSetTextValue:
+        def __init__(self, stack, refresh):
+            self.stack = stack
+            self.refresh = refresh
+    
+        @undoable
+        def set_text_field_value_undo(self, code, value):
+            oldvals = []
+            for element in elements:
+                oldval = element.get_text_field(code)['value']
+                element.set_text_field_value(code, value)
+                oldvals.append(oldval)
+            multiselect_fields[code]['value'] = value
+            if self.refresh:
+                self.refresh() 
+            yield "Modify '{}' field  of '{}' (multiple) elements".format(code, elements[0].name)
+            # Undo action
+            for oldval, element in zip(oldvals, elements):
+                element.set_text_field_value(code, oldval)
             if self.refresh:
                 self.refresh() 
     return UndoableSetTextValue(stack, refresh).set_text_field_value_undo

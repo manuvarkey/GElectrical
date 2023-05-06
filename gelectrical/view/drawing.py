@@ -190,17 +190,15 @@ class DrawingView:
                                 self.multiselect_fields[field_code]['value'] = False
                             message = '<span foreground="{}"><i>&lt;multiple values&gt; </i></span>'.format(misc.COLOR_INACTIVE)
                             self.multiselect_fields[field_code]['click_to_edit_message'] = message
+                
                 def get_field(code):
                     return self.multiselect_fields[code]
-                def set_field(*data):
-                    for element in elements:
-                        element.set_text_field_value(*data)
-                    self.multiselect_fields[data[0]]['value'] = data[1]
-                    self.refresh()
+
+                set_text_fields = misc.get_undoable_set_field_multiple(self.program_state['stack'], self.refresh, elements, self.multiselect_fields)
                 
                 def select_action():
                     if self.properties_view:
-                        self.properties_view.update(self.multiselect_fields, elements[0].name + ' (Mutliple)', get_field, set_field)  # Update properties
+                        self.properties_view.update(self.multiselect_fields, elements[0].name + ' (Mutliple)', get_field, set_text_fields)  # Update properties
                     if self.database_view:
                         self.database_view.update_from_database(elements[0].database_path)
                     if self.results_view:
