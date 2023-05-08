@@ -23,10 +23,7 @@
 
 import logging
 import copy
-import datetime
-from gi.repository import Gtk, Gdk
-import cairo
-
+import cmath
 import numpy as np
 import pandas as pd
 import pandapower as pp
@@ -628,6 +625,9 @@ class PandaPowerModel:
             result = x1 + x2 + x3
             return R(result, decimal)
 
+        def delv_func(v1, v2, angle1, angle2, decimal): 
+            result = abs(cmath.rect(v1, np.deg2rad(angle1)) - cmath.rect(v2, np.deg2rad(angle2)))*100
+            return R(result, decimal)
 
         def percentage_1_1_func(a,b, decimal): 
             result = a/b*100 if abs(b)>1e-4 else 0
@@ -664,11 +664,11 @@ class PandaPowerModel:
 
             if runpp_3ph:
                 node_result['vm_a_pu'] = misc.get_field_dict('str', 'Va', 'pu < deg', 
-                                        str(round(result['vm_a_pu'],2)) + ' < ' + str(round(result['va_a_degree'], 2)))
+                                        str(round(result['vm_a_pu'],4)) + ' < ' + str(round(result['va_a_degree'], 2)))
                 node_result['vm_b_pu'] = misc.get_field_dict('str', 'Vb', 'pu < deg', 
-                                        str(round(result['vm_b_pu'],2)) + ' < ' + str(round(result['va_b_degree'], 2)))
+                                        str(round(result['vm_b_pu'],4)) + ' < ' + str(round(result['va_b_degree'], 2)))
                 node_result['vm_c_pu'] = misc.get_field_dict('str', 'Vc', 'pu < deg', 
-                                        str(round(result['vm_c_pu'],2)) + ' < ' + str(round(result['va_c_degree'], 2)))
+                                        str(round(result['vm_c_pu'],4)) + ' < ' + str(round(result['va_c_degree'], 2)))
                 min_v = min(result['vm_a_pu'], result['vm_b_pu'], result['vm_c_pu'])
                 node_result['delv_perc_max'] = misc.get_field_dict(
                     'float', 'ΔV', '%', 100-min_v*100, decimal=2)
@@ -682,7 +682,7 @@ class PandaPowerModel:
                     'float', 'Voltage unbalance', '%', result['unbalance_percent'], decimal=2)
             else:
                 node_result['vm_pu'] = misc.get_field_dict('str', 'V', 'pu < deg', 
-                                        str(round(result['vm_pu'],2)) + ' < ' + str(round(result['va_degree'], 2)))
+                                        str(round(result['vm_pu'],4)) + ' < ' + str(round(result['va_degree'], 2)))
                 node_result['delv_perc_max'] = misc.get_field_dict(
                     'float', 'ΔV', '%', 100-result['vm_pu']*100, decimal=2)
 
@@ -841,7 +841,12 @@ class PandaPowerModel:
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
                             'float', '% P Loss', '%', 
-                            percentage_1_1_func(result['pl_mw'], result['p_from_mw'], 1))
+                            percentage_1_1_func(result['pl_mw'], result['p_from_mw'], 2))
+                        element_result['delv_max'] = misc.get_field_dict(
+                            'float', 'ΔV', '%', 
+                            delv_func(result['vm_from_pu'], result['vm_to_pu'],
+                                      result['va_from_degree'], result['va_to_degree'], 2))
+                        
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
     def run_powerflow_timeseries(self, runpp_3ph=False):
