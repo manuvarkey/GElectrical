@@ -48,16 +48,17 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
         self.ports = [[2, 0], [2, 8]]
         
         self.conductor_materials = ['Copper','Aluminium','Steel']
-        self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}
-        self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}
-        self.conductor_delta20_dict = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}
-        self.conductor_ultimate_working_temp_dict = {'Copper': 395, 'Aluminium': 325, 'Steel': 500}
+        self.conductor_B_dict = {'Copper':234.5,'Aluminium':228,'Steel':202}  # IS-732:2019 Table 57 (IEC 60949)
+        self.conductor_Qc_dict = {'Copper':3.45e-3,'Aluminium':2.5e-3,'Steel':3.8e-3}  # IS-732:2019 Table 57 (IEC 60949)
+        self.conductor_delta20_dict_k_calc = {'Copper':17.241e-6,'Aluminium':28.264e-6,'Steel':138e-6}  # IS-732:2019 Table 57 (IEC 60949)
+        self.conductor_delta20_dict = {'Copper':1/54/1000,'Aluminium':1/34/1000,'Steel':138e-6}  # IEC 60909-0 (Note under Eq 14)
+        self.conductor_ultimate_working_temp_dict = {'Copper': 395, 'Aluminium': 325, 'Steel': 500}  # IS-3043:2018 Table 11
         
         self.insulation_materials = ['PVC', 'XLPE/EPR', 'Air']
         self.material_code = {'Copper':'Cu','Aluminium':'Al','Steel':'Fe'}
         self.insulation_code = {'PVC':'Y', 'XLPE/EPR':'2X'}
-        self.insulation_max_working_temp_dict = {'PVC': 70, 'XLPE/EPR': 90}
-        self.insulation_ultimate_working_temp_dict = {'PVC': 160, 'XLPE/EPR': 250}
+        self.insulation_max_working_temp_dict = {'PVC': 70, 'XLPE/EPR': 90}  # IS-732:2019 Table 58 (IEC 60724)
+        self.insulation_ultimate_working_temp_dict = {'PVC': 160, 'XLPE/EPR': 250}  # IS-732:2019 Table 58 (IEC 60724)
 
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'W?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
@@ -202,7 +203,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
     def conductor_k_value(self, conductor, t0, tf):
         B = self.conductor_B_dict[conductor]
         Qc = self.conductor_Qc_dict[conductor]
-        delta20 = self.conductor_delta20_dict[conductor]
+        delta20 = self.conductor_delta20_dict_k_calc[conductor]
         k = math.sqrt(Qc*(B+20)/delta20*math.log((B+tf)/(B+t0)))
         return k
 
