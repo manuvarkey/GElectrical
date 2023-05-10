@@ -154,7 +154,7 @@ The resistance value (x3) specified will be added to the zero sequence impedance
 'shift_degree': 'Transformer phase shift angle',
 'vector_group': 'Vector Group of transformer (required for determining zero sequence model of transformer)',
 'pfe_kw': 'Iron losses',
-'i0_percent': 'Open loop losses',
+'i0_percent': 'Open loop losses in percent of rated current',
 'sym_hv': '',
 'sym_lv': '',
 'tap_side': '',

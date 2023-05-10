@@ -55,7 +55,7 @@ Creates a two-winding transformer.
                        'vk_percent':    self.get_field_dict('float', 'Usc', '%',4.5),
                        'vkr0_percent':  self.get_field_dict('float', 'U0sc (Real)', '%', 0.5),
                        'vk0_percent':   self.get_field_dict('float', 'U0sc', '%',4.5),
-                       'mag0_percent':  self.get_field_dict('float', 'Zm0/Z0', '%',10),
+                       'mag0_percent':  self.get_field_dict('float', 'Zm0/Z0', '',10),
                        'mag0_rx':       self.get_field_dict('float', 'R0m/X0m', '',0),
                        'si0_hv_partial':self.get_field_dict('float', 'Fraction of U0 on HV side', '',0.1),
                        'shift_degree':  self.get_field_dict('float', 'Shift Degree', 'deg', 30),
