@@ -1578,6 +1578,10 @@ class PandaPowerModel:
             else:
                 node_result = dict()
                 self.node_results[node] = node_result
+            z_max = str(round(res_3ph_max['rk_ohm'][bus],4)) + ' + j' + str(round(res_3ph_max['xk_ohm'][bus],4))
+            z_min = str(round(res_3ph_min['rk_ohm'][bus],4)) + ' + j' + str(round(res_3ph_min['xk_ohm'][bus],4))
+            node_result['zk_ohm_max'] = misc.get_field_dict('str', 'Z12 (sym, max)', 'Ohm', z_max)
+            node_result['zk_ohm_min'] = misc.get_field_dict('str', 'Z12 (sym, min)', 'Ohm', z_min)
             node_result['ikss_ka_3ph_max'] = misc.get_field_dict(
                 'float', 'Isc (sym, max)', 'kA', res_3ph_max['ikss_ka'][bus], decimal=2)
             node_result['ikss_ka_3ph_min'] = misc.get_field_dict(
@@ -1629,6 +1633,14 @@ class PandaPowerModel:
             
             ikss_max = find_ikss('max')
             ikss_min = find_ikss('min')
+            z_max = str(round(res_1ph_max['rk_ohm'][bus],4)) + ' + j' + str(round(res_1ph_max['xk_ohm'][bus],4))
+            z_min = str(round(res_1ph_min['rk_ohm'][bus],4)) + ' + j' + str(round(res_1ph_min['xk_ohm'][bus],4))
+            z0_max = str(round(res_1ph_max['rk0_ohm'][bus],4)) + ' + j' + str(round(res_1ph_max['xk0_ohm'][bus],4))
+            z0_min = str(round(res_1ph_min['rk0_ohm'][bus],4)) + ' + j' + str(round(res_1ph_min['xk0_ohm'][bus],4))
+            node_result['zk_ohm_1ph_max'] = misc.get_field_dict('str', 'Z12 (L-G, max)', 'Ohm', z_max)
+            node_result['zk_ohm_1ph_min'] = misc.get_field_dict('str', 'Z12 (L-G, min)', 'Ohm', z_min)
+            node_result['zk0_ohm_1ph_max'] = misc.get_field_dict('str', 'Z0 (L-G, max)', 'Ohm', z0_max)
+            node_result['zk0_ohm_1ph_min'] = misc.get_field_dict('str', 'Z0 (L-G, min)', 'Ohm', z0_min)
             node_result['ikss_ka_1ph_max'] = misc.get_field_dict(
                 'float', 'Isc (L-G, max)', 'kA', ikss_max, decimal=2)
             node_result['ikss_ka_1ph_min'] = misc.get_field_dict(
