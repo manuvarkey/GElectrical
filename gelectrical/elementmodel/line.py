@@ -752,9 +752,9 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             B_cpe = self.conductor_B_dict[cpe_material]
             resistivity_20_cpe = self.conductor_delta20_dict[cpe_material]
             resistivity_working_cpe = resistivity_20_cpe*(1+1/B_cpe*(ambient_temp-20))
-            B_ar = self.conductor_B_dict[cpe_material]
-            resistivity_20_ar = self.conductor_delta20_dict[phase_material]
-            resistivity_working_ar = resistivity_20_ar*(1+1/B_ph*(phase_working_temp-20))
+            B_ar = self.conductor_B_dict[armour_material]
+            resistivity_20_ar = self.conductor_delta20_dict[armour_material]
+            resistivity_working_ar = resistivity_20_ar*(1+1/B_ar*(phase_working_temp-20))
             magnetic_effect = 1.1 if armour_material == 'Steel' else 1
             r_ar = open_imp_value if armour_cross_section == 0 else magnetic_effect*resistivity_working_ar*10**6/armour_cross_section
             r_cpe = open_imp_value if cpe_cross_section == 0 else resistivity_working_cpe*10**6/cpe_cross_section
