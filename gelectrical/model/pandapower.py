@@ -736,9 +736,9 @@ class PandaPowerModel:
                                         result['q_a_hv_mvar'], result['q_b_hv_mvar'], result['q_c_hv_mvar'], 2))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw'] = misc.get_field_dict(
+                        element_result['pl_mw_max'] = misc.get_field_dict(
                             'float', 'P loss', 'MW', 
-                            sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 4))
+                            sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 5))
                     elif elementcode == 'trafo3w':
                         element_result['p_hv_mw'] = misc.get_field_dict(
                             'float', 'P HV', 'MW', R(result['p_hv_mw'], 4))
@@ -752,10 +752,10 @@ class PandaPowerModel:
                             'float', 'P LV', 'MW', R(result['p_lv_mw'], 4))
                         element_result['q_lv_mvar'] = misc.get_field_dict(
                             'float', 'Q LV', 'MVAr', R(result['q_lv_mvar'], 4))
-                        element_result['pl_mw'] = misc.get_field_dict(
-                            'float', 'P loss', 'MW', R(result['pl_mw'], 4))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
+                        element_result['pl_mw_max'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 5))
                     elif elementcode in ['line']:                        
                         element_result['p_from_mw'] = misc.get_field_dict('float', 'P', 'MW', 
                             sum_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 4))
@@ -772,9 +772,12 @@ class PandaPowerModel:
                             'float', 'Pc', 'MW', R(result['p_c_from_mw'],4))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw_max'] = misc.get_field_dict('float', '% P Loss', '%', 
+                        element_result['pl_mw_max'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', 
+                            sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 5))
+                        element_result['pl_perc_max'] = misc.get_field_dict('float', '% P Loss', '%', 
                             percentage_3_3_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'],
-                                                result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 1))
+                                                result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 2))
                 else:
                     if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
                         element_result['p_mw'] = misc.get_field_dict(
@@ -789,10 +792,10 @@ class PandaPowerModel:
                             'float', 'P', 'MW', R(result['p_hv_mw'], 4))
                         element_result['q_hv_mvar'] = misc.get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_hv_mvar'], 4))
-                        element_result['pl_mw'] = misc.get_field_dict(
-                            'float', 'P loss', 'MW', R(result['pl_mw'], 4))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
+                        element_result['pl_mw_max'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 5))
                     elif elementcode == 'trafo3w':
                         element_result['p_hv_mw'] = misc.get_field_dict(
                             'float', 'P HV', 'MW', R(result['p_hv_mw'], 4))
@@ -806,10 +809,10 @@ class PandaPowerModel:
                             'float', 'P LV', 'MW', R(result['p_lv_mw'], 4))
                         element_result['q_lv_mvar'] = misc.get_field_dict(
                             'float', 'Q LV', 'MVAr', R(result['q_lv_mvar'], 4))
-                        element_result['pl_mw'] = misc.get_field_dict(
-                            'float', 'P loss', 'MW', R(result['pl_mw'], 4))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
+                        element_result['pl_mw_max'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 5))
                     elif elementcode == 'gen':
                         element_result['p_mw'] = misc.get_field_dict(
                             'float', 'P', 'MW', R(result['p_mw'], 4))
@@ -840,6 +843,8 @@ class PandaPowerModel:
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
+                            'float', 'P loss', 'MW', R(result['pl_mw'], 5))
+                        element_result['pl_perc_max'] = misc.get_field_dict(
                             'float', '% P Loss', '%', 
                             percentage_1_1_func(result['pl_mw'], result['p_from_mw'], 2))
                         element_result['delv_max'] = misc.get_field_dict(
@@ -1468,7 +1473,7 @@ class PandaPowerModel:
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['avg','max'])
-                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 4, None],
+                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 5, None],
                             ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'], sumfunc, stat_fields=['max'])
                     elif elementcode == 'trafo3w':
                         set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
@@ -1477,11 +1482,13 @@ class PandaPowerModel:
                                                                     ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
                         set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
                                                                     ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['max'])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 5, None, 'pl_mw']])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['pl_mw', element_id, 'P Loss', 'MW', 5, None, 'pl_mw']], fields=['max'])
                     # elif elementcode == 'gen':
                     #     set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                     #                                                 ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
@@ -1505,7 +1512,10 @@ class PandaPowerModel:
                         set_graphdata(element_result, elementcode, [['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['avg','max'])
-                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, '% P Loss', '%', 1, None],
+                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 5, None],
+                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'], 
+                            sumfunc, stat_fields=['max'])
+                        combine_graphdata(element_result, elementcode, ['pl_perc', element_id, '% P Loss', '%', 2, None],
                             ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw', 'p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'], 
                             percentage_3_3_func, stat_fields=['max'])
                 else:
@@ -1517,11 +1527,13 @@ class PandaPowerModel:
                     elif elementcode == 'trafo':
                         set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P', 'MW', 4, None, 'p_hv_mw'],
                                                                     ['q_hv_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_hv_mvar']])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent']], fields=['max'])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 5, None, 'pl_mw']])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['pl_mw', element_id, 'P Loss', 'MW', 5, None, 'pl_mw']], fields=['max'])
                     elif elementcode == 'trafo3w':
                         set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
                                                                     ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
@@ -1529,11 +1541,13 @@ class PandaPowerModel:
                                                                     ['q_mv_mvar', element_id, 'Q MV', 'MVAr', 4, None, 'q_mv_mvar']])
                         set_graphdata(element_result, elementcode, [['p_lv_mw', element_id, 'P LV', 'MW', 4, None, 'p_lv_mw'],
                                                                     ['q_lv_mvar', element_id, 'Q LV', 'MVAr', 4, None, 'q_lv_mvar']])
-                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 4, None, 'pl_mw']])
                         set_graphdata(element_result, elementcode, [
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent']], fields=['max'])
+                        set_graphdata(element_result, elementcode, [['pl_mw', element_id, 'P loss', 'MW', 5, None, 'pl_mw']])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['pl_mw', element_id, 'P Loss', 'MW', 5, None, 'pl_mw']], fields=['max'])
                     elif elementcode == 'gen':
                         set_graphdata(element_result, elementcode, [['p_mw', element_id, 'P', 'MW', 4, None, 'p_mw'],
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
@@ -1554,7 +1568,11 @@ class PandaPowerModel:
                                     ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']])
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading (max)', '%', 1, None, 'loading_percent']], fields=['max'])
-                        combine_graphdata(element_result, elementcode, ['pl_mw', element_id, '% P Loss', '%', 1, None],
+                        set_graphdata(element_result, elementcode, [
+                                    ['pl_mw', element_id, 'P Loss', 'MW', 5, None, 'pl_mw']])
+                        set_graph_data_stats(element_result, elementcode, [
+                            ['pl_mw', element_id, 'P Loss', 'MW', 5, None, 'pl_mw']], fields=['max'])
+                        combine_graphdata(element_result, elementcode, ['pl_perc', element_id, '% P Loss', '%', 2, None],
                             ['pl_mw', 'p_from_mw'], percentage_1_1_func, stat_fields=['max'])
 
         log.info('PandaPowerModel - run_powerflow - calculation run')

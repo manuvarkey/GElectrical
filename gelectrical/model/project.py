@@ -715,7 +715,7 @@ class ProjectModel:
                 element_switches.append(model)
             # Nodes
             if model.code in misc.DISPLAY_ELEMENT_CODES:
-                element_nodes[model.fields['ref']['value']] = model
+                element_nodes[int(model.fields['ref']['value'])] = model
             # Loads
             if model.code in misc.LOADPROFILE_CODES and model.fields['load_profile']['value'] in self.loadprofiles:
                 loadprofile_captions_used.add(model.fields['load_profile']['value'])
@@ -751,11 +751,11 @@ class ProjectModel:
         P = misc.ELEMENT_PLACEHOLDER
         # Lines
         if element_lines:
-            col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent_max', 'pl_mw_max']
-            col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', '% P loss']
-            code_sources = [E,E,E,E,E,E,E,E,E,R,R]
+            col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent_max', 'pl_mw_max', 'pl_perc_max']
+            col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', 'P loss', '% P loss']
+            code_sources = [E,E,E,E,E,E,E,E,E,R,R,R]
             table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines',
-                                           show_element_class=True)
+                                           show_element_class=True, sum_cols=[10])
             boq_tables['boq_lines'] = table
             boq_captions['boq_lines'] = 'Lines'
         # Loads
@@ -793,7 +793,7 @@ class ProjectModel:
             col_captions = ['Reference', 'Name', 'Rated power', 'PF', 'Sa', 'Sb', 'Sc', 'In Service ?', 'Load Profile']
             code_sources = [E,E,P,P,P,P,P,E,E]
             table = misc.elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads',
-                                           show_element_class=True, modifyfunc=modifyfunc_load)
+                                           show_element_class=True, modifyfunc=modifyfunc_load, sum_cols=[2])
             boq_tables['element_loads'] = table
             boq_captions['element_loads'] = 'Loads'
         # Switches
@@ -807,10 +807,11 @@ class ProjectModel:
             boq_captions['element_switches'] = 'Switches'
          # Nodes
         if element_nodes:
+            nodes_sorted_by_name = [element_nodes[x] for x in sorted(element_nodes.keys())]
             col_codes = ['ref', 'vn_kv', 'delv_perc_max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ipss_ka_3ph_max', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
             col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (pk, max)', 'Isc (L-G, max)', 'Isc (L-G, min)']
             code_sources = [E,R,R,R,R,R,R,R]
-            table = misc.elements_to_table(element_nodes.values(), col_codes, col_captions, code_sources, 'boq_nodes',
+            table = misc.elements_to_table(nodes_sorted_by_name, col_codes, col_captions, code_sources, 'boq_nodes',
                                            show_slno=False, show_element_class=False)
             boq_tables['element_nodes'] = table
             boq_captions['element_nodes'] = 'Nodes'

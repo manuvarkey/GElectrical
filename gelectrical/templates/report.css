@@ -177,9 +177,10 @@ table.boq_lines thead th:nth-child(7) {width: 5%;}
 table.boq_lines thead th:nth-child(8) {width: 5%;}
 table.boq_lines thead th:nth-child(9) {width: 5%;}
 table.boq_lines thead th:nth-child(10) {width: 5%;}
-table.boq_lines thead th:nth-child(11) {width: 10%;}
+table.boq_lines thead th:nth-child(11) {width: 5%;}
 table.boq_lines thead th:nth-child(12) {width: 10%;}
-table.boq_lines thead th:nth-child(13) {width: 10%;}
+table.boq_lines thead th:nth-child(13) {width: 5%;}
+table.boq_lines thead th:nth-child(14) {width: 10%;}
 
 table.boq_loads {table-layout: fixed; width: 100%;}
 table.boq_loads thead th:nth-child(1) {width: 3%;}

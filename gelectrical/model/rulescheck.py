@@ -70,7 +70,7 @@ electrical_rules = {
                     ('constant', 100)),
 'Line loss % < X %': ('arg1 <= sr.line_max_loss', 
                     (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
-                    ('self', 'e.r.pl_mw_max')),
+                    ('self', 'e.r.pl_perc_max')),
 'Line protection by upstream breaker': ("arg2[0].contains(arg1[0], curve='upper', direction='right', i_max=arg3[0], scale=arg2[2]/arg3[1]) and arg1[1] >= arg2[1]", 
                     (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.damage_model.linestring_upper_log, e.f.max_i_ka * e.f.df * e.f.parallel * 1000'),
