@@ -6,5 +6,5 @@
 
 2. While inserting certain elements like `Grid`, ` Generator`, `Load` etc, the `Cycle Port` option do not seem to have any effect.
 
-> These elements are single port elements. Hence cycle ports will not change the attachment point and this behaviour is expected..
+> These elements are single port elements. Hence cycle ports will not change the attachment point. This behaviour is expected.
 

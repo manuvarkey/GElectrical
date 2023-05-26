@@ -8,8 +8,8 @@
     <property name="program-name">GElectrical</property>
     <property name="version">1.0</property>
     <property name="copyright" translatable="yes">Copyright © 2020 Manu Varkey</property>
-    <property name="comments" translatable="yes">GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.</property>
-    <property name="website">https://github.com/manuvarkey/GElectrical</property>
+    <property name="comments" translatable="yes">Free and opensource electrical system analysis software for LV/MV electrical distribution networks.</property>
+    <property name="website">https://manuvarkey.github.io/GElectrical</property>
     <property name="authors">Manu Varkey
 (manuvarkey@gmail.com)
 Executive Engineer (Electrical)

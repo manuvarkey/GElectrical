@@ -16,7 +16,7 @@ Daily load profiles are used in `Time series` power analysis to model variation 
 
 Protection coordination provides a convinient interface to view and edit parameters for acheiving protection coordination between elements. For using this module, select breakers/ fuses, lines, transformers, motors or node elements which are involved in the co-ordination problem and click on the toolbar button for this option in [project toolbar](project_toolbar) to view the protection coordination dialog window as given above.
 
-The interface is divided into three section which are indicated by the numbered markers in the above figure. These are described below.
+The interface is divided into three sections which are indicated by the numbered markers in the above figure. These are described below.
 
 1. This combobox allows switching between `Line Protection` and `Ground Protection` coordination curves for breaker elements.
 2. This view displays the time-current co-ordination curves for the selected elements. The various curves displayed are enumerated below.
@@ -61,7 +61,7 @@ This module allows various analysis functions to be run for simulating the behav
   - Run line to ground short circuit calculation as per IEC-60909.
 * - 6
   - Power flow method
-  - This option selects the type of powerflow analysis to run. These are described below.
+  - This option selects the type of powerflow analysis to be run. These are described below.
 * - 7
   - Export results of simulation
   - Export the simulation results to the selected folder. The exported files include pdf drawing, pdf report detailing the electrical network \& simulation results, pandapower html report, connectivity html graph and pandapower json network definition file.
@@ -163,7 +163,7 @@ Powerflow and shortcircuit (symmetric and line to ground) analysis functions sho
   - Checks whether the short circuit current rating specified for breakers are less than the available fault current at the breaker downstream node.
 * - 2
   - Breaker coordination with upstream
-  - Checks whether breakers/ fuses co-ordinates fully with the upstream breakers/ fuses. This is considered satisfied if the breaker operating curve of the downstream device is fully lying below the breaker operating curve of the upstream device.
+  - Checks whether breakers/ fuses co-ordinate fully with the upstream breakers/ fuses. This is considered satisfied if the breaker operating curve of the downstream device is fully lying below the breaker operating curve of the upstream device.
 ```
 
 ### Rules for Loads

@@ -4,12 +4,12 @@
 
 ![Main window](assets/images/main_window.png)
 
-GElectrical interface is divided into five components which are indicated by the numbered markers in the above figure. They are described below.
+The application interface is divided into five components which are indicated by the numbered markers in the above figure. They are described below.
 
 1. [Application toolbar](application_toolbar):\
-    Toolbar containing buttons for accessing commonly used application level functions.
+    Toolbar containing buttons for accessing commonly used application level functionality.
 2. [Project toolbar](project_toolbar):\
-    Tool bar containing buttons for accessing commonly used project related functions.
+    Tool bar containing buttons for accessing commonly used project related functionality.
 3. [Components side-bar](components_side_bar):\
     Sidebar allows insertion of elements into drawing view.
 4. [Drawing View](drawing_view):\
@@ -25,9 +25,9 @@ GElectrical interface is divided into five components which are indicated by the
 (application_toolbar)=
 ![Application Toolbar](assets/images/application_bar.png)
 
-The items in the application toolbar provides access to application management related functionalities of GElectrical. User interface elements indicated by numbered markers in the above figure are described below.
+The items in the application toolbar provides access to application management related functionalities of GElectrical. User interface elements indicated by the numbered markers in the above figure are described below.
 
-1. Shows a popup widget to open an existing project. Recently opened files are shown in the popup widget. Double clicking on the project name opens the selected project. If the required project file is not availabe in the selection list, a file browser can be openened by clicking on the `Other Projects...` button.
+1. Shows a popup widget to open an existing project. Recently opened project files are shown in the popup widget. Double clicking on the project name opens the selected project. If the required project file is not availabe in the selection list, a file browser can be openened by clicking on the `Other Projects...` button.
 2. Create a new project.
 3. Undo (`Ctrl`+`z`)/ Redo (`Ctrl`+`Shift`+`z`) actions performed by the user.
 4. Displays application name and project filename.
@@ -49,7 +49,7 @@ The application menu provides access to less frequently used functionality of GE
   - Description
 * - 1
   - Save As
-  - Save the current project to new a project file.
+  - Save the current project to a new project file.
 * - 2
   - Print
   - Allows prinitng of schematic drawings. The pages to be printed and printing options may be selected by the user.
@@ -78,7 +78,7 @@ The application menu provides access to less frequently used functionality of GE
 
 ![Project Toolbar](assets/images/project_toolbar.png)
 
-The items in the project toolbar provides access to most of the project related functionality of GElectrical. Their contents are listed and described below. Contextual help is also available for these functions in the form of tooltips which can be viewed by placing the mouse cursor over the buttons.
+The items in the project toolbar provides access to most of the project related functionality of GElectrical. Their contents are listed and described below. Contextual help is also available for these functions in the form of tooltips which can be viewed by placing the mouse cursor over the toolbar buttons.
 
 1. Add a new drawing sheet.
 2. Draw a wire interconnecting element ports.
@@ -90,7 +90,7 @@ Assemblies may be used for panels, enclosures or any other logical grouping of e
     1. Add new assembly:\
        Select the elements to be grouped and click on the toolbutton.
     2. Edit existing assembly:\
-       Select the new elements to be grouped, existing assembly elements, existing assembly and click on the toolbutton
+       Select the new elements to be grouped, existing assembly elements, existing assembly and click on the toolbutton.
 4. Assign reference numbers to elements.\
 Reference numbers helps to identify elements. Numbering can be carried out for selected elements only/ new elements only/ for all elements.
 5. Link cross reference element.\
@@ -105,11 +105,9 @@ Allows viewing and editing element parameters for protection coordination. Selec
 Runs diagnostics on scheme to identify common issues, power flow (with diversity factors/ without diversity factors/ time series), short circuit (symmetric/ line to ground).\
 Results of the analysis will be displayed in the results tab of the right pane for each element. Results may also be exported to a PDF report.
 11. [Run electrical rules check.](elec_rules_check)\
-Checks the scheme for violations of common wiring rules like loading limits, protection coordination between elements, automatic disconnection of supply etc.\
-Powerflow and shortcircuit (symmetric and line to ground) analysis functions should be run before running this module.\
-Results of the rules check will be displayed in the messages tab of the right pane.
+Checks the scheme for violations of common wiring rules like loading limits, protection coordination between elements, automatic disconnection of supply etc. Powerflow and shortcircuit (symmetric and line to ground) analysis functions should be run before running this module. Results of the rules check will be displayed in the messages tab of the right pane.
 12. Export drawing to PDF.
-13. Clear analysis results and node elements that are inserted during analysis.
+13. Clear analysis results and node elements that were inserted during analysis.
 14. Delete selected elements.
 15. Delete currently selected drawing sheet.
 
@@ -121,7 +119,7 @@ Results of the rules check will be displayed in the messages tab of the right pa
 :width: 700px
 ```
 
-Components side-bar allows insertion of elements into drawing view. On selecting an element in components side-bar, the insertion mode is activated and a floating model is enabled which follows the cursor on the drawing view. This floating model can be added to the drawing view by clicking the `Left Mouse Button`. Multiple models may be added by pressing down `Shift` while clicking the `Left Mouse Button`. To cancel insertion of element, use the `Right Mouse Button`. The components side-bar also incorporates a search bar for filtering the list of elements.
+Components side-bar allows insertion of elements into drawing view. On selecting an element in components side-bar, the insertion mode is activated and a floating model is enabled which follows the cursor on the drawing view. This floating model can be added to the drawing view by clicking the `Left Mouse Button`. Multiple models may be added by pressing down `Shift` while clicking the `Left Mouse Button`. To cancel the insertion of the model, use the `Right Mouse Button`. The components side-bar also incorporates a search bar for filtering the list of available elements.
 
 During insertion of the element, the components side-bar is replaced by the insertion view. This view allows manipulation of the element being inserted. Selecting `Rotate` (`R`), rotates the floating model from vertical to horizontal or vice versa. Selecting `Cycle Port` (`C`) selects the point of attachment (relative to the cursor) of the floating model.
 
@@ -137,7 +135,7 @@ Insertion may also display fields which can be modified to modify the behaviour 
 
 Drawing view allows defining the electrical single line diagram for the project by addition and modification of schematic elements and defining connectivity between elements. The elements are added into the drawing view using the [components side-bar](components_side_bar). The properties of the inserted elements can be viewed in the [properties side-bar](properties_side_bar) by selecting the element in the drawing view. Selected elements can be deleted by pressing the `Delete` button or by selecting the function available in the [project toolbar](project_toolbar).
 
-The various elements inserted in the drawing view can be selected using the `Left Mouse Button`. Pressing down `Shift` while selecting elements allows multiple elements to be selected. 
+The elements inserted in the drawing view can be selected using the `Left Mouse Button`. Pressing down `Shift` while selecting allows multiple elements to be selected. 
 
 Box selection mode can be entered by clicking `Left Mouse Button` on a blank area of the drawing view. A box selection is shown which follows the mouse cursor. The selection can be finished by clicking `Left Mouse Button`. The elements in the area bounded by the box selection will become selected.
 
@@ -154,7 +152,7 @@ All the sheets available in the project can be accessed using the tab bar at the
 :width: 300px
 ```
 
-This sidebar allows has three tabs which are described below.
+This sidebar has three tabs which are described below.
 
 1. **Properties**: Modification of properties of the selected elements.
 2. **Results**: Viewing simulation results for the selected elements.

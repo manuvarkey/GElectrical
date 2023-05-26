@@ -1,7 +1,7 @@
 # Frequently Asked Questions
 
 1. What is GElectrical ?
-> GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.
+> GElectrical is a free and opensource electrical system analysis software for LV/MV electrical distribution networks.
 
 2. Does GElectrical do automatic sizing of elements ?
 

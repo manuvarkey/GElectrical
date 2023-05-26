@@ -27,3 +27,25 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_css_files = ['css/custom.css',]
+
+# -- Options for latex output
+
+latex_table_style: ['booktabs', 'colorrows']
+#latex_engine = 'luatex'
+latex_elements = {
+'papersize': 'a4paper',
+'pointsize': '11pt',
+'preamble': r'''
+    \usepackage{mdframed}
+    \renewcommand{\sfdefault}{lmdh}
+    \renewcommand{\rmdefault}{lmr}
+    \renewcommand{\ttdefault}{lmtt}
+    
+    \renewenvironment{sphinxnote}[1]%
+    {\vspace{5mm}
+     \begin{mdframed}[topline=false,bottomline=false, rightline=false,
+		    linewidth=2pt, frametitle={#1}]}%
+		    {\end{mdframed}
+     \vspace{5mm}}
+    '''
+}

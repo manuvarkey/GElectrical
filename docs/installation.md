@@ -1,6 +1,6 @@
 # Installation
 
-Application can be installed for use on your OS as below.
+Application can be installed for use on your OS as described below.
 
 ```{admonition} Font for schematic drawings
 It is recommended to install `osifont` for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
@@ -10,7 +10,7 @@ It is recommended to install `osifont` for schematic capture. This can be downlo
 
 ### Windows
 
-Use `.EXE` installation packages available under the latest [Release](https://github.com/manuvarkey/GElectrical/releases/latest).
+Use `.EXE` installation package available under the latest [Release](https://github.com/manuvarkey/GElectrical/releases/latest).
 
 ### Linux
 
@@ -31,7 +31,7 @@ It should be possible to install the application using the default package manag
 
 * Install `git`, `msys2`, `visualstudio2022-workload-vctools` and `gvs_build` by folowing this link [gvsbuild](https://github.com/wingtk/gvsbuild).
 * Setup GTK3 and PyGObject development envirnonment using `gvs_build` by running `gvsbuild build --enable-gi --py-wheel gtk3 pygobject adwaita-icon-theme`.
-* Add required environment variables as suggested in the above link. Please see [Create and Modify Environment Variables on Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html).
+* Add required environment variables as suggested in the above link. Please see [Create and Modify Environment Variables on Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html) for more information about setting up environment varables.
 * Run `pip install appdirs pycairo numpy numba scipy pandas mako networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely` in powershell.
 * Clone this repository using `git clone https://github.com/manuvarkey/GElectrical.git`.
 * Run `python gelectrical_launcher.py` from the cloned directory.

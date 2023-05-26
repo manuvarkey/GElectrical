@@ -4,7 +4,7 @@
 # All the other settings can be tweaked by editing the !defines at the top of this script
 !define APPNAME "GElectrical"
 !define COMPANYNAME "KavilGroup"
-!define DESCRIPTION "Electrical distribution network design and analysis software"
+!define DESCRIPTION "A free and opensource electrical system analysis software for LV/MV electrical distribution networks."
 # These three must be integers
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 0
@@ -12,7 +12,7 @@
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "mailto:manuvarkey@gmail.com" # "Support Information" link
-!define UPDATEURL "http://github.com/manuvarkey/GElectrical/" # "Product Updates" link
+!define UPDATEURL "https://manuvarkey.github.io/GElectrical" # "Product Updates" link
 !define ABOUTURL "http://kavilgroup.com" # "Publisher" link
 # This is the size (in kB) of all the files copied into "Program Files"
 !define INSTALLSIZE 321000

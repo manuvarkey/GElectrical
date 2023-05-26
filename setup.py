@@ -20,9 +20,9 @@ setup(
     maintainer_email="manuvarkey@gmail.com",
     url="https://github.com/manuvarkey/GElectrical",
     license="GPL-3.0",
-    description="GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.",
+    description="A free and opensource electrical system analysis software for LV/MV electrical distribution networks.",
 
-    long_description= 'GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks.',
+    long_description= 'A free and opensource electrical system analysis software for LV/MV electrical distribution networks.',
     
     install_requires=["appdirs", "pycairo", "numpy", "numba", "scipy", "pandas", "mako", "networkx", "matplotlib", "pandapower", "jinja2", "weasyprint", "openpyxl", "shapely", "PyGObject"],
    

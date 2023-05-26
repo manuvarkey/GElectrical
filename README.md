@@ -1,6 +1,6 @@
 # GElectrical
 
-[Website](https://github.com/manuvarkey/GElectrical) • 
+[Website](https://manuvarkey.github.io/GElectrical) • 
 [Documentation](https://gelectrical.readthedocs.io) •
 [Forum](https://github.com/manuvarkey/GElectrical/discussions/) •
 [Bug tracker](https://github.com/manuvarkey/GElectrical/issues) •
@@ -9,9 +9,9 @@
 [![Release](https://img.shields.io/github/release/manuvarkey/GElectrical.svg)](https://github.com/manuvarkey/GElectrical/releases/latest)
 ![License](https://img.shields.io/github/license/manuvarkey/GElectrical)
 
-<a href="https://beta.flathub.org/apps/com.kavilgroup.gelectrical"><img height="51" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.svg"/> </a>
+<a href="https://flathub.org/apps/com.kavilgroup.gelectrical"><img height="51" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.svg"/> </a>
 
-GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Following features are currently implemented.
+GElectrical is a free and opensource electrical system analysis software for LV/MV electrical distribution networks. Following features are currently implemented.
 
 * Schematic capture.
 * Pandapower network generation from schematic.
@@ -27,7 +27,9 @@ GElectrical is a graphical frontend to pandapower for power supply simulation an
 * Print and export of drawings to pdf.
 * Generation of analysis reports.
 
-**Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended. See [Roadmap](https://github.com/manuvarkey/GElectrical/issues/1) for current limitations.**
+GElectrical uses pandapower as the backend for implementing power flow related functionality like voltage drop and short circuit analysis.
+
+> **Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended. See [Roadmap](https://github.com/manuvarkey/GElectrical/issues/1) for current limitations.**
 
 ## Screenshots
 
@@ -50,15 +52,15 @@ GElectrical is a graphical frontend to pandapower for power supply simulation an
 
 ## Installation
 
-Application can be installed for use on your OS as below.
+Application can be installed for use on your OS as described below.
 
-It is reccomended to install `osifont` for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
+> It is reccomended to install `osifont` for schematic capture. This can be downloaded from [https://github.com/hikikomori82/osifont/blob/master/osifont.ttf](https://github.com/hikikomori82/osifont/blob/master/osifont.ttf).
 
 ### Binary
 
 #### Windows
 
-Use `.EXE` installation packages available under Releases.
+Use `.EXE` installation package available under the latest [Release](https://github.com/manuvarkey/GElectrical/releases/latest).
 
 #### Linux
 
@@ -79,7 +81,7 @@ It should be possible to install the application using the default package manag
 
 * Install `git`, `msys2`, `visualstudio2022-workload-vctools` and `gvs_build` by folowing this link [gvsbuild](https://github.com/wingtk/gvsbuild).
 * Setup GTK3 and PyGObject development envirnonment using `gvs_build` by running `gvsbuild build --enable-gi --py-wheel gtk3 pygobject adwaita-icon-theme`.
-* Add required environment variables as suggested in the above link. Please see [Create and Modify Environment Variables on Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html).
+* Add required environment variables as suggested in the above link. Please see [Create and Modify Environment Variables on Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html) for more information about setting up environment varables.
 * Run `pip install appdirs pycairo numpy numba scipy pandas mako networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely` in powershell.
 * Clone this repository using `git clone https://github.com/manuvarkey/GElectrical.git`.
 * Run `python gelectrical_launcher.py` from the cloned directory.
