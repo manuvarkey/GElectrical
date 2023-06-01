@@ -76,7 +76,11 @@ class ElementAssembly(ElementModel):
                            [(self.element_rect_width/misc.M + 1, None), "${text3}", True]]
         self.render_text(context, self.text_model)
         # Render schem
-        (tx, ty, tw, th) = self.text_extends[0]
+        (tx0, ty0, tw0, th0) = self.text_extends[0]
+        (tx1, ty1, tw1, th1) = self.text_extends[1]
+        (tx2, ty2, tw2, th2) = self.text_extends[2]
+        (tx3, ty3, tw3, th3) = self.text_extends[3]
+        tw = max(tw0, tw1, tw2, tw3)
         self.schem_model = [['RECT',(0, 0), 
                              (self.element_rect_width + tw)/misc.M + 2, 
                              self.element_rect_height/misc.M, 
