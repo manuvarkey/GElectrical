@@ -153,12 +153,17 @@ class ProjectModel:
         # Undo action
         self.loadprofiles = loadprofiles_old
     
-    def append_page(self):
+    def append_page(self, copy_selected_sheet=False):
         model = DrawingModel(self, self.program_state)
         slno = self.get_page_nos()
-        # Except first page copy fields from first page
+        cur_slno =self.drawing_notebook.get_current_page()
+        # Except first page copy fields from selected page
         if slno > 0:
-            base_model = self.drawing_models[0].get_model()
+            # Copy model from first page or selected page
+            if copy_selected_sheet:
+                base_model = self.drawing_models[cur_slno].get_model()
+            else:
+                base_model = self.drawing_models[0].get_model()
             model.set_model(base_model, copy_elements=False)
             model.fields['sheet_no']['value'] = str(slno + 1)
             model.fields['date_of_issue']['value'] = datetime.datetime.today().strftime('%Y-%m-%d')
@@ -618,7 +623,7 @@ class ProjectModel:
                     pass
         return 'CR' + str(counter)
     
-    def link_references(self, base_ref, selected_dict):
+    def link_references(self, base_ref, selected_dict, copy_titles=False):
         """Link reference items"""
         (selected_page, selected_slno) = base_ref
         selected_element = copy.deepcopy(self.drawing_models[selected_page][selected_slno])
@@ -641,8 +646,9 @@ class ProjectModel:
                         selected_sheets_element = [x for x in selected_sheets if x != str(page+1)] 
                         element.fields['ref']['value'] = reference
                         element.fields['sheet']['value'] =  ','.join(selected_sheets_element)
-                        element.fields['title']['value'] = title
-                        element.fields['sub_title']['value'] = subtitle
+                        if copy_titles:
+                            element.fields['title']['value'] = title
+                            element.fields['sub_title']['value'] = subtitle
                         self.drawing_models[page].update_element_at_index(element ,el_no)
             selected_element.fields['ref']['value'] = reference
             selected_sheets.remove(sheet)

@@ -512,7 +512,7 @@ class MainWindow():
         self.display_status(misc.INFO, "Analysis results cleared.")
     
     def on_new_tab(self, button):
-        self.project.append_page()
+        self.project.append_page(copy_selected_sheet=True)
 
     def on_delete_tab(self, button):
         slno = self.project.page_no

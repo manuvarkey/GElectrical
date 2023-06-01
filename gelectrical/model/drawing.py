@@ -418,6 +418,11 @@ class DrawingModel:
                     assembly = ElementAssembly(element_codes, selected)
                     gid_assembly = self.get_gid()
                     assembly.set_gid(gid_assembly)
+                    # Copy title data from old element
+                    assembly.fields['name']['value'] = element.fields['name']['value']
+                    assembly.fields['text1']['value'] = element.fields['text1']['value']
+                    assembly.fields['text2']['value'] = element.fields['text2']['value']
+                    assembly.fields['text3']['value'] = element.fields['text3']['value']
                     # Update element assembly ids
                     for element in selected:
                         element.set_gid_assembly(gid_assembly)
