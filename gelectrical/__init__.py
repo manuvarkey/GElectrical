@@ -685,7 +685,7 @@ class MainWindow():
         """Zoom in draw view"""
         if self.project.drawing_view.scale <= 2.4:
             self.project.drawing_view.scale += 0.2
-            self.project.drawing_view.refresh()
+            self.project.drawing_view.refresh(redraw=True)
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached maximum scale).")
         
@@ -693,7 +693,7 @@ class MainWindow():
         """Zoom out draw view"""
         if self.project.drawing_view.scale >= 0.6:
             self.project.drawing_view.scale -= 0.2
-            self.project.drawing_view.refresh()
+            self.project.drawing_view.refresh(redraw=True)
         else:
             self.display_status(misc.WARNING, "Scale not changed (Reached minimum scale).")
             
@@ -770,7 +770,7 @@ class MainWindow():
     def on_draw_addassembly(self, widget):
         """Insert an assembly from selection"""
         self.project.drawing_model.add_assembly_from_selection()
-        self.project.drawing_view.refresh()
+        self.project.drawing_view.refresh(redraw=True)
         
     def on_draw_element_add(self, list_box, row):
         code = row.props.name

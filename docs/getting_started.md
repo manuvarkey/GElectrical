@@ -141,7 +141,7 @@ Box selection mode can be entered by clicking `Left Mouse Button` on a blank are
 
 While some elements are selected, clicking on a blank area of the drawing view or pressing `Escape` clears all selection.
 
-All the sheets available in the project can be accessed using the tab bar at the bottom of the drawing view. Functions for addition and deletion of sheets can be accessed using the [project toolbar](project_toolbar).
+All the sheets available in the project can be accessed using the tab bar at the bottom of the drawing view. Functions for addition and deletion of sheets can be accessed using the [project toolbar](project_toolbar). Sheets can be rearranged by clicking and dragging the tabs.
 
 ## Properties Side-bar
 (properties_side_bar)=

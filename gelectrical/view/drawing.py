@@ -67,7 +67,9 @@ class DrawingView:
         self.hadjustment = 0
         self.vadjustment = 0
         
-        self.dirty_draw = False
+        self.dirty_draw = True  # Flag to keep track of whether a drawing is to be fully redrawn
+        self.highlighted_port = None  # Flag to keep track of the currently highlighted port
+        self.savepoint = None  # Undo stack save point
         self.background_surface = None
         self.background_context = None
         self.multiselect_fields = None
@@ -126,10 +128,12 @@ class DrawingView:
         self.scrolled_window.get_hadjustment().set_value(self.hadjustment)
         self.scrolled_window.get_vadjustment().set_value(self.vadjustment)
     
-    def refresh(self):
+    def refresh(self, redraw=False):
         if 'zoom_display_label' in self.program_state:
             self.program_state['zoom_display_label'].set_label(
                 str(int(self.scale*100)) + '%')
+        if redraw:
+            self.dirty_draw = True
         self.drawing_area.queue_draw()
     
     def select_page(self):
@@ -143,6 +147,7 @@ class DrawingView:
         if self.database_view:
             self.database_view.update_from_database(None)
         self.drawing_model.update_elements()
+        self.refresh(redraw=True)
         
     def select_elements(self, elements):
         if len(elements) == 1:
@@ -227,9 +232,13 @@ class DrawingView:
                                            
         # Apply global scale
         context.scale(self.scale, self.scale)
-        
-        # Default mode or draw base layer
-        if self.get_mode() == misc.MODE_DEFAULT or self.dirty_draw:
+
+        # Check status of stack and set dirty flag
+        if self.savepoint is None or self.savepoint != self.program_state['stack'].undocount():
+            self.dirty_draw = True
+
+        # Draw base layer
+        if self.dirty_draw:
             # Set background
             self.background_surface = screen.create_similar(cairo.Content.COLOR_ALPHA, 
                                                          int(self.drawing_model.fields['page_width']['value']*self.scale), 
@@ -238,13 +247,17 @@ class DrawingView:
             self.background_context.scale(self.scale, self.scale)
             self.drawing_model.draw_gridlines(self.background_context)
             self.drawing_model.draw_model(self.background_context, select=True, whitelist=self.whitelist)
-            # Draw background image
-            draw_background()       
+            # Reset flags
             self.dirty_draw = False
-            
+            self.savepoint = self.program_state['stack'].undocount()
+
+        # Draw background image
+        draw_background()
+
+        if self.get_mode() == misc.MODE_DEFAULT:
+            pass
+
         elif self.get_mode() == misc.MODE_SELECTION:
-            # Draw background image
-            draw_background()
             # Draw selection rubberband
             misc.draw_rectangle(context,
                                 self.x, 
@@ -257,13 +270,9 @@ class DrawingView:
                                 stroke_width=misc.STROKE_WIDTH_SELECTION_BAND)
             
         elif self.get_mode() == misc.MODE_INSERT:
-            # Draw background image
-            draw_background()
             self.drawing_model.draw_floating_model(context, self.x, self.y, grid_constraint=True)
             
         elif self.get_mode() == misc.MODE_ADD_WIRE:
-            # Draw background image
-            draw_background()
             self.drawing_model.draw_wire(context, self.x, self.y, grid_constraint=True)
         
         # Draw rectangles around port on hovering
@@ -277,7 +286,6 @@ class DrawingView:
                                 misc.SELECT_PORT_RECT,
                                 color=misc.COLOR_SELECTED, 
                                 stroke_width=misc.STROKE_WIDTH_SELECTED)
-            self.refresh()
 
     def on_button_press(self, w, e):
         """Handle button press events"""
@@ -381,6 +389,8 @@ class DrawingView:
                 self.set_mode(misc.MODE_DEFAULT)  # End insertion/ wire
                 self.drawing_model.reset_floating_model()
                 self.drawing_model.reset_wire_points()
+
+        self.dirty_draw = True
                     
     def on_pointer_move(self, w, e):
         """Handle button move events"""
@@ -389,6 +399,11 @@ class DrawingView:
             self.y = e.y/self.scale
             if self.get_mode() in (misc.MODE_INSERT, misc.MODE_SELECTION, misc.MODE_ADD_WIRE):
                 self.refresh()
+            else:
+                port = self.drawing_model.get_port_around_coordinate(self.x, self.y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT)
+                if port != self.highlighted_port:
+                    self.highlighted_port = port
+                    self.refresh()
                 
     def on_mouse_scroll(self, w, e):
         """Handle scroll events"""
@@ -398,12 +413,12 @@ class DrawingView:
         if control_pressed and e.direction == Gdk.ScrollDirection.UP:
             if self.scale <= 2.4:
                 self.scale += 0.2
-                self.refresh()
+                self.refresh(redraw=True)
         # Zoom out
         elif control_pressed and e.direction == Gdk.ScrollDirection.DOWN:
             if self.scale >= 0.6:
                 self.scale -= 0.2
-                self.refresh()
+                self.refresh(redraw=True)
                     
     def on_key_press(self, w, e):
         """Handle key press events"""

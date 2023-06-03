@@ -83,6 +83,7 @@ class ProjectModel:
         # Initialise tab
         self.add_page_vanilla()
         self.drawing_notebook.connect("switch-page", self.on_switch_tab)
+        self.drawing_notebook.connect("page_reordered", self.on_page_reordered)
 
 
     ## Functions
@@ -156,7 +157,7 @@ class ProjectModel:
     def append_page(self, copy_selected_sheet=False):
         model = DrawingModel(self, self.program_state)
         slno = self.get_page_nos()
-        cur_slno =self.drawing_notebook.get_current_page()
+        cur_slno = self.drawing_notebook.get_current_page()
         # Except first page copy fields from selected page
         if slno > 0:
             # Copy model from first page or selected page
@@ -209,7 +210,8 @@ class ProjectModel:
             self.drawing_views.append(self.drawing_view)
             self.drawing_notebook.show_all()
             self.set_page(self.get_page_nos() -1)  # Switch to added page
-            add_slno = self.get_page_nos() -1       
+            add_slno = self.get_page_nos() -1
+        self.drawing_notebook.set_tab_reorderable(page, True)
         return add_slno
         
     @undoable
@@ -230,6 +232,21 @@ class ProjectModel:
         # Undo action
         if delete_slno:
             self.add_page(delete_slno, del_model)
+
+    @undoable
+    def reorder_tab(self, prev_pagenum, pagenum):
+        if prev_pagenum != pagenum:
+            model = self.drawing_models.pop(prev_pagenum)
+            view = self.drawing_views.pop(prev_pagenum)
+            self.drawing_models.insert(pagenum, model)
+            self.drawing_views.insert(pagenum, view)
+            self.set_page(pagenum)
+            self.update_tabs()
+
+        yield 'Reorder tab - from {} to {}'.format(prev_pagenum, pagenum)
+        if prev_pagenum != pagenum:
+            self.reorder_tab(pagenum, prev_pagenum)
+            self.update_tabs()
             
     def clear_all(self):
         # Delete all pages except first
@@ -263,23 +280,22 @@ class ProjectModel:
     
     def update_tabs(self, slno=None):
     
-        def set_label(page, sheet_name, slno):                
+        def set_label(page, sheet_name):                
             label_hbox = Gtk.Box()
             page_label = Gtk.Label(sheet_name)
             label_hbox.pack_start(page_label, True, True, 0)
             self.drawing_notebook.set_tab_label(page, label_hbox)
             label_hbox.show_all()
             
-        if slno:
+        if slno is not None:
             page = self.drawing_notebook.get_nth_page(slno)
             sheet_name = self.drawing_models[slno].fields['name']['value']
-            set_label(page, sheet_name, slno)
-            
+            set_label(page, sheet_name)
         else:
             for slno in range(0, self.get_page_nos()):
                 page = self.drawing_notebook.get_nth_page(slno)
                 sheet_name = self.drawing_models[slno].fields['name']['value']
-                set_label(page, sheet_name, slno)
+                set_label(page, sheet_name)
                 
     def update_title_blocks(self):
         for drawing_model in self.drawing_models:
@@ -306,7 +322,7 @@ class ProjectModel:
                         element = self.drawing_models[k1][k2]
                         element.set_selection(select=True, color=misc.COLOR_SELECTED_WARNING)
                         self.mark_page(k1)
-            self.drawing_view.refresh()
+            self.drawing_view.refresh(redraw=True)
         log.info('ProjectModel - select_powermodel - select')
 
     def de_select_all(self):
@@ -952,6 +968,7 @@ class ProjectModel:
         else:
             return False
         # Switch to first page
+        self.update_tabs()
         self.set_page(0)
         
     ## Callbacks
@@ -961,3 +978,8 @@ class ProjectModel:
         log.info('ProjectModel - on_switch_tab called - ' + str(pagenum))
         self.set_page(pagenum, switch_tab=False)
         self.program_state['zoom_display_label'].set_label(str(int(self.drawing_view.scale*100)) + '%')
+
+    def on_page_reordered(self, notebook, page, pagenum):
+        prev_pagenum = self.page_no
+        self.reorder_tab(prev_pagenum, pagenum)
+        log.info('ProjectModel - on_page_reordered called - from {} to {}'.format(prev_pagenum, pagenum))
