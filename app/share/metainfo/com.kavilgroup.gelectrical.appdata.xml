@@ -7,8 +7,12 @@
   <summary>Electrical distribution network design and analysis</summary>
   <description>
     <p>
-      GElectrical is a free and opensource electrical system analysis software for LV/MV electrical distribution networks. Following features are currently implemented.
-      <ul>
+    GElectrical is a free and opensource electrical system analysis software for LV/MV electrical distribution networks. 
+    </p>
+    <p>
+    Following features are currently implemented.
+    </p>
+    <ul>
         <li>Schematic capture.</li>
         <li>Pandapower network generation from schematic.</li>
         <li>Power flow time series analysis (Symmetric and Assymetric).</li>
@@ -20,9 +24,12 @@
         <li>Electrical rules check for checking conformity with IEC/ local electrical guidelines.</li>
         <li>Print and export of drawings to pdf.</li>
         <li>Generation of analysis reports.</li>
-      </ul>
-      GElectrical uses pandapower as the backend for implementing power flow related functionality like voltage drop and short circuit analysis.
-      Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended.
+    </ul>
+    <p>
+    GElectrical uses pandapower as the backend for implementing power flow related functionality like voltage drop and short circuit analysis.
+    </p>
+    <p> 
+    Please note that the program is in active development and bugs are expected. Cross checking of generated calculations is reccomended.
     </p>
   </description>
   <url type="homepage">https://github.com/manuvarkey/GElectrical</url>
@@ -52,6 +59,7 @@
   <releases>
     <release date="2023-04-28" version="0.6">
       <description>
+        <p>This release brings new features and bug fixes</p>
         <ul>
           <li>Implement support for modeling networks with mixed TN-S/ TT/ IT earthing systems.</li>
           <li>Implement text display element.</li>
@@ -62,6 +70,7 @@
     </release>
     <release date="2023-03-28" version="0.5">
       <description>
+        <p>This release brings interface and library updates</p>
         <ul>
           <li>Interface improvements.</li>
           <li>Better on-screen tooltips.</li>
@@ -72,6 +81,7 @@
     </release>
     <release date="2023-03-13" version="0.4">
       <description>
+        <p>This release brings new features and bug fixes</p>
         <ul>
           <li>Support for powerflow analysis with diversity factors.</li>
           <li>Interface improvements for protection coordination.</li>
@@ -81,6 +91,7 @@
     </release>
     <release date="2023-02-26" version="0.3">
       <description>
+        <p>This release brings new features and bug fixes</p>
         <ul>
           <li>Support for asymmetric powerflow analysis for elements supported by pandapower.</li>
           <li>Coordination analysis for power supply protection devices with support for CB and fuse protection curves; damage curves for transformers, cables and motors.</li>
