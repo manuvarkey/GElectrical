@@ -92,8 +92,6 @@ class DrawingView:
         
     def set_mode(self, mode, data=None):
         
-        self.drawing_area.grab_focus()  # Grab focus
-        
         if mode == misc.MODE_DEFAULT:
             self.program_state['mode'] = misc.MODE_DEFAULT
             if self.on_end_callback:
@@ -114,7 +112,8 @@ class DrawingView:
             self.program_state['mode'] = misc.MODE_ADD_WIRE
             self.drawing_model.reset_wire_points()
             self.drawing_area.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.CROSSHAIR))
-            
+        
+        self.grab_keyboard_focus()
         self.refresh()
             
     def get_mode(self):
@@ -127,6 +126,11 @@ class DrawingView:
     def restore_scroll_position(self):
         self.scrolled_window.get_hadjustment().set_value(self.hadjustment)
         self.scrolled_window.get_vadjustment().set_value(self.vadjustment)
+
+    def grab_keyboard_focus(self):
+        self.save_scroll_position()
+        self.drawing_area.grab_focus()
+        self.restore_scroll_position()
     
     def refresh(self, redraw=False):
         if 'zoom_display_label' in self.program_state:
@@ -289,7 +293,7 @@ class DrawingView:
 
     def on_button_press(self, w, e):
         """Handle button press events"""
-        self.drawing_area.grab_focus()  # Grab focus
+        
         if (e.type == Gdk.EventType.BUTTON_PRESS \
             and e.button == MouseButtons.MIDDLE_BUTTON) \
             or e.type == Gdk.EventType._2BUTTON_PRESS :
@@ -390,6 +394,7 @@ class DrawingView:
                 self.drawing_model.reset_floating_model()
                 self.drawing_model.reset_wire_points()
 
+        self.grab_keyboard_focus()
         self.dirty_draw = True
                     
     def on_pointer_move(self, w, e):
