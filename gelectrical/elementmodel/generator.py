@@ -47,7 +47,7 @@ If you want to model a generator as PQ load with fixed reactive power and variab
         self.ports = [[2, 6]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'G?'),
                        'name':     self.get_field_dict('str', 'Name', '', 'GENERATOR'),
-                       'vm_pu':    self.get_field_dict('str', 'Vm', 'pu', 1),
+                       'vm_pu':    self.get_field_dict('float', 'Vm', 'pu', 1),
                        'vn_kv':    self.get_field_dict('float', 'Vn', 'kV', 0.415),
                        'p_mw':    self.get_field_dict('float', 'P', 'MW', 0.8),
                        'sn_mva':    self.get_field_dict('float', 'Sn', 'MVA', 1),
@@ -57,7 +57,7 @@ If you want to model a generator as PQ load with fixed reactive power and variab
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = [[(5,0), "${name}, ${ref}", True],
                            [(5,None), "${sn_mva}MVA, ${cos_phi}pf", True],
-                           [(5,None), "${vm_pu}pu, ${vn_kv}kV", True]]
+                           [(5,None), "${'%g'%(vm_pu)}pu, ${'%g'%(vn_kv)}kV", True]]
         self.schem_model = [ 
                              ['CIRCLE', (2,2), 2, False, []],
                              # Sine

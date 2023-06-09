@@ -60,7 +60,7 @@ External grids represent the higher level power grid connection and are modelled
                        'x0x_min':  self.get_field_dict('float', 'X0/X min', '', 1),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.text_model = [[(5,0.5), "${name}, ${ref}", True],
-                           [(5,None), "${vm_pu}∠${va_degree}, ${vn_kv}kV", True]]
+                           [(5,None), "${'%g'%(vm_pu)}∠${'%g'%(va_degree)}, ${'%g'%(vn_kv)}kV", True]]
         self.schem_model = [ 
                              ['RECT', (0,0), 4, 4, False, []],
                              # Hatch

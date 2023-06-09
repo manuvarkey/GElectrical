@@ -68,7 +68,7 @@ Creates a generic three phase load element.
         # Preprocessing
         pftag = 'lag' if self.fields['mode']['value'] else 'lead'
         self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${sn_kva} kVA", True],
+                           [(3,None), "${sn_kva}kVA", True],
                            [(3,None), "${cos_phi} pf " + pftag, True],
                            [(3,None), "${name}", True]]
         # Render
@@ -146,9 +146,9 @@ Creates a generic three phase assymetric load element.
         """Render element to context"""
         # Preprocessing
         self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${sn_kva} kVA", True],
-                           [(3,None), "(${p_a_kw}, ${p_b_kw}, ${p_c_kw}) kW", True],
-                           [(3,None), "(${q_a_kvar}, ${q_b_kvar}, ${q_c_kvar}) kVAr", True],
+                           [(3,None), "${sn_kva}kVA", True],
+                           [(3,None), "(${p_a_kw}, ${p_b_kw}, ${p_c_kw})kW", True],
+                           [(3,None), "(${q_a_kvar}, ${q_b_kvar}, ${q_c_kvar})kVAr", True],
                            [(3,None), "${name}", True]]
         # Render
         if self.fields['in_service']['value']:
@@ -226,7 +226,7 @@ Creates a generic single phase load element.
         # Preprocessing
         pftag = 'lag' if self.fields['mode']['value'] else 'lead'
         self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${sn_kva} kVA", True],
+                           [(3,None), "${sn_kva}kVA", True],
                            [(3,None), "${cos_phi} pf " + pftag, True],
                            [(3,None), "${name}", True],
                            [(2,7.5), "${phase}", True]]

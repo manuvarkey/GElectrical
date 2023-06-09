@@ -115,9 +115,9 @@ For powerflow with diversity analysis, the diversity factors are defined at bus 
         if self.fields['DF']['value'] != 1:
             special_fields_str_parts.append("DF=${DF}")
         if self.fields['r_grid']['value'] != 0:
-            special_fields_str_parts.append("Rg=${r_grid}Ω")
+            special_fields_str_parts.append("Rg=${'%g'%(r_grid)}Ω")
         special_fields_str = ", ".join(special_fields_str_parts)
         self.text_model = [[(bus_width+2,0.5), "${ref}", True],
-                           [(bus_width+2,None), "${In}A, ${Isc}kA", True],
+                           [(bus_width+2,None), "${'%g'%(In)}A, ${'%g'%(Isc)}kA", True],
                            [(bus_width+2,None), special_fields_str, True],]
                            

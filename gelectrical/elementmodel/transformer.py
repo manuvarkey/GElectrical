@@ -81,7 +81,7 @@ Creates a two-winding transformer.
         
         self.text_model = [[(5,2.5), "${ref}", True],
                            [(5,None), "${sn_mva}MVA", True],
-                           [(5,None), "${vn_hv_kv}/${vn_lv_kv}kV", True],
+                           [(5,None), "${'%g'%(vn_hv_kv)}/${'%g'%(vn_lv_kv)}kV", True],
                            [(5,None), "${name}", True],
                            [(2,3.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_hv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
                            [(2,6.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_lv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center']]
@@ -213,7 +213,7 @@ Creates a three-winding transformer.
         
         self.text_model = [[(8.5,2.5), "${ref}", True],
                            [(8.5,None), "${sn_hv_mva}/${sn_mv_mva}/${sn_lv_mva}MVA", True],
-                           [(8.5,None), "${vn_hv_kv}/${vn_mv_kv}/${vn_lv_kv}kV", True],
+                           [(8.5,None), "${'%g'%(vn_hv_kv)}/${'%g'%(vn_mv_kv)}/${'%g'%(vn_lv_kv)}kV", True],
                            [(8.5,None), "${name}", True],
                            [(4,3.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_hv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
                            [(2,6.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_mv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],

@@ -1226,7 +1226,7 @@ Creates a bus trunking element with known parameters.
                                                           alter_structure=True)
         self.text_model = [[(4,1), "${ref}", True],
                            [(4,None), "${designation}", True],
-                           [(4,None), "${length_km}km", True],
+                           [(4,None), "${int(length_km*1000)}m", True],
                            [(4,None), "${name}", True]]
         self.calculate_parameters()
         self.assign_tootltips()
