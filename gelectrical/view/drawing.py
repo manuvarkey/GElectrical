@@ -533,6 +533,7 @@ class DrawingSelectionDialog:
         self.title = title
         
         self.drawing_views = []
+        self.drawing_view = None
         self.state = dict()
         self.global_scale = 1.6
         
@@ -558,6 +559,9 @@ class DrawingSelectionDialog:
                                        None, None, None, whitelist=self.whitelist[whitelist_page])
             drawing_view.scale = self.global_scale
             self.drawing_views.append(drawing_view)
+
+        self.drawing_notebook.connect("switch-page", self.on_switch_tab)
+        self.drawing_view = self.drawing_views[0]
         self.drawing_notebook.show_all()
         
     def run(self):
@@ -572,3 +576,13 @@ class DrawingSelectionDialog:
             self.dialog.destroy()
             return selected_dict
         self.dialog.destroy()
+
+     ## Callbacks
+    
+    def on_switch_tab(self, notebook, page, pagenum):
+        """Refresh display on switching between views"""
+        log.info('DrawingSelectionDialog - on_switch_tab called - ' + str(pagenum))
+        self.drawing_view.save_scroll_position()
+        self.drawing_view = self.drawing_views[pagenum]
+        GLib.idle_add(self.drawing_view.restore_scroll_position)
+        

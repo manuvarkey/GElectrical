@@ -23,7 +23,7 @@
 # 
 
 import logging, copy, datetime, io, math
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, GLib
 import cairo
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
@@ -976,7 +976,9 @@ class ProjectModel:
     def on_switch_tab(self, notebook, page, pagenum):
         """Refresh display on switching between views"""
         log.info('ProjectModel - on_switch_tab called - ' + str(pagenum))
+        self.drawing_view.save_scroll_position()
         self.set_page(pagenum, switch_tab=False)
+        GLib.idle_add(self.drawing_view.restore_scroll_position)
         self.program_state['zoom_display_label'].set_label(str(int(self.drawing_view.scale*100)) + '%')
 
     def on_page_reordered(self, notebook, page, pagenum):
