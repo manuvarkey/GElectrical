@@ -82,7 +82,7 @@ class ProjectModel:
         self.powermodel = None
         # Initialise tab
         self.add_page_vanilla()
-        self.drawing_notebook.connect("switch-page", self.on_switch_tab)
+        self.tab_handler_id = self.drawing_notebook.connect("switch-page", self.on_switch_tab)
         self.drawing_notebook.connect("page_reordered", self.on_page_reordered)
 
 
@@ -250,13 +250,20 @@ class ProjectModel:
             
     def clear_all(self):
         # Delete all pages except first
+        self.drawing_notebook.disconnect(self.tab_handler_id)
         for slno in range(0,self.get_page_nos()):
-            self.remove_page(0)
+            if self.get_page_nos() > 1:
+                self.drawing_models.pop(0)
+                self.drawing_views.pop(0)
+                page = self.drawing_notebook.get_nth_page(0)
+                self.drawing_notebook.detach_tab(page)
         # Clear first page model
         blank_model = DrawingModel(self, self.program_state).get_model()
         self.drawing_models[0].set_model(blank_model)
         self.clear_status()
         self.clear_results()
+        self.tab_handler_id = self.drawing_notebook.connect("switch-page", self.on_switch_tab)
+        log.info('ProjectModel - clear_all - cleared all models')
         
     def get_page_nos(self):
         return len(self.drawing_models)
@@ -951,6 +958,7 @@ class ProjectModel:
     def set_model(self, document, pages):
         """Set storage model"""
         self.clear_all()
+        self.drawing_notebook.disconnect(self.tab_handler_id)
         if ('proj_drawing_names' in document and 
             'proj_fields' in document and 
             'proj_loadprofiles.json' in pages):
@@ -970,6 +978,7 @@ class ProjectModel:
         # Switch to first page
         self.update_tabs()
         self.set_page(0)
+        self.tab_handler_id = self.drawing_notebook.connect("switch-page", self.on_switch_tab)
         
     ## Callbacks
     
