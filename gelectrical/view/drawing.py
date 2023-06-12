@@ -238,8 +238,17 @@ class DrawingView:
         context.scale(self.scale, self.scale)
 
         # Check status of stack and set dirty flag
-        if self.savepoint is None or self.savepoint != self.program_state['stack'].undocount():
-            self.dirty_draw = True
+        # Handle case with stack
+        if self.program_state['stack']:
+            savepoint = self.program_state['stack'].undocount()
+            if self.savepoint is None or self.savepoint != savepoint:
+                self.dirty_draw = True
+            self.savepoint = savepoint
+        # Handle case with no stack
+        else:
+            if self.savepoint is None:
+                self.dirty_draw = True
+                self.savepoint = -1
 
         # Draw base layer
         if self.dirty_draw:
@@ -253,7 +262,6 @@ class DrawingView:
             self.drawing_model.draw_model(self.background_context, select=True, whitelist=self.whitelist)
             # Reset flags
             self.dirty_draw = False
-            self.savepoint = self.program_state['stack'].undocount()
 
         # Draw background image
         draw_background()
