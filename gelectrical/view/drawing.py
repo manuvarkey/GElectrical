@@ -141,15 +141,22 @@ class DrawingView:
         self.drawing_area.queue_draw()
     
     def select_page(self):
-        def get_page_field(*data):
-            return self.drawing_model.get_page_field(*data)
-        def update_page_field(*data):
-            self.drawing_model.update_page_field(*data)
-            self.refresh() 
-        if self.properties_view:
-            self.properties_view.update(self.drawing_model.fields, 'Sheet Properties', get_page_field, update_page_field)  # Update properties
-        if self.database_view:
-            self.database_view.update_from_database(None)
+        # Check for selected elements
+        selected_list = self.drawing_model.get_selected()
+        # If available select element
+        if selected_list:
+            self.select_elements(selected_list)
+        # Else select page
+        else:
+            def get_page_field(*data):
+                return self.drawing_model.get_page_field(*data)
+            def update_page_field(*data):
+                self.drawing_model.update_page_field(*data)
+                self.refresh() 
+            if self.properties_view:
+                self.properties_view.update(self.drawing_model.fields, 'Sheet Properties', get_page_field, update_page_field)  # Update properties
+            if self.database_view:
+                self.database_view.update_from_database(None)
         self.drawing_model.update_elements()
         self.refresh(redraw=True)
         
