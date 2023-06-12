@@ -251,7 +251,7 @@ class ProjectModel:
     def clear_all(self):
         # Delete all pages except first
         for slno in range(0,self.get_page_nos()):
-            self.remove_page(slno)
+            self.remove_page(0)
         # Clear first page model
         blank_model = DrawingModel(self, self.program_state).get_model()
         self.drawing_models[0].set_model(blank_model)
