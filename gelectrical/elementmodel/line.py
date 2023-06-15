@@ -97,15 +97,17 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                                                             alter_structure=True),
                        'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
                                                                     alter_structure=True),
+                       'symbol':   self.get_field_dict('str', 'Line symbols', '', 'None',
+                                                         selection_list=['None', 'PE', 'N', 'PE+N', 'PEN'] ),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
-        self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "${length_km}km", True],
-                           [(3,None), "${name}", True]]
+        self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "${length_km}km", True],
+                           [(3.5,None), "${name}", True]]
         if calculate:
             self.calculate_damage_curve()
         self.assign_tootltips()
@@ -127,6 +129,20 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                              ['LINE',(1,3.5),(1,4.5), [], 'thin'],
                              ['LINE',(1.5,3.75),(1.5,4.25), [], 'thin'],
                            ]
+        ## Add symbols
+        SYMBOL_P = [['LINE',(1.25,5.25),(2.75,4.75), [], 'thin'],
+                    ['LINE',(2.75,4.5),(2.75,5.25), [], 'thin']]
+        SYMBOL_N = [['LINE',(1.25,6.25),(2.75,5.75), [], 'thin'],
+                    ['CIRCLE', (2.75,5.75), 0.2, True, [], 'thin']]
+        SYMBOL_PEN = [['LINE',(1.25,6.25),(2.75,5.75), [], 'thin'],
+                      ['LINE',(2.75,5.5),(2.75,6.25), [], 'thin'],
+                      ['CIRCLE', (2.375,5.875), 0.2, True, [], 'thin']]
+        if self.fields['symbol']['value'] in ['PE', 'PE+N']:
+            self.schem_model += SYMBOL_P
+        if self.fields['symbol']['value'] == 'PEN':
+            self.schem_model += SYMBOL_PEN
+        if self.fields['symbol']['value'] in ['N', 'PE+N']:
+            self.schem_model += SYMBOL_N
         # Render
         if self.fields['in_service']['value']:
             self.render_model(context, self.schem_model)
@@ -238,10 +254,10 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         # Global
         Line.__init__(self, cordinates, **kwargs)
         self.database_path = misc.open_library('cable_iec.csv')
-        self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "${int(length_km*1000)}m", True],
-                           [(3,None), "${name}", True]]
+        self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "${int(length_km*1000)}m", True],
+                           [(3.5,None), "${name}", True]]
         
         # Data dropdowns
         self.laying_types = ['Reference method A1 - \nInsulated conductors in conduit \nin a thermally insulated wall', 
@@ -488,6 +504,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.fields['max_i_ka']['status_inactivate'] = True
         self.fields['type']['status_enable'] = False
         self.fields['type']['value'] = 'Under Ground'
+        self.fields['symbol']['status_enable'] = False
         self.fields['phase_sc_current_rating']['status_inactivate'] = True
         self.fields['cpe_sc_current_rating']['status_inactivate'] = True
         self.fields['df']['status_inactivate'] = True
@@ -557,9 +574,9 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                     ['LINE',(2.75,4.25),(2.75,5), [], 'thin']]
         SYMBOL_N = [['LINE',(1.25,6),(2.75,5.5), [], 'thin'],
                     ['CIRCLE', (2.75,5.5), 0.2, True, [], 'thin']]
-        SYMBOL_PEN = [['LINE',(1.25,5.25),(2.75,4.75), [], 'thin'],
-                      ['LINE',(2.75,4.5),(2.75,5.25), [], 'thin'],
-                      ['CIRCLE', (2.375,4.875), 0.2, True, [], 'thin']]
+        SYMBOL_PEN = [['LINE',(1.25,6),(2.75,5.5), [], 'thin'],
+                      ['LINE',(2.75,5.25),(2.75,6), [], 'thin'],
+                      ['CIRCLE', (2.375,5.625), 0.2, True, [], 'thin']]
         if self.fields['cpe']['value'] not in ['None', 'Neutral']:
             self.schem_model += SYMBOL_P
         if self.fields['cpe']['value'] == 'Neutral':
@@ -697,18 +714,18 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             # This approxiate value is assumed here for simplified analysis.
             r_0 = r_1 + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
             x_0 = x_1 + 3*0.7
-            self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "${int(length_km*1000)}m", True],
-                           [(3,None), "${name}", True]]
+            self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "${int(length_km*1000)}m", True],
+                           [(3.5,None), "${name}", True]]
         elif code_cpe == 1:
             r_0 = r_ph + 3*r_n
             x_0 = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
-            self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "PEN", True],
-                           [(3,None), "${int(length_km*1000)}m", True],
-                           [(3,None), "${name}", True]]
+            self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "PEN", True],
+                           [(3.5,None), "${int(length_km*1000)}m", True],
+                           [(3.5,None), "${name}", True]]
         elif code_cpe == 2:
             B_cpe = self.conductor_B_dict[cpe_material]
             resistivity_20_cpe = self.conductor_delta20_dict[cpe_material]
@@ -717,11 +734,11 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             x_0 = x_1 + 3*x_1  # Nuetral reactance contribution to loop assumed same as phase
             mat_code = self.material_code[cpe_material]
             ins_code = self.insulation_code[cpe_insulation]
-            self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code, True],
-                           [(3,None), "${int(length_km*1000)}m", True],
-                           [(3,None), "${name}", True]]
+            self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code, True],
+                           [(3.5,None), "${int(length_km*1000)}m", True],
+                           [(3.5,None), "${name}", True]]
         elif code_cpe == 3:
             B_ar = self.conductor_B_dict[armour_material]
             resistivity_20_ar = self.conductor_delta20_dict[armour_material]
@@ -730,11 +747,11 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             r_0 = open_imp_value if armour_cross_section == 0 else r_ph + 3*magnetic_effect*resistivity_working_ar*10**6/armour_cross_section  # IEE Guidance notes 6, 6.3.1, 6.3.3
             x_0 = x_1 + 3*(0.3 - x_1) if armour_material == 'Steel' else x_1  # IEE Guidance notes 6, 6.3.1, 6.3.3
             mat_code = self.material_code[armour_material]
-            self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "PE:Ar/" + mat_code, True],
-                           [(3,None), "${int(length_km*1000)}m", True],
-                           [(3,None), "${name}", True]]
+            self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "PE:Ar/" + mat_code, True],
+                           [(3.5,None), "${int(length_km*1000)}m", True],
+                           [(3.5,None), "${name}", True]]
         elif code_cpe == 4:
             B_cpe = self.conductor_B_dict[cpe_material]
             resistivity_20_cpe = self.conductor_delta20_dict[cpe_material]
@@ -743,11 +760,11 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             x_0 = x_1 + 3*0.08  # IS 732 Annex Y
             mat_code = self.material_code[cpe_material]
             ins_code = self.insulation_code[cpe_insulation]
-            self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code, True],
-                           [(3,None), "${int(length_km*1000)}m", True],
-                           [(3,None), "${name}", True]]
+            self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code, True],
+                           [(3.5,None), "${int(length_km*1000)}m", True],
+                           [(3.5,None), "${name}", True]]
         elif code_cpe == 5:
             B_cpe = self.conductor_B_dict[cpe_material]
             resistivity_20_cpe = self.conductor_delta20_dict[cpe_material]
@@ -763,11 +780,11 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             ar_mat_code = self.material_code[armour_material]
             mat_code = self.material_code[cpe_material]
             ins_code = self.insulation_code[cpe_insulation]
-            self.text_model = [[(3,1), "${ref}", True],
-                           [(3,None), "${parallel}#${designation}", True],
-                           [(3,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code + ", Ar/" + ar_mat_code, True],
-                           [(3,None), "${int(length_km*1000)}m", True],
-                           [(3,None), "${name}", True]]
+            self.text_model = [[(3.5,1), "${ref}", True],
+                           [(3.5,None), "${parallel}#${designation}", True],
+                           [(3.5,None), "PE:${int(cpe_cross_section)} " + mat_code + "/" + ins_code + ", Ar/" + ar_mat_code, True],
+                           [(3.5,None), "${int(length_km*1000)}m", True],
+                           [(3.5,None), "${name}", True]]
         
         # Current carrying capacity
         
@@ -942,6 +959,7 @@ Use this element for overhead lines where parameters of the line are not known b
         self.fields['c0n_nf_per_km']['status_enable'] = False
         self.fields['type']['status_enable'] = False
         self.fields['type']['value'] = 'Over Head'
+        self.fields['symbol']['status_enable'] = False
         self.fields['endtemp_degree']['value'] = 250
         self.fields['phase_sc_current_rating']['status_inactivate'] = True
         self.fields['cpe_sc_current_rating']['status_inactivate'] = True
@@ -995,22 +1013,32 @@ Use this element for overhead lines where parameters of the line are not known b
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
                     self.fields['dims_d3']['status_enable'] = True
+                    self.fields['type']['value'] = 'Over Head'
+                    self.fields['symbol']['value'] = 'None'
                 elif value in self.laying_types[1]:
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
+                    self.fields['type']['value'] = 'Over Head'
+                    self.fields['symbol']['value'] = 'None'
                 elif value == self.laying_types[2]:
                     self.fields['dims_d']['status_enable'] = True
+                    self.fields['type']['value'] = 'Over Head'
+                    self.fields['symbol']['value'] = 'None'
                 elif value in self.laying_types[3]:
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
                     self.fields['cpe']['selection_list'] = self.cpe_list
                     self.fields['cpe']['value'] = self.cpe_list[0]
+                    self.fields['type']['value'] = 'Over Head'
+                    self.fields['symbol']['value'] = 'PEN'
                 elif value in self.laying_types[4:6]:
                     self.fields['dims_d']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
                     self.fields['cpe']['selection_list'] = self.cpe_list
                     self.fields['cpe']['value'] = self.cpe_list[0]
+                    self.fields['type']['value'] = 'Over Head'
+                    self.fields['symbol']['value'] = 'N'
                 elif value in self.laying_types[6]:
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
@@ -1019,6 +1047,15 @@ Use this element for overhead lines where parameters of the line are not known b
                     self.fields['cpe']['value'] = self.armour_list[0]
                     self.fields['armour_material']['status_enable'] = True
                     self.fields['armour_cross_section']['status_enable'] = True
+                    self.fields['type']['value'] = 'Under Ground'
+                    self.fields['symbol']['value'] = 'None'
+            if code == 'cpe':
+                if self.fields['laying_type']['value'] in self.laying_types[3:6]:
+                    if value == self.cpe_list[0]:
+                        self.fields['symbol']['value'] = 'PEN'
+                    else:
+                        self.fields['symbol']['value'] = 'N'
+
             if not self.model_loading:
                 self.calculate_parameters()
 
@@ -1202,6 +1239,7 @@ Creates a bus trunking element with known parameters.
         self.fields['parallel']['status_enable'] = False
         self.fields['type']['status_enable'] = False
         self.fields['type']['value'] = 'Under Ground'
+        self.fields['symbol']['status_enable'] = False
 
         self.fields['r0g_ohm_per_km']['status_inactivate'] = True
         self.fields['x0g_ohm_per_km']['status_inactivate'] = True
