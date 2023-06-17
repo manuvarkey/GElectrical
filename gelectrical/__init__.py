@@ -640,8 +640,12 @@ class MainWindow():
             else:
                 raise RuntimeError("Diagnostics run returned critical errors. Please see <i>Messages</i> pane.")
         
+        if self.filename:
+            ana_folder_path = misc.dir_from_path(self.filename)
+        else:
+            ana_folder_path = None
         sim_settings = self.project.get_project_fields(page='Simulation')
-        settings_dialog = AnalysisSettingsDialog(self.window, sim_settings)
+        settings_dialog = AnalysisSettingsDialog(self.window, sim_settings, ana_folder_path)
         ana_settings = settings_dialog.run()
         
         if ana_settings:
