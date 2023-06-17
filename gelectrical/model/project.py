@@ -813,7 +813,7 @@ class ProjectModel:
                         table['Sa'][slno+1] = str(p_a_kw) + '+j' + str(q_a_kvar)
                         table['Sb'][slno+1] = str(p_b_kw) + '+j' + str(q_b_kvar)
                         table['Sc'][slno+1] = str(p_c_kw) + '+j' + str(q_c_kvar)
-                        s_kva = math.sqrt(p_kw**2 + q_kvar**2)
+                        s_kva = round(math.sqrt(p_kw**2 + q_kvar**2), 4)
                         pf = str(round((p_kw/s_kva),2)) + (' lag' if q_kvar > 0 else ' lead')
                     table['Rated power'][slno+1] = str(s_kva)
                     table['PF'][slno+1] = pf
@@ -827,11 +827,21 @@ class ProjectModel:
             boq_captions['element_loads'] = 'Loads'
         # Switches
         if element_switches:
-            col_codes = ['ref', 'type', 'poles', 'Un', 'In', 'closed']
-            col_captions = ['Reference', 'Type', 'Poles', 'Un', 'In', 'Closed']
-            code_sources = [E,E,E,E,E,E]
+
+            def modifyfunc_switch(table):
+                for slno, element in enumerate(element_switches):
+                    if table['Line protection curve'][slno+1] == 'None':
+                        table['Line protection curve'][slno+1] = ''
+                    if table['Ground protection curve'][slno+1] == 'None':
+                        table['Ground protection curve'][slno+1] = ''
+
+            col_codes = ['ref', 'name', 'type', 'subtype', 'poles', 'Un', 'In', 
+                         'prot_curve_type', 'prot_0_curve_type', 'closed']
+            col_captions = ['Reference', 'Name', 'Type', 'Sub type', 'Poles', 'Un', 'In',
+                            'Line protection curve', 'Ground protection curve', 'Closed']
+            code_sources = [E,E,E,E,E,E,E,E,E,E]
             table = misc.elements_to_table(element_switches, col_codes, col_captions, code_sources, 'boq_switches',
-                                           show_element_class=False)
+                                           show_element_class=False, modifyfunc=modifyfunc_switch)
             boq_tables['element_switches'] = table
             boq_captions['element_switches'] = 'Switches'
          # Nodes

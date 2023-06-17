@@ -166,12 +166,12 @@ table.element_fields thead th:nth-child(2) {width: 30%;}
 table.element_fields thead th:nth-child(3) {width: 50%;}
 table.element_fields thead th:nth-child(4) {width: 10%;}
 
-table.boq_lines {table-layout: fixed; width: 100%;}
+table.boq_lines {table-layout: fixed; width: 95%;}
 table.boq_lines thead th:nth-child(1) {width: 5%;}
 table.boq_lines thead th:nth-child(2) {width: 5%;}
 table.boq_lines thead th:nth-child(3) {width: 10%;}
 table.boq_lines thead th:nth-child(4) {width: 10%;}
-table.boq_lines thead th:nth-child(5) {width: 5%;}
+table.boq_lines thead th:nth-child(5) {width: 10%;}
 table.boq_lines thead th:nth-child(6) {width: 5%;}
 table.boq_lines thead th:nth-child(7) {width: 5%;}
 table.boq_lines thead th:nth-child(8) {width: 5%;}
@@ -182,27 +182,31 @@ table.boq_lines thead th:nth-child(12) {width: 10%;}
 table.boq_lines thead th:nth-child(13) {width: 5%;}
 table.boq_lines thead th:nth-child(14) {width: 10%;}
 
-table.boq_loads {table-layout: fixed; width: 100%;}
-table.boq_loads thead th:nth-child(1) {width: 3%;}
-table.boq_loads thead th:nth-child(2) {width: 3%;}
+table.boq_loads {table-layout: fixed; width: 95%;}
+table.boq_loads thead th:nth-child(1) {width: 5%;}
+table.boq_loads thead th:nth-child(2) {width: 5%;}
 table.boq_loads thead th:nth-child(3) {width: 10%;}
-table.boq_loads thead th:nth-child(4) {width: 5%;}
-table.boq_loads thead th:nth-child(5) {width: 5%;}
-table.boq_loads thead th:nth-child(6) {width: 5%;}
-table.boq_loads thead th:nth-child(7) {width: 5%;}
-table.boq_loads thead th:nth-child(8) {width: 5%;}
+table.boq_loads thead th:nth-child(4) {width: 10%;}
+table.boq_loads thead th:nth-child(5) {width: 10%;}
+table.boq_loads thead th:nth-child(6) {width: 10%;}
+table.boq_loads thead th:nth-child(7) {width: 10%;}
+table.boq_loads thead th:nth-child(8) {width: 10%;}
 table.boq_loads thead th:nth-child(9) {width: 5%;}
 table.boq_loads thead th:nth-child(10) {width: 10%;}
 table.boq_loads thead th:nth-child(11) {width: 10%;}
 
-table.boq_switches {table-layout: fixed; width: 70%;}
-table.boq_switches thead th:nth-child(1) {width: 10%;}
-table.boq_switches thead th:nth-child(2) {width: 15%;}
-table.boq_switches thead th:nth-child(3) {width: 15%;}
-table.boq_switches thead th:nth-child(4) {width: 15%;}
-table.boq_switches thead th:nth-child(5) {width: 15%;}
-table.boq_switches thead th:nth-child(6) {width: 15%;}
-table.boq_switches thead th:nth-child(7) {width: 15%;}
+table.boq_switches {table-layout: fixed; width: 80%;}
+table.boq_switches thead th:nth-child(1) {width: 5%;}
+table.boq_switches thead th:nth-child(2) {width: 5%;}
+table.boq_switches thead th:nth-child(3) {width: 10%;}
+table.boq_switches thead th:nth-child(4) {width: 10%;}
+table.boq_switches thead th:nth-child(5) {width: 10%;}
+table.boq_switches thead th:nth-child(6) {width: 5%;}
+table.boq_switches thead th:nth-child(7) {width: 5%;}
+table.boq_switches thead th:nth-child(8) {width: 5%;}
+table.boq_switches thead th:nth-child(9) {width: 10%;}
+table.boq_switches thead th:nth-child(10) {width: 10%;}
+table.boq_switches thead th:nth-child(11) {width: 5%;}
 
 table.boq_nodes {table-layout: fixed; width: 70%;}
 table.boq_nodes thead th:nth-child(1) {width: 10%;}
