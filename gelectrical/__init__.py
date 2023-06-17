@@ -264,7 +264,7 @@ class MainWindow():
     
     def on_open_project_selected(self, recent):
         uri = recent.get_current_uri()
-        filename = misc.uri_to_file(uri)
+        filename = os.path.abspath(misc.uri_to_file(uri))
         self.open_project(filename)
         # Hide fileselector
         self.builder.get_object('popup_open').hide()
@@ -274,7 +274,7 @@ class MainWindow():
             data_str = selection.get_data().decode('utf-8')
             uri = data_str.strip('\r\n\x00')
             file_uri = uri.split()[0] # we may have more than one file dropped
-            filename = misc.get_file_path_from_dnd_dropped_uri(file_uri)
+            filename = os.path.abspath(misc.get_file_path_from_dnd_dropped_uri(file_uri))
             if os.path.isfile(filename):
                 self.open_project(filename)
                 log.info('MainApp - drag_data_received  - opnened file ' + filename)
@@ -1143,7 +1143,7 @@ class MainApp(Gtk.Application):
         log.info('MainApp - do_open - Start')
         self.activate()
         if len(files) > 0:
-            filename = files[0].get_basename()
+            filename = os.path.abspath(files[0].get_basename())
             self.window.open_project(filename)
             log.info('MainApp - do_open - opened file ' + filename)
         log.info('MainApp - do_open  - End')
@@ -1154,7 +1154,7 @@ class MainApp(Gtk.Application):
         options = command_line.get_arguments()
         self.activate()
         if len(options) > 1:
-            filename = misc.uri_to_file(options[1])
+            filename = os.path.abspath(misc.uri_to_file(options[1]))
             self.window.open_project(filename)
             log.info('MainApp - do_command_line - opened file ' + filename)
         log.info('MainApp - do_command_line - End')

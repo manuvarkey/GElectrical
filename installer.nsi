@@ -8,7 +8,7 @@
 # These three must be integers
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 0
-!define VERSIONBUILD 12
+!define VERSIONBUILD 13
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "mailto:manuvarkey@gmail.com" # "Support Information" link
@@ -28,7 +28,7 @@ LicenseData "LICENSE"
 # This will be in the installer/uninstaller's title bar
 Name "${APPNAME}"
 Icon "GElectrical.ico"
-outFile "GElectrical-win64-1-RC-4-4.exe"
+outFile "GElectrical-win64-1-RC-5-0.exe"
  
 !include LogicLib.nsh
  
