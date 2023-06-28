@@ -9,7 +9,7 @@
 [![Release](https://img.shields.io/github/release/manuvarkey/GElectrical.svg)](https://github.com/manuvarkey/GElectrical/releases/latest)
 ![License](https://img.shields.io/github/license/manuvarkey/GElectrical)
 
-<a href="https://flathub.org/apps/com.kavilgroup.gelectrical"><img height="51" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.svg"/> </a>
+<a href="https://flathub.org/apps/com.kavilgroup.gelectrical"><img height="51" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.svg"/> </a> <a href="https://raw.githubusercontent.com/manuvarkey/GElectrical/source/artwork/screenshots/windows_badge.svg"><img height="51" alt="Download for Windows" src="https://github.com/manuvarkey/GElectrical/releases/latest"/> </a>
 
 GElectrical is a free and opensource electrical system analysis software for LV/MV electrical distribution networks. Following features are currently implemented.
 
