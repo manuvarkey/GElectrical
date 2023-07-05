@@ -3,19 +3,23 @@ adopt-info: gelectrical
 license: GPL-3.0+
 icon: snap/gui/gelectrical.svg
 description: |
-    GElectrical is a graphical frontend to pandapower for power supply simulation and analysis with emphasis on electrical distribution and utilisation networks. Following features are currently implemented.
+GElectrical is a free and opensource electrical system analysis software for LV/MV electrical distribution networks. Following features are currently implemented.
 
-    * Schematic capture.
-    * Pandapower network generation from schematic.
-    * Power flow time series analysis (Symmetric and Assymetric).
-    * Voltage drop analysis.
-    * Short circuit analysis (Symmetric and SLG).
-    * Coordination analysis for power supply protection devices with support for CB and fuse protection curves; damage curves for transformers, cables and motors.
-    * Support for daily load curves for load elements.
-    * Support for arriving network parameters for custom geometry OH lines.
-    * Electrical rules check for checking conformity with IEC/ local electrical guidelines.
-    * Print and export of drawings to pdf.
-    * Generation of analysis reports.
+* Schematic capture.
+* Pandapower network generation from schematic.
+* Power flow time series analysis (Symmetric and Assymetric).
+* Power flow with diversity factors (Symmetric and Assymetric).
+* Voltage drop analysis.
+* Short circuit analysis (Symmetric and SLG).
+* Coordination analysis for power supply protection devices with support for CB and fuse protection curves; damage curves for transformers, cables and motors.
+* Support for daily load curves for load elements.
+* Support for arriving network parameters for custom geometry OH lines.
+* Support for modeling networks with mixed TN-S/ TN-C/ TT/ IT earthing systems.
+* Electrical rules check for checking conformity with IEC/ local electrical guidelines.
+* Print and export of drawings to pdf.
+* Generation of analysis reports.
+
+GElectrical uses pandapower as the backend for implementing power flow related functionality like voltage drop and short circuit analysis.
     
     
 grade: stable
