@@ -28,7 +28,7 @@ confinement: strict
 
 apps:
   gelectrical:
-    command: /bin/gelectrical_launcher.py
+    command: bin/gelectrical_launcher.py
     extensions: [gnome]
     plugs:
       - home
