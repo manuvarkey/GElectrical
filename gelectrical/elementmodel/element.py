@@ -22,6 +22,7 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
+import time
 from mako.template import Template as ExprTemplate
 from gi.repository import Gtk, Gdk
 import cairo
@@ -38,6 +39,7 @@ class ElementModel:
     """Base class for all drawing elements"""
     tooltip = ''
     element_tooltips = tooltips
+    timestamp = 0
     
     def __init__(self, cordinates=(0,0), **kwargs):
         # Data
@@ -220,6 +222,8 @@ class ElementModel:
     def set_selection(self, select=True, color=misc.COLOR_SELECTED):
         """Set selection"""
         self.selected = select
+        self.selected_timestamp = ElementModel.timestamp
+        ElementModel.timestamp += 1
         self.selected_color = color
         
     def set_draw_color(self, color=misc.COLOR_SELECTED):

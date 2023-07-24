@@ -210,33 +210,48 @@ class DrawingModel:
             return self.fields[code]
     
     def get_selected(self, assembly_info=False, codes=None):
-        selected = []
+        selected = dict()  # Timestamp -> Element mapping
         for element in self.elements:
             if element.get_selection() is True:
                 if (codes and element.code in codes) or codes is None:
-                    selected.append(element)
+                    selected[element.selected_timestamp] = element
+        # Sort elements by selection timestamp
+        if selected:
+            sorted_keys = sorted(list(selected.keys()))
+            selected_elements = [selected[i] for i in sorted_keys]
+        else:
+            selected_elements = []
+
         if assembly_info:
             assembly_dict = dict()
-            for slno, element in enumerate(selected):
+            for slno, element in enumerate(selected_elements):
                 if element.code == 'element_assembly':
                     assembly_dict[slno] = []
                     children = element.get_children()
                     for k1, k2 in children:
                         child = self.elements[k2]
-                        if child in selected:
-                            child_index = selected.index(child)
+                        if child in selected_elements:
+                            child_index = selected_elements.index(child)
                             assembly_dict[slno].append(child_index)
-            return selected, assembly_dict
+            return selected_elements, assembly_dict
         else:
-            return selected
+            return selected_elements
     
     def get_selected_codes(self, codes=None):
-        selected = []
+        selected = dict()
         for slno, element in enumerate(self.elements):
             if element.get_selection() is True:
                 if (codes and element.code in codes) or codes is None:
-                    selected.append(slno)
-        return selected
+                    selected[element.selected_timestamp] = element
+
+        # Sort elements by selection timestamp
+        if selected:
+            sorted_keys = sorted(list(selected.keys()))
+            selected_slnos = [self.elements.index(selected[i]) for i in sorted_keys]
+        else:
+            selected_slnos = []
+
+        return selected_slnos
     
     def get_element_codes(self, codes=None):
         selected = []
