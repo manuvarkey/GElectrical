@@ -52,10 +52,38 @@
                 <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
-                  <object class="GtkComboBoxText" id="combobox_title">
+                  <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <signal name="changed" handler="graph_database_changed" swapped="no"/>
+                    <child>
+                      <object class="GtkComboBoxText" id="combobox_title">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <signal name="changed" handler="graph_database_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Export Settings</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="tooltip-text" translatable="yes">Export protection settings as spreadsheet</property>
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
+                        <signal name="clicked" handler="export_settings" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>

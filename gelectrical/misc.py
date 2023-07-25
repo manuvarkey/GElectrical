@@ -1374,6 +1374,33 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
             index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False, classes='element_fields')
     
+def params_to_table(fields_list, titles):
+    """Return pandas table with comparison of field values"""
+
+    def get_frame(fields, caption):
+        table = {'REF':[], 'DESCRIPTION': [], 'UNIT': [], caption: []}
+        for ref, field in fields.items():
+            if field['status_enable'] == True:
+                table['REF'].append(ref)
+                table['DESCRIPTION'].append(field['caption'])
+                table['UNIT'].append(field['unit'])
+                if field['type'] == 'float':
+                    value = str(round(field['value'], field['decimal']))
+                else:
+                    value = field['value']
+                table[caption].append(value)
+        return pd.DataFrame(table)
+    
+    table_combined = None
+    for fields, title in zip(fields_list, titles):
+        table = get_frame(fields, title)
+        if table_combined is not None:
+            table_combined = pd.merge(table_combined, table, how='outer')
+        else:
+            table_combined = table
+    columns = ['REF', 'DESCRIPTION', 'UNIT', *titles]
+    return table_combined[columns]
+    
 def get_uid():
     """Get unique id as identifier"""
     return str(uuid())

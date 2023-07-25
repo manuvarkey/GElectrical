@@ -170,6 +170,7 @@ class MainWindow():
                 return False
 
         self.filename = filename
+        self.program_state['filename'] = self.filename
         
         with ZipFile(self.filename, 'r') as projzip:
             try:
@@ -331,6 +332,7 @@ class MainWindow():
             self.filename = open_dialog.get_filename()
             if not self.filename.endswith('.gepro'):
                 self.filename += '.gepro'
+            self.program_state['filename'] = self.filename
             self.project_active = True
             # Call save project
             self.on_save(button)
@@ -873,6 +875,7 @@ class MainWindow():
         self.program_state['mode'] = misc.MODE_DEFAULT
         self.program_state['stack'] = self.stack
         self.filename = None  # Project Filename
+        self.program_state['filename'] = self.filename
             
         log.info('Setting up program settings')
         dirs = appdirs.AppDirs(misc.PROGRAM_NAME, misc.PROGRAM_AUTHOR, version=misc.PROGRAM_VER)

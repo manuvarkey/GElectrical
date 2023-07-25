@@ -22,7 +22,8 @@
 #  
 # 
 
-import logging, copy
+import logging, copy, platform
+import pandas as pd
 from gi.repository import Gtk, Gdk, GLib
 
 # local files import
@@ -57,6 +58,7 @@ class ProtectionViewDialog():
 
         self.fieldviews = []
         self.fieldviews_graph = []
+        self.titles = []
         self.fields = []
         self.para_fields = []
 
@@ -177,6 +179,8 @@ class ProtectionViewDialog():
             self.field_element_mapping.append(el_index)
             
             title = model.title
+            self.titles.append(title)
+
             para_fields = model.get_data_fields()
             self.para_fields.append(para_fields)
 
@@ -258,6 +262,41 @@ class ProtectionViewDialog():
     
     def graph_database_changed(self, combo_box):
         self.update_graphs()
+
+    def export_settings(self, button):
+        """Export coordination settings"""
+        
+        # Setup file save dialog
+        dialog = Gtk.FileChooserNative.new("Save coordination settings as...", self.dialog_window,
+                                               Gtk.FileChooserAction.SAVE, "Save", "Cancel")
+        file_filter = Gtk.FileFilter()
+        file_filter.set_name('Spreadsheet file')
+        file_filter.add_pattern("*.xlsx")
+        
+        # Set directory from project filename (Not supported by sandbox)
+        if platform.system() == 'Windows':
+            if self.program_state['filename']:
+                directory = misc.dir_from_path(self.program_state['filename'])
+                if directory:
+                    dialog.set_current_folder(directory)
+        
+        dialog.set_current_name('settings.xlsx')
+        dialog.add_filter(file_filter)
+        dialog.set_filter(file_filter)
+        dialog.set_do_overwrite_confirmation(True)
+        
+        # Run dialog and evaluate code
+        response = dialog.run()
+        if response == Gtk.ResponseType.ACCEPT:
+            filename = dialog.get_filename()
+            if not filename.endswith('.xlsx'):
+                filename += '.xlsx'
+            dialog.destroy()
+            self.export_settings_spreadsheet(filename)
+            log.info('ProtectionViewDialog - export_settings - File saved as - ' + filename)
+        elif response == Gtk.ResponseType.CANCEL:
+            dialog.destroy()
+            log.info('ProtectionViewDialog - export_settings - Cancelled')
                     
     # Functions
 
@@ -326,6 +365,12 @@ class ProtectionViewDialog():
         index = self.combobox_title.get_active()
         self.graph_view.clear_plots()
         self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
+
+    def export_settings_spreadsheet(self, filename):
+        table1 = misc.params_to_table(self.fields, self.titles)
+        table2 = misc.params_to_table(self.para_fields, self.titles)
+        table = pd.concat([table1, table2])
+        table.to_excel(filename, index=False)
                 
     def run(self):
         """Display dialog box and modify graph in place
