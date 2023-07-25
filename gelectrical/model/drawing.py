@@ -68,7 +68,7 @@ class DrawingModel:
                        'page_height':   misc.get_field_dict('float', 'Page Height', 'points', 1000, status_inactivate=True, decimal=0),
                        'title':         misc.get_field_dict('str', 'Title', '', 'TITLE', status_inactivate=False),
                        'drawing_no':    misc.get_field_dict('str', 'Drawing Number', '', 'PROJECT/ELEC/SLD/1', status_inactivate=False),
-                       'sheet_no':      misc.get_field_dict('str', 'Sheet No.', '', '1', status_inactivate=False),
+                       'sheet_no':      misc.get_field_dict('str', 'Sheet No.', '', '1', status_inactivate=True),
                        'type':          misc.get_field_dict('str', 'Document Type', '', 'Electrical Schematic', status_inactivate=False),
                        'status':        misc.get_field_dict('str', 'Document Status.', '', 'DRAFT', status_inactivate=False),
                        'rev':           misc.get_field_dict('str', 'Revision', '', 'A', status_inactivate=False),

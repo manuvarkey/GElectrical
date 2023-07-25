@@ -242,11 +242,13 @@ class ProjectModel:
             self.drawing_views.insert(pagenum, view)
             self.set_page(pagenum)
             self.update_tabs()
+            self.reg_refs_sheets()
 
         yield 'Reorder tab - from {} to {}'.format(prev_pagenum, pagenum)
         if prev_pagenum != pagenum:
             self.reorder_tab(pagenum, prev_pagenum)
             self.update_tabs()
+            self.reg_refs_sheets()
             
     def clear_all(self):
         # Delete all pages except first
@@ -297,11 +299,13 @@ class ProjectModel:
         if slno is not None:
             page = self.drawing_notebook.get_nth_page(slno)
             sheet_name = self.drawing_models[slno].fields['name']['value']
+            self.drawing_models[slno].fields['sheet_no']['value'] = str(slno + 1)
             set_label(page, sheet_name)
         else:
             for slno in range(0, self.get_page_nos()):
                 page = self.drawing_notebook.get_nth_page(slno)
                 sheet_name = self.drawing_models[slno].fields['name']['value']
+                self.drawing_models[slno].fields['sheet_no']['value'] = str(slno + 1)
                 set_label(page, sheet_name)
                 
     def update_title_blocks(self):
@@ -626,6 +630,37 @@ class ProjectModel:
         # Undo action
         for key, ref in changed:
             base_elements[key].set_text_field_value('ref', ref)
+
+    def reg_refs_sheets(self):
+        mapping = {}  # Maps 'CRX' -> [(sheetno, element), ... ]
+        mapping_sheetnos = {}  # Maps 'CRX' -> [sheetno1, ... ]
+        # Populate mapping
+        for drawing_model in self.drawing_models:
+            sheetno = drawing_model.fields['sheet_no']['value']
+            slnos = drawing_model.get_element_codes(codes=misc.REFERENCE_CODES)
+            for slno in slnos:
+                element = drawing_model.elements[slno]
+                ref = element.fields['ref']['value']
+                if ref not in ('', '?', 'CR?'):
+                    # Update mapping
+                    if ref in mapping:
+                        mapping[ref].append((sheetno, element))
+                    else:
+                        mapping[ref] = [(sheetno, element)]
+                    # Update mapping_sheetnos
+                    if ref in mapping_sheetnos:
+                        mapping_sheetnos[ref].append(sheetno)
+                    else:
+                        mapping_sheetnos[ref] = [sheetno]
+        # Update sheet refs
+        for ref, item_list in mapping.items():
+            for (sheetno, element) in item_list:
+                sheetnos = mapping_sheetnos[ref][:]
+                sheetnos.remove(sheetno)
+                sheetnos = set(sheetnos)
+                if sheetnos:
+                    refstr = ','.join(sheetnos)
+                    element.fields['sheet']['value'] = refstr
             
     def get_reference_code(self):
         """Get unique reference code"""
