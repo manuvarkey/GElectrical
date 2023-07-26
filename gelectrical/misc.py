@@ -1323,8 +1323,8 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                 else:
                     value = clean(field['value'])
                 if field['selection_list'] and field['selection_image_list'] and insert_image:
-                    index = field['selection_list'].index(field['value'])
-                    image_path = field['selection_image_list'][index]
+                    sel_index = field['selection_list'].index(field['value'])
+                    image_path = field['selection_image_list'][sel_index]
                     if image_path:
                         image_file = abs_path('icons', image_path)
                         data_uri = base64.b64encode(open(image_file, 'rb').read()).decode('utf-8')
