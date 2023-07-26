@@ -83,7 +83,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                        'c0g_nf_per_km':  self.get_field_dict('float', 'C0g', 'nF/km', 0),
                        'endtemp_degree':self.get_field_dict('float', 'Tf', 'degC', 160,
                                                                 alter_structure=True),
-                       'max_i_ka':      self.get_field_dict('float', 'Imax', 'kA', 0.1,
+                       'max_i_ka':      self.get_field_dict('float', 'Iz', 'kA', 0.1,
                                                                     alter_structure=True),
                        'phase_sc_current_rating': self.get_field_dict('float', 'Isc phase (1s)', 'kA', 10,
                                                                     alter_structure=True),
@@ -514,6 +514,8 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.fields['conductor_cross_section'] = self.get_field_dict('float', 'Phase nominal\ncross-sectional area', 'sq.mm.', 
                                                                      25, selection_list=cross_sections_cu,
                                                                      alter_structure=True)
+        self.fields['perc_3rd_harm'] = self.get_field_dict('int', '3rd harmonic content\nof line current', '%', 0,
+                                                          alter_structure=True)
         self.fields['neutral_xsec'] = self.get_field_dict('float', 'Neutral cross-sectional area', 'xSph', 1,
                                                           alter_structure=True)
         self.fields['type_of_cable'] = self.get_field_dict('str', 'Type', '', '3ph', selection_list=['1ph','3ph'],
@@ -559,6 +561,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                                                                       selection_list=self.soil_thermal_resistivities, 
                                                                       status_enable=False,
                                                                       alter_structure=True)
+        self.fields['dfs'] = self.get_field_dict('str', 'Calculated DFs', '', 'Ca=1, Cg=1, Ci=1, Ch=1', status_inactivate=True)                                              
         self.fields['user_df'] = self.get_field_dict('float', 'Additional DF', '', 1, alter_structure=True)
         self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
         self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
@@ -677,6 +680,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         phase_working_temp = self.insulation_max_working_temp_dict[phase_insulation]
         ambient_temp = self.fields['ambient_temp']['value']
         neutral_xsec_times = self.fields['neutral_xsec']['value']
+        i_nuetral_frac = self.fields['perc_3rd_harm']['value']*3/100
         
         code_laying_type = self.fields['laying_type']['selection_list'].index(self.fields['laying_type']['value'])
         code_laying_sub_type = self.fields['laying_type_sub']['selection_list'].index(self.fields['laying_type_sub']['value'])
@@ -805,6 +809,8 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         for (i0, i1, A, m) in current_model:
             if Sph > i0 and Sph <= i1:
                 Imax += A*Sph**m
+        if i_nuetral_frac >= neutral_xsec_times:  # Case when current rating based on neutral conductor
+            Imax = Imax*neutral_xsec_times/i_nuetral_frac
         Imax = round(Imax) if Imax >= 20 else round(Imax*2)/2
         
         # Reduction factors
@@ -838,6 +844,21 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                 Ca = self.ambient_temp_xlpe_df[code_ambient_temp]
             else:
                 Ca = 1
+        
+        # Effect of harmonic current
+        
+        # Case when current rating based on phase conductor
+        if i_nuetral_frac < neutral_xsec_times:
+            if i_nuetral_frac < 0.45*neutral_xsec_times:
+                Ch = 1
+            else:
+                Ch = 0.86
+        # Case when current rating based on neutral conductor
+        else:
+            if i_nuetral_frac < 1.35*neutral_xsec_times:
+                Ch = 0.86
+            else:
+                Ch = 1
                 
         # Short circuit ratings
         
@@ -892,7 +913,8 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
 
         self.fields['endtemp_degree']['value'] = phase_ultimate_temp
         self.fields['max_i_ka']['value'] = Imax/1000
-        self.fields['df']['value'] = round(self.fields['user_df']['value']*Ci*Cg*Ca, 3)
+        self.fields['df']['value'] = round(self.fields['user_df']['value']*Ci*Cg*Ca*Ch, 3)
+        self.fields['dfs']['value'] = 'Ca={}, Cg={}, Ci={}, Ch={}'.format(Ca, Cg, Ci, Ch)
         
         self.fields['phase_sc_current_rating']['value'] = round(phase_sc_current_rating/1000, 3)
         self.fields['armour_sc_current_rating']['value'] = round(armour_sc_current_rating/1000, 3)

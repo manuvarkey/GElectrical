@@ -242,7 +242,7 @@ The resistance value (x3) specified will be added to the zero sequence impedance
 'x0g_ohm_per_km': 'Zero sequence inductance of the line for protective earth return',
 'c0g_nf_per_km': 'Zero sequence capacitance of the line for protective earth return',
 'endtemp_degree': 'Short-Circuit end temperature of the line',
-'max_i_ka': 'Maximum line thermal current',
+'max_i_ka': 'Current carrying capacity of the cable in the reference installation method',
 'phase_sc_current_rating': 'Short-Circuit current rating of phase conductor (1s)',
 'cpe_sc_current_rating': 'Short-Circuit current rating of phase ciruit protective earthing conductor (1s)',
 'df': 'Derating factor',
@@ -269,9 +269,14 @@ The resistance value (x3) specified will be added to the zero sequence impedance
 'x0g_ohm_per_km': 'Zero sequence inductance of the line for protective earth return',
 'c0g_nf_per_km': 'Zero sequence capacitance of the line for protective earth return',
 'endtemp_degree': 'Short-Circuit end temperature of the line',
-'max_i_ka': 'Maximum line thermal current',
+'max_i_ka': 'Current carrying capacity of the cable in the reference installation method',
 'phase_sc_current_rating': 'Short-Circuit current rating of phase conductor (1s)',
 'cpe_sc_current_rating': 'Short-Circuit current rating of phase ciruit protective earthing conductor (1s)',
+'dfs': """Cable current rating derating factors applicable to the cable installation conditions selected by user.
+Ca: Derating factor for ambient temperature/ ambient ground temperature
+Cg: Derating factor for grouping
+Ci: Derating factor for thermal insulation/ soil thermal resistivity
+Ch: Derating factor for harmonic currents in line conductors""",
 'df': 'Derating factor',
 'designation': '',
 'type': '',
@@ -317,7 +322,7 @@ If <i>None</i> is selected, it is assumed that no dedicated CPE is provided and 
 'x0g_ohm_per_km': 'Zero sequence inductance of the line for protective earth return',
 'c0g_nf_per_km': 'Zero sequence capacitance of the line for protective earth return',
 'endtemp_degree': 'Short-Circuit end temperature of the line',
-'max_i_ka': 'Maximum line thermal current',
+'max_i_ka': 'Current carrying capacity of the cable in the reference installation method',
 'phase_sc_current_rating': 'Short-Circuit current rating of phase conductor (1s)',
 'cpe_sc_current_rating': 'Short-Circuit current rating of phase ciruit protective earthing conductor (1s)',
 'df': 'Derating factor',
@@ -357,7 +362,7 @@ If <i>None</i> is selected, it is assumed that no dedicated CPE is provided and 
 'x0g_ohm_per_km': 'Zero sequence inductance of the line for protective earth return',
 'c0g_nf_per_km': 'Zero sequence capacitance of the line for protective earth return',
 'endtemp_degree': 'Short-Circuit end temperature of the line',
-'max_i_ka': 'Maximum line thermal current',
+'max_i_ka': 'Current carrying capacity of the cable in the reference installation method',
 'phase_sc_current_rating': 'Short-Circuit current rating of phase conductor (1s)',
 'cpe_sc_current_rating': 'Short-Circuit current rating of phase ciruit protective earthing conductor (1s)',
 'df': 'Derating factor',
