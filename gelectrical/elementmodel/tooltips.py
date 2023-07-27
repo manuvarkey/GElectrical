@@ -286,7 +286,9 @@ Ch: Derating factor for harmonic currents in line conductors""",
 'conductor_cross_section': '',
 'neutral_xsec': '',
 'type_of_cable': '',
-'cpe': """Type of ciruit protective earthing conductor provided.
+'cpe': """Type of ciruit protective earthing conductor provided along with cable.
+
+If multiple runs of cable are used, the selected ciruit protective earthing conductor is assumed to be run along with each cable.
 
 If <i>None</i> is selected, it is assumed that no dedicated CPE is provided and return current is through earth.""",
 'armour_material': '',
