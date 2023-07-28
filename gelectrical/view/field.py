@@ -477,6 +477,18 @@ class FieldView:
                     vbox.pack_start(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), False, False, 5)
                     hbox.pack_start(vbox, True, True, 0)
                 
+                elif field['type'] == 'heading':
+                    data_widget = Gtk.Label('', xalign=0.5)
+                    data_widget.set_use_markup(True)
+                    data_widget.set_markup('<b>' + misc.clean_markup(field['caption']) + '</b>')
+                    seperator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+                    vbox_extra = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+                    vbox_extra.props.margin_top = 18
+                    # Pack
+                    vbox_extra.pack_start(data_widget, False, False, 0)
+                    vbox_extra.pack_start(seperator, True, True, 0)
+                    hbox.pack_start(vbox_extra, False, False, 0)
+
                 # If click_to_edit_message set, hide edit option under a stack
                 if field['click_to_edit_message'] is not None:
                     box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
