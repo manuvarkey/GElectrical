@@ -76,11 +76,11 @@ class GraphImage():
 
         formatter = ticker.StrMethodFormatter('{x:,.6g}')
         for tick in self.plot.get_xticklabels():
-            tick.set_fontname(misc.REPORT_FONT_FACE)
-            tick.set_fontsize(misc.REPORT_FONT_SIZE)
+            tick.set_fontname(misc.REPORT_GRAPH_FONT_FACE)
+            tick.set_fontsize(misc.REPORT_GRAPH_FONT_SIZE)
         for tick in self.plot.get_yticklabels():
-            tick.set_fontname(misc.REPORT_FONT_FACE)
-            tick.set_fontsize(misc.REPORT_FONT_SIZE)
+            tick.set_fontname(misc.REPORT_GRAPH_FONT_FACE)
+            tick.set_fontsize(misc.REPORT_GRAPH_FONT_SIZE)
         if not(math.isnan(self.xlim[0]) or math.isnan(self.xlim[1])) and self.xlim[0] != self.xlim[1]:
             self.plot.set_xlim(self.xlim[0], self.xlim[1])
         if len(self.xlim) == 4 and self.xlim[3] == 'log':
@@ -106,10 +106,10 @@ class GraphImage():
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
                 self.plot.plot(model.xval, model.yval, label=model.title, 
-                                marker=opt_marker, color=color)
+                                marker=opt_marker, markersize=4, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_FREE:
                 self.plot.scatter(model.xval, model.yval, label=model.title, 
-                                marker=opt_marker, color=color)
+                                marker=opt_marker, markersize=4, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
                 self.plot.fill(model.xval, model.yval, label=model.title, 
                                 color=color, edgecolor='black',
@@ -118,12 +118,12 @@ class GraphImage():
                 self.plot.plot(model.xval, model.yval, label=model.title, color=color, 
                                linestyle='dashed', alpha=0.5)
 
-        self.plot.set_title(self.title, fontname=misc.REPORT_FONT_FACE, fontsize=misc.REPORT_FONT_SIZE)
-        self.plot.set_xlabel(self.xlabel, fontname=misc.REPORT_FONT_FACE, fontsize=misc.REPORT_FONT_SIZE)
-        self.plot.set_ylabel(self.ylabel, fontname=misc.REPORT_FONT_FACE, fontsize=misc.REPORT_FONT_SIZE)
+        self.plot.set_title(self.title, fontname=misc.REPORT_GRAPH_FONT_FACE, fontsize=misc.REPORT_GRAPH_FONT_SIZE)
+        self.plot.set_xlabel(self.xlabel, fontname=misc.REPORT_GRAPH_FONT_FACE, fontsize=misc.REPORT_GRAPH_FONT_SIZE)
+        self.plot.set_ylabel(self.ylabel, fontname=misc.REPORT_GRAPH_FONT_FACE, fontsize=misc.REPORT_GRAPH_FONT_SIZE)
 
         if len(self.models) > 1:
-            self.plot.legend(prop={'family':misc.REPORT_FONT_FACE, 'size':misc.REPORT_FONT_SIZE})
+            self.plot.legend(prop={'family':misc.REPORT_GRAPH_FONT_FACE, 'size':misc.REPORT_GRAPH_FONT_SIZE})
 
         self.figure.patch.set_alpha(0.)
         self.plot.patch.set_alpha(0.)

@@ -58,7 +58,7 @@ COLOR_NORMAL = '#000000'
 COLOR_INACTIVE = '#888a85'
 COLOR_OVERLAY_BG = '#ad7fa880'
 COLOR_OVERLAY_TEXT = '#00000080'
-COLOR_GRID = '#00ff0080'
+COLOR_GRID = '#00ff00FF'
 COLOR_GRID_MINOR = '#00ff0020'
 COLOR_SELECTED = '#729fcf'
 COLOR_SELECTED_WARNING = '#cc0000'
@@ -141,6 +141,8 @@ GRAPH_COLORS = ('#ef2929', '#fce94f', '#729fcf', '#a40000', '#c4a000', '#204a87'
 # Report parameters
 REPORT_FONT_FACE = 'monospace'
 REPORT_FONT_SIZE = 10
+REPORT_GRAPH_FONT_FACE = 'monospace'
+REPORT_GRAPH_FONT_SIZE = 10
 # Power model types
 POWER_MODEL_POWERFLOW = 0
 POWER_MODEL_LINEFAULT = 1
@@ -1418,7 +1420,8 @@ default_program_settings = {'Defaults':{'drawing_field_dept':    get_field_dict(
                                          'show_graphs' : get_field_dict('bool', 'Show graphs in field view', '(Requires program restart to take effect)', True, status_inactivate=False),
                                          'drawing_font':    get_field_dict('font', 'Drawing Font', '', SCHEM_FONT_FACE + ' ' + str(SCHEM_FONT_SIZE), status_inactivate=False),
                                          'graph_font':    get_field_dict('font', 'Graph Font', '', GRAPH_FONT_FACE + ' ' + str(GRAPH_FONT_SIZE), status_inactivate=False),
-                                         'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False)},
+                                         'report_font':    get_field_dict('font', 'Report Font', '', REPORT_FONT_FACE + ' ' + str(REPORT_FONT_SIZE), status_inactivate=False),
+                                         'report_graph_font':    get_field_dict('font', 'Report Graph Font', '', REPORT_GRAPH_FONT_FACE + ' ' + str(REPORT_GRAPH_FONT_SIZE), status_inactivate=False)},
                             'Paths': {'library_path':    get_field_dict('path', 'User Library', '', '')}}
                                          
 default_project_settings = {'Information': {'project_name': get_field_dict('str', 'Project Name', '', 'PROJECT', status_inactivate=False),
@@ -1428,20 +1431,34 @@ default_project_settings = {'Information': {'project_name': get_field_dict('str'
                             'drawing_field_approved':get_field_dict('str', 'Approved by', '', '', status_inactivate=False),
                             'drawing_field_lang':    get_field_dict('str', 'Language code', '', 'en', status_inactivate=False),
                             'drawing_field_address': get_field_dict('multiline_str', 'Address', '', 'WING\nORGANISATION\nLOCATION', status_inactivate=False)},
+                             
                              'Simulation':{'run_diagnostics' : get_field_dict('bool', 'Run diagnostics', '', True, status_inactivate=False),
-                             'power_flow_3ph' : get_field_dict('bool', 'Enable assymetric power flow calculation', '', False, status_inactivate=False),
+                             # Power flow
+                             'sub_head_power_flow' : get_field_dict('heading', 'Power Flow', '', '', status_inactivate=False),
                              'run_powerflow' : get_field_dict('bool', 'Run time series power flow', '', False, status_inactivate=False),
-                             'run_sc_sym' : get_field_dict('bool', 'Run symmetric short circuit calculation', '', False, status_inactivate=False),
-                             'run_sc_gf' : get_field_dict('bool', 'Run line to ground short circuit calculation', '', False, status_inactivate=False),
-                             'export_results' : get_field_dict('bool', 'Export results of simulation', '', False, status_inactivate=False),
-                             'export_graphs' : get_field_dict('bool', 'Include graphs in report', '', False, status_inactivate=False),
                              'pf_method' : get_field_dict('str', 'Power flow method', '', 'Power flow', 
                                                           status_inactivate=False,
                                                           selection_list=['Power flow', 'Power flow with diversity', 'Time series'] ),
+                             'power_flow_3ph' : get_field_dict('bool', 'Enable assymetric power flow calculation', '', False, status_inactivate=False),
+                             # Short circuit
+                             'sub_head_sc' : get_field_dict('heading', 'Short Circuit Calculations', '', '', status_inactivate=False),
+                             'run_sc_sym' : get_field_dict('bool', 'Run symmetric short circuit calculation', '', False, status_inactivate=False),
+                             'run_sc_gf' : get_field_dict('bool', 'Run line to ground short circuit calculation', '', False, status_inactivate=False),
+                             'show_impedances' : get_field_dict('bool', 'Display short circuit impedance values', '', False, status_inactivate=False),
+                             # Simulation parameters
+                             'export_results' : get_field_dict('bool', 'Export results of simulation', '', False, status_enable=False),
+                             'sub_head_sim_param' : get_field_dict('heading', 'Simulation Parameters', '', '', status_inactivate=False),
                              'lv_tol_percent': get_field_dict('float', 'Grid voltage tolerance', '%', 6, selection_list=[6,10], status_inactivate=False),
                              'grid_frequency': get_field_dict('float', 'Grid Frequency', 'Hz', 50, selection_list=[50,60], status_inactivate=False),
                              'r_fault_ohm': get_field_dict('float', 'Fault resistance', 'Ohm', 0, status_inactivate=False),
                              'x_fault_ohm': get_field_dict('float', 'Fault reactance', 'Ohm', 0, status_inactivate=False)},
+
+                             'Reports':{'export_elements' : get_field_dict('bool', 'Export elements', '', True, status_inactivate=False),
+                                        'export_boq' : get_field_dict('bool', 'Export BOQ', '', True, status_inactivate=False),
+                                        'export_loadprofiles' : get_field_dict('bool', 'Export load profiles', '', True, status_inactivate=False),
+                                        'export_analysis' : get_field_dict('bool', 'Export analysis results', '', True, status_inactivate=False),
+                                        'export_graphs' : get_field_dict('bool', 'Include graphs in report', '', False, status_inactivate=False),},
+                             
                              'Rules Check':{'line_max_loss' : get_field_dict('float', 'Maximum line loss', '%', 3, status_inactivate=False),
                                             'max_disc_time' : get_field_dict('float', 'Maximum disconnection time for faults', 's', 5, status_inactivate=False),
                                             'max_voltage_drop' : get_field_dict('float', 'Maximum voltage drop at loads', '%', 5, status_inactivate=False)}}

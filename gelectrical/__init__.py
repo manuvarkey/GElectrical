@@ -145,6 +145,8 @@ class MainWindow():
             misc.GRAPH_FONT_FACE = 'monospace'
         if misc.REPORT_FONT_FACE not in font_list:
             misc.REPORT_FONT_FACE = 'monospace'
+        if misc.REPORT_GRAPH_FONT_FACE not in font_list:
+            misc.REPORT_GRAPH_FONT_FACE = 'monospace'
         
     def open_project(self, filename):
         """Get filename and set project as active"""
@@ -434,6 +436,7 @@ class MainWindow():
         misc.SCHEM_FONT_SPACING = int(misc.SCHEM_FONT_SIZE * 1.5)
         misc.GRAPH_FONT_FACE, misc.GRAPH_FONT_SIZE = misc.font_str_parse(self.program_settings['Interface']['graph_font']['value'])
         misc.REPORT_FONT_FACE, misc.REPORT_FONT_SIZE = misc.font_str_parse(self.program_settings['Interface']['report_font']['value'])
+        misc.REPORT_GRAPH_FONT_FACE, misc.REPORT_GRAPH_FONT_SIZE = misc.font_str_parse(self.program_settings['Interface']['report_graph_font']['value'])
         
     def on_program_settings(self, button):
         """Display dialog to input program settings"""

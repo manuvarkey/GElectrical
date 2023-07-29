@@ -2,7 +2,7 @@
 
 html {
   color: #000;
-  font-size: 10pt;
+  font-size: {{report_font_size}}pt;
   font-family: {{report_font}}, monospace;
   text-align: justify
 }

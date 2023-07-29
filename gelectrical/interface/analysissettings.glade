@@ -89,18 +89,6 @@
                     <property name="row-spacing">6</property>
                     <property name="column-spacing">12</property>
                     <child>
-                      <object class="GtkSwitch" id="switch_3ph">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="halign">start</property>
-                        <signal name="notify" handler="pf_type_toggle" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">1</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkSwitch" id="switch_diagnostics">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
@@ -127,7 +115,7 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Enable assymetric power flow calculation</property>
+                        <property name="label" translatable="yes">Run power flow</property>
                         <property name="xalign">1</property>
                       </object>
                       <packing>
@@ -144,14 +132,14 @@
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
-                        <property name="top-attach">2</property>
+                        <property name="top-attach">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Run power flow</property>
+                        <property name="label" translatable="yes">Power flow method</property>
                         <property name="xalign">1</property>
                       </object>
                       <packing>
@@ -160,10 +148,42 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSwitch" id="switch_sc_sym">
+                      <object class="GtkComboBoxText" id="pf_method_combo">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="active">0</property>
+                        <items>
+                          <item id="Power flow" translatable="yes">Power flow</item>
+                          <item id="Power flow with diversity" translatable="yes">Power flow with diversity</item>
+                          <item id="Time series" translatable="yes">Time series</item>
+                        </items>
+                        <signal name="changed" handler="pf_method_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Enable assymetric power flow calculation</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSwitch" id="switch_3ph">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="halign">start</property>
+                        <signal name="notify" handler="pf_type_toggle" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -180,17 +200,6 @@
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSwitch" id="switch_sc_gf">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="halign">start</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
                         <property name="top-attach">4</property>
                       </packing>
                     </child>
@@ -203,34 +212,25 @@
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Power flow method</property>
-                        <property name="xalign">1</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
                         <property name="top-attach">5</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="pf_method_combo">
+                      <object class="GtkSwitch" id="switch_sc_sym">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can-focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="active">0</property>
-                        <items>
-                          <item id="Power flow" translatable="yes">Power flow</item>
-                          <item id="Power flow with diversity" translatable="yes">Power flow with diversity</item>
-                          <item id="Time series" translatable="yes">Time series</item>
-                        </items>
-                        <signal name="changed" handler="pf_method_changed" swapped="no"/>
+                        <property name="can-focus">True</property>
+                        <property name="halign">start</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSwitch" id="switch_sc_gf">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="halign">start</property>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>

@@ -559,7 +559,7 @@ class DrawingModel:
         context.save()
         (r,g,b,a) = misc.hex2rgb(misc.COLOR_GRID)
         context.set_source_rgba(r, g, b, a)
-        context.set_line_width(0.5)
+        context.set_line_width(0.2)
         for x in range(0, int(page_width), int(grid_width)):
             for y in range(0, int(page_height), int(grid_width)):
                 # Draw horizontal lines

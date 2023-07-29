@@ -30,26 +30,33 @@
     
     <article id="contents">
       <h2>Table of contents</h2>
+      
+      {% if export_elements_flag == True %}
       <h3><a href="#elements">Elements</a></h3>
       <ul>
         {% for element_caption in element_captions %}
         <li><a href="#{{element_caption|e}}"></a></li>
         {% endfor %}
       </ul>
+      {% endif %}
       
+      {% if export_boq_flag == True %}
       <h3><a href="#boq">Bill of quantities</a></h3>
       <ul>
         {% for boq_caption in boq_captions %}
         <li><a href="#{{boq_caption|e}}"></a></li>
         {% endfor %}
       </ul>
+      {% endif %}
       
+      {% if export_loadprofiles_flag == True %}
       <h3><a href="#loadprofiles">Load Profiles</a></h3>
       <ul>
         {% for loadprofile_caption in loadprofile_captions %}
         <li><a href="#{{loadprofile_caption|e}}"></a></li>
         {% endfor %}
       </ul>
+      {% endif %}
       
       {% if analysis_flag == True %}
       <h3><a href="#analysis">Analysis</a></h3>
@@ -67,6 +74,7 @@
     
     
     
+    {% if export_elements_flag == True %}
     <article id="elements">
       <h2>Elements</h2>
       {% for element_caption in element_captions %}
@@ -76,7 +84,11 @@
       </section>
       {% endfor %}
     </article>
+    {% endif %}
     
+    
+    
+    {% if export_boq_flag == True %}
     <article id="boq">
       <h2>Bill of Quantities</h2>
       {% for boq_caption in boq_captions %}
@@ -86,9 +98,11 @@
       </section>
       {% endfor %}
     </article>
+    {% endif %}
     
     
     
+    {% if export_loadprofiles_flag == True %}
     <article id="loadprofiles">
       <h2>Load Profiles</h2>
       {% for loadprofile_caption in loadprofile_captions %}
@@ -98,6 +112,7 @@
       </section>
       {% endfor %}
     </article>
+    {% endif %}
     
     
     
