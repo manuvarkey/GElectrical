@@ -1106,7 +1106,7 @@ def clean_markup(text):
 
 def font_str_parse(string):
     pango_font = Pango.FontDescription.from_string(string)
-    family = pango_font.get_family()
+    family = pango_font.get_family().lower()
     size = pango_font.get_size()/Pango.SCALE
     return (family, size)
 
