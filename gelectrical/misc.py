@@ -1298,7 +1298,13 @@ def elements_to_table(elements, col_codes, col_captions, code_sources, table_cla
     if sum_cols:
         for index in sum_cols:
             # Get sum
-            sum_of_col = sum(map(float, table[col_captions[index]][1:])) # Ignore unit row
+            def float_conv(value):
+                try:  # try evaluating float
+                    return float(value)
+                except:
+                    return 0
+                
+            sum_of_col = sum(map(float_conv, table[col_captions[index]][1:])) # Ignore unit row
             # Add blank row
             if show_slno:
                 table['Sl.No.'].append('&Sigma;')
