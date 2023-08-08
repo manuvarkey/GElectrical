@@ -1246,6 +1246,22 @@ def update_fields_dict(reffields_dict, newfields_dict):
             updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
     return updated
 
+def get_param_field(values):
+    selection_list = None
+    tooltip = ''
+    data_type = 'float'
+    caption, unit, value = values[0:3]
+    if len(values) >= 4:
+        selection_list = values[3]
+    if len(values) >= 5:
+        tooltip = values[4]
+    if len(values) >= 6:
+        data_type = values[5]
+    return get_field_dict(data_type, caption, unit, value, 
+                            selection_list=selection_list,
+                            tooltip=tooltip,
+                            status_inactivate=False)
+
 ELEMENT_FIELD = 0
 ELEMENT_RESULT = 1
 ELEMENT_PLACEHOLDER = 2

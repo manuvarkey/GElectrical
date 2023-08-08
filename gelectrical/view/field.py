@@ -455,10 +455,8 @@ class FieldView:
                                 if parameters:
                                     # Compile fields
                                     parameter_fields = dict()
-                                    for key, (caption, unit, value, selection_list) in parameters.items():
-                                        parameter_fields[key] = misc.get_field_dict('float', caption, unit, value, 
-                                                                            selection_list=selection_list, 
-                                                                            status_inactivate=False)
+                                    for key, values in parameters.items():
+                                        parameter_fields[key] = misc.get_param_field(values)
                                     edit_button.set_sensitive(True)
                                     edit_button.connect("clicked", edit_graph_parameters_callback, self.set_field, code, parameter_fields)
                                 else:

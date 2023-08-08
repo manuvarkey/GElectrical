@@ -100,10 +100,8 @@ class ProtectionModel():
 
     def get_data_fields(self, modify_code=''):
         fields = dict()
-        for key, (caption, unit, value, selection_list) in self.data_struct['parameters'].items():
-            fields[modify_code+key] = misc.get_field_dict('float', caption, unit, value, 
-                                                            selection_list=selection_list, 
-                                                            status_inactivate=False)
+        for key, values in self.data_struct['parameters'].items():
+            fields[modify_code+key] = misc.get_param_field(values)
         return fields
 
     def update_graph(self):
@@ -182,6 +180,7 @@ class ProtectionModel():
             return (i1,), (t1,)
 
         def iec(tms, i_n, k, c, alpha, i1, i2, t_min, n):
+            # IEC/ IEEE inverse curves with minimum time of operation
             if i2 > i1:
                 i_array = np.geomspace(i1,i2,num=n)
                 t_array_1 = tms*(k/((i_array/i_n)**alpha - 1) + c)
@@ -193,9 +192,12 @@ class ProtectionModel():
 
         def thermal(tms, i_n, i1, i2, n):
             # As per IEC 60255-8
-            i_array = np.geomspace(i1,i2,num=n)
-            t_array = tms*np.log(i_array**2/(i_array**2 - i_n**2))
-            return list(i_array), list(t_array)
+            if i2 > i1:
+                i_array = np.geomspace(i1,i2,num=n)
+                t_array = tms*np.log(i_array**2/(i_array**2 - i_n**2))
+                return list(i_array), list(t_array)
+            else:
+                return [], []
 
         def i2t(tms, i_n, k, alpha, i1, i2, t_min, n):
             if i2 > i1:
@@ -210,9 +212,10 @@ class ProtectionModel():
         iec_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 0.14, 0, 0.02, i1, i2, t_min, n) # As per IEC 60255-3
         iec_v_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 13.5, 0, 1, i1, i2, t_min, n) # As per IEC 60255-3
         iec_e_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 80, 0, 2, i1, i2, t_min, n) # As per IEC 60255-3
-        ieee_m_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 0.0515, 0.1140, 0.02, i1, i2, t_min, n)
-        ieee_v_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 19.61, 0.491, 2, i1, i2, t_min, n)
-        ieee_e_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 28.2, 0.1217, 2, i1, i2, t_min, n)
+        iec_lt_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 120, 0, 1, i1, i2, t_min, n) # As per IEC 60255-3
+        ieee_m_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 0.0515, 0.1140, 0.02, i1, i2, t_min, n) # As per IEEE C37.112-1996
+        ieee_v_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 19.61, 0.491, 2, i1, i2, t_min, n) # As per IEEE C37.112-1996
+        ieee_e_inverse = lambda tms, i_n, i1, i2, t_min, n: iec(tms, i_n, 28.2, 0.1217, 2, i1, i2, t_min, n) # As per IEEE C37.112-1996
         
         def eval_curve(curve):
             var_dict = {'f': f, 'd': d}
@@ -221,6 +224,7 @@ class ProtectionModel():
                             'iec_inverse'   : iec_inverse,
                             'iec_v_inverse' : iec_v_inverse,
                             'iec_e_inverse' : iec_e_inverse,
+                            'iec_lt_inverse': iec_lt_inverse,
                             'ieee_m_inverse': ieee_m_inverse,
                             'ieee_v_inverse': ieee_v_inverse,
                             'ieee_e_inverse': ieee_e_inverse,
