@@ -212,7 +212,8 @@ class GraphView():
         
     def add_plots(self, graph_models):
         for model in graph_models:
-            self.add_plot(model)
+            if model is not None:
+                self.add_plot(model)
         GLib.idle_add(self.plot_curves)
         
     def clear_plots(self):

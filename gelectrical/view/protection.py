@@ -56,16 +56,16 @@ class ProtectionViewDialog():
         self.graph_database = {}
         self.graph_uids = []
 
-        self.fieldviews = []
-        self.fieldviews_graph = []
-        self.titles = []
-        self.fields = []
-        self.para_fields = []
+        self.fieldviews = []  # Field views corresponding to each page
+        self.fieldviews_graph = []  # Parameter field views corresponding to each page
+        self.titles = []  # Tab titles corresponding to each page
+        self.fields = []  # Fields corresponding to each page
+        self.para_fields = []  # Parameter field corresponding to each page
 
         self.element_mapping = []  # Maps element index -> model_id, sub_model_id, el_class, g_index
-        self.para_element_mapping = []  # Maps prot_models/ para_fields index -> element index, el_class
-        self.field_element_mapping = []  # Maps fields index -> element index
-        self.prot_models = []
+        self.para_element_mapping = []  # Maps page/ prot_models/ para_fields index -> element index, el_class
+        self.field_element_mapping = []  # Maps page/ fields index -> element index
+        self.prot_models = []  # Protection model corresponding to each page
         self.l_models = []
         self.g_models = []
         self.d_models = [] 
@@ -187,44 +187,56 @@ class ProtectionViewDialog():
             if el_class == 'pcurve_l':
                 fields = copy.deepcopy({'In': element.fields['In'],  
                           'In_set': element.fields['In_set'],
-                          'Isc': element.fields['Isc']})
+                          'Isc': element.fields['Isc'],
+                          'prot_curve_type': element.fields['prot_curve_type']})
             elif el_class == 'pcurve_g':
                 fields = copy.deepcopy({'I0': element.fields['I0'],  
                           'I0_set': element.fields['I0_set'],
-                          'Isc': element.fields['Isc']})
+                          'Isc': element.fields['Isc'],
+                          'prot_0_curve_type': element.fields['prot_0_curve_type']})
             else:
                 fields = {}
             self.fields.append(fields)
             
-            if para_fields:
+            # Setup fieldview
+            if fields:
                 box = Gtk.Box(orientation= Gtk.Orientation.VERTICAL)
                 tab_label = Gtk.Label(title)
                 self.field_notebook.append_page(box, tab_label)
 
-                if fields:
-                    def get_field_func(prot_index):
-                        def get_field(code):
-                            return self.fields[prot_index][code]
-                        return get_field
+                def get_field_func(prot_index):
+                    def get_field(code):
+                        return self.fields[prot_index][code]
+                    return get_field
 
-                    def get_set_field(el_no, prot_index):
-                        def set_field(code, value):
-                            self.fields[prot_index][code]['value'] = value
-                            self.update_fields(el_no, prot_index)
-                            self.update_models(prot_index)
-                            self.update_graphs()
-                        return set_field
-                
-                    listbox = Gtk.ListBox()
-                    listbox.props.margin_top = 6
-                    listbox.props.margin_start = 6
-                    box.pack_start(listbox, False, True, 6)
-                    field_view = FieldView(self.dialog_window, listbox, 
-                                        'status_enable', 'status_inactivate',
-                                        caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
-                    field_view.update(fields, None, get_field_func(prot_index), get_set_field(el_index, prot_index))
-                    self.fieldviews.append(field_view)   
-                
+                def get_set_field(el_no, prot_index):
+                    def set_field(code, value):
+                        self.fields[prot_index][code]['value'] = value
+                        self.update_fields(el_no, prot_index)
+                        self.update_models(prot_index)
+                        # If protection curve changed, update protection values
+                        if code in ('prot_curve_type', 'prot_0_curve_type'):
+                            model = self.prot_models[prot_index]
+                            self.para_fields[prot_index].clear()
+                            if model:
+                                parameters = model.get_data_fields()
+                                self.para_fields[prot_index].update(parameters)
+                            self.fieldviews_graph[prot_index].update_widgets() # Update fieldview
+                        self.update_graphs()
+                    return set_field
+            
+                listbox = Gtk.ListBox()
+                listbox.props.margin_top = 6
+                listbox.props.margin_start = 6
+                box.pack_start(listbox, False, True, 6)
+                field_view = FieldView(self.dialog_window, listbox, 
+                                    'status_enable', 'status_inactivate',
+                                    caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
+                field_view.update(fields, None, get_field_func(prot_index), get_set_field(el_index, prot_index))
+                self.fieldviews.append(field_view)   
+            
+            # Setup parameter fieldview
+            if para_fields:
                 def get_field_func_para(prot_index):
                     def get_field(code):
                         return self.para_fields[prot_index][code]
@@ -300,7 +312,18 @@ class ProtectionViewDialog():
                     
     # Functions
 
+    def update_fields(self, el_index, prot_index):
+        """Update element fields from data models (using undoable fucntion)"""
+        element = self.elements[el_index]
+        set_text_field = misc.get_undoable_set_field(self.stack, None, element)
+        with group(self, 'Update protection fields - ' + element.name):
+            for code, field in self.fields[prot_index].items():
+                set_text_field(code, field['value'])
+        # Update fieldview
+        self.fieldviews[prot_index].update_widgets()
+                
     def update_parameters(self, para_index):
+        """Update element parameters from data models (using undoable fucntion)"""
         fields = self.para_fields[para_index]
         el_index, el_class = self.para_element_mapping[para_index]
         element = self.elements[el_index]
@@ -313,28 +336,25 @@ class ProtectionViewDialog():
                     for key, field in fields.items():
                         parameters[key][2] = field['value']
                     set_text_field(el_class, data_new)
-                    self.update_fields(el_index, para_index)
                     break
-
-    def update_fields(self, el_index, prot_index):
-        element = self.elements[el_index]
-        set_text_field = misc.get_undoable_set_field(self.stack, None, element)
-        with group(self, 'Update protection fields - ' + element.name):
-            for code, field in self.fields[prot_index].items():
-                set_text_field(code, field['value'])
-        element.calculate_parameters()
-        for model_id, sub_model_id, el_class, g_index in self.element_mapping[el_index]:
-            if el_class == 'pcurve_l':
-                self.prot_models[model_id] = element.line_protection_model
-            elif el_class == 'pcurve_g':
-                self.prot_models[model_id] = element.ground_protection_model
-            elif el_class == 'dcurve':
-                self.prot_models[model_id] = element.damage_model
+        # Update fieldview
+        self.fieldviews_graph[para_index].update_widgets()
 
     def update_models(self, para_index=None):
+        """Update graph models"""
         if para_index is not None:  # Update elements for title
             el_index, el_class = self.para_element_mapping[para_index]
             element = self.elements[el_index]
+            # Update protection models
+            element.calculate_parameters()
+            for model_id, sub_model_id, el_class, g_index in self.element_mapping[el_index]:
+                if el_class == 'pcurve_l':
+                    self.prot_models[model_id] = element.line_protection_model
+                elif el_class == 'pcurve_g':
+                    self.prot_models[model_id] = element.ground_protection_model
+                elif el_class == 'dcurve':
+                    self.prot_models[model_id] = element.damage_model
+            # Evaluate protection curves
             scale = self.voltages[element.gid]/self.max_voltage if self.max_voltage != 0 and self.voltages[element.gid] != 0 else 1
             for model_id, sub_model_id, el_class, g_index in self.element_mapping[el_index]:
                 model = self.prot_models[model_id]
@@ -345,9 +365,14 @@ class ProtectionViewDialog():
                         sub_model_list = self.g_models
                     elif el_class == 'dcurve':
                         sub_model_list = self.d_models
-                    curve_eval = model.get_evaluated(element.fields, scale=scale)
-                    if curve_eval:
-                        sub_model_list[sub_model_id] = curve_eval.get_graph_model()[1][g_index]
+                    if model is not None:
+                        curve_eval = model.get_evaluated(element.fields, scale=scale)
+                        if curve_eval:
+                            sub_model_list[sub_model_id] = curve_eval.get_graph_model()[1][g_index]
+                        else:
+                            sub_model_list[sub_model_id] = None
+                    else:
+                        sub_model_list[sub_model_id] = None
         # Populate curves
         # disconnection time vertical line
         disc_time = self.program_state['project_settings']['Rules Check']['max_disc_time']['value']
@@ -355,6 +380,7 @@ class ProtectionViewDialog():
                                     'title': 'Max disc. time = {} s'.format(disc_time), 
                                     'xval':[1e-8, 1e8], 
                                     'yval':[disc_time, disc_time]}]
+        # protection graphs
         self.graph_database = {}
         if self.l_models or self.d_models or self.n_models:
             self.graph_database['Line protection'] = ['Line protection', self.l_models + self.d_models + disc_time_model + self.n_models]
@@ -362,11 +388,13 @@ class ProtectionViewDialog():
             self.graph_database['Ground protection'] = ['Ground protection', self.g_models + self.d_models + disc_time_model + self.n_models]
 
     def update_graphs(self):
+        """Draw graphs from models generated"""
         index = self.combobox_title.get_active()
         self.graph_view.clear_plots()
         self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
 
     def export_settings_spreadsheet(self, filename):
+        """Export field and parameter settings of all tabs to spreadsheet"""
         table1 = misc.params_to_table(self.fields, self.titles)
         table2 = misc.params_to_table(self.para_fields, self.titles)
         table = pd.concat([table1, table2])
