@@ -97,7 +97,7 @@ class FieldView:
             set_field(code, validated)  # set value
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             if field['alter_structure'] == True:
-                self.update_widgets()
+                self.update_widgets(code)
             
         def activate_callback_list(widget, get_field, set_field, code):
             field = get_field(code)
@@ -122,20 +122,20 @@ class FieldView:
                             validated = 0
                 set_field(code, validated)  # set value
                 if field['alter_structure'] == True:
-                    self.update_widgets()
+                    self.update_widgets(code)
         
         def activate_callback_bool(widget, state, get_field, set_field, code):
             field = get_field(code)
             set_field(code, state)  # set value
             if field['alter_structure'] == True:
-                self.update_widgets()
+                self.update_widgets(code)
                 
         def activate_callback_font(widget, get_field, set_field, code):
             field = get_field(code)
             font = widget.get_font()
             set_field(code, font)  # set value
             if field['alter_structure'] == True:
-                self.update_widgets()
+                self.update_widgets(code)
 
         def activate_callback_path(widget, get_field, set_field, code):
             field = get_field(code)
@@ -149,13 +149,13 @@ class FieldView:
             set_field(code, text)  # set value
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             if field['alter_structure'] == True:
-                self.update_widgets()
+                self.update_widgets(code)
                 
         def activate_callback_graphlist(widget, set_field, graphview, code):
             index = widget.get_active()
             set_field(code, graphview, index)  # set value
             if field['alter_structure'] == True:
-                self.update_widgets()
+                self.update_widgets(code)
 
         def show_graph_dialog_callback(widget, title, model, xlim, ylim, xlabel, ylabel):
             # Function to show bigger graph as dialog
@@ -180,10 +180,9 @@ class FieldView:
             if modified_fields:
                 data_new = copy.deepcopy(self.fields[code]['value'])
                 parameters = data_new['parameters']
-                for key, field in modified_fields['Parameters'].items():
-                    parameters[key][2] = field['value']
+                misc.update_params_from_fields(parameters, modified_fields['Parameters'])
                 set_field(code, data_new)
-                self.update_widgets()
+                self.update_widgets(code)
                             
         def changed_callback(widget):
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-error')
@@ -195,7 +194,7 @@ class FieldView:
             set_field(code, text)  # set value
             button.props.image.set_from_icon_name(None, Gtk.IconSize.BUTTON)
             if field['alter_structure'] == True:
-                self.update_widgets()
+                self.update_widgets(code)
 
         def on_key_press_callback_multiline(widget, event, set_button, text_buffer, get_field, set_field, code):
             # Check for Ctrl+Enter key combination
@@ -454,9 +453,7 @@ class FieldView:
                                 parameters = field['value']['parameters']
                                 if parameters:
                                     # Compile fields
-                                    parameter_fields = dict()
-                                    for key, values in parameters.items():
-                                        parameter_fields[key] = misc.get_param_field(values)
+                                    parameter_fields = misc.get_fields_from_params(parameters)
                                     edit_button.set_sensitive(True)
                                     edit_button.connect("clicked", edit_graph_parameters_callback, self.set_field, code, parameter_fields)
                                 else:
@@ -521,7 +518,21 @@ class FieldView:
             
         self.listbox.show_all()
         
-    def update_widgets(self):
+    def update_widgets(self, code=None):
+        # If code is specified, try to update fields based on alter_values_dict
+        if code:
+            alter_values_dict = self.fields[code]['alter_values_dict']
+            value = self.fields[code]['value']
+            if alter_values_dict and value in alter_values_dict:
+                alter_values_dict_cur = alter_values_dict[value]
+                for set_key in alter_values_dict_cur:
+                    if set_key in self.fields:
+                        set_value = alter_values_dict_cur[set_key]
+                        if set_value is None:
+                            self.fields[set_key]['status_enable'] = False
+                        else:
+                            self.fields[set_key]['status_enable'] = True
+                            self.fields[set_key]['value'] = set_value
         self.update(self.fields, self.caption, self.get_field, self.set_field)
         
     def clean(self):

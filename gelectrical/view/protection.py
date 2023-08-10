@@ -242,10 +242,15 @@ class ProtectionViewDialog():
             
             def get_set_field_para(prot_index):
                 def set_field(code, value):
+                    # Update function to be called after fieldview has updated parameters
+                    # i.e. after an alteration required in parameters are carried out
+                    def delayed_function():
+                        self.update_parameters(prot_index)
+                        self.update_models(prot_index)
+                        self.update_graphs()
+
                     self.para_fields[prot_index][code]['value'] = value
-                    self.update_parameters(prot_index)
-                    self.update_models(prot_index)
-                    self.update_graphs()
+                    GLib.timeout_add(200, delayed_function)
                 return set_field
             
             listbox_parameters = Gtk.ListBox()
@@ -331,8 +336,7 @@ class ProtectionViewDialog():
                 if model_id == para_index:
                     data_new = copy.deepcopy(element.fields[el_class]['value'])
                     parameters = data_new['parameters']
-                    for key, field in fields.items():
-                        parameters[key][2] = field['value']
+                    misc.update_params_from_fields(parameters, fields)
                     set_text_field(el_class, data_new)
                     break
         # Update fieldview

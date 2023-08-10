@@ -99,9 +99,7 @@ class ProtectionModel():
         return new_obj
 
     def get_data_fields(self, modify_code=''):
-        fields = dict()
-        for key, values in self.data_struct['parameters'].items():
-            fields[modify_code+key] = misc.get_param_field(values)
+        fields = misc.get_fields_from_params(self.data_struct['parameters'], modify_code)
         return fields
 
     def update_graph(self):

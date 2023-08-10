@@ -1187,6 +1187,7 @@ def get_field_dict(field_type, caption, unit, value,
                         status_floating=False,
                         click_to_edit_message=None,
                         alter_structure=False,
+                        alter_values_dict={},
                         tooltip=''):
     """
     ARGUMENTS:
@@ -1215,6 +1216,7 @@ def get_field_dict(field_type, caption, unit, value,
     field_dict['status_floating'] = status_floating
     field_dict['click_to_edit_message'] = click_to_edit_message
     field_dict['alter_structure'] = alter_structure
+    field_dict['alter_values_dict'] = alter_values_dict
     field_dict['tooltip'] = tooltip
     return field_dict
 
@@ -1246,22 +1248,72 @@ def update_fields_dict(reffields_dict, newfields_dict):
             updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
     return updated
 
-def get_param_field(values):
-    selection_list = None
-    tooltip = ''
-    data_type = 'float'
-    caption, unit, value = values[0:3]
-    if len(values) >= 4:
-        selection_list = values[3]
-    if len(values) >= 5:
-        tooltip = values[4]
-    if len(values) >= 6:
-        data_type = values[5]
-    return get_field_dict(data_type, caption, unit, value, 
-                            selection_list=selection_list,
-                            tooltip=tooltip,
-                            status_inactivate=False)
+def get_fields_from_params(parameters, modify_code=''):
+    """Return feilds from paramater dict
+        Order of parameters: caption, unit, value, [selection_list, tooltip, data_type, status_enable, default_values_dict]
+            where
+            default_values_dict: value -> default_values
+                where
+                default_values: parameter_key -> default value of parameter [if None, parameter is disabled]
+    """
+    fields = dict()
+    default_parameter_dict = dict()  # default_values_dict combined for all active parameters
+    for key, values in parameters.items():
+        selection_list = None
+        tooltip = ''
+        data_type = 'float'
+        status_enable = True
+        alter_structure = False
+        caption, unit, value = values[0:3]
+        if len(values) >= 4:
+            selection_list = values[3]
+        if len(values) >= 5:
+            tooltip = values[4]
+        if len(values) >= 6:
+            data_type = values[5]
+        if len(values) >= 7:
+            status_enable = values[6]
+        if len(values) >= 8:
+            alter_values_dict = values[7]
+            if value in alter_values_dict:
+                default_parameter_dict.update(alter_values_dict[value])
+            alter_structure = True
+        if key in default_parameter_dict:
+            if default_parameter_dict[key] is None:
+                status_enable = False
+        fields[modify_code+key] = get_field_dict(data_type, caption, unit, value, 
+                                                selection_list=selection_list,
+                                                tooltip=tooltip,
+                                                status_inactivate=False,
+                                                status_enable=status_enable,
+                                                alter_structure=alter_structure,
+                                                alter_values_dict=alter_values_dict)
+    return fields
 
+def update_params_from_fields(parameters, fields):
+    for key, field in fields.items():
+        if key in parameters:
+            parameters[key][2] = field['value']
+            values = parameters[key]
+            if field['status_enable'] is False:
+                selection_list = None
+                tooltip = ''
+                data_type = 'float'
+                status_enable = True
+                extra_values = []
+                if len(values) >= 4:
+                    selection_list = values[3]
+                if len(values) >= 5:
+                    tooltip = values[4]
+                if len(values) >= 6:
+                    data_type = values[5]
+                if len(values) >= 7:
+                    status_enable = values[6]
+                if len(values) >= 8:
+                    extra_values = values[7:]
+                parameters[key] = values[0:3] + [selection_list, tooltip, data_type, status_enable] + extra_values
+                
+    
 ELEMENT_FIELD = 0
 ELEMENT_RESULT = 1
 ELEMENT_PLACEHOLDER = 2
