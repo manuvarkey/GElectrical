@@ -1264,6 +1264,7 @@ def get_fields_from_params(parameters, modify_code=''):
         data_type = 'float'
         status_enable = True
         alter_structure = False
+        alter_values_dict = dict()
         caption, unit, value = values[0:3]
         if len(values) >= 4:
             selection_list = values[3]
