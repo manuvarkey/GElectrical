@@ -233,8 +233,9 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                     ('point', i_sc/math.sqrt(10), 10),
                     ('point', i_sc/math.sqrt(0.01), 0.01)]
         curve_l = []
+        curves = {'curve_u': curve_u, 'curve_l': curve_l}
         param = {}
-        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        self.damage_model = ProtectionModel(title, param, curves, element_type='damage')
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
 
@@ -1326,7 +1327,8 @@ Creates a bus trunking element with known parameters.
                     ('point', i_pk, 0.01)]
         curve_l = []
         param = {}
-        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        curves = {'curve_u': curve_u, 'curve_l': curve_l}
+        self.damage_model = ProtectionModel(title, param, curves, element_type='damage')
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
 

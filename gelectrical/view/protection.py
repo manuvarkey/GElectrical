@@ -186,82 +186,92 @@ class ProtectionViewDialog():
 
             if el_class == 'pcurve_l':
                 fields = copy.deepcopy({'In': element.fields['In'],  
-                          'In_set': element.fields['In_set'],
                           'Isc': element.fields['Isc'],
                           'prot_curve_type': element.fields['prot_curve_type']})
             elif el_class == 'pcurve_g':
                 fields = copy.deepcopy({'I0': element.fields['I0'],  
-                          'I0_set': element.fields['I0_set'],
                           'Isc': element.fields['Isc'],
                           'prot_0_curve_type': element.fields['prot_0_curve_type']})
             else:
                 fields = {}
             self.fields.append(fields)
             
-            # Setup fieldview
-            box = Gtk.Box(orientation= Gtk.Orientation.VERTICAL)
-            tab_label = Gtk.Label(title)
-            self.field_notebook.append_page(box, tab_label)
+            # Setup Notebook page
+            if fields or para_fields:
+                box = Gtk.Box(orientation= Gtk.Orientation.VERTICAL)
+                scrolled = Gtk.ScrolledWindow()
+                scrolled.set_policy(Gtk.PolicyType.NEVER,
+                                Gtk.PolicyType.AUTOMATIC)
+                scrolled.add(box)
+                tab_label = Gtk.Label(title)
+                self.field_notebook.append_page(scrolled, tab_label)
 
-            def get_field_func(prot_index):
-                def get_field(code):
-                    return self.fields[prot_index][code]
-                return get_field
+            # Setup fields view
+            if fields:
 
-            def get_set_field(el_no, prot_index):
-                def set_field(code, value):
-                    self.fields[prot_index][code]['value'] = value
-                    self.update_fields(el_no, prot_index)
-                    self.update_models(prot_index)
-                    # If protection curve changed, update protection values
-                    if code in ('prot_curve_type', 'prot_0_curve_type'):
-                        model = self.prot_models[prot_index]
-                        self.para_fields[prot_index].clear()
-                        if model:
-                            parameters = model.get_data_fields()
-                            self.para_fields[prot_index].update(parameters)
-                        self.fieldviews_graph[prot_index].update_widgets() # Update fieldview
-                    self.update_graphs()
-                return set_field
-        
-            listbox = Gtk.ListBox()
-            listbox.props.margin_top = 6
-            listbox.props.margin_start = 6
-            box.pack_start(listbox, False, True, 6)
-            field_view = FieldView(self.dialog_window, listbox, 
-                                'status_enable', 'status_inactivate',
-                                caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
-            field_view.update(fields, None, get_field_func(prot_index), get_set_field(el_index, prot_index))
-            self.fieldviews.append(field_view)
-            
-            # Setup parameter fieldview
-            def get_field_func_para(prot_index):
-                def get_field(code):
-                    return self.para_fields[prot_index][code]
-                return get_field
-            
-            def get_set_field_para(prot_index):
-                def set_field(code, value):
-                    # Update function to be called after fieldview has updated parameters
-                    # i.e. after an alteration required in parameters are carried out
-                    def delayed_function():
-                        self.update_parameters(prot_index)
+                def get_field_func(prot_index):
+                    def get_field(code):
+                        return self.fields[prot_index][code]
+                    return get_field
+
+                def get_set_field(el_no, prot_index):
+                    def set_field(code, value):
+                        self.update_field(el_no, prot_index, code, value)
                         self.update_models(prot_index)
+                        # If protection curve changed, update protection values
+                        if code in ('prot_curve_type', 'prot_0_curve_type'):
+                            model = self.prot_models[prot_index]
+                            self.para_fields[prot_index].clear()
+                            if model:
+                                parameters = model.get_data_fields()
+                                self.para_fields[prot_index].update(parameters)
+                            self.fieldviews_graph[prot_index].update_widgets() # Update fieldview
                         self.update_graphs()
-
-                    self.para_fields[prot_index][code]['value'] = value
-                    GLib.timeout_add(200, delayed_function)
-                return set_field
+                    return set_field
             
-            listbox_parameters = Gtk.ListBox()
-            listbox_parameters.props.margin_top = 6
-            listbox_parameters.props.margin_start = 6
-            box.pack_start(listbox_parameters, True, True, 6)
-            field_view_graph = FieldView(self.dialog_window, listbox_parameters, 
-                                'status_enable', 'status_inactivate',
-                                caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
-            field_view_graph.update(para_fields, None, get_field_func_para(prot_index), get_set_field_para(prot_index))
-            self.fieldviews_graph.append(field_view_graph)
+                listbox = Gtk.ListBox()
+                listbox.props.margin_top = 6
+                listbox.props.margin_start = 6
+                box.pack_start(listbox, False, True, 6)
+                field_view = FieldView(self.dialog_window, listbox, 
+                                    'status_enable', 'status_inactivate',
+                                    caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
+                field_view.update(fields, None, get_field_func(prot_index), get_set_field(el_index, prot_index))
+                self.fieldviews.append(field_view)
+            else:
+                self.fieldviews.append(None)
+            
+            if para_fields:
+                # Setup parameter fieldview
+                def get_field_func_para(prot_index):
+                    def get_field(code):
+                        return self.para_fields[prot_index][code]
+                    return get_field
+                
+                def get_set_field_para(prot_index):
+                    def set_field(code, value):
+                        # Update function to be called after fieldview has updated parameters
+                        # i.e. after an alteration required in parameters are carried out
+                        def delayed_function():
+                            self.update_parameters(prot_index)
+                            self.update_models(prot_index)
+                            self.update_graphs()
+
+                        self.para_fields[prot_index][code]['value'] = value
+                        GLib.timeout_add(200, delayed_function)
+                    return set_field
+                
+                listbox_parameters = Gtk.ListBox()
+                listbox_parameters.props.margin_top = 6
+                listbox_parameters.props.margin_start = 6
+                box.pack_start(listbox_parameters, True, True, 6)
+                field_view_graph = FieldView(self.dialog_window, listbox_parameters, 
+                                    'status_enable', 'status_inactivate',
+                                    caption_width=misc.FIELD_DIALOG_CAPTION_WIDTH)
+                field_view_graph.update(para_fields, None, get_field_func_para(prot_index), get_set_field_para(prot_index))
+                self.fieldviews_graph.append(field_view_graph)
+            else:
+                self.fieldviews_graph.append(None)
             
         # Update models
         self.update_models()
@@ -315,19 +325,22 @@ class ProtectionViewDialog():
                     
     # Functions
 
-    def update_fields(self, el_index, prot_index):
+    def update_field(self, el_index, prot_index, code, value):
         """Update element fields from data models (using undoable fucntion)"""
+        # Set value in local field view
+        self.fields[prot_index][code]['value'] = value
+        # Use undoable function to set value for element
         element = self.elements[el_index]
         set_text_field = misc.get_undoable_set_field(self.stack, None, element)
-        with group(self, 'Update protection fields - ' + element.name):
-            for code, field in self.fields[prot_index].items():
-                set_text_field(code, field['value'])
+        set_text_field(code, value)
         # Update fieldview
         self.fieldviews[prot_index].update_widgets()
                 
     def update_parameters(self, para_index):
         """Update element parameters from data models (using undoable fucntion)"""
+        # Get parameter values to be updated
         fields = self.para_fields[para_index]
+        # Get undoable function to set value for element
         el_index, el_class = self.para_element_mapping[para_index]
         element = self.elements[el_index]
         set_text_field = misc.get_undoable_set_field(self.stack, None, element)
@@ -393,7 +406,8 @@ class ProtectionViewDialog():
         """Draw graphs from models generated"""
         index = self.combobox_title.get_active()
         self.graph_view.clear_plots()
-        self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
+        if self.graph_database:
+            self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
 
     def export_settings_spreadsheet(self, filename):
         """Export field and parameter settings of all tabs to spreadsheet"""

@@ -97,7 +97,8 @@ class FieldView:
             set_field(code, validated)  # set value
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             if field['alter_structure'] == True:
-                self.update_widgets(code)
+                self.update_alter_dict_status(code)
+                self.update_widgets()
             
         def activate_callback_list(widget, get_field, set_field, code):
             field = get_field(code)
@@ -122,20 +123,23 @@ class FieldView:
                             validated = 0
                 set_field(code, validated)  # set value
                 if field['alter_structure'] == True:
-                    self.update_widgets(code)
+                    self.update_alter_dict_status(code)
+                    self.update_widgets()
         
         def activate_callback_bool(widget, state, get_field, set_field, code):
             field = get_field(code)
             set_field(code, state)  # set value
             if field['alter_structure'] == True:
-                self.update_widgets(code)
+                self.update_alter_dict_status(code)
+                self.update_widgets()
                 
         def activate_callback_font(widget, get_field, set_field, code):
             field = get_field(code)
             font = widget.get_font()
             set_field(code, font)  # set value
             if field['alter_structure'] == True:
-                self.update_widgets(code)
+                self.update_alter_dict_status(code)
+                self.update_widgets()
 
         def activate_callback_path(widget, get_field, set_field, code):
             field = get_field(code)
@@ -149,13 +153,15 @@ class FieldView:
             set_field(code, text)  # set value
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             if field['alter_structure'] == True:
-                self.update_widgets(code)
+                self.update_alter_dict_status(code)
+                self.update_widgets()
                 
         def activate_callback_graphlist(widget, set_field, graphview, code):
             index = widget.get_active()
             set_field(code, graphview, index)  # set value
             if field['alter_structure'] == True:
-                self.update_widgets(code)
+                self.update_alter_dict_status(code)
+                self.update_widgets()
 
         def show_graph_dialog_callback(widget, title, model, xlim, ylim, xlabel, ylabel):
             # Function to show bigger graph as dialog
@@ -182,7 +188,7 @@ class FieldView:
                 parameters = data_new['parameters']
                 misc.update_params_from_fields(parameters, modified_fields['Parameters'])
                 set_field(code, data_new)
-                self.update_widgets(code)
+                self.update_widgets()
                             
         def changed_callback(widget):
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-error')
@@ -194,7 +200,8 @@ class FieldView:
             set_field(code, text)  # set value
             button.props.image.set_from_icon_name(None, Gtk.IconSize.BUTTON)
             if field['alter_structure'] == True:
-                self.update_widgets(code)
+                self.update_alter_dict_status(code)
+                self.update_widgets()
 
         def on_key_press_callback_multiline(widget, event, set_button, text_buffer, get_field, set_field, code):
             # Check for Ctrl+Enter key combination
@@ -452,7 +459,6 @@ class FieldView:
                             if field[self.inactivate_code] == False:
                                 parameters = field['value']['parameters']
                                 if parameters:
-                                    # Compile fields
                                     parameter_fields = misc.get_fields_from_params(parameters)
                                     edit_button.set_sensitive(True)
                                     edit_button.connect("clicked", edit_graph_parameters_callback, self.set_field, code, parameter_fields)
@@ -478,7 +484,7 @@ class FieldView:
                     data_widget.set_markup('<b>' + misc.clean_markup(field['caption']) + '</b>')
                     seperator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
                     vbox_extra = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-                    vbox_extra.props.margin_top = 18
+                    vbox_extra.props.margin_top = 12
                     # Pack
                     vbox_extra.pack_start(data_widget, False, False, 0)
                     vbox_extra.pack_start(seperator, True, True, 0)
@@ -517,22 +523,23 @@ class FieldView:
                 self.field_rows.append((row, data_widget))
             
         self.listbox.show_all()
+
+    def update_alter_dict_status(self, code):
+        """Update fields based on alter_values_dict"""
+        alter_values_dict = self.fields[code]['alter_values_dict']
+        value = self.fields[code]['value']
+        if alter_values_dict and value in alter_values_dict:
+            alter_values_dict_cur = alter_values_dict[value]
+            for set_key in alter_values_dict_cur:
+                if set_key in self.fields:
+                    set_value = alter_values_dict_cur[set_key]
+                    if set_value is None:
+                        self.fields[set_key]['status_enable'] = False
+                    else:
+                        self.fields[set_key]['status_enable'] = True
+                        self.fields[set_key]['value'] = set_value
         
-    def update_widgets(self, code=None):
-        # If code is specified, try to update fields based on alter_values_dict
-        if code:
-            alter_values_dict = self.fields[code]['alter_values_dict']
-            value = self.fields[code]['value']
-            if alter_values_dict and value in alter_values_dict:
-                alter_values_dict_cur = alter_values_dict[value]
-                for set_key in alter_values_dict_cur:
-                    if set_key in self.fields:
-                        set_value = alter_values_dict_cur[set_key]
-                        if set_value is None:
-                            self.fields[set_key]['status_enable'] = False
-                        else:
-                            self.fields[set_key]['status_enable'] = True
-                            self.fields[set_key]['value'] = set_value
+    def update_widgets(self):
         self.update(self.fields, self.caption, self.get_field, self.set_field)
         
     def clean(self):
@@ -590,7 +597,6 @@ class FieldViewDialog():
                 
             scrolled_window = Gtk.ScrolledWindow()
             listbox = Gtk.ListBox()
-            listbox.props.margin_top = 6
             scrolled_window.add_with_viewport(listbox)
             tab_label = Gtk.Label(title)
             self.notebook.append_page(scrolled_window, tab_label)

@@ -359,7 +359,8 @@ Creates a generic three phase motor element.
                     ('point', k*i_n, 0.01)]
         param = {'accel_time'  : ['Acceleration time', 's', 5, None],
                  'stall_time'  : ['Safe stall time', 's', 20, None],}
-        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        curves = {'curve_u': curve_u, 'curve_l': curve_l}
+        self.damage_model = ProtectionModel(title, param, curves, element_type='damage')
         if self.fields['dcurve']['value']:
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
@@ -469,7 +470,8 @@ Creates a generic single phase motor element.
                     ('point', k*i_n, 0.01)]
         param = {'accel_time'  : ['Acceleration time', 's', 3, None],
                  'stall_time'  : ['Safe stall time', 's', 20, None],}
-        self.damage_model = ProtectionModel(title, param, curve_u, curve_l, element_type='damage')
+        curves = {'curve_u': curve_u, 'curve_l': curve_l}
+        self.damage_model = ProtectionModel(title, param, curves, element_type='damage')
         if self.fields['dcurve']['value']:
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)

@@ -1276,12 +1276,7 @@ def get_fields_from_params(parameters, modify_code=''):
             status_enable = values[6]
         if len(values) >= 8:
             alter_values_dict = values[7]
-            if value in alter_values_dict:
-                default_parameter_dict.update(alter_values_dict[value])
             alter_structure = True
-        if key in default_parameter_dict:
-            if default_parameter_dict[key] is None:
-                status_enable = False
         fields[modify_code+key] = get_field_dict(data_type, caption, unit, value, 
                                                 selection_list=selection_list,
                                                 tooltip=tooltip,
@@ -1291,29 +1286,20 @@ def get_fields_from_params(parameters, modify_code=''):
                                                 alter_values_dict=alter_values_dict)
     return fields
 
+def update_params_from_params(parameters, new_parameters):
+    for key, values in new_parameters.items():
+        if key in parameters:
+            parameters[key][2] = values[2]
+            if len(parameters[key]) >= 7:
+                parameters[key][6] = values[6]
+
 def update_params_from_fields(parameters, fields):
     for key, field in fields.items():
         if key in parameters:
             parameters[key][2] = field['value']
-            values = parameters[key]
-            if field['status_enable'] is False:
-                selection_list = None
-                tooltip = ''
-                data_type = 'float'
-                status_enable = True
-                extra_values = []
-                if len(values) >= 4:
-                    selection_list = values[3]
-                if len(values) >= 5:
-                    tooltip = values[4]
-                if len(values) >= 6:
-                    data_type = values[5]
-                if len(values) >= 7:
-                    status_enable = values[6]
-                if len(values) >= 8:
-                    extra_values = values[7:]
-                parameters[key] = values[0:3] + [selection_list, tooltip, data_type, status_enable] + extra_values
-                
+            if len(parameters[key]) >= 7:
+                parameters[key][6] = field['status_enable']
+
     
 ELEMENT_FIELD = 0
 ELEMENT_RESULT = 1
@@ -1427,8 +1413,18 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                     graph_image.add_plots(graph_models)
                     img_tag = graph_image.get_embedded_html_image(figsize=(200, 200))
                 # Add graph options
-                for caption, unit, value, value_list in field['value']['parameters'].values():
-                    graph_fields += '</br>' + clean(caption + ' : ' + str(value) + ' ' + unit)
+                param_fields = get_fields_from_params(field['value']['parameters'])
+                for param_key, param_field in param_fields.items():
+                    caption = param_field['caption']
+                    unit = param_field['unit']
+                    value = param_field['value']
+                    status_enable = param_field['status_enable']
+                    param_type = param_field['type']
+                    if status_enable:
+                        if param_type == 'heading':
+                            graph_fields += '</br><b>' + clean(caption) + '</b>'
+                        else:
+                            graph_fields += '</br>' + clean(caption + ' : ' + str(value) + ' ' + unit)
                 table['Value'].append(img_tag + graph_fields.lstrip('</br>'))
             else:
                 table['Sl.No.'].append(index)
