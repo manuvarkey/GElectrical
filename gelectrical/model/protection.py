@@ -835,3 +835,93 @@ def get_protection_model(protection_type, ground_model=False):
                     'curve_u4': curve_u4, 'curve_l4': curve_l4,}
     
     return parameters, curves
+
+def get_thermal_protection_models(prot_class, magnetic=False):
+    curves = {}
+    parameters = dict()
+
+    # Thermal trip curves
+    # trip_curves = ['Class 10A', 'Class 10', 'Class 20', 'Class 30']
+    tms_dict = {'Class 10A': [93,355],
+                'Class 10': [186,355],
+                'Class 20': [279,710],
+                'Class 30': [418.5,1065]}
+
+    # Instantaneous trip constants
+    ii_default_values_dict = {  True    : {'i_i': 13, 't_i': 0.01, 'tol_ii_p': 20, 'tol_ii_m': 20, 'tol_ti_p': 100, 'tol_ti_m': 90}, 
+                                False   : {'i_i': None, 't_i': None, 'tol_ii_p': None, 'tol_ii_m': None, 'tol_ti_p': None, 'tol_ti_m': None}}
+        
+    In = 'f.In'
+    xIn = 'xIn'
+    Isc = '1000*f.Isc'
+
+    if magnetic is False:
+
+        def get_curves(Ir, Tr, t_min):
+            T_conv = '2*3600'
+            curve = [   ('point', Ir, T_conv),
+                        ('THERMAL', Tr, Ir, Ir + '*1.05', Isc, t_min, 50)]
+            return curve
+        
+        # Upper curve
+        Ir = '1.2*d.i_r*' + In
+        Tr = tms_dict[prot_class][1]
+        t_min = 'd.t_min'
+        curve_u = get_curves(Ir, Tr, t_min)
+        # Lower curve
+        Ir = '1.05*d.i_r*' + In
+        Tr = tms_dict[prot_class][0]
+        t_min = 0
+        curve_l = get_curves(Ir, Tr, t_min)
+        
+        parameters = {'head_t'  : ['Thermal protection', '', '', None, '', 'heading'],
+                    'i_r'       : ['Ir', xIn, 1, None, 'Thermal protection pickup current'],
+                    't_min'     : ['Tmin', 's', 0.1, None, 'Minimum trip time']}
+        curves = {'curve_u': curve_u, 'curve_l': curve_l}
+    
+    elif magnetic is True:
+        select_expr_list = ['d.i_i_on is False',
+                            'd.i_i_on is True']
+
+        def get_curves(Ir, Tr, t_min, Ii, Ti):
+            T_conv = '2*3600'
+            curve1 = [   ('point', Ir, T_conv),
+                        ('THERMAL', Tr, Ir, Ir + '*1.05', Isc, t_min, 50)]
+            curve2 = [   ('point', Ir, T_conv),
+                        ('THERMAL', Tr, Ir, Ir + '*1.05', Ii, Ti, 50),
+                        ('point', Ii, Ti),
+                        ('point', Isc, Ti)]
+            return curve1, curve2
+        
+        # Upper curve
+        Ir = '1.2*d.i_r*' + In
+        Tr = tms_dict[prot_class][1]
+        t_min = 'd.t_min'
+        Ii = '(d.i_i*(100+d.tol_ii_p)/100)*' + In
+        Ti = 'd.t_i*(100+d.tol_ti_p)/100'
+        curve_u1, curve_u2 = get_curves(Ir, Tr, t_min, Ii, Ti)
+        # Lower curve
+        Ir = '1.05*d.i_r*' + In
+        Tr = tms_dict[prot_class][0]
+        t_min = 0
+        Ii = '(d.i_i*(100-d.tol_ii_m)/100)*' + In
+        Ti = 'd.t_i*(100-d.tol_ti_m)/100'
+        curve_l1, curve_l2 = get_curves(Ir, Tr, t_min, Ii, Ti)
+        
+        parameters = {'head_t'  : ['Thermal protection', '', '', None, '', 'heading'],
+                    'i_r'       : ['Ir', xIn, 1, None, 'Thermal protection pickup current'],
+                    't_min'     : ['Tmin', 's', 0.1, None, 'Minimum trip time'],
+                    'head_i'        : ['Instantaneous protection', '', '', None, '', 'heading'],
+                    'i_i_on'        : ['Enable instantaneous protection', '', False, [True, False], '', 'bool', True, ii_default_values_dict],
+                    'i_i'           : ['Ii', xIn, 13, None, 'Instantaneous pickup current', 'float', False],
+                    't_i'           : ['Ti', 's', 0.01, None, 'Instantaneous trip time delay', 'float', False],
+                    'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', 'float', False],
+                    'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', 'float', False],
+                    'tol_ti_p'      : ['Ti tol (+)', '%', 100, None, 'Time delay tolerance (+)', 'float', False],
+                    'tol_ti_m'      : ['Ti tol (-)', '%', 90, None, 'Time delay tolerance (-)', 'float', False]}
+        
+        curves = {'select_expr_list': select_expr_list,
+                    'curve_u1': curve_u1, 'curve_l1': curve_l1,
+                    'curve_u2': curve_u2, 'curve_l2': curve_l2}
+        
+    return parameters, curves

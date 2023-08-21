@@ -27,7 +27,7 @@ from .. import misc
 from ..misc import FieldDict
 from .element import ElementModel
 from ..model.protection import ProtectionModel
-from ..model.protection import get_protection_model
+from ..model.protection import get_protection_model, get_thermal_protection_models
 
 
 # # Common trip curves to be used accross classes
@@ -517,8 +517,9 @@ Adds a circuit breaker element used for the protection of circuit elements.
         current_values_acb = [630,800,1000,1250,1600,2000,2500,3200]
 
         breaker_types = ['LV breakers', 'MV breakers']
-        subtypes_lv = ['MCB','MCCB','ACB','MPCB','CB','RCCB']
+        subtypes_lv = ['MCB','MCCB','ACB','CB', 'MPCB','RCCB']
         subtypes_mv = ['VCB']
+        prottypes_mpcb = ['Class 10A', 'Class 10', 'Class 20', 'Class 30']
         prottypes_cb = ['Thermal Magnetic', 'Thermal', 'Magnetic', 'Microprocessor', 'None']
         prottypes_cb_gf = ['None', 'Magnetic']
         prottypes_cb_mv = ['Microprocessor', 'Thermal Magnetic', 'Thermal', 'Magnetic', 'None']
@@ -537,7 +538,7 @@ Adds a circuit breaker element used for the protection of circuit elements.
         self.dict_prot_curve_type = {('LV breakers', 'MCB'): prottypes_mcb,
                                      ('LV breakers', 'MCCB'): prottypes_cb,
                                      ('LV breakers', 'ACB'): prottypes_cb,
-                                     ('LV breakers', 'MPCB'): prottypes_cb,
+                                     ('LV breakers', 'MPCB'): prottypes_mpcb,
                                      ('LV breakers', 'CB'): prottypes_cb,
                                      ('LV breakers', 'RCCB'): ['None'],
                                      ('MV breakers', 'VCB'): prottypes_cb_mv,}
@@ -655,6 +656,10 @@ Adds a circuit breaker element used for the protection of circuit elements.
                               't_m_min' : ['Instantaneous trip time (min)', 's', 0.001, None],
                               't_m_max' : ['Instantaneous trip time (max)', 's', 0.01, None]}
                 curves = {'curve_u': curve_u, 'curve_l': curve_l}
+
+            # Thermal overload relay as per IS/IEC 60947-4-1    
+            elif f.subtype in ('MPCB',):
+                parameters, curves = get_thermal_protection_models(f.prot_curve_type, magnetic=True)
             
             # CB generic IS/IEC 60947    
             elif f.prot_curve_type in ('Thermal',):
