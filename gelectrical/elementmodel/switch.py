@@ -734,25 +734,126 @@ Adds a contactor element used for on-load switching of loads.
         Switch.__init__(self, cordinates, **kwargs)
         self.ports = [[1, 0],
                       [1, 6]]
-        self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'K?'),
-                       'name':     self.get_field_dict('str', 'Name', '', ''),
-                       'type':    self.get_field_dict('str', 'Type', '', 'AC-3'),
-                       'poles':   self.get_field_dict('str', 'Poles', '', 'TP'),
-                       'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
-                       'In':      self.get_field_dict('float', 'In', 'A', 16),
-                       'closed':  self.get_field_dict('bool', 'Closed ?', '', True)}
+        # Data dropdowns
+        prottypes_ol = ['Class 10A', 'Class 10', 'Class 20', 'Class 30']
+        self.fields = {'custom'     : self.get_field_dict('bool', 'Custom ?', '', False, 
+                                                            status_enable=False,
+                                                            alter_structure=True),
+                        'ref':     self.get_field_dict('str', 'Reference', '', 'K?'),
+                        'name':     self.get_field_dict('str', 'Name', '', ''),
+                        'type':    self.get_field_dict('str', 'Type', '', 'AC-3'),
+                        'poles':   self.get_field_dict('str', 'Poles', '', 'TP'),
+                        'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
+                        'In':      self.get_field_dict('float', 'In', 'A', 16),
+                        'closed':  self.get_field_dict('bool', 'Closed ?', '', True),
+                        'trip_unit':  self.get_field_dict('bool', 'Trip unit ?', '', False,
+                                                          alter_structure=True),
+                        'prot_curve_type':  self.get_field_dict('str', 'Trpping class', '', 'Class 10A', 
+                                                            selection_list=prottypes_ol,
+                                                            alter_structure=True,
+                                                            status_enable=False),
+                        'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 5, 
+                                                            alter_structure=True,
+                                                            status_enable=False),
+                        'pcurve_l'   : self.get_field_dict('data', 'Line Protection', '', None, 
+                                                            alter_structure=True),
+                        'pcurve_g'   : self.get_field_dict('data', 'Ground Protection', '', None,
+                                                            status_enable=False,
+                                                            alter_structure=True)}
+        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS', {})
+        self.fields['pcurve_g']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+                                                    'CURRENT IN AMPERES', 
+                                                    'TIME IN SECONDS', {})
         self.text_model = [[(3.5,1), "${ref}", True],
                            [(3.5,None), "${'%g'%(In)}A, ${type}", True],
                            [(3.5,None), "${poles}", True],
                            [(3.5,None), "${name}", True]]
-        self.schem_model = [ 
+        self.schem_model_plain = [ 
                              ['LINE',(1,0),(1,2), []],
                              ['LINE',(1,4),(2.5,2), []],
                              ['LINE',(1,4),(1,6), []],
                              # Circle
                              ['ARC', (1,1.5), 0.5, -90, 90, []],
                            ]
+        self.schem_model_ol = self.schem_model_plain + [ 
+                            # Symbol
+                             ['LINE',(1.75,3),(2.15,3.3), [], 'thin'],
+                             ['LINE',(2.15,3.3),(2.45,2.9), [], 'thin'],
+                             ['LINE',(2.45,2.9), (2.85,3.2), [], 'thin'],
+                             ['LINE', (2.85,3.2),(2.55,3.6), [], 'thin'],
+                             ['LINE',(2.55,3.6),(2.95,3.9), [], 'thin']]
+        self.schem_model = self.schem_model_plain
+        self.calculate_parameters(init=True)
         self.assign_tootltips()
+
+    def render_element(self, context):
+        """Render element to context"""
+        # Preprocessing
+        if self.fields['trip_unit']['value'] == True:
+            self.schem_model = self.schem_model_ol
+        else:
+            self.schem_model = self.schem_model_plain
+        # Render
+        if self.fields['closed']['value'] == True:
+            self.render_model(context, self.schem_model)
+            self.render_text(context, self.text_model)
+        else:
+            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+        # Post processing
+        self.modify_extends()
+
+    def set_text_field_value(self, code, value):
+        ElementModel.set_text_field_value(self, code, value)
+        # Enable or disable curves
+        if self.fields['custom']['value']:
+            if self.fields['pcurve_l']['value']:
+                self.fields['pcurve_l']['status_enable'] = True
+        else:
+            # Line
+            if self.fields['trip_unit']['value']:
+                self.fields['prot_curve_type']['status_enable'] = True
+                self.fields['Isc']['status_enable'] = True
+                self.fields['pcurve_l']['status_enable'] = True
+            else:
+                self.fields['prot_curve_type']['status_enable'] = False
+                self.fields['Isc']['status_enable'] = False
+                self.fields['pcurve_l']['status_enable'] = False
+        if not self.model_loading:
+            self.calculate_parameters(init=True)
+
+
+    def set_model_cleanup(self):
+        self.calculate_parameters(init=False)
+
+    def calculate_parameters(self, init=False):
+        f = FieldDict(self.fields)
+        title = self.fields['ref']['value']
+        # Set line protection model
+        if f.trip_unit:
+            parameters, curves = get_thermal_protection_models(f.prot_curve_type, magnetic=False)
+        else:
+            parameters, curves = {}, {}
+
+        subtitle = title + ' - ' + 'L'
+        if curves:
+            self.line_protection_model = ProtectionModel(subtitle, parameters, curves)
+            if not init and self.fields['pcurve_l']['value'] is not None:
+                self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
+            self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
+        elif self.fields['custom']['value'] and self.fields['pcurve_l']['value']:
+            self.line_protection_model = ProtectionModel(subtitle, {}, 
+                                    self.fields['pcurve_l']['value']['data'])
+            self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
+        else:
+            self.fields['pcurve_l']['value'] = None
+            self.line_protection_model = None
+        # Set ground protection model
+        self.ground_protection_model = None
 
 
 class ChangeOver(ElementModel):
