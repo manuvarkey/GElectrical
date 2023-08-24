@@ -451,7 +451,7 @@ class MainWindow():
         if fields:
             self.program_settings.update(fields)
             with open(self.settings_filename, 'w') as fp:
-                json.dump(self.program_settings, fp, indent = 4)
+                json.dump(misc.get_fields_dict_trunc(self.program_settings), fp, indent = 4)
                 self.update_program_settings()
                 self.check_for_bad_font_settings()
                 log.info('MainWindow - on_project_settings - Program settings saved at ' + str(self.settings_filename))
@@ -903,7 +903,7 @@ class MainWindow():
             else:
                 self.program_settings = default_program_settings
                 with open(self.settings_filename, 'w') as fp:
-                    json.dump(self.program_settings, fp, indent = 4)
+                    json.dump(misc.get_fields_dict_trunc(self.program_settings), fp, indent = 4)
                 log.info('Program settings saved at ' + str(self.settings_filename))
         except:
             # If an error load default program preference
