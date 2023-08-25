@@ -612,12 +612,14 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             self.fields[code]['value'] = value
             # Modify variables based on selection
             if code == 'conductor_material':
-                self.fields['conductor_cross_section']['selection_list'] = self.cross_section_dict[value]
+                misc.set_field_selection_list(self.fields, 'conductor_cross_section', 
+                                              self.cross_section_dict[value])
             elif code == 'insulation_material':
-                self.fields['ambient_temp']['selection_list'] = self.ambient_temp_dict[value]
+                misc.set_field_selection_list(self.fields, 'ambient_temp', 
+                                              self.ambient_temp_dict[value])
             elif code == 'laying_type':
-                self.fields['laying_type_sub']['selection_list'] = self.laying_arrangements_dict[value]
-                self.fields['laying_type_sub']['value'] = self.laying_arrangements_dict[value][0]
+                misc.set_field_selection_list(self.fields, 'laying_type_sub', 
+                                              self.laying_arrangements_dict[value])
                 if value in self.laying_types[5:7]:
                     self.fields['ground_temp']['status_enable'] = True
                     self.fields['ambient_temp']['status_enable'] = False
@@ -627,14 +629,18 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                     self.fields['ambient_temp']['status_enable'] = True
                     self.fields['soil_thermal_resistivity']['status_enable'] = False
                 code1 = self.fields['laying_type']['selection_list'].index(value)
-                code2 = 0            
-                self.fields['no_in_group']['selection_list'] = self.no_groups_dict[code1, code2]
-                self.fields['no_of_layers']['selection_list'] = self.no_layers_dict[code1, code2]
+                code2 = 0
+                misc.set_field_selection_list(self.fields, 'no_in_group', 
+                                              self.no_groups_dict[code1, code2])
+                misc.set_field_selection_list(self.fields, 'no_of_layers', 
+                                              self.no_layers_dict[code1, code2])
             elif code == 'laying_type_sub':
                 code1 = self.fields['laying_type']['selection_list'].index(self.fields['laying_type']['value'])
-                code2 = self.fields['laying_type_sub']['selection_list'].index(value)            
-                self.fields['no_in_group']['selection_list'] = self.no_groups_dict[code1, code2]
-                self.fields['no_of_layers']['selection_list'] = self.no_layers_dict[code1, code2]
+                code2 = self.fields['laying_type_sub']['selection_list'].index(value)
+                misc.set_field_selection_list(self.fields, 'no_in_group', 
+                                              self.no_groups_dict[code1, code2])
+                misc.set_field_selection_list(self.fields, 'no_of_layers', 
+                                              self.no_layers_dict[code1, code2])
             elif code == 'cpe':
                 code_cpe = self.fields['cpe']['selection_list'].index(value)
                 if code_cpe in (0,1):
@@ -1059,23 +1065,20 @@ Use this element for overhead lines where parameters of the line are not known b
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
-                    self.fields['cpe']['selection_list'] = self.cpe_list
-                    self.fields['cpe']['value'] = self.cpe_list[0]
+                    misc.set_field_selection_list(self.fields, 'cpe', self.cpe_list)
                     self.fields['type']['value'] = 'Over Head'
                     self.fields['symbol']['value'] = 'PEN'
                 elif value in self.laying_types[4:6]:
                     self.fields['dims_d']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
-                    self.fields['cpe']['selection_list'] = self.cpe_list
-                    self.fields['cpe']['value'] = self.cpe_list[0]
+                    misc.set_field_selection_list(self.fields, 'cpe', self.cpe_list)
                     self.fields['type']['value'] = 'Over Head'
                     self.fields['symbol']['value'] = 'N'
                 elif value in self.laying_types[6]:
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
-                    self.fields['cpe']['selection_list'] = self.armour_list
-                    self.fields['cpe']['value'] = self.armour_list[0]
+                    misc.set_field_selection_list(self.fields, 'cpe', self.armour_list)
                     self.fields['armour_material']['status_enable'] = True
                     self.fields['armour_cross_section']['status_enable'] = True
                     self.fields['type']['value'] = 'Under Ground'

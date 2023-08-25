@@ -173,54 +173,50 @@ class ProtectionDevice(Switch):
         if code in ('type', 'subtype', 'prot_curve_type', 'prot_0_curve_type'):
             # Set subtype
             if self.fields['type']['value'] in self.dict_subtype:
-                self.fields['subtype']['selection_list'] = self.dict_subtype[self.fields['type']['value']]
+                misc.set_field_selection_list(self.fields, 'subtype', self.dict_subtype[self.fields['type']['value']])
                 self.fields['subtype']['status_enable'] = True
             else:
                 self.fields['subtype']['selection_list'] = None
                 self.fields['subtype']['value'] = 'None'
                 self.fields['subtype']['status_enable'] = False
-            if self.fields['subtype']['selection_list'] and self.fields['subtype']['value'] not in self.fields['subtype']['selection_list']:
-                self.fields['subtype']['value'] = self.fields['subtype']['selection_list'][0]
 
             # Set protection curve
             if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_curve_type:
-                self.fields['prot_curve_type']['selection_list'] = self.dict_prot_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])]
+                misc.set_field_selection_list(self.fields, 'prot_curve_type',
+                        self.dict_prot_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])])
                 self.fields['prot_curve_type']['status_enable'] = True
             else:
                 self.fields['prot_curve_type']['selection_list'] = None
                 self.fields['prot_curve_type']['value'] = 'None'
                 self.fields['prot_curve_type']['status_enable'] = False
             if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_0_curve_type:
-                self.fields['prot_0_curve_type']['selection_list'] = self.dict_prot_0_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])]
+                misc.set_field_selection_list(self.fields, 'prot_0_curve_type',
+                        self.dict_prot_0_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])])
                 self.fields['prot_0_curve_type']['status_enable'] = True
             else:
                 self.fields['prot_0_curve_type']['selection_list'] = None
                 self.fields['prot_0_curve_type']['value'] = 'None'
                 self.fields['prot_0_curve_type']['status_enable'] = False
-            if self.fields['prot_curve_type']['selection_list'] and self.fields['prot_curve_type']['value'] not in self.fields['prot_curve_type']['selection_list']:
-                self.fields['prot_curve_type']['value'] = self.fields['prot_curve_type']['selection_list'][0]
-            if self.fields['prot_0_curve_type']['selection_list'] and self.fields['prot_0_curve_type']['value'] not in self.fields['prot_0_curve_type']['selection_list']:
-                self.fields['prot_0_curve_type']['value'] = self.fields['prot_0_curve_type']['selection_list'][0]
 
             # Set In selection list
             if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value']) in self.dict_in:
-                self.fields['In']['selection_list'] = self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value'])]
+                misc.set_field_selection_list(self.fields, 'In', 
+                        self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value'])])
             elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_in:
-                self.fields['In']['selection_list'] = self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], '*')]
+                misc.set_field_selection_list(self.fields, 'In', 
+                        self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], '*')])
             else:
                 self.fields['In']['selection_list'] = None
-            if self.fields['In']['selection_list'] and self.fields['In']['value'] not in self.fields['In']['selection_list']:
-                self.fields['In']['value'] = self.fields['In']['selection_list'][0]
 
             # Set I0 selection list
             if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value']) in self.dict_i0:
-                self.fields['I0']['selection_list'] = self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value'])]
+                misc.set_field_selection_list(self.fields, 'I0', 
+                        self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value'])])
             elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_i0:
-                self.fields['I0']['selection_list'] = self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], '*')]
+                misc.set_field_selection_list(self.fields, 'I0', 
+                        self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], '*')])
             else:
                 self.fields['I0']['selection_list'] = None
-            if self.fields['I0']['selection_list'] and self.fields['I0']['value'] not in self.fields['I0']['selection_list']:
-                self.fields['I0']['value'] = self.fields['I0']['selection_list'][0]
 
             # Enable or disable curves
             if self.fields['custom']['value']:

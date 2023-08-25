@@ -1248,6 +1248,11 @@ def update_fields_dict(reffields_dict, newfields_dict):
             updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
     return updated
 
+def set_field_selection_list(field, code, selection_list):
+    field[code]['selection_list'] = selection_list
+    if (selection_list is not None) and (field[code]['value'] not in selection_list):
+        field[code]['value'] = selection_list[0]
+
 def get_fields_from_params(parameters, modify_code=''):
     """Return feilds from paramater dict
         Order of parameters: caption, unit, value, [selection_list, tooltip, data_type, status_enable, default_values_dict]
