@@ -1377,7 +1377,7 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
     index = 1
     for field in fields.values():
         if field['status_enable'] == True:
-            if field['type'] not in ('graph', 'data'):
+            if field['type'] not in ('graph', 'data', 'heading'):
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
                 table['Unit'].append(field['unit'])
@@ -1397,6 +1397,12 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                         table['Value'].append(value)
                 else:
                     table['Value'].append(value)
+                index += 1
+            elif field['type'] == 'heading':
+                table['Sl.No.'].append('')
+                table['Description'].append('<b>' + clean(field['caption']) + '</b>')
+                table['Unit'].append(field['unit'])
+                table['Value'].append(clean(field['value']))
             elif field['type'] == 'data':
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
@@ -1426,6 +1432,7 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                         else:
                             graph_fields += '</br>' + clean(caption + ' : ' + str(value) + ' ' + unit)
                 table['Value'].append(img_tag + graph_fields.lstrip('</br>'))
+                index += 1
             else:
                 table['Sl.No.'].append(index)
                 table['Description'].append(clean(field['caption']))
@@ -1444,7 +1451,7 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                         table['Value'].append(img_tag)
                     else:
                         table['Value'].append(clean(title))
-            index += 1
+                index += 1
     return pd.DataFrame(table).to_html(index=False, escape=False, classes='element_fields')
     
 def params_to_table(fields_list, titles):
