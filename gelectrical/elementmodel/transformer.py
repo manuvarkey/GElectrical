@@ -48,6 +48,9 @@ Creates a two-winding transformer.
                       [2, 10]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'T?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
+                       'sym_hv':        self.get_field_dict('str', 'HV Symbol', '', 'D'),
+                       'sym_lv':        self.get_field_dict('str', 'LV Symbol', '', 'Yn'),
+                       'head_param':    self.get_field_dict('heading', 'Parameters', '', ''),
                        'sn_mva':        self.get_field_dict('float', 'Sn', 'MVA', 1),
                        'vn_hv_kv':      self.get_field_dict('float', 'Un (HV)', 'kV', 11),
                        'vn_lv_kv':      self.get_field_dict('float', 'Un (LV)', 'kV', 0.415),
@@ -62,18 +65,17 @@ Creates a two-winding transformer.
                        'vector_group':  self.get_field_dict('str', 'Vector Group', '', 'Dyn', selection_list=['Dyn','Yyn','Yzn','YNyn']),
                        'pfe_kw':        self.get_field_dict('float', 'Pfe', 'kW', 30),
                        'i0_percent':    self.get_field_dict('float', 'I0', '%', 0.1),
-                       'sym_hv':        self.get_field_dict('str', 'HV Symbol', '', 'D'),
-                       'sym_lv':        self.get_field_dict('str', 'LV Symbol', '', 'Yn'),
+                       'xn_ohm': self.get_field_dict('float', 'Impedance of the grounding reactor', 'Ohm', 0),
+                       'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
+                                                                    alter_structure=True),
+                       'head_tap':     self.get_field_dict('heading', 'Tap changer', '', ''),
                        'tap_side':      self.get_field_dict('str', 'Tap side', '', 'hv',
                                                             selection_list=['hv','lv']),
                        'tap_min':       self.get_field_dict('int', 'Minimum tap position', '', -2),
                        'tap_max':       self.get_field_dict('int', 'Maximum tap position', '', 4),
                        'tap_pos':       self.get_field_dict('int', 'Current tap position', '', 0),
                        'tap_step_percent': self.get_field_dict('float', 'Tap step size', '%', 2.5),
-                       'oltc':          self.get_field_dict('bool', 'OLTC provided ?', '', False),
-                       'xn_ohm': self.get_field_dict('float', 'Impedance of the grounding reactor', 'Ohm', 0),
-                       'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
-                                                                    alter_structure=True),}
+                       'oltc':          self.get_field_dict('bool', 'OLTC provided ?', '', False)}
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
@@ -192,6 +194,10 @@ Creates a three-winding transformer.
                       [6, 10]]
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'T?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
+                       'sym_hv':        self.get_field_dict('str', 'HV Symbol', '', 'D'),
+                       'sym_mv':        self.get_field_dict('str', 'MV Symbol', '', 'Yn'),
+                       'sym_lv':        self.get_field_dict('str', 'LV Symbol', '', 'Yn'),
+                       'head_param':    self.get_field_dict('heading', 'Parameters', '', ''),
                        'sn_hv_mva':     self.get_field_dict('float', 'Sn (HV)', 'MVA', 40),
                        'sn_mv_mva':     self.get_field_dict('float', 'Sn (MV)', 'MVA', 20),
                        'sn_lv_mva':     self.get_field_dict('float', 'Sn (LV)', 'MVA', 20),
@@ -207,10 +213,7 @@ Creates a three-winding transformer.
                        'pfe_kw':        self.get_field_dict('float', 'Pfe', 'kW', 30),
                        'i0_percent':    self.get_field_dict('float', 'I0m', '%', 0.1),
                        'shift_mv_degree':   self.get_field_dict('float', 'Shift MV Degree', 'deg', 30),
-                       'shift_lv_degree':   self.get_field_dict('float', 'Shift LV Degree', 'deg', 30),
-                       'sym_hv':        self.get_field_dict('str', 'HV Symbol', '', 'D'),
-                       'sym_mv':        self.get_field_dict('str', 'MV Symbol', '', 'Yn'),
-                       'sym_lv':        self.get_field_dict('str', 'LV Symbol', '', 'Yn')}
+                       'shift_lv_degree':   self.get_field_dict('float', 'Shift LV Degree', 'deg', 30)}
         
         self.text_model = [[(8.5,2.5), "${ref}", True],
                            [(8.5,None), "${sn_hv_mva}/${sn_mv_mva}/${sn_lv_mva}MVA", True],

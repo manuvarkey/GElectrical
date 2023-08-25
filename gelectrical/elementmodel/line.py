@@ -62,6 +62,11 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
 
         self.fields = {'ref':           self.get_field_dict('str', 'Reference', '', 'W?'),
                        'name':          self.get_field_dict('str', 'Name', '', ''),
+                       'designation':   self.get_field_dict('str', 'Designation', '', ''),
+                       'type':          self.get_field_dict('str', 'Type of Line', '', 'Under Ground', 
+                                                            selection_list=['Over Head','Under Ground']),
+                       'parallel':      self.get_field_dict('int', '# Parallel Lines', '', 1,
+                                                            alter_structure=True),
                        'length_km':     self.get_field_dict('float', 'Length', 'km', 0.1),
                        'conductor_material': self.get_field_dict('str', 'Conductor material', '', 
                                                                 self.conductor_materials[0], 
@@ -71,6 +76,10 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                                                                 self.insulation_materials[0], 
                                                                 selection_list=self.insulation_materials,
                                                                 alter_structure=True),
+                       'symbol':   self.get_field_dict('str', 'Line symbols', '', 'None',
+                                                         selection_list=['None', 'PE', 'N', 'PE+N', 'PEN'] ),
+                       'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
+                       'head_par' : self.get_field_dict('heading', 'Parameters', '', ''),
                        'r_ohm_per_km':  self.get_field_dict('float', 'R', 'Ohm/km', 0.1),
                        'x_ohm_per_km':  self.get_field_dict('float', 'X', 'Ohm/km', 0.1),
                        'c_nf_per_km':   self.get_field_dict('float', 'C', 'nF/km', 0),
@@ -81,6 +90,9 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                        'r0g_ohm_per_km': self.get_field_dict('float', 'R0g', 'Ohm/km', 0.1),
                        'x0g_ohm_per_km': self.get_field_dict('float', 'X0g', 'Ohm/km', 0.1),
                        'c0g_nf_per_km':  self.get_field_dict('float', 'C0g', 'nF/km', 0),
+                       'working_temp_degree': self.get_field_dict('float', 
+                                                        'Ti', 'degC', 70,
+                                                        alter_structure=True),
                        'endtemp_degree':self.get_field_dict('float', 'Tf', 'degC', 160,
                                                                 alter_structure=True),
                        'max_i_ka':      self.get_field_dict('float', 'Iz', 'kA', 0.1,
@@ -90,16 +102,8 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                        'cpe_sc_current_rating': self.get_field_dict('float', 'Isc cpe (1s)', 'kA', 10),
                        'df':            self.get_field_dict('float', 'DF', '', 1,
                                                                     alter_structure=True),
-                       'designation':   self.get_field_dict('str', 'Designation', '', ''),
-                       'type':          self.get_field_dict('str', 'Type of Line', '', 'Under Ground', 
-                                                            selection_list=['Over Head','Under Ground']),
-                       'parallel':      self.get_field_dict('int', '# Parallel Lines', '', 1,
-                                                            alter_structure=True),
                        'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
-                                                                    alter_structure=True),
-                       'symbol':   self.get_field_dict('str', 'Line symbols', '', 'None',
-                                                         selection_list=['None', 'PE', 'N', 'PE+N', 'PEN'] ),
-                       'in_service':    self.get_field_dict('bool', 'In Service ?', '', True)}
+                                                                    alter_structure=True)}
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
@@ -180,6 +184,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                                         'x0_ohm_per_km': self.fields['x0n_ohm_per_km']['value'],
                                         'c0_nf_per_km': self.fields['c0n_nf_per_km']['value'],
                                         'g_us_per_km': self.fields['g_us_per_km']['value'],
+                                        'temperature_degree_celsius': self.fields['working_temp_degree']['value'],
                                         'endtemp_degree': self.fields['endtemp_degree']['value'],
                                         'max_i_ka': self.fields['max_i_ka']['value'],
                                         'df': self.fields['df']['value'],
@@ -196,6 +201,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                                         'x0_ohm_per_km': self.fields['x0g_ohm_per_km']['value'],
                                         'c0_nf_per_km': self.fields['c0g_nf_per_km']['value'],
                                         'g_us_per_km': self.fields['g_us_per_km']['value'],
+                                        'temperature_degree_celsius': self.fields['working_temp_degree']['value'],
                                         'endtemp_degree': self.fields['endtemp_degree']['value'],
                                         'max_i_ka': self.fields['max_i_ka']['value'],
                                         'df': self.fields['df']['value'],
@@ -501,6 +507,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.fields['x0n_ohm_per_km']['status_inactivate'] = True
         self.fields['c0g_nf_per_km']['status_enable'] = False
         self.fields['c0n_nf_per_km']['status_enable'] = False
+        self.fields['working_temp_degree']['status_inactivate'] = True
         self.fields['endtemp_degree']['status_inactivate'] = True
         self.fields['max_i_ka']['status_inactivate'] = True
         self.fields['type']['status_enable'] = False
@@ -512,6 +519,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.fields['length_km']['alter_structure'] = True
         
         # Add new fields
+        self.fields['head_line'] = self.get_field_dict('heading', 'Line sizing', '', '')
         self.fields['conductor_cross_section'] = self.get_field_dict('float', 'Phase nominal\ncross-sectional area', 'sq.mm.', 
                                                                      25, selection_list=cross_sections_cu,
                                                                      alter_structure=True)
@@ -521,6 +529,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                                                           alter_structure=True)
         self.fields['type_of_cable'] = self.get_field_dict('str', 'Type', '', '3ph', selection_list=['1ph','3ph'],
                                                            alter_structure=True)
+        self.fields['head_cpe'] = self.get_field_dict('heading', 'CPE sizing', '', '')
         self.fields['cpe'] = self.get_field_dict('str', 'CPE Conductor', '', self.cpe_list[1], 
                                                  selection_list=self.cpe_list,
                                                  alter_structure=True,)
@@ -542,6 +551,9 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.fields['cpe_cross_section'] = self.get_field_dict('float', 'CPE nominal\ncross-sectional area', 'sq.mm.', 
                                                                0, alter_structure=True,
                                                                status_enable=False)
+        self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
+        self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
+        self.fields['head_inst'] = self.get_field_dict('heading', 'Installation', '', '')
         self.fields['laying_type'] = self.get_field_dict('str', 'Laying type', '', self.laying_types[0], 
                                                          selection_list=self.laying_types,
                                                          selection_image_list=self.laying_types_images,
@@ -564,8 +576,6 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                                                                       alter_structure=True)
         self.fields['dfs'] = self.get_field_dict('str', 'Calculated DFs', '', 'Ca=1, Cg=1, Ci=1, Ch=1', status_inactivate=True)                                              
         self.fields['user_df'] = self.get_field_dict('float', 'Additional DF', '', 1, alter_structure=True)
-        self.fields['armour_sc_current_rating'] = self.get_field_dict('float', 'Isc armour (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
-        self.fields['ext_cpe_sc_current_rating'] = self.get_field_dict('float', 'Isc cpe ext (1s)', 'kA', 0, status_inactivate=True, status_enable=False)
         self.calculate_parameters()
         self.assign_tootltips()
         
@@ -649,7 +659,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                     self.fields['cpe_material']['status_enable'] = False
                     self.fields['cpe_insulation']['status_enable'] = False
                     self.fields['cpe_cross_section']['status_enable'] = False
-                    self.fields['armour_sc_current_rating']['status_enable'] = False
+                    self.fields['armour_sc_current_rating']['status_enable'] = True
                     self.fields['ext_cpe_sc_current_rating']['status_enable'] = False
                 elif code_cpe == 5:
                     self.fields['armour_material']['status_enable'] = True
@@ -912,6 +922,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.fields['r0g_ohm_per_km']['value'] = round(r_0, 3)
         self.fields['x0g_ohm_per_km']['value'] = round(x_0, 3)
 
+        self.fields['working_temp_degree']['value'] = phase_working_temp
         self.fields['endtemp_degree']['value'] = phase_ultimate_temp
         self.fields['max_i_ka']['value'] = Imax/1000
         self.fields['df']['value'] = round(self.fields['user_df']['value']*Ci*Cg*Ca*Ch, 3)
@@ -983,13 +994,14 @@ Use this element for overhead lines where parameters of the line are not known b
         self.fields['type']['status_enable'] = False
         self.fields['type']['value'] = 'Over Head'
         self.fields['symbol']['status_enable'] = False
+        self.fields['working_temp_degree']['value'] = 70
         self.fields['endtemp_degree']['value'] = 250
         self.fields['phase_sc_current_rating']['status_inactivate'] = True
         self.fields['cpe_sc_current_rating']['status_inactivate'] = True
-        self.fields['df']['status_inactivate'] = True
         self.fields['length_km']['alter_structure'] = True
         
         # Add new fields
+        self.fields['head_geom'] = self.get_field_dict('heading', 'Geometry', '', '')
         self.fields['laying_type'] = self.get_field_dict('str', 'Line type', '', self.laying_types[1],
                                                          selection_list=self.laying_types,
                                                          selection_image_list=self.laying_types_images,
@@ -1013,10 +1025,6 @@ Use this element for overhead lines where parameters of the line are not known b
                                                                   status_enable=False)
         self.fields['soil_resistivity'] = self.get_field_dict('float', 'Soil resistivity', 'Ohm.m', 100,
                                                               alter_structure=True)
-        self.fields['working_temp_degree'] = self.get_field_dict(
-            'float', 'Line Working Temperature', 'degC', 70, alter_structure=True)
-        self.fields['user_df'] = self.get_field_dict(
-            'float', 'Additional DF', '', 1, alter_structure=True)
         self.calculate_parameters()
         self.assign_tootltips()
         
@@ -1227,7 +1235,6 @@ Use this element for overhead lines where parameters of the line are not known b
         self.fields['x0n_ohm_per_km']['value'] = round(x_0n, 3)
         self.fields['r0g_ohm_per_km']['value'] = round(r_0, 3)
         self.fields['x0g_ohm_per_km']['value'] = round(x_0, 3)
-        self.fields['df']['value'] = round(self.fields['user_df']['value'], 3)
         self.fields['phase_sc_current_rating']['value'] = round(phase_sc_current_rating/1000, 3)
         self.fields['cpe_sc_current_rating']['value'] = round(cpe_sc_current_rating/1000, 3)
 
@@ -1273,6 +1280,7 @@ Creates a bus trunking element with known parameters.
         self.fields['r_ohm_per_km']['alter_structure'] = True
         self.fields['x_ohm_per_km']['alter_structure'] = True
         # New fields
+        self.fields['head_addnlpar'] = self.get_field_dict('heading', 'Additional parameters', '', '')
         self.fields['r_n_ohm_per_km'] = self.get_field_dict('float', 'Rn', 'Ohm/km', 0.1,
                                                           alter_structure=True)
         self.fields['x_n_ohm_per_km'] = self.get_field_dict('float', 'Xn', 'Ohm/km', 0.1,
