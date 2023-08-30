@@ -171,9 +171,11 @@ class ProtectionDevice(Switch):
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
         if code in ('type', 'subtype', 'prot_curve_type', 'prot_0_curve_type'):
+            modified = {}
             # Set subtype
             if self.fields['type']['value'] in self.dict_subtype:
-                misc.set_field_selection_list(self.fields, 'subtype', self.dict_subtype[self.fields['type']['value']])
+                misc.set_field_selection_list(self.fields, 'subtype', self.dict_subtype[self.fields['type']['value']],
+                                               modified)
                 self.fields['subtype']['status_enable'] = True
             else:
                 self.fields['subtype']['selection_list'] = None
@@ -183,7 +185,8 @@ class ProtectionDevice(Switch):
             # Set protection curve
             if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_curve_type:
                 misc.set_field_selection_list(self.fields, 'prot_curve_type',
-                        self.dict_prot_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])])
+                        self.dict_prot_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])], 
+                        modified)
                 self.fields['prot_curve_type']['status_enable'] = True
             else:
                 self.fields['prot_curve_type']['selection_list'] = None
@@ -191,7 +194,8 @@ class ProtectionDevice(Switch):
                 self.fields['prot_curve_type']['status_enable'] = False
             if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_0_curve_type:
                 misc.set_field_selection_list(self.fields, 'prot_0_curve_type',
-                        self.dict_prot_0_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])])
+                        self.dict_prot_0_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])], 
+                        modified)
                 self.fields['prot_0_curve_type']['status_enable'] = True
             else:
                 self.fields['prot_0_curve_type']['selection_list'] = None
@@ -201,20 +205,24 @@ class ProtectionDevice(Switch):
             # Set In selection list
             if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value']) in self.dict_in:
                 misc.set_field_selection_list(self.fields, 'In', 
-                        self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value'])])
+                        self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value'])], 
+                        modified)
             elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_in:
                 misc.set_field_selection_list(self.fields, 'In', 
-                        self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], '*')])
+                        self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], '*')], 
+                        modified)
             else:
                 self.fields['In']['selection_list'] = None
 
             # Set I0 selection list
             if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value']) in self.dict_i0:
                 misc.set_field_selection_list(self.fields, 'I0', 
-                        self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value'])])
+                        self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value'])], 
+                        modified)
             elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_i0:
                 misc.set_field_selection_list(self.fields, 'I0', 
-                        self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], '*')])
+                        self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], '*')], 
+                        modified)
             else:
                 self.fields['I0']['selection_list'] = None
 
@@ -239,8 +247,10 @@ class ProtectionDevice(Switch):
                 else:
                     self.fields['I0']['status_enable'] = True
                     self.fields['pcurve_g']['status_enable'] = True
+            
             if not self.model_loading:
                 self.calculate_parameters(init=True)
+            return modified
         else:
             if not self.model_loading:
                 self.calculate_parameters(init=False)
@@ -507,10 +517,11 @@ Adds a circuit breaker element used for the protection of circuit elements.
                       [1, 6]]
         pole_types = ['SP', 'SPN', 'DP', 'TP', 'TPN', 'FP']
         current_values_mcb = [6,10,16,20,25,32,40,50,63,80,100]
-        current_values_rccb = [25,32,40,63,80,100]
-        current_values_0_rccb = [0.03, 0.1, 0.3, 0.5]
-        current_values_mccb = [16,20,25,32,40,50,63,80,100,125,160,200,250,320,400,500,630,800,1000]
-        current_values_acb = [630,800,1000,1250,1600,2000,2500,3200]
+        current_values_rccb = current_values_mcb[:]
+        current_values_0_rccb_i = [0.006, 0.01, 0.03, 0.1, 0.3, 0.5, 1, 3, 10, 30]
+        current_values_0_rccb_s = [0.1, 0.3, 0.5, 1, 3, 10, 30]
+        current_values_mccb = [16,20,25,32,40,50,63,80,100,125,160,200,250,320,400,500,630,800,1000,1250,1600]
+        current_values_acb = [630,800,1000,1250,1600,2000,2500,3200,4000,5000,6300]
 
         breaker_types = ['LV breakers', 'MV breakers']
         subtypes_lv = ['MCB','MCCB','ACB','CB', 'MPCB','RCCB']
@@ -528,7 +539,8 @@ Adds a circuit breaker element used for the protection of circuit elements.
                         ('LV breakers', 'MPCB', '*'): None,
                         ('LV breakers', 'CB', '*'): None,
                         ('LV breakers', 'RCCB', '*'): current_values_rccb}
-        self.dict_i0 = {('LV breakers', 'RCCB', '*'): current_values_0_rccb}
+        self.dict_i0 = {('LV breakers', 'RCCB', 'Instantaneous'): current_values_0_rccb_i,
+                        ('LV breakers', 'RCCB', 'Selective'): current_values_0_rccb_s}
         self.dict_subtype = {'LV breakers': subtypes_lv,
                             'MV breakers': subtypes_mv}
         self.dict_prot_curve_type = {('LV breakers', 'MCB'): prottypes_mcb,
@@ -536,7 +548,6 @@ Adds a circuit breaker element used for the protection of circuit elements.
                                      ('LV breakers', 'ACB'): prottypes_cb,
                                      ('LV breakers', 'MPCB'): prottypes_mpcb,
                                      ('LV breakers', 'CB'): prottypes_cb,
-                                     ('LV breakers', 'RCCB'): ['None'],
                                      ('MV breakers', 'VCB'): prottypes_cb_mv,}
         self.dict_prot_0_curve_type = {('LV breakers', 'RCCB'): sub_types_rccb,
                                         ('LV breakers', 'MCCB'): prottypes_cb_gf,
@@ -677,27 +688,30 @@ Adds a circuit breaker element used for the protection of circuit elements.
         if f.type in ('LV breakers','MV breakers'):
 
             if f.subtype in ('RCCB',):
-                t_m_min = 0.001
-                t_m_max = 0.01
                 if f.prot_0_curve_type in ('Selective',):
-                    t_delay = 0.1
-                    t_delay_enable = True
-                    t_inst_enable = False
+                    curve_u = [ ('point', 'f.I0', 3600),
+                                ('point', 'f.I0', 0.5),
+                                ('point', '2*f.I0', 0.2),
+                                ('point', '5*f.I0', 0.15),
+                                ('point', '10*f.I0', 0.15),
+                                ('point', '1000*f.Isc', 0.15)]
+                    curve_l = [ ('point', 'f.I0*0.5', 3600),
+                            ('point', 'f.I0*0.5', 0.06),
+                            ('point', '1000*f.Isc', 0.06)]
+                    parameters = {}
                 else:
-                    t_delay = 0
-                    t_delay_enable = False
-                    t_inst_enable = True
-                curve_u = [ ('point', 'f.I0', 3600),
-                            ('point', 'f.I0', 'd.t_delay*(100+d.tol_t_p)/100 + d.t_m_max'),
-                            ('point', '1000*f.Isc', 'd.t_delay*(100+d.tol_t_p)/100 + d.t_m_max')]
-                curve_l = [ ('point', 'f.I0*0.5', 3600),
-                            ('point', 'f.I0*0.5', 'd.t_delay*(100-d.tol_t_m)/100 + d.t_m_min'),
-                            ('point', '1000*f.Isc', 'd.t_delay*(100-d.tol_t_m)/100 + d.t_m_min')]
-                parameters = {'t_m_min' : ['Instantaneous trip time (min)', 's', t_m_min, None, '', 'float', t_inst_enable],
-                              't_m_max' : ['Instantaneous trip time (max)', 's', t_m_max, None, '', 'float', t_inst_enable],
-                              't_delay' : ['Ground fault delay', 's', t_delay, None, '', 'float', t_delay_enable],
-                              'tol_t_p' : ['Time delay tolerance (+)', '%', 10, None],
-                              'tol_t_m' : ['Time delay tolerance (-)', '%', 10, None]}
+                    curve_u = [ ('point', 'f.I0', 3600),
+                                ('point', 'f.I0', 0.3),
+                                ('point', '2*f.I0', 0.15),
+                                ('point', '5*f.I0 if f.I0 > 0.03 else 0.25', 0.04),
+                                ('point', '10*f.I0 if f.I0 > 0.03 else 0.5', 0.04),
+                                ('point', '1000*f.Isc', 0.04)]
+                    curve_l = [ ('point', 'f.I0*0.5', 3600),
+                                ('point', 'f.I0*0.5', 0.001),
+                                ('point', '1000*f.Isc', 0.001)]
+                    parameters = {}
+                
+                
                 curves = {'curve_u': curve_u, 'curve_l': curve_l}
 
             # CB generic IS/IEC 60947    

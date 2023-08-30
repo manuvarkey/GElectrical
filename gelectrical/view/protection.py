@@ -322,12 +322,16 @@ class ProtectionViewDialog():
 
     def update_field(self, el_index, prot_index, code, value):
         """Update element fields from data models (using undoable fucntion)"""
+        element = self.elements[el_index]
         # Set value in local field view
         self.fields[prot_index][code]['value'] = value
         # Use undoable function to set value for element
-        element = self.elements[el_index]
         set_text_field = misc.get_undoable_set_field(self.stack, None, element)
         set_text_field(code, value)
+        # Refresh selection list for fields
+        for code_sub in self.fields[prot_index]:
+            if code_sub != code:
+                misc.set_field_selection_list(self.fields[prot_index], code_sub, element.fields[code_sub]['selection_list'])
         # Update fieldview
         self.fieldviews[prot_index].update_widgets()
                 

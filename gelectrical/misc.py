@@ -295,12 +295,15 @@ def get_undoable_set_field(stack, refresh, element):
         @undoable
         def set_text_field_value_undo(self, code, value):
             oldval = element.get_text_field(code)['value']
-            element.set_text_field_value(code, value)
+            modified = element.set_text_field_value(code, value)
             if self.refresh:
                 self.refresh() 
             yield "Modify '{}' field  of '{}' element".format(code, element.name)
             # Undo action
             element.set_text_field_value(code, oldval)
+            if modified:
+                for code, value in modified.items():
+                    element.set_text_field_value(code, value)
             if self.refresh:
                 self.refresh() 
     return UndoableSetTextValue(stack, refresh).set_text_field_value_undo
@@ -1248,9 +1251,10 @@ def update_fields_dict(reffields_dict, newfields_dict):
             updated[key] = update_fields(reffields_dict[key], newfields_dict[key])
     return updated
 
-def set_field_selection_list(field, code, selection_list):
+def set_field_selection_list(field, code, selection_list, modified={}):
     field[code]['selection_list'] = selection_list
     if (selection_list is not None) and (field[code]['value'] not in selection_list):
+        modified[code] = field[code]['value'] 
         field[code]['value'] = selection_list[0]
 
 def get_fields_from_params(parameters, modify_code=''):
