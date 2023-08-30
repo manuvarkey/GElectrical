@@ -136,7 +136,7 @@ class ProjectModel:
         selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES + ('element_display_node',))
         if selected_elements:
             # Populate voltage levels for breakers
-            if self.status['power_results'] == False:
+            if self.status['power_results'] == False or self.stack.haschanged():
                 self.setup_base_model()
                 self.build_power_model()
                 self.update_results()
