@@ -18,7 +18,7 @@
 #  
 # 
 
-import copy
+import copy, logging
 import numpy as np
 from shapely import Polygon, Point, LineString
 # from scipy.interpolate import interp1d
@@ -31,6 +31,9 @@ from shapely import Polygon, Point, LineString
 # local files import
 from .. import misc
 from ..misc import FieldDict
+
+# Get logger object
+log = logging.getLogger(__name__)
 
 
 class ProtectionModel():
@@ -59,6 +62,7 @@ class ProtectionModel():
                                         ('US_CO2_INV', tms, i_n, t_min, i1, i2, n), 
                                         ('THERMAL', tms, i_n, t_min, i1, i2, n), 
                                         ('I2T', tms, i_n, t_min, i1, i2, n, k, alpha), 
+                                        ('POLYLOG', tms, i_n, t_min, i1, i2, n, k0, k1, k2, k3, k4), 
                                             ... ],
                                         'curve_l1': ...,
                         'selection_criterion_2' :  ...
@@ -77,7 +81,8 @@ class ProtectionModel():
                                     ('US_CO8_INV', tms, i_n, t_min, i1, i2, n), 
                                     ('US_CO2_INV', tms, i_n, t_min, i1, i2, n), 
                                     ('THERMAL', tms, i_n, t_min, i1, i2, n), 
-                                    ('I2T', tms, i_n, t_min, i1, i2, n, k, c, alpha), 
+                                    ('I2T', tms, i_n, t_min, i1, i2, n, k, c, alpha),
+                                    ('POLYLOG', tms, i_n, t_min, i1, i2, n, k0, k1, k2, k3, k4),  
                                                                 ... ],
                          'curve_l': ...,
                         }
@@ -270,6 +275,23 @@ class ProtectionModel():
                 return list(i_array), list(t_array)
             else:
                 return [], []
+            
+        def polylog(tms, i_n, i1, i2, t_min, n, k0_polylog=0, k1_polylog=0, k2_polylog=0, k3_polylog=0, k4_polylog=0, **vars):
+            # Equation of the form log10 T = k0 + k1*log10(M-1) + k2*log10(M-1)**2 + k3*log10(M-1)**3 + k4*log10(M-1)**4
+            k0 = k0_polylog
+            k1 = k1_polylog
+            k2 = k2_polylog
+            k3 = k3_polylog
+            k4 = k4_polylog
+            if i2 > i1:
+                i_array = np.geomspace(i1,i2,num=n)
+                M = i_array/i_n
+                t_array_1 = tms*10**(k0 + k1*np.log10(M-1) + k2*np.log10(M-1)**2 + k3*np.log10(M-1)**3  + k4*np.log10(M-1)**4)
+                t_array_2 = np.ones(i_array.shape)*t_min
+                t_array = np.maximum(t_array_1, t_array_2)
+                return list(i_array), list(t_array)
+            else:
+                return [], []
 
         iec_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.14, 0, 0.02) # As per IEC 60255-3
         iec_inverse_1_3 = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.06, 0, 0.02)
@@ -301,7 +323,8 @@ class ProtectionModel():
                             'I2T'           : i2t,
                             'RI_INV'        : ri_inverse,
                             'HV_FUSE'       : hv_fuse,
-                            'FR_FUSE'       : fr_fuse
+                            'FR_FUSE'       : fr_fuse,
+                            'POLYLOG'       : polylog
                         }
             # Evaluate curve
             curve_i = []
@@ -318,16 +341,22 @@ class ProtectionModel():
                 if func:
                     # Handle case when parameters are passed as var-> value dict
                     if len(data) == 1 and isinstance(data[0], dict):
-                        data_eval = {key:(x if isinstance(x, (int, float)) else eval(x, var_dict)) for key,x in data[0].items()}
-                        i_array, t_array = func(**data_eval)
-                        curve_i += i_array
-                        curve_t += t_array
+                        try:
+                            data_eval = {key:(x if isinstance(x, (int, float)) else eval(x, var_dict)) for key,x in data[0].items()}
+                            i_array, t_array = func(**data_eval)
+                            curve_i += i_array
+                            curve_t += t_array
+                        except:
+                            log.warning('Error evaluating curve - data skipped')
                     # Handle case when parameters are passed as list
                     else:
-                        data_eval = [x if isinstance(x, (int, float)) else eval(x, var_dict) for x in data]
-                        i_array, t_array = func(*data_eval)
-                        curve_i += i_array
-                        curve_t += t_array
+                        try:
+                            data_eval = [x if isinstance(x, (int, float)) else eval(x, var_dict) for x in data]
+                            i_array, t_array = func(*data_eval)
+                            curve_i += i_array
+                            curve_t += t_array
+                        except:
+                            log.warning('Error evaluating curve - data skipped')
                     
             curve = (np.array([curve_i, curve_t]).T)*[scale, 1]
             return curve

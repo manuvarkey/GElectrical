@@ -115,13 +115,13 @@ class ProtectionDevice(Switch):
         # Global
         Switch.__init__(self, cordinates, **kwargs)
         # Set fields
+        self.list_types = []
         self.dict_subtype = {}
         self.dict_prot_curve_type = {}
         self.dict_prot_0_curve_type = {}
         self.dict_in = {}
         self.dict_i0 = {}
-        self.fields.update({'custom'     : self.get_field_dict('bool', 'Custom ?', '', False, 
-                                                            status_enable=False,
+        self.fields.update({'custom'     : self.get_field_dict('bool', 'Custom ?', '', False,
                                                             alter_structure=True),
                         'type'       : self.get_field_dict('str', 'Type', '', '',
                                                             alter_structure=True),
@@ -170,9 +170,33 @@ class ProtectionDevice(Switch):
 
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
-        if code in ('type', 'subtype', 'prot_curve_type', 'prot_0_curve_type'):
-            modified = {}
-            # Set subtype
+        modified = {}
+
+        # If custom enabled, remove protection models
+        if code == 'custom' and value is True:
+            self.fields['pcurve_l']['value'] = None
+            self.fields['pcurve_g']['value'] = None            
+
+        # Enable or disable curves based on value of custom
+        if self.fields['custom']['value']:
+            self.fields['type']['selection_list'] = None
+            self.fields['subtype']['selection_list'] = None
+            self.fields['prot_curve_type']['selection_list'] = None
+            self.fields['prot_0_curve_type']['selection_list'] = None
+            self.fields['type']['status_enable'] = True
+            self.fields['subtype']['status_enable'] = True
+            if self.fields['pcurve_l']['value']:
+                self.fields['pcurve_l']['status_enable'] = True
+                self.fields['prot_curve_type']['status_enable'] = True
+            if self.fields['pcurve_g']['value']:
+                self.fields['I0']['status_enable'] = True
+                self.fields['pcurve_g']['status_enable'] = True
+                self.fields['prot_0_curve_type']['status_enable'] = True
+        else:
+            # Set types
+            misc.set_field_selection_list(self.fields, 'type', self.list_types, modified)
+
+            # Set sub type
             if self.fields['type']['value'] in self.dict_subtype:
                 misc.set_field_selection_list(self.fields, 'subtype', self.dict_subtype[self.fields['type']['value']],
                                                modified)
@@ -226,39 +250,35 @@ class ProtectionDevice(Switch):
             else:
                 self.fields['I0']['selection_list'] = None
 
-            # Enable or disable curves
-            if self.fields['custom']['value']:
-                self.fields['type']['selection_list'] = None
-                if self.fields['pcurve_l']['value']:
-                    self.fields['pcurve_l']['status_enable'] = True
-                elif self.fields['pcurve_g']['value']:
-                    self.fields['I0']['status_enable'] = True
-                    self.fields['pcurve_g']['status_enable'] = True
+
+            # Line protection model status_enable
+            if self.fields['prot_curve_type']['value'] in ('Disabled', 'None', ''):
+                self.fields['pcurve_l']['status_enable'] = False
             else:
-                # Line
-                if self.fields['prot_curve_type']['value'] in ('Disabled', 'None', ''):
-                    self.fields['pcurve_l']['status_enable'] = False
-                else:
-                    self.fields['pcurve_l']['status_enable'] = True
-                # Ground
-                if self.fields['prot_0_curve_type']['value'] in ('Disabled', 'None', ''):
-                    self.fields['I0']['status_enable'] = False
-                    self.fields['pcurve_g']['status_enable'] = False
-                else:
-                    self.fields['I0']['status_enable'] = True
-                    self.fields['pcurve_g']['status_enable'] = True
-            
+                self.fields['pcurve_l']['status_enable'] = True
+
+            # Ground protection model status_enable
+            if self.fields['prot_0_curve_type']['value'] in ('Disabled', 'None', ''):
+                self.fields['I0']['status_enable'] = False
+                self.fields['pcurve_g']['status_enable'] = False
+            else:
+                self.fields['I0']['status_enable'] = True
+                self.fields['pcurve_g']['status_enable'] = True
+
+        # Update models
+        if code in ('custom', 'type', 'subtype', 'prot_curve_type', 'prot_0_curve_type'):
             if not self.model_loading:
-                self.calculate_parameters(init=True)
-            return modified
+                self.calculate_parameters()
         else:
             if not self.model_loading:
-                self.calculate_parameters(init=False)
+                self.calculate_parameters()
+
+        return modified
 
     def set_model_cleanup(self):
-        self.calculate_parameters(init=False)
+        self.calculate_parameters()
 
-    def calculate_parameters(self, init=False):
+    def calculate_parameters(self):
         # Form title
         # if self.fields['custom']['value']:
         #     title = (self.fields['ref']['value'] + ', ' + 
@@ -274,9 +294,10 @@ class ProtectionDevice(Switch):
         # Set line protection model
         parameters, curves = self.get_line_protection_model()
         subtitle = title + ' - ' + 'L'
-        if curves:
+        if self.fields['custom']['value'] is False and curves:
             self.line_protection_model = ProtectionModel(subtitle, parameters, curves)
-            if not init and self.fields['pcurve_l']['value'] is not None:
+            # Update parameters if already set
+            if self.fields['pcurve_l']['value'] is not None:
                 self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_l']['value']:
@@ -290,10 +311,8 @@ class ProtectionDevice(Switch):
         # Set ground protection model
         parameters, curves = self.get_ground_protection_model()
         subtitle = title + ' - ' + 'G'
-        if curves:
+        if self.fields['custom']['value'] is False and curves:
             self.ground_protection_model = ProtectionModel(subtitle, parameters, curves)
-            if not init and self.fields['pcurve_g']['value'] is not None:
-                self.ground_protection_model.update_parameters(self.fields['pcurve_g']['value']['parameters'])
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_g']['value'] is not None:
             self.ground_protection_model = ProtectionModel(subtitle, {}, 
@@ -331,6 +350,7 @@ Adds a fuse element used for the protection of circuit elements.
 
         self.dict_in = {('LV fuses', 'gG', 'gG IEC'): current_values}
         self.dict_i0 = {}
+        self.list_types = fuse_types
         self.dict_subtype = {'LV fuses': fuse_subtypes_lv}
         self.dict_prot_curve_type = {('LV fuses', 'gG'): fuse_prottypes_gg}
         self.dict_prot_0_curve_type = {}
@@ -367,7 +387,7 @@ Adds a fuse element used for the protection of circuit elements.
                              ['LINE',(1,5),(1,10), []],
                              ['RECT', (0.5,6), 1, 3, False, []]
                            ]
-        self.calculate_parameters(init=True)
+        self.calculate_parameters()
         self.assign_tootltips()
 
     def render_element(self, context):
@@ -467,34 +487,35 @@ Adds a fuse element used for the protection of circuit elements.
                             800: 4,
                             1000: 4,
                             1250: 4}
-    
-        if f.type == 'LV fuses':
-            # gG fuse
-            if f.subtype == 'gG':
-                if f.prot_curve_type == 'gG IEC':
-                    i_nf = 1.25
-                    i_f = 1.6
-                    t_conv = gg_conv_times[In]
-                    (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = gg_current_gates[In]
-                    (i2t_min_0_01, i2t_max_0_01) = gg_current_gates_prearc[In]
-                    i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
-                    i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
-                    u_points = [ (In*i_f, t_conv*3600),
-                                (i_max_5, 5),
-                                (I_max_0_1, 0.1)]
-                    curve_u = misc.log_interpolate(u_points, num=10)
-                    curve_u += [('point', i_max_0_01, 0.01),
-                                ('point', 1000*Isc, 0.01)]
-                    l_points = [ (In*i_nf, t_conv*3600),
-                                (i_min_10, 10),
-                                (i_min_0_1,0.1),
-                                (i_min_0_01, 0.01)]
-                    curve_l = misc.log_interpolate(l_points, num=10)
-                    curve_l += [('point', i_min_0_01, 0.001),
-                                ('point', 1000*Isc, 0.001)]
-                    # Get protection model
-                    parameters = dict()
-                    curves = {'curve_u': curve_u, 'curve_l': curve_l}
+
+        if f.custom is False:
+            if f.type == 'LV fuses':
+                # gG fuse
+                if f.subtype == 'gG':
+                    if f.prot_curve_type == 'gG IEC':
+                        i_nf = 1.25
+                        i_f = 1.6
+                        t_conv = gg_conv_times[In]
+                        (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = gg_current_gates[In]
+                        (i2t_min_0_01, i2t_max_0_01) = gg_current_gates_prearc[In]
+                        i_min_0_01 = math.sqrt(i2t_min_0_01*1000/0.01)
+                        i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
+                        u_points = [ (In*i_f, t_conv*3600),
+                                    (i_max_5, 5),
+                                    (I_max_0_1, 0.1)]
+                        curve_u = misc.log_interpolate(u_points, num=10)
+                        curve_u += [('point', i_max_0_01, 0.01),
+                                    ('point', 1000*Isc, 0.01)]
+                        l_points = [ (In*i_nf, t_conv*3600),
+                                    (i_min_10, 10),
+                                    (i_min_0_1,0.1),
+                                    (i_min_0_01, 0.01)]
+                        curve_l = misc.log_interpolate(l_points, num=10)
+                        curve_l += [('point', i_min_0_01, 0.001),
+                                    ('point', 1000*Isc, 0.001)]
+                        # Get protection model
+                        parameters = dict()
+                        curves = {'curve_u': curve_u, 'curve_l': curve_l}
         return parameters, curves
 
 
@@ -513,6 +534,7 @@ Adds a circuit breaker element used for the protection of circuit elements.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ProtectionDevice.__init__(self, cordinates, **kwargs)
+        self.database_path = misc.open_library('cb.csv')
         self.ports = [[1, 0],
                       [1, 6]]
         pole_types = ['SP', 'SPN', 'DP', 'TP', 'TPN', 'FP']
@@ -524,7 +546,7 @@ Adds a circuit breaker element used for the protection of circuit elements.
         current_values_acb = [630,800,1000,1250,1600,2000,2500,3200,4000,5000,6300]
 
         breaker_types = ['LV breakers', 'MV breakers']
-        subtypes_lv = ['MCB','MCCB','ACB','CB', 'MPCB','RCCB']
+        subtypes_lv = ['MCB','MCCB','ACB','MPCB','RCCB','RCBO','CB']
         subtypes_mv = ['VCB']
         prottypes_mpcb = ['Class 10A', 'Class 10', 'Class 20', 'Class 30']
         prottypes_cb = ['Thermal Magnetic', 'Thermal', 'Magnetic', 'Microprocessor', 'None']
@@ -538,9 +560,13 @@ Adds a circuit breaker element used for the protection of circuit elements.
                         ('LV breakers', 'ACB', '*'): current_values_acb,
                         ('LV breakers', 'MPCB', '*'): None,
                         ('LV breakers', 'CB', '*'): None,
-                        ('LV breakers', 'RCCB', '*'): current_values_rccb}
+                        ('LV breakers', 'RCCB', '*'): current_values_rccb,
+                        ('LV breakers', 'RCBO', '*'): current_values_rccb}
         self.dict_i0 = {('LV breakers', 'RCCB', 'Instantaneous'): current_values_0_rccb_i,
-                        ('LV breakers', 'RCCB', 'Selective'): current_values_0_rccb_s}
+                        ('LV breakers', 'RCCB', 'Selective'): current_values_0_rccb_s,
+                        ('LV breakers', 'RCBO', 'Instantaneous'): current_values_0_rccb_i,
+                        ('LV breakers', 'RCBO', 'Selective'): current_values_0_rccb_s}
+        self.list_types = breaker_types
         self.dict_subtype = {'LV breakers': subtypes_lv,
                             'MV breakers': subtypes_mv}
         self.dict_prot_curve_type = {('LV breakers', 'MCB'): prottypes_mcb,
@@ -548,8 +574,10 @@ Adds a circuit breaker element used for the protection of circuit elements.
                                      ('LV breakers', 'ACB'): prottypes_cb,
                                      ('LV breakers', 'MPCB'): prottypes_mpcb,
                                      ('LV breakers', 'CB'): prottypes_cb,
-                                     ('MV breakers', 'VCB'): prottypes_cb_mv,}
+                                     ('MV breakers', 'VCB'): prottypes_cb_mv,
+                                     ('LV breakers', 'RCBO'): prottypes_mcb,}
         self.dict_prot_0_curve_type = {('LV breakers', 'RCCB'): sub_types_rccb,
+                                       ('LV breakers', 'RCBO'): sub_types_rccb,
                                         ('LV breakers', 'MCCB'): prottypes_cb_gf,
                                         ('LV breakers', 'ACB'): prottypes_cb_gf,
                                         ('LV breakers', 'CB'): prottypes_cb_gf,
@@ -611,7 +639,7 @@ Adds a circuit breaker element used for the protection of circuit elements.
                              ['LINE',(2.95,3.9),(3.35,4.2), [], 'thin'],
                              ['LINE',(3.1,3.7),(2.8,4.1), [], 'thin'],
                            ]
-        self.calculate_parameters(init=True)
+        self.calculate_parameters()
         self.assign_tootltips()
 
     def render_element(self, context):
@@ -639,44 +667,49 @@ Adds a circuit breaker element used for the protection of circuit elements.
         curves = {}
         parameters = dict()
 
-        if f.type in ('LV breakers', 'MV breakers'):
-            
-            # MCB IS/IEC 60898
-            if f.subtype in ('MCB',):
-                sub_types_mcb_dict = {  'B Curve'     : (2,5),
-                                        'C Curve'     : (5,10),
-                                        'D Curve'     : (10,20),
-                                    }
-                i_m_min, i_m_max = sub_types_mcb_dict[self.fields['prot_curve_type']['value']]
-                curve_u = [ ('point', '1.45*f.In', 3600),
-                            ('IEC', 1, '1.42*f.In', '1.45*f.In', 'd.i_m_max*f.In', 0, 50,
-                                80, 0, 2),
-                            ('point', 'd.i_m_max*f.In', 'd.t_m_max'),
-                            ('point', '1000*f.Isc', 'd.t_m_max')]
-                curve_l = [ ('point', '1.13*f.In', 3600),
-                            ('IEC', 1, '1.12*f.In', '1.13*f.In', 'd.i_m_min*f.In', 0, 50,
-                                40, 0, 2,),
-                            ('point', 'd.i_m_min*f.In', 'd.t_m_min'),
-                            ('point', '1000*f.Isc', 'd.t_m_min')]
-                parameters = {'i_m_min'   : ['Magnetic trip (min)', 'xIn', i_m_min, None],
-                              'i_m_max'   : ['Magnetic trip (max)', 'xIn', i_m_max, None],
-                              't_m_min' : ['Instantaneous trip time (min)', 's', 0.001, None],
-                              't_m_max' : ['Instantaneous trip time (max)', 's', 0.01, None]}
-                curves = {'curve_u': curve_u, 'curve_l': curve_l}
+        if f.custom is False:
+            if f.type in ('LV breakers', 'MV breakers'):
+                
+                # MCB IS/IEC 60898
+                if f.subtype in ('MCB', 'RCBO'):
+                    sub_types_mcb_dict = {  'B Curve'     : (3,5),
+                                            'C Curve'     : (5,10),
+                                            'D Curve'     : (10,20),
+                                        }
+                    i_m_min, i_m_max = sub_types_mcb_dict[self.fields['prot_curve_type']['value']]
+                    i_m_min_s = str(i_m_min)+'*f.In'
+                    i_m_max_s = str(i_m_max)+'*f.In'
+                    T_conv = '3600 if f.In <= 63  else 2*3600'
+                    ku = '125 if f.In <= 32  else 250'
+                    kl = 4
+                    alphau = 2
+                    alphal = 2
+                    curve_u = [ ('point', '1.45*f.In', T_conv),
+                                ('IEC', 1, '1.45*f.In', '1.5*f.In', i_m_max_s, 0, 50,
+                                    ku, 0, alphau),
+                                ('point', i_m_max_s, 'd.t_m_max'),
+                                ('point', '1000*f.Isc', 'd.t_m_max')]
+                    curve_l = [ ('point', '1.13*f.In', T_conv),
+                                ('IEC', 1, '1.13*f.In', '1.2*f.In', i_m_min_s, 0, 50,
+                                    kl, 0, alphal),
+                                ('point', i_m_min_s, 0.001),
+                                ('point', '1000*f.Isc', 0.001)]
+                    parameters = {'t_m_max' : ['Instantaneous trip time (max)', 's', 0.01, None]}
+                    curves = {'curve_u': curve_u, 'curve_l': curve_l}
 
-            # Thermal overload relay as per IS/IEC 60947-4-1    
-            elif f.subtype in ('MPCB',):
-                parameters, curves = get_thermal_protection_models(f.prot_curve_type, magnetic=True)
-            
-            # CB generic IS/IEC 60947    
-            elif f.prot_curve_type in ('Thermal',):
-                parameters, curves = get_protection_model('Thermal')
-            elif f.prot_curve_type in ('Magnetic'):
-                parameters, curves = get_protection_model('Magnetic')
-            elif f.prot_curve_type in ('Thermal Magnetic',):
-                parameters, curves = get_protection_model('Thermal Magnetic')
-            elif f.prot_curve_type in ('Microprocessor',):
-                parameters, curves = get_protection_model('Microprocessor')
+                # Thermal overload relay as per IS/IEC 60947-4-1    
+                elif f.subtype in ('MPCB',):
+                    parameters, curves = get_thermal_protection_models(f.prot_curve_type, magnetic=True)
+                
+                # CB generic IS/IEC 60947    
+                elif f.prot_curve_type in ('Thermal',):
+                    parameters, curves = get_protection_model('Thermal')
+                elif f.prot_curve_type in ('Magnetic'):
+                    parameters, curves = get_protection_model('Magnetic')
+                elif f.prot_curve_type in ('Thermal Magnetic',):
+                    parameters, curves = get_protection_model('Thermal Magnetic')
+                elif f.prot_curve_type in ('Microprocessor',):
+                    parameters, curves = get_protection_model('Microprocessor')
 
         return parameters, curves
 
@@ -685,45 +718,46 @@ Adds a circuit breaker element used for the protection of circuit elements.
         curves = {}
         parameters = dict()
         
-        if f.type in ('LV breakers','MV breakers'):
+        if f.custom is False:
+            if f.type in ('LV breakers','MV breakers'):
 
-            if f.subtype in ('RCCB',):
-                if f.prot_0_curve_type in ('Selective',):
-                    curve_u = [ ('point', 'f.I0', 3600),
-                                ('point', 'f.I0', 0.5),
-                                ('point', '2*f.I0', 0.2),
-                                ('point', '5*f.I0', 0.15),
-                                ('point', '10*f.I0', 0.15),
-                                ('point', '1000*f.Isc', 0.15)]
-                    curve_l = [ ('point', 'f.I0*0.5', 3600),
-                            ('point', 'f.I0*0.5', 0.06),
-                            ('point', '1000*f.Isc', 0.06)]
-                    parameters = {}
-                else:
-                    curve_u = [ ('point', 'f.I0', 3600),
-                                ('point', 'f.I0', 0.3),
-                                ('point', '2*f.I0', 0.15),
-                                ('point', '5*f.I0 if f.I0 > 0.03 else 0.25', 0.04),
-                                ('point', '10*f.I0 if f.I0 > 0.03 else 0.5', 0.04),
-                                ('point', '1000*f.Isc', 0.04)]
-                    curve_l = [ ('point', 'f.I0*0.5', 3600),
-                                ('point', 'f.I0*0.5', 0.001),
-                                ('point', '1000*f.Isc', 0.001)]
-                    parameters = {}
-                
-                
-                curves = {'curve_u': curve_u, 'curve_l': curve_l}
+                if f.subtype in ('RCCB','RCBO'):
+                    if f.prot_0_curve_type in ('Selective',):
+                        curve_u = [ ('point', 'f.I0', 3600),
+                                    ('point', 'f.I0', 0.5),
+                                    ('point', '2*f.I0', 0.2),
+                                    ('point', '5*f.I0', 0.15),
+                                    ('point', '10*f.I0', 0.15),
+                                    ('point', '1000*f.Isc', 0.15)]
+                        curve_l = [ ('point', 'f.I0*0.5', 3600),
+                                ('point', 'f.I0*0.5', 0.06),
+                                ('point', '1000*f.Isc', 0.06)]
+                        parameters = {}
+                    else:
+                        curve_u = [ ('point', 'f.I0', 3600),
+                                    ('point', 'f.I0', 0.3),
+                                    ('point', '2*f.I0', 0.15),
+                                    ('point', '5*f.I0 if f.I0 > 0.03 else 0.25', 0.04),
+                                    ('point', '10*f.I0 if f.I0 > 0.03 else 0.5', 0.04),
+                                    ('point', '1000*f.Isc', 0.04)]
+                        curve_l = [ ('point', 'f.I0*0.5', 3600),
+                                    ('point', 'f.I0*0.5', 0.001),
+                                    ('point', '1000*f.Isc', 0.001)]
+                        parameters = {}
+                    
+                    
+                    curves = {'curve_u': curve_u, 'curve_l': curve_l}
 
-            # CB generic IS/IEC 60947    
-            elif f.prot_0_curve_type in ('Thermal',):
-                parameters, curves = get_protection_model('Thermal', ground_model=True)
-            elif f.prot_0_curve_type in ('Magnetic',):
-                parameters, curves = get_protection_model('Magnetic', ground_model=True)
-            elif f.prot_0_curve_type in ('Thermal Magnetic',):
-                parameters, curves = get_protection_model('Thermal Magnetic', ground_model=True)
-            elif f.prot_0_curve_type in ('Microprocessor',):
-                parameters, curves = get_protection_model('Microprocessor', ground_model=True)
-                      
+                # CB generic IS/IEC 60947    
+                elif f.prot_0_curve_type in ('Thermal',):
+                    parameters, curves = get_protection_model('Thermal', ground_model=True)
+                elif f.prot_0_curve_type in ('Magnetic',):
+                    parameters, curves = get_protection_model('Magnetic', ground_model=True)
+                elif f.prot_0_curve_type in ('Thermal Magnetic',):
+                    parameters, curves = get_protection_model('Thermal Magnetic', ground_model=True)
+                elif f.prot_0_curve_type in ('Microprocessor',):
+                    parameters, curves = get_protection_model('Microprocessor', ground_model=True)
+                        
         return parameters, curves
 
 
@@ -745,21 +779,20 @@ Adds a contactor element used for on-load switching of loads.
         self.ports = [[1, 0],
                       [1, 6]]
         # Data dropdowns
-        prottypes_ol = ['Class 10A', 'Class 10', 'Class 20', 'Class 30']
-        self.fields = {'custom'     : self.get_field_dict('bool', 'Custom ?', '', False, 
-                                                            status_enable=False,
-                                                            alter_structure=True),
-                        'ref':     self.get_field_dict('str', 'Reference', '', 'K?'),
+        self.prottypes_ol = ['Class 10A', 'Class 10', 'Class 20', 'Class 30']
+        self.fields = { 'ref':     self.get_field_dict('str', 'Reference', '', 'K?'),
                         'name':     self.get_field_dict('str', 'Name', '', ''),
                         'type':    self.get_field_dict('str', 'Type', '', 'AC-3'),
                         'poles':   self.get_field_dict('str', 'Poles', '', 'TP'),
                         'Un':      self.get_field_dict('float', 'Un', 'kV', 0.415),
                         'In':      self.get_field_dict('float', 'In', 'A', 16),
                         'closed':  self.get_field_dict('bool', 'Closed ?', '', True),
+                        'custom'     : self.get_field_dict('bool', 'Custom ?', '', False, 
+                                                            alter_structure=True),
                         'trip_unit':  self.get_field_dict('bool', 'Trip unit ?', '', False,
                                                           alter_structure=True),
                         'prot_curve_type':  self.get_field_dict('str', 'Trpping class', '', 'Class 10A', 
-                                                            selection_list=prottypes_ol,
+                                                            selection_list=self.prottypes_ol,
                                                             alter_structure=True,
                                                             status_enable=False),
                         'Isc'        : self.get_field_dict('float', 'Isc', 'kA', 5, 
@@ -797,7 +830,7 @@ Adds a contactor element used for on-load switching of loads.
                              ['LINE', (2.85,3.2),(2.55,3.6), [], 'thin'],
                              ['LINE',(2.55,3.6),(2.95,3.9), [], 'thin']]
         self.schem_model = self.schem_model_plain
-        self.calculate_parameters(init=True)
+        self.calculate_parameters()
         self.assign_tootltips()
 
     def render_element(self, context):
@@ -819,40 +852,50 @@ Adds a contactor element used for on-load switching of loads.
 
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
-        # Enable or disable curves
+        modified = {}
+        # If custom enabled, remove protection models
+        if code == 'custom' and value is True:
+            self.fields['pcurve_l']['value'] = None
+
+        # Handle case when custom is enabled
         if self.fields['custom']['value']:
+            self.fields['prot_curve_type']['selection_list'] = None
+        else:
+            misc.set_field_selection_list(self.fields, 'prot_curve_type', self.prottypes_ol, modified)
+
+        # Handle case when trip unit is enabled
+        if self.fields['trip_unit']['value']:
+            self.fields['prot_curve_type']['status_enable'] = True
+            self.fields['Isc']['status_enable'] = True
             if self.fields['pcurve_l']['value']:
                 self.fields['pcurve_l']['status_enable'] = True
         else:
-            # Line
-            if self.fields['trip_unit']['value']:
-                self.fields['prot_curve_type']['status_enable'] = True
-                self.fields['Isc']['status_enable'] = True
-                self.fields['pcurve_l']['status_enable'] = True
-            else:
-                self.fields['prot_curve_type']['status_enable'] = False
-                self.fields['Isc']['status_enable'] = False
-                self.fields['pcurve_l']['status_enable'] = False
+            self.fields['prot_curve_type']['status_enable'] = False
+            self.fields['Isc']['status_enable'] = False
+            self.fields['pcurve_l']['status_enable'] = False
+
         if not self.model_loading:
-            self.calculate_parameters(init=True)
+            self.calculate_parameters()
+        return modified
 
 
     def set_model_cleanup(self):
-        self.calculate_parameters(init=False)
+        self.calculate_parameters()
 
-    def calculate_parameters(self, init=False):
+    def calculate_parameters(self):
         f = FieldDict(self.fields)
         title = self.fields['ref']['value']
         # Set line protection model
-        if f.trip_unit:
+        if f.trip_unit and f.custom is False:
             parameters, curves = get_thermal_protection_models(f.prot_curve_type, magnetic=False)
         else:
             parameters, curves = {}, {}
 
         subtitle = title + ' - ' + 'L'
-        if curves:
+        if self.fields['custom']['value'] is False and curves:
             self.line_protection_model = ProtectionModel(subtitle, parameters, curves)
-            if not init and self.fields['pcurve_l']['value'] is not None:
+            # Use parameters from saved model if available
+            if self.fields['pcurve_l']['value'] is not None:
                 self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_l']['value']:
@@ -902,7 +945,7 @@ Adds a changeover switch element used for on-load switching of sources/ loads.
         ElementModel.set_text_field_value(self, code, value)
         self.calculate_parameters()
 
-    def calculate_parameters(self, init=False):
+    def calculate_parameters(self):
         if self.fields['model']['value'] == 'Model 1':
             self.ports = [[2, 0],
                         [0, 6],

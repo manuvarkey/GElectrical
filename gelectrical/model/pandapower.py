@@ -313,7 +313,12 @@ class PandaPowerModel:
             node_result['vn_kv'] = misc.get_field_dict(
                 'float', 'Vn', 'kV', model['vn_kv'], decimal=3)
 
-        log.info('PandaPowerModel - build_powermodel - model generated')
+        if mode == misc.POWER_MODEL_POWERFLOW:
+            log.info('PandaPowerModel - build_powermodel - model generated - POWER_MODEL_POWERFLOW')
+        elif mode == misc.POWER_MODEL_LINEFAULT:
+            log.info('PandaPowerModel - build_powermodel - model generated - POWER_MODEL_LINEFAULT')
+        elif mode == misc.POWER_MODEL_GROUNDFAULT:
+            log.info('PandaPowerModel - build_powermodel - model generated - POWER_MODEL_GROUNDFAULT')
 
     def run_diagnostics(self):
         """Run Diagnostics"""

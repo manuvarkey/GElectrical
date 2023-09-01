@@ -361,7 +361,8 @@ Creates a generic three phase motor element.
                  'stall_time'  : ['Safe stall time', 's', 20, None],}
         curves = {'curve_u': curve_u, 'curve_l': curve_l}
         self.damage_model = ProtectionModel(title, param, curves, element_type='damage')
-        if self.fields['dcurve']['value']:
+        # Use parameters from saved model if available
+        if self.fields['dcurve']['value'] is not None:
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 

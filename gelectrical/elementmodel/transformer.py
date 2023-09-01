@@ -93,7 +93,7 @@ Creates a two-winding transformer.
                              ['LINE',(2,0),(2,1.5), []],
                              ['LINE',(2,8.5),(2,10), []],
                            ]
-        self.calculate_parameters(init=True)
+        self.calculate_parameters()
         self.assign_tootltips()
     
     def render_element(self, context):
@@ -147,12 +147,12 @@ Creates a two-winding transformer.
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
         if not self.model_loading:
-            self.calculate_parameters(init=False)
+            self.calculate_parameters()
 
     def set_model_cleanup(self):
-        self.calculate_parameters(init=False)
+        self.calculate_parameters()
 
-    def calculate_parameters(self, init=False):
+    def calculate_parameters(self):
         # Damage curve
         title = (self.fields['ref']['value'])
         i_n = self.fields['sn_mva']['value']*1e3 / (1.732*self.fields['vn_lv_kv']['value'])
@@ -167,7 +167,8 @@ Creates a two-winding transformer.
                 'i_100ms'  : ['Inrush current @ 0.1 s', 'xIn', 12, None],
                 'i_10ms'  : ['Inrush current @ 0.01 s', 'xIn', 25, None],}
         self.damage_model = ProtectionModel(title, param, curves, element_type='damage')
-        if not init:
+        # Use parameters from saved model if available
+        if self.fields['dcurve']['value'] is not None:
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
