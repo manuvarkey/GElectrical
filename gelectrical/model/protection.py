@@ -62,7 +62,7 @@ class ProtectionModel():
                                         ('US_CO2_INV', tms, i_n, t_min, i1, i2, n), 
                                         ('THERMAL', tms, i_n, t_min, i1, i2, n), 
                                         ('I2T', tms, i_n, t_min, i1, i2, n, k, alpha), 
-                                        ('POLYLOG', tms, i_n, t_min, i1, i2, n, k0, k1, k2, k3, k4), 
+                                        ('POLYLOG', tms, i_n, t_min, i1, i2, n, [k0, k1, k2, k3, k4], c), 
                                             ... ],
                                         'curve_l1': ...,
                         'selection_criterion_2' :  ...
@@ -82,7 +82,7 @@ class ProtectionModel():
                                     ('US_CO2_INV', tms, i_n, t_min, i1, i2, n), 
                                     ('THERMAL', tms, i_n, t_min, i1, i2, n), 
                                     ('I2T', tms, i_n, t_min, i1, i2, n, k, c, alpha),
-                                    ('POLYLOG', tms, i_n, t_min, i1, i2, n, k0, k1, k2, k3, k4),  
+                                    ('POLYLOG', tms, i_n, t_min, i1, i2, n, [k0, k1, k2, k3, k4], c),  
                                                                 ... ],
                          'curve_l': ...,
                         }
@@ -276,17 +276,18 @@ class ProtectionModel():
             else:
                 return [], []
             
-        def polylog(tms, i_n, i1, i2, t_min, n, k0_polylog=0, k1_polylog=0, k2_polylog=0, k3_polylog=0, k4_polylog=0, **vars):
-            # Equation of the form log10 T = k0 + k1*log10(M-1) + k2*log10(M-1)**2 + k3*log10(M-1)**3 + k4*log10(M-1)**4
-            k0 = k0_polylog
-            k1 = k1_polylog
-            k2 = k2_polylog
-            k3 = k3_polylog
-            k4 = k4_polylog
+        def polylog(tms, i_n, i1, i2, t_min, n, kn_polylog=[1,1], c_polylog=1, **vars):
+            # Equation of the form log10 T = k0 + k1*log10(M-C) + k2*log10(M-C)**2 + ...
+            kn = kn_polylog
+            C = c_polylog
+
             if i2 > i1:
                 i_array = np.geomspace(i1,i2,num=n)
+                t_array_1 = np.zeros_like(i_array)
                 M = i_array/i_n
-                t_array_1 = tms*10**(k0 + k1*np.log10(M-1) + k2*np.log10(M-1)**2 + k3*np.log10(M-1)**3  + k4*np.log10(M-1)**4)
+                for order, k in enumerate(kn):
+                    t_array_1 += k*np.log10(M-C)**order
+                t_array_1 = tms*10**t_array_1
                 t_array_2 = np.ones(i_array.shape)*t_min
                 t_array = np.maximum(t_array_1, t_array_2)
                 return list(i_array), list(t_array)
@@ -342,7 +343,7 @@ class ProtectionModel():
                     # Handle case when parameters are passed as var-> value dict
                     if len(data) == 1 and isinstance(data[0], dict):
                         try:
-                            data_eval = {key:(x if isinstance(x, (int, float)) else eval(x, var_dict)) for key,x in data[0].items()}
+                            data_eval = {key:(x if isinstance(x, (int, float, list, dict)) else eval(x, var_dict)) for key,x in data[0].items()}
                             i_array, t_array = func(**data_eval)
                             curve_i += i_array
                             curve_t += t_array
@@ -351,7 +352,7 @@ class ProtectionModel():
                     # Handle case when parameters are passed as list
                     else:
                         try:
-                            data_eval = [x if isinstance(x, (int, float)) else eval(x, var_dict) for x in data]
+                            data_eval = [x if isinstance(x, (int, float, list, dict)) else eval(x, var_dict) for x in data]
                             i_array, t_array = func(*data_eval)
                             curve_i += i_array
                             curve_t += t_array
