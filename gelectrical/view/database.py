@@ -134,7 +134,8 @@ class DatabaseView:
                 category_iter = self.store.append(None, [category, category])
                 for element in element_dict:
                     item_iter = self.store.append(category_iter, [element, category])
-            # self.tree.expand_all()
+            if len(self.data) == 1:
+                self.tree.expand_all()
         else:
             self.data_path = None
             self.data = dict()
@@ -144,6 +145,7 @@ class DatabaseView:
         if self.data_path:
             # Run dialog
             self.dialog_window.show_all()
+            self.search_bar.set_search_mode(True)
             response = self.dialog_window.run()
             
             if response == Gtk.ResponseType.OK:
@@ -152,8 +154,8 @@ class DatabaseView:
                 if selection.count_selected_rows() != 0: # if selection exists
                     [model, paths] = selection.get_selected_rows()
                     item_iter = paths[-1]
-                    item_name = self.store[item_iter][0]
-                    item_category = self.store[item_iter][1]
+                    item_name = self.filter[item_iter][0]
+                    item_category = self.filter[item_iter][1]
                     if item_name != item_category:
                         item = self.data[item_category][item_name]
                         validated_dict = dict()
