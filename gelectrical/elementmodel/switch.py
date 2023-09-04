@@ -179,6 +179,8 @@ class ProtectionDevice(Switch):
 
         # Enable or disable curves based on value of custom
         if self.fields['custom']['value']:
+            self.fields['In']['selection_list'] = None
+            self.fields['I0']['selection_list'] = None
             self.fields['type']['selection_list'] = None
             self.fields['subtype']['selection_list'] = None
             self.fields['prot_curve_type']['selection_list'] = None
