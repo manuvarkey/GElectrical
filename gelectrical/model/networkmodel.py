@@ -315,6 +315,21 @@ class NetworkModel:
             self.gnode_res_mapping[gnode] = r_grid
         log.info('NetworkModel - build_graph - model generated')
 
+    def get_elements_sorted_loc(self, mode='horz-vert'):
+        """Return elements sorted by location in drawing"""
+        base_elements = dict()
+        for k1, drawing_model in enumerate(self.drawing_models):
+            x = np.array([e.x for e in drawing_model.elements], dtype=int)
+            y = np.array([e.y for e in drawing_model.elements], dtype=int)
+            if mode == 'horz-vert':
+                ind = np.lexsort((x, y))
+            elif mode == 'vert-horiz':
+                ind = np.lexsort((y, x))
+            for k2 in ind:
+                element = drawing_model.elements[k2]
+                base_elements[(k1, k2)] = element
+        return base_elements
+
     # Graph analysis functions
 
     def get_nodes_between_gnodes(self, gnode1, gnode2, ignore_disabled=True):

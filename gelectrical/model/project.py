@@ -521,7 +521,7 @@ class ProjectModel:
         
         # Setup network model
         self.setup_base_model(build_ana_model=False)
-        base_elements = self.networkmodel.base_elements
+        base_elements = self.networkmodel.get_elements_sorted_loc()  # Get sorted element dict
         
         # Setup local variables
         refs = misc.ReferenceCounter(1)  # Counter for base references
