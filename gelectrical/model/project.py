@@ -90,7 +90,7 @@ class ProjectModel:
     
     def clear_status(self):
         """Clear module status"""
-        self.status = {'net_model': False, 'power_model': False, 'power_analysis': False, 'power_results': False}
+        self.status = {'net_model': False, 'node_elements': False, 'power_model': False, 'power_analysis': False, 'power_results': False}
     
     def get_project_fields(self, page='Information', full=False):
         if full:
@@ -137,9 +137,9 @@ class ProjectModel:
         if selected_elements:
             # Populate voltage levels for breakers
             if self.status['power_results'] == False or self.stack.haschanged():
-                self.setup_base_model()
-                self.build_power_model()
-                self.update_results()
+                self.setup_base_model(add_node_elements=False)  # Do not generate node elements
+                self.build_power_model(which='powerflow')  # Build element voltages
+                self.update_results(update_node_elements=False)  # Update element voltages. Do not overwrite node results.
             dialog = ProtectionViewDialog(self.window, self.program_state, selected_elements)
             dialog.run()
         else:
@@ -372,7 +372,7 @@ class ProjectModel:
     
     ## Analysis functions
     
-    def setup_base_model(self, build_ana_model=True):
+    def setup_base_model(self, build_ana_model=True, add_node_elements=True):
         self.clear_status()
         self.networkmodel = NetworkModel(self.program_state)
         # Setup base elements
@@ -380,28 +380,37 @@ class ProjectModel:
         if build_ana_model:
             # Setup node variables
             self.networkmodel.setup_global_nodes()
-            # Build and add node elements
-            node_elements = self.networkmodel.setup_node_elements()
-            with group(self, "Add node elements"):
-                self.clear_results(clear_elements=False)
-                for (k1, gnode), node_element in node_elements.items():
-                    drawing_model = self.drawing_models[k1]
-                    drawing_model.insert_element_at_index(node_element)
             # Build graph model
             self.networkmodel.build_graph_model()
             self.status['net_model'] = True
-        log.info('ProjectModel - setup_base_model - model generated')
+            log.info('ProjectModel - setup_base_model - model generated')
+            # Build and add node elements
+            if add_node_elements:
+                node_elements = self.networkmodel.setup_node_elements()
+                self.clear_results(clear_elements=False)
+                with group(self, "Add node elements"):
+                    for (k1, gnode), node_element in node_elements.items():
+                        drawing_model = self.drawing_models[k1]
+                        drawing_model.insert_element_at_index(node_element)
+                    self.status['node_elements'] = True
+                    log.info('ProjectModel - setup_base_model - node elements added')
         
-    def build_power_model(self):
+    def build_power_model(self, which='all'):
         if self.status['net_model']:
             sim_settings = self.get_project_fields(page='Simulation')
             f_hz = sim_settings['grid_frequency']
             self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles, f_hz)
-            self.powermodel.build_power_model(mode=misc.POWER_MODEL_LINEFAULT)
-            self.powermodel.build_power_model(mode=misc.POWER_MODEL_GROUNDFAULT)
-            self.powermodel.build_power_model(mode=misc.POWER_MODEL_POWERFLOW)
-            self.status['power_model'] = True
-            log.info('ProjectModel - build_power_model - model generated')
+            
+            if which in ('all', 'lf'):
+                self.powermodel.build_power_model(mode=misc.POWER_MODEL_LINEFAULT)
+            if which in ('all', 'gf'):
+                self.powermodel.build_power_model(mode=misc.POWER_MODEL_GROUNDFAULT)
+            if which in ('all', 'powerflow'):
+                self.powermodel.build_power_model(mode=misc.POWER_MODEL_POWERFLOW)
+                
+            if which in ('all', 'lf', 'gf', 'powerflow'):
+                self.status['power_model'] = True
+                log.info('ProjectModel - build_power_model - model generated')
         else:
             raise RuntimeError('ProjectModel - build_power_model - Network model not built')
         
@@ -481,14 +490,14 @@ class ProjectModel:
         self.diagnostics_view.update(diagnostic_results, self.select_networkmodel)
         log.info('ProjectModel - run_rulescheck - rulescheck run')
         
-    def update_results(self):
+    def update_results(self, update_node_elements=True):
         """ Update analysis results"""
 
         if self.status['power_model']:
-            with group(self, "Update analysis results"):
-                # Update element results
-                self.powermodel.update_results()
-                # Add new node elements
+            # Update element results
+            self.powermodel.update_results()
+            # Add new node elements
+            if update_node_elements and self.status['node_elements']:
                 for (k1, gnode), node_element in self.networkmodel.node_elements.items():
                     if gnode in self.powermodel.node_results:
                         node_element.res_fields = copy.deepcopy(self.powermodel.node_results[gnode])
@@ -500,8 +509,9 @@ class ProjectModel:
 
     def clear_results(self, clear_elements=True):
         """ Clear analysis results"""
-        for drawing_model in self.drawing_models:
-            drawing_model.clear_results(clear_elements)
+        with group(self, "Clear analysis results"):
+            for drawing_model in self.drawing_models:
+                drawing_model.clear_results(clear_elements)
         
     ## Model functions
     
@@ -525,10 +535,8 @@ class ProjectModel:
         
         # Get selected elements
         if mode == "Selected elements only":
-            selected_elements = self.drawing_model.get_selected()
-            selected_keys = self.drawing_model.get_selected_codes()
-            drg_no = self.get_drawing_model_index(self.drawing_model)
-            selected_keys = [(drg_no, key) for key in selected_keys]
+            selected_elements = self.get_selected()
+            selected_keys = self.get_selected_codes()
         
         # Update largest refs for assembly elements
         if mode in ("New elements only", "Selected elements only"):
