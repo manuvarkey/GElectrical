@@ -133,7 +133,7 @@ class ProjectModel:
             self.modify_loadprofiles(loadprofiles_copy)
 
     def view_protection_coordination(self):
-        selected_elements = self.drawing_model.get_selected(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES + ('element_display_node',))
+        selected_elements = self.get_selected(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES + ('element_display_node',))
         if selected_elements:
             # Populate voltage levels for breakers
             if self.status['power_results'] == False or self.stack.haschanged():
@@ -341,6 +341,34 @@ class ProjectModel:
             for k2, element in enumerate(drawing_model.elements):
                 element.set_selection(select=False)
         log.info('ProjectModel - de_select_all - deselected')
+        
+    def get_selected(self, codes=None):
+        # Get selected elements from each sheet and consolidate
+        selected_elements_comb = {}
+        for drawing_model in self.drawing_models:
+            selected_elements = drawing_model.get_selected(codes=codes, with_time_stamp=True)
+            selected_elements_comb.update(selected_elements)
+        # Sort elements by selection timestamp
+        if selected_elements_comb:
+            sorted_keys = sorted(list(selected_elements_comb.keys()))
+            selected_elements_list = [selected_elements_comb[i] for i in sorted_keys]
+        else:
+            selected_elements_list = []
+        return selected_elements_list
+
+    def get_selected_codes(self, codes=None):
+        # Get selected elements from each sheet and consolidate
+        selected_elements_comb = {}
+        for page, drawing_model in enumerate(self.drawing_models):
+            selected_elements = drawing_model.get_selected_codes(codes=codes, with_time_stamp=True, page=page)
+            selected_elements_comb.update(selected_elements)
+        # Sort elements by selection timestamp
+        if selected_elements_comb:
+            sorted_keys = sorted(list(selected_elements_comb.keys()))
+            selected_slnos = [selected_elements_comb[i] for i in sorted_keys]
+        else:
+            selected_slnos = []
+        return selected_slnos
     
     ## Analysis functions
     

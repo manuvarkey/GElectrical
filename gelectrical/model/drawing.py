@@ -209,12 +209,15 @@ class DrawingModel:
         if code in self.fields:
             return self.fields[code]
     
-    def get_selected(self, assembly_info=False, codes=None):
+    def get_selected(self, assembly_info=False, codes=None, with_time_stamp=False):
         selected = dict()  # Timestamp -> Element mapping
         for element in self.elements:
             if element.get_selection() is True:
                 if (codes and element.code in codes) or codes is None:
                     selected[element.selected_timestamp] = element
+        # If timestamped elements requested return them
+        if with_time_stamp:
+                return selected
         # Sort elements by selection timestamp
         if selected:
             sorted_keys = sorted(list(selected.keys()))
@@ -237,19 +240,28 @@ class DrawingModel:
         else:
             return selected_elements
     
-    def get_selected_codes(self, codes=None):
+    def get_selected_codes(self, codes=None, with_time_stamp=False, page=None):
         selected = dict()
         for slno, element in enumerate(self.elements):
             if element.get_selection() is True:
                 if (codes and element.code in codes) or codes is None:
                     selected[element.selected_timestamp] = element
-
-        # Sort elements by selection timestamp
-        if selected:
-            sorted_keys = sorted(list(selected.keys()))
-            selected_slnos = [self.elements.index(selected[i]) for i in sorted_keys]
+        # If timestamped element codes requested return them
+        if with_time_stamp:
+            if page is not None:
+                selected_slnos = {key: (page, self.elements.index(selected[key])) for key in selected}
+            else:
+                selected_slnos = {key: self.elements.index(selected[key]) for key in selected}
         else:
-            selected_slnos = []
+            # Sort elements by selection timestamp
+            if selected:
+                sorted_keys = sorted(list(selected.keys()))
+                if page is not None:
+                    selected_slnos = [(page, self.elements.index(selected[key])) for key in sorted_keys]
+                else:
+                    selected_slnos = [self.elements.index(selected[key]) for key in sorted_keys]
+            else:
+                selected_slnos = []
 
         return selected_slnos
     
