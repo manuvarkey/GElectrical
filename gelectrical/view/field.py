@@ -87,13 +87,12 @@ class FieldView:
                         validated = round(float(eval(text)), field['decimal'])
                     except:
                         validated = 0
-                    widget.set_text(str(validated))
                 elif field['type'] == 'int':
                     try:
                         validated = int(eval(text))
                     except:
                         validated = 0
-                    widget.set_text(str(validated))
+            widget.set_text(str(validated))
             set_field(code, validated)  # set value
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, None)
             if field['alter_structure'] == True:

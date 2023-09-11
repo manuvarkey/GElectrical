@@ -1272,6 +1272,7 @@ def get_fields_from_params(parameters, modify_code=''):
         selection_list = None
         tooltip = ''
         data_type = 'float'
+        validation_func = None
         status_enable = True
         alter_structure = False
         alter_values_dict = dict()
@@ -1281,7 +1282,27 @@ def get_fields_from_params(parameters, modify_code=''):
         if len(values) >= 5:
             tooltip = values[4]
         if len(values) >= 6:
-            data_type = values[5]
+            # If type specified, use that
+            if isinstance(values[5], str):
+                data_type = values[5]
+            # Else get additional parameters for float
+            else:
+                decimal, min, max = values[5]
+                def validation_func(text):
+                    try:
+                        validated = round(float(eval(text)), decimal)
+                        if min is not None:
+                            if validated < min:
+                                validated = min
+                        if max is not None:
+                            if validated > max:
+                                validated = max
+                    except:
+                        if min is not None:
+                            validated = min
+                        else:
+                            validated = 0
+                    return validated
         if len(values) >= 7:
             status_enable = values[6]
         if len(values) >= 8:
@@ -1293,7 +1314,8 @@ def get_fields_from_params(parameters, modify_code=''):
                                                 status_inactivate=False,
                                                 status_enable=status_enable,
                                                 alter_structure=alter_structure,
-                                                alter_values_dict=alter_values_dict)
+                                                alter_values_dict=alter_values_dict,
+                                                validation_func=validation_func)
     return fields
 
 def update_params_from_params(parameters, new_parameters):
