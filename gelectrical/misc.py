@@ -959,6 +959,47 @@ def pprint(variable):
     import json
     print(json.dumps(variable, indent=2))
 
+def display_message(parent, message, title='', message_type='info'):
+    '''Gets a single user input by diplaying a dialog box
+    
+    Arguments:
+        parent: Parent window
+        message: Message to be displayed to user
+        title: Dialog title text
+        message_type: question/info/warning/error
+    Returns:
+        Returns response of dialog.
+    '''
+    message_type_dict = {'question': Gtk.MessageType.QUESTION,
+                         'info': Gtk.MessageType.INFO,
+                         'warning': Gtk.MessageType.WARNING,
+                         'error': Gtk.MessageType.ERROR}
+    buttons_type_dict = {'question': Gtk.ButtonsType.YES_NO,
+                         'info': Gtk.ButtonsType.OK,
+                         'warning': Gtk.ButtonsType.OK,
+                         'error': Gtk.ButtonsType.OK}
+    dialogWindow = Gtk.MessageDialog(parent,
+                                     Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                     message_type_dict[message_type],
+                                     buttons_type_dict[message_type],
+                                     message)
+
+    dialogWindow.set_transient_for(parent)
+    dialogWindow.set_title(title)
+    dialogWindow.set_default_response(Gtk.ResponseType.OK)
+
+    dialogBox = dialogWindow.get_content_area()
+    userlabel = Gtk.Label(title)
+    dialogBox.pack_end(userlabel, False, False, 0)
+
+    dialogWindow.show_all()
+    response = dialogWindow.run()
+    dialogWindow.destroy()
+    if response == Gtk.ResponseType.OK:
+        return True
+    else:
+        return False
+
 def get_user_input_text(parent, message, title='', oldval=None, multiline=False):
     '''Gets a single user input by diplaying a dialog box
     

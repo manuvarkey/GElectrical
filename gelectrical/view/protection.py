@@ -285,38 +285,48 @@ class ProtectionViewDialog():
 
     def export_settings(self, button):
         """Export coordination settings"""
-        
-        # Setup file save dialog
-        dialog = Gtk.FileChooserNative.new("Save coordination settings as...", self.dialog_window,
-                                               Gtk.FileChooserAction.SAVE, "Save", "Cancel")
-        file_filter = Gtk.FileFilter()
-        file_filter.set_name('Spreadsheet file')
-        file_filter.add_pattern("*.xlsx")
-        
-        # Set directory from project filename (Not supported by sandbox)
-        if platform.system() == 'Windows':
-            if self.program_state['filename']:
-                directory = misc.dir_from_path(self.program_state['filename'])
-                if directory:
-                    dialog.set_current_folder(directory)
-        
-        dialog.set_current_name('settings.xlsx')
-        dialog.add_filter(file_filter)
-        dialog.set_filter(file_filter)
-        dialog.set_do_overwrite_confirmation(True)
-        
-        # Run dialog and evaluate code
-        response = dialog.run()
-        if response == Gtk.ResponseType.ACCEPT:
-            filename = dialog.get_filename()
-            if not filename.endswith('.xlsx'):
-                filename += '.xlsx'
-            dialog.destroy()
-            self.export_settings_spreadsheet(filename)
-            log.info('ProtectionViewDialog - export_settings - File saved as - ' + filename)
-        elif response == Gtk.ResponseType.CANCEL:
-            dialog.destroy()
-            log.info('ProtectionViewDialog - export_settings - Cancelled')
+        if self.fields or self.para_fields:
+            # Setup file save dialog
+            dialog = Gtk.FileChooserNative.new("Save coordination settings as...", self.dialog_window,
+                                                Gtk.FileChooserAction.SAVE, "Save", "Cancel")
+            file_filter = Gtk.FileFilter()
+            file_filter.set_name('Spreadsheet file')
+            file_filter.add_pattern("*.xlsx")
+            
+            # Set directory from project filename (Not supported by sandbox)
+            if platform.system() == 'Windows':
+                if self.program_state['filename']:
+                    directory = misc.dir_from_path(self.program_state['filename'])
+                    if directory:
+                        dialog.set_current_folder(directory)
+            
+            dialog.set_current_name('settings.xlsx')
+            dialog.add_filter(file_filter)
+            dialog.set_filter(file_filter)
+            dialog.set_do_overwrite_confirmation(True)
+            
+            # Run dialog and evaluate code
+            response = dialog.run()
+            if response == Gtk.ResponseType.ACCEPT:
+                filename = dialog.get_filename()
+                if not filename.endswith('.xlsx'):
+                    filename += '.xlsx'
+                dialog.destroy()
+                retcode = self.export_settings_spreadsheet(filename)
+                if retcode is True:
+                    log.info('ProtectionViewDialog - export_settings - File saved as - ' + filename)
+                    misc.display_message(self.dialog_window, 'File saved as - ' + filename)
+                else:
+                    log.info('ProtectionViewDialog - export_settings - File not saved, nothing to save')
+                    misc.display_message(self.dialog_window, 'File not saved, nothing to save', 
+                                         message_type='warning')
+            elif response == Gtk.ResponseType.CANCEL:
+                dialog.destroy()
+                log.info('ProtectionViewDialog - export_settings - Cancelled')
+        else:
+            log.info('ProtectionViewDialog - export_settings - File not saved, nothing to save')
+            misc.display_message(self.dialog_window, 'File not saved, nothing to save',
+                                 message_type='warning')
                     
     # Functions
 
@@ -405,21 +415,32 @@ class ProtectionViewDialog():
         """Draw graphs from models generated"""
         index = self.combobox_title.get_active()
         self.graph_view.clear_plots()
-        # Update current axis
-        if self.graph_uids[index] == 'Ground protection':
-            self.graph_view.xlim = misc.GRAPH_PROT_CURRENT_LIMITS_G
-        else:
-            self.graph_view.xlim = misc.GRAPH_PROT_CURRENT_LIMITS
         # Add relevent graphs
         if self.graph_database:
+            # Update current axis
+            if self.graph_uids[index] == 'Ground protection':
+                self.graph_view.xlim = misc.GRAPH_PROT_CURRENT_LIMITS_G
+            else:
+                self.graph_view.xlim = misc.GRAPH_PROT_CURRENT_LIMITS
             self.graph_view.add_plots(self.graph_database[self.graph_uids[index]][1])
 
     def export_settings_spreadsheet(self, filename):
         """Export field and parameter settings of all tabs to spreadsheet"""
-        table1 = misc.params_to_table(self.fields, self.titles)
-        table2 = misc.params_to_table(self.para_fields, self.titles)
-        table = pd.concat([table1, table2])
+        table1 = table2 = None
+        if self.fields:
+            table1 = misc.params_to_table(self.fields, self.titles)
+        if self.para_fields:
+            table2 = misc.params_to_table(self.para_fields, self.titles)
+        if table1 is not None and table2 is not None:
+            table = pd.concat([table1, table2])
+        elif table1 is not None:
+            table = table1
+        elif table2 is not None:
+            table = table2
+        else:
+            return True
         table.to_excel(filename, index=False)
+        return True
                 
     def run(self):
         """Display dialog box and modify graph in place
