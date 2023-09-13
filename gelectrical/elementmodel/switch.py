@@ -303,7 +303,7 @@ class ProtectionDevice(Switch):
                 self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_l']['value']:
-            self.line_protection_model = ProtectionModel(subtitle, {}, 
+            self.line_protection_model = ProtectionModel(subtitle, self.fields['pcurve_l']['value']['parameters'], 
                                     self.fields['pcurve_l']['value']['data'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         else:
@@ -317,7 +317,7 @@ class ProtectionDevice(Switch):
             self.ground_protection_model = ProtectionModel(subtitle, parameters, curves)
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_g']['value'] is not None:
-            self.ground_protection_model = ProtectionModel(subtitle, {}, 
+            self.ground_protection_model = ProtectionModel(subtitle, self.fields['pcurve_g']['value']['parameters'], 
                                     self.fields['pcurve_g']['value']['data'])
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
         else:
@@ -901,7 +901,7 @@ Adds a contactor element used for on-load switching of loads.
                 self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_l']['value']:
-            self.line_protection_model = ProtectionModel(subtitle, {}, 
+            self.line_protection_model = ProtectionModel(subtitle, self.fields['pcurve_l']['value']['parameters'], 
                                     self.fields['pcurve_l']['value']['data'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         else:
