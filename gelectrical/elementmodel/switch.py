@@ -315,6 +315,9 @@ class ProtectionDevice(Switch):
         subtitle = title + ' - ' + 'G'
         if self.fields['custom']['value'] is False and curves:
             self.ground_protection_model = ProtectionModel(subtitle, parameters, curves)
+            # Update parameters if already set
+            if self.fields['pcurve_g']['value'] is not None:
+                self.ground_protection_model.update_parameters(self.fields['pcurve_g']['value']['parameters'])
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_g']['value'] is not None:
             self.ground_protection_model = ProtectionModel(subtitle, self.fields['pcurve_g']['value']['parameters'], 
