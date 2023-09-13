@@ -49,6 +49,7 @@ class ProtectionModel():
                                 'var_2': [caption, unit, value, value_list] ... },
                 'data': {{'select_expr_list' : ['selection_criterion_1', 'selection_criterion_1', 'selection_criterion_1'] 
                           'curve_u1': [('point', i1, t1), 
+                                        ('POINTS', tms, i_n, i1, i2, t_min, d_i, d_t), 
                                         ('IEC', tms, i_n, i1, i2, t_min, n, k, c, alpha), 
                                         ('IEC_S_INV_3.0', tms, i_n, t_min, i1, i2, n), 
                                         ('IEC_S_INV_1.3', tms, i_n, t_min, i1, i2, n), 
@@ -69,6 +70,7 @@ class ProtectionModel():
                         }}
                         OR
                 'data': {'curve_u': [('point', i1, t1), 
+                                    ('POINTS', tms, i_n, i1, i2, t_min, d_i, d_t), 
                                     ('IEC', tms, i_n, i1, i2, t_min, n, k, c, alpha), 
                                     ('IEC_S_INV_3.0', tms, i_n, t_min, i1, i2, n), 
                                     ('IEC_S_INV_1.3', tms, i_n, t_min, i1, i2, n), 
@@ -293,6 +295,19 @@ class ProtectionModel():
                 return list(i_array), list(t_array)
             else:
                 return [], []
+            
+        def points(tms, i_n, i1, i2, t_min, d_i_points=[], d_t_points=[], **vars):
+            d_i = np.array(d_i_points)*i_n
+            d_t = np.array(d_t_points)*tms
+            if i2 > i1:
+                include_arg = (d_i > i1) & (d_i < i2)
+                i_array = d_i[include_arg]
+                t_array_1 = d_t[include_arg]
+                t_array_2 = np.ones(i_array.shape)*t_min
+                t_array = np.maximum(t_array_1, t_array_2)
+                return list(i_array), list(t_array)
+            else:
+                return [], []
 
         iec_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.14, 0, 0.02) # As per IEC 60255-3
         iec_inverse_1_3 = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.06, 0, 0.02)
@@ -309,6 +324,7 @@ class ProtectionModel():
             var_dict = {'f': f, 'd': d}
             func_dict = {   'point'         : point,
                             'POINT'         : point,
+                            'POINTS'        : points,
                             'IEC'           : iec,
                             'IEC_S_INV_3.0' : iec_inverse,
                             'IEC_S_INV_1.3' : iec_inverse_1_3,
@@ -347,8 +363,8 @@ class ProtectionModel():
                             i_array, t_array = func(**data_eval)
                             curve_i += i_array
                             curve_t += t_array
-                        except:
-                            log.warning('Error evaluating curve - data skipped')
+                        except Exception as e:
+                            log.exception('Error evaluating curve - data skipped')
                     # Handle case when parameters are passed as list
                     else:
                         try:
@@ -356,8 +372,8 @@ class ProtectionModel():
                             i_array, t_array = func(*data_eval)
                             curve_i += i_array
                             curve_t += t_array
-                        except:
-                            log.warning('Error evaluating curve - data skipped')
+                        except Exception as e:
+                            log.exception('Error evaluating curve - data skipped')
                     
             curve = (np.array([curve_i, curve_t]).T)*[scale, 1]
             return curve
