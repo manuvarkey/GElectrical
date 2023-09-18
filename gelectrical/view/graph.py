@@ -112,11 +112,14 @@ class GraphImage():
                                 marker=opt_marker, markersize=4, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
                 self.plot.fill(model.xval, model.yval, label=model.title, 
-                                color=color, edgecolor='black',
+                                color=color, edgecolor=misc.COLOR_NORMAL, linewidth=1,
                                 alpha=0.5, hatch='////')
+                self.plot.fill(model.xval, model.yval, 
+                                color='none', edgecolor=misc.COLOR_NORMAL, linewidth=1,
+                                alpha=0.5)
             elif model.mode == misc.GRAPH_DATATYPE_MARKER:
                 self.plot.plot(model.xval, model.yval, label=model.title, color=color, 
-                               linestyle='dashed', alpha=0.5)
+                               linestyle='dashed', linewidth=1)
 
         self.plot.set_title(self.title, fontname=misc.REPORT_GRAPH_FONT_FACE, fontsize=misc.REPORT_GRAPH_FONT_SIZE)
         self.plot.set_xlabel(self.xlabel, fontname=misc.REPORT_GRAPH_FONT_FACE, fontsize=misc.REPORT_GRAPH_FONT_SIZE)
@@ -283,11 +286,14 @@ class GraphView():
                                 marker=opt_marker, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
                 self.plot.fill(model.xval, model.yval, label=model.title, 
-                                color=color, edgecolor='black',
+                                color=color, edgecolor=misc.COLOR_NORMAL, linewidth=1,
                                 alpha=0.5, hatch='////')
+                self.plot.fill(model.xval, model.yval, 
+                                color='none', edgecolor=misc.COLOR_NORMAL, linewidth=1,
+                                alpha=0.5)
             elif model.mode == misc.GRAPH_DATATYPE_MARKER:
                 self.plot.plot(model.xval, model.yval, label=model.title, color=color, 
-                               linestyle='dashed', alpha=0.5)
+                               linestyle='dashed', linewidth=1)
         # Set legends title and stuff
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})

@@ -138,7 +138,7 @@ GRAPH_LOAD_CURRENT_LIMITS = (0,1.5,0.05)
 GRAPH_PROT_TIME_LIMITS = (0.01,3600,60,'log')
 GRAPH_PROT_CURRENT_LIMITS = (1,100e3,100,'log')
 GRAPH_PROT_CURRENT_LIMITS_G = (0.01,10e3,100,'log')
-GRAPH_COLORS = ('#ef2929', '#fce94f', '#729fcf', '#a40000', '#c4a000', '#204a87', '#4e9a06', '#ce5c00')
+GRAPH_COLORS = ('#ef2929', '#F7BD03', '#729fcf', '#a40000', '#CF9033', '#204a87', '#4e9a06', '#ce5c00')
 # Report parameters
 REPORT_FONT_FACE = 'monospace'
 REPORT_FONT_SIZE = 10
