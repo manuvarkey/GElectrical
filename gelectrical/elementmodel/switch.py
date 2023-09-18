@@ -270,7 +270,7 @@ class ProtectionDevice(Switch):
         # Update models
         if code in ('custom', 'type', 'subtype', 'prot_curve_type', 'prot_0_curve_type'):
             if not self.model_loading:
-                self.calculate_parameters()
+                self.calculate_parameters(init=True)
         else:
             if not self.model_loading:
                 self.calculate_parameters()
@@ -280,7 +280,7 @@ class ProtectionDevice(Switch):
     def set_model_cleanup(self):
         self.calculate_parameters()
 
-    def calculate_parameters(self):
+    def calculate_parameters(self, init=False):
         # Form title
         # if self.fields['custom']['value']:
         #     title = (self.fields['ref']['value'] + ', ' + 
@@ -299,7 +299,7 @@ class ProtectionDevice(Switch):
         if self.fields['custom']['value'] is False and curves:
             self.line_protection_model = ProtectionModel(subtitle, parameters, curves)
             # Update parameters if already set
-            if self.fields['pcurve_l']['value'] is not None:
+            if self.fields['pcurve_l']['value'] is not None and init is False:
                 self.line_protection_model.update_parameters(self.fields['pcurve_l']['value']['parameters'])
             self.fields['pcurve_l']['value'] = self.line_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_l']['value']:
@@ -316,7 +316,7 @@ class ProtectionDevice(Switch):
         if self.fields['custom']['value'] is False and curves:
             self.ground_protection_model = ProtectionModel(subtitle, parameters, curves)
             # Update parameters if already set
-            if self.fields['pcurve_g']['value'] is not None:
+            if self.fields['pcurve_g']['value'] is not None and init is False:
                 self.ground_protection_model.update_parameters(self.fields['pcurve_g']['value']['parameters'])
             self.fields['pcurve_g']['value'] = self.ground_protection_model.get_evaluated_model(self.fields)
         elif self.fields['custom']['value'] and self.fields['pcurve_g']['value'] is not None:
@@ -891,7 +891,7 @@ Adds a contactor element used for on-load switching of loads.
         f = FieldDict(self.fields)
         title = self.fields['ref']['value']
         # Set line protection model
-        if f.trip_unit and f.custom is False:
+        if f.trip_unit is True and f.custom is False:
             parameters, curves = get_thermal_protection_models(f.prot_curve_type, magnetic=False)
         else:
             parameters, curves = {}, {}

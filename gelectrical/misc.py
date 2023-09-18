@@ -1309,6 +1309,25 @@ def get_fields_from_params(parameters, modify_code=''):
     """
     fields = dict()
     default_parameter_dict = dict()  # default_values_dict combined for all active parameters
+    
+    def get_validation_func(decimal, min, max):
+        def validation_func(text):
+            try:
+                validated = round(float(eval(text)), decimal)
+                if min is not None:
+                    if validated < min:
+                        validated = min
+                if max is not None:
+                    if validated > max:
+                        validated = max
+            except:
+                if min is not None:
+                    validated = min
+                else:
+                    validated = 0
+            return validated
+        return validation_func
+
     for key, values in parameters.items():
         selection_list = None
         tooltip = ''
@@ -1329,21 +1348,7 @@ def get_fields_from_params(parameters, modify_code=''):
             # Else get additional parameters for float
             else:
                 decimal, min, max = values[5]
-                def validation_func(text):
-                    try:
-                        validated = round(float(eval(text)), decimal)
-                        if min is not None:
-                            if validated < min:
-                                validated = min
-                        if max is not None:
-                            if validated > max:
-                                validated = max
-                    except:
-                        if min is not None:
-                            validated = min
-                        else:
-                            validated = 0
-                    return validated
+                validation_func = get_validation_func(decimal, min, max)
         if len(values) >= 7:
             status_enable = values[6]
         if len(values) >= 8:

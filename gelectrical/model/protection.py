@@ -35,6 +35,9 @@ from ..misc import FieldDict
 # Get logger object
 log = logging.getLogger(__name__)
 
+# Module constants
+PROT_LOWER = -1
+PROT_UPPER = 1
 
 class ProtectionModel():
     """Generic protection base element"""
@@ -205,96 +208,87 @@ class ProtectionModel():
         def point(i1, t1, **vars):
             return (i1,), (t1,)
 
-        def iec(tms, i_n, i1, i2, t_min, n, k_iec=0.14, c_iec=0, alpha_iec=0.02, **vars):
+        def mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, i_tol, t_tol, curve_type=None):
+            """Applies minimum time and tolerance values to curve"""
+            if i2 > i1 and not(curve_type == PROT_LOWER and (abs(i_tol) > 100 or abs(t_tol) > 100)):
+                k_i = round(1+i_tol/100,4)
+                k_t = round(1+t_tol/100,4)
+                i_array = np.geomspace(i1,i2,num=n)
+                t_array_1 = np.zeros(i_array.shape)
+                if curve_type is None or (i_tol == 0 and t_tol == 0):
+                    t_array_1 = curve_func(tms, i_n, i_array)
+                else:
+                    i_array_t = np.copy(i_array)
+                    i_array_i = np.copy(i_array)
+                    i_array_t[i_array <= i_n] = i_n*1.001
+                    i_array_i[i_array <= i_n*k_i] = i_n*k_i*1.001
+                    t_array_1_t = curve_func(k_t*tms, i_n, i_array_t)
+                    t_array_1_i = curve_func(tms, k_i*i_n, i_array_i)
+                    if curve_type == PROT_UPPER:
+                        t_array_1 = np.maximum(t_array_1_t, t_array_1_i)
+                    elif curve_type == PROT_LOWER:
+                        t_array_1 = np.minimum(t_array_1_t, t_array_1_i)
+                t_array_2 = np.ones(i_array.shape)*t_min
+                t_array = np.maximum(t_array_1, t_array_2)
+                return list(i_array), list(t_array)
+            else:
+                return [], []
+    
+        def iec(tms, i_n, i1, i2, t_min, n, k_iec=0.14, c_iec=0, alpha_iec=0.02, i_tol=0, t_tol=0, curve_type=None, **vars):
             k = k_iec
             c = c_iec
             alpha = alpha_iec
-            # IEC/ IEEE inverse curves with minimum time of operation
-            if i2 > i1:
-                i_array = np.geomspace(i1,i2,num=n)
-                t_array_1 = tms*(k/((i_array/i_n)**alpha - 1) + c)
-                t_array_2 = np.ones(i_array.shape)*t_min
-                t_array = np.maximum(t_array_1, t_array_2)
-                return list(i_array), list(t_array)
-            else:
-                return [], []
-
-        def thermal(tms, i_n, i1, i2, t_min, n, i_p_thermal=0, **vars):
+            def curve_func(tms, i_n, i_array):
+                return tms*(k/((i_array/(i_n))**alpha - 1) + c)
+            return mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, i_tol, t_tol, curve_type)
+    
+        def thermal(tms, i_n, i1, i2, t_min, n, i_p_thermal=0, i_tol=0, t_tol=0, curve_type=None, **vars):
             i_p = i_p_thermal
             # As per IEC 60255-8
-            if i2 > i1:
-                i_array = np.geomspace(i1,i2,num=n)
-                t_array_1 = tms*np.log((i_array**2-i_p**2)/(i_array**2 - i_n**2))
-                t_array_2 = np.ones(i_array.shape)*t_min
-                t_array = np.maximum(t_array_1, t_array_2)
-                return list(i_array), list(t_array)
-            else:
-                return [], []
+            def curve_func(tms, i_n, i_array):
+                return tms*np.log((i_array**2-i_p**2)/(i_array**2 - i_n**2))
+            return mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, i_tol, t_tol, curve_type)
 
-        def i2t(tms, i_n, i1, i2, t_min, n, k_i2t=1, alpha_i2t=2, **vars):
+        def i2t(tms, i_n, i1, i2, t_min, n, k_i2t=1, alpha_i2t=2, i_tol=0, t_tol=0, curve_type=None, **vars):
             k = k_i2t
             alpha = alpha_i2t
-            if i2 > i1:
-                i_array = np.geomspace(i1,i2,num=n)
-                t_array_1 = tms*(k/((i_array/i_n)**alpha))
-                t_array_2 = np.ones(i_array.shape)*t_min
-                t_array = np.maximum(t_array_1, t_array_2)
-                return list(i_array), list(t_array)
-            else:
-                return [], []
+            def curve_func(tms, i_n, i_array):
+                return tms*(k/((i_array/i_n)**alpha))
+            # Note: do not consider i_tol since curve is unaffected by current pickup value
+            return mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, 0, t_tol, curve_type)
             
-        def ri_inverse(tms, i_n, i1, i2, t_min, n, **vars):
+        def ri_inverse(tms, i_n, i1, i2, t_min, n, i_tol=0, t_tol=0, curve_type=None, **vars):
             # As per P114S/EN OP/B11 catalogue
-            if i2 > i1:
-                i_array = np.geomspace(i1,i2,num=n)
-                t_array_1 = tms*1/(0.339-0.236/(i_array/i_n))
-                t_array_2 = np.ones(i_array.shape)*t_min
-                t_array = np.maximum(t_array_1, t_array_2)
-                return list(i_array), list(t_array)
-            else:
-                return [], []
+            def curve_func(tms, i_n, i_array):
+                return tms*1/(0.339-0.236/(i_array/i_n))
+            return mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, i_tol, t_tol, curve_type)
             
-        def hv_fuse(tms, i_n, i1, i2, t_min, n, **vars):
+        def hv_fuse(tms, i_n, i1, i2, t_min, n, i_tol=0, t_tol=0, curve_type=None, **vars):
             # As per P114S/EN OP/B11 catalogue
-            if i2 > i1:
-                i_array = np.geomspace(i1,i2,num=n)
-                t_array_1 = (tms/0.1)*10**(np.log10(2*(i_array/i_n))*(-3.832)+3.66)
-                t_array_2 = np.ones(i_array.shape)*t_min
-                t_array = np.maximum(t_array_1, t_array_2)
-                return list(i_array), list(t_array)
-            else:
-                return [], []
+            def curve_func(tms, i_n, i_array):
+                return (tms/0.1)*10**(np.log10(2*(i_array/i_n))*(-3.832)+3.66)
+            return mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, i_tol, t_tol, curve_type)
         
-        def fr_fuse(tms, i_n, i1, i2, t_min, n, **vars):
+        def fr_fuse(tms, i_n, i1, i2, t_min, n, i_tol=0, t_tol=0, curve_type=None, **vars):
             # As per P114S/EN OP/B11 catalogue
-            if i2 > i1:
-                i_array = np.geomspace(i1,i2,num=n)
+            def curve_func(tms, i_n, i_array):
                 t_array_1 = np.where(i_array < 2*i_n, (tms/0.1)*10**(np.log10(i_array/i_n)*(-7.16)+3.0), 0)
                 t_array_2 = np.where((i_array >= 2*i_n) & (i_array <= 2.66*i_n), (tms/0.1)*10**(np.log10(i_array/i_n)*(-5.4)+2.47), 0)
                 t_array_3 = np.where(i_array > 2.66*i_n, (tms/0.1)*10**(np.log10(i_array/i_n)*(-4.24)+1.98), 0)
-                t_array_4 = np.ones(i_array.shape)*t_min
-                t_array = np.maximum(t_array_1 + t_array_2 + t_array_3, t_array_4)
-                return list(i_array), list(t_array)
-            else:
-                return [], []
+                return t_array_1 + t_array_2 + t_array_3
+            return mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, i_tol, t_tol, curve_type)
             
-        def polylog(tms, i_n, i1, i2, t_min, n, kn_polylog=[1,1], c_polylog=1, **vars):
+        def polylog(tms, i_n, i1, i2, t_min, n, kn_polylog=[1,1], c_polylog=1, i_tol=0, t_tol=0, curve_type=None, **vars):
             # Equation of the form log10 T = k0 + k1*log10(M-C) + k2*log10(M-C)**2 + ...
             kn = kn_polylog
             C = c_polylog
-
-            if i2 > i1:
-                i_array = np.geomspace(i1,i2,num=n)
+            def curve_func(tms, i_n, i_array):
                 t_array_1 = np.zeros_like(i_array)
                 M = i_array/i_n
                 for order, k in enumerate(kn):
                     t_array_1 += k*np.log10(M-C)**order
-                t_array_1 = tms*10**t_array_1
-                t_array_2 = np.ones(i_array.shape)*t_min
-                t_array = np.maximum(t_array_1, t_array_2)
-                return list(i_array), list(t_array)
-            else:
-                return [], []
+                return tms*10**t_array_1
+            return mod_curve(curve_func, tms, i_n, i1, i2, t_min, n, i_tol, t_tol, curve_type)
             
         def points(tms, i_n, i1, i2, t_min, d_i_points=[], d_t_points=[], **vars):
             d_i = np.array(d_i_points)*i_n
@@ -308,17 +302,23 @@ class ProtectionModel():
                 return list(i_array), list(t_array)
             else:
                 return [], []
+            
+        def clean_iec(vars):
+            vars.pop('k_iec', None)
+            vars.pop('alpha_iec', None)
+            vars.pop('c_iec', None)
+            return vars
 
-        iec_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.14, 0, 0.02) # As per IEC 60255-3
-        iec_inverse_1_3 = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.06, 0, 0.02)
-        iec_v_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 13.5, 0, 1) # As per IEC 60255-3
-        iec_e_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 80, 0, 2) # As per IEC 60255-3
-        iec_lt_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 120, 0, 1) # As per IEC 60255-3
-        ieee_m_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 0.0515, 0.1140, 0.02) # As per IEEE C37.112-1996
-        ieee_v_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 19.61, 0.491, 2) # As per IEEE C37.112-1996
-        ieee_e_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 28.2, 0.1217, 2) # As per IEEE C37.112-1996
-        us_co8_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 5.95, 0.18, 2)
-        us_co2_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 0.02394, 0.01694, 0.02)
+        iec_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.14, 0, 0.02, **clean_iec(vars)) # As per IEC 60255-3
+        iec_inverse_1_3 = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 0.06, 0, 0.02, **clean_iec(vars))
+        iec_v_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 13.5, 0, 1, **clean_iec(vars)) # As per IEC 60255-3
+        iec_e_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 80, 0, 2, **clean_iec(vars)) # As per IEC 60255-3
+        iec_lt_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms, i_n, i1, i2, t_min, n, 120, 0, 1, **clean_iec(vars)) # As per IEC 60255-3
+        ieee_m_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 0.0515, 0.1140, 0.02, **clean_iec(vars)) # As per IEEE C37.112-1996
+        ieee_v_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 19.61, 0.491, 2, **clean_iec(vars)) # As per IEEE C37.112-1996
+        ieee_e_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 28.2, 0.1217, 2, **clean_iec(vars)) # As per IEEE C37.112-1996
+        us_co8_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 5.95, 0.18, 2, **clean_iec(vars))
+        us_co2_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 0.02394, 0.01694, 0.02, **clean_iec(vars))
         
         def eval_curve(curve):
             var_dict = {'f': f, 'd': d}
@@ -558,13 +558,13 @@ def get_protection_model(protection_type, ground_model=False):
                                 'THERMAL', 'I2T', 
                                 'RI_INV', 'HV_FUSE', 'FR_FUSE']
     curves_default_values_dict = {curve: {'tr_i2t': None, 'ir_i2t': None, 'k_iec': None, 'c_iec': None, 'alpha_iec': None} for curve in long_trip_curves}
-    curves_default_values_dict['I2T'] = {'tr_i2t': 1, 'ir_i2t': 6, 'k_iec': None, 'c_iec': None, 'alpha_iec': None}
-    curves_default_values_dict['IEC'] = {'tr_i2t': None, 'ir_i2t': None, 'k_iec': 80, 'c_iec': 0, 'alpha_iec':2}
+    curves_default_values_dict['I2T'] = {'tr_i2t': 16, 'ir_i2t': 6, 'k_iec': None, 'c_iec': None, 'alpha_iec': None}
+    curves_default_values_dict['IEC'] = {'tr_i2t': None, 'ir_i2t': None, 'k_iec': 800, 'c_iec': 0, 'alpha_iec':2}
     # Magnetic trip constants
-    i2t_default_values_dict = { True   : {'t_i2t': 1, 'i_i2t': 6}, 
-                                False   : {'t_i2t': None, 'i_i2t': None}}
+    i2t_default_values_dict = { True   : {'t_i2t': 0.1, 'i_i2t': 10, 'tol_m_i2t_p': 15,'tol_m_i2t_m': 15}, 
+                                False   : {'t_i2t': None, 'i_i2t': None, 'tol_m_i2t_p': None,'tol_m_i2t_m': None}}
     # Instantaneous trip constants
-    ii_default_values_dict = {  True    : {'i_i': 25, 't_i': 0.01, 'tol_ii_p': 20, 'tol_ii_m': 20, 'tol_ti_p': 100, 'tol_ti_m': 90}, 
+    ii_default_values_dict = {  True    : {'i_i': 15, 't_i': 0.01, 'tol_ii_p': 20, 'tol_ii_m': 20, 'tol_ti_p': 0, 'tol_ti_m': 99}, 
                                 False   : {'i_i': None, 't_i': None, 'tol_ii_p': None, 'tol_ii_m': None, 'tol_ti_p': None, 'tol_ti_m': None}}
     if ground_model is True:
         In = 'f.I0'
@@ -576,56 +576,65 @@ def get_protection_model(protection_type, ground_model=False):
         
     if protection_type in ('Thermal',):
 
-        def get_curves(Ir, Tr, T_conv, r_tol, t_min):
-            kr_I2t = '((d.ir_i2t)**2)*d.tr_i2t' + '*' + r_tol
-            k_iec = 'd.k_iec' + '*' + r_tol
+        def get_curves(Ir, Tr, i_tol, t_tol, t_min, I1, curve_type):
+            T_conv = 'd.t_conv*3600'
+            kr_I2t = '((d.ir_i2t)**2)*d.tr_i2t'
+            k_iec = 'd.k_iec'
             c_iec = 'd.c_iec'
             alpha_iec = 'd.alpha_iec'
             curve_vars = {  'tms'         : Tr, 
                             'i_n'         : Ir, 
-                            'i1'          : Ir + '*1.1',
+                            'i1'          : I1 + '*1.1',
                             'i2'          : Isc,
                             't_min'       : t_min, 
-                            'n'           : 50,
+                            'n'           : 100,
+                            'i_tol'       : i_tol,
+                            't_tol'       : t_tol,
+                            'curve_type'  : curve_type,
+
                             'k_i2t'       : kr_I2t,
                             'k_iec'       : k_iec,
                             'c_iec'       : c_iec,
                             'alpha_iec'   : alpha_iec,
                             }
-            curve = [   ('point', Ir, T_conv),
+            curve = [   ('point', I1, T_conv),
                         ('d.curve_l', curve_vars)]
             return curve
         
         # Upper curve
-        Ir = 'd.i_f*d.i_r*' + In
-        Tr = 'd.t_r*(100+d.tol_tr_p)/100'
-        T_conv = 'd.t_conv*3600'
-        r_tol = '(100+d.tol_tr_p)/100'
+        Ir = 'd.i_r*' + In
+        Tr = 'd.t_r'
+        i_tol = 'd.tol_ir_p'
+        t_tol = 'd.tol_tr_p'
         t_min = 'd.t_min'
-        curve_u = get_curves(Ir, Tr, T_conv, r_tol, t_min)
+        I1 = '(100+d.tol_ir_p)/100*' + Ir
+        curve_type = PROT_UPPER
+        curve_u = get_curves(Ir, Tr, i_tol, t_tol, t_min, I1, curve_type)
         # Lower curve
-        Ir = 'd.i_nf*d.i_r*' + In
-        Tr = 'd.t_r*(100-d.tol_tr_m)/100'
-        T_conv = 'd.t_conv*3600'
-        r_tol = '(100-d.tol_tr_m)/100'
+        Ir = 'd.i_r*' + In
+        Tr = 'd.t_r'
+        i_tol = '-d.tol_ir_m'
+        t_tol = '-d.tol_tr_m'
         t_min = 0
-        curve_l = get_curves(Ir, Tr, T_conv, r_tol, t_min)
+        I1 = '(100-d.tol_ir_m)/100*' + Ir
+        curve_type = PROT_LOWER
+        curve_l = get_curves(Ir, Tr, i_tol, t_tol, t_min, I1, curve_type)
         
         parameters = {'head_t'  : ['Thermal protection', '', '', None, '', 'heading'],
                     'curve_l'   : ['Thermal trip curve', '', 'IEC_S_INV_3.0', long_trip_curves, '', 'str', True, curves_default_values_dict],
                     'i_r'       : ['Ir', xIn, 1, None, 'Thermal protection pickup current'],
-                    'i_nf'      : ['Inf', 'xIr', 1.05, None, 'Conventional non-tripping current'],
-                    'i_f'       : ['If', 'xIr', 1.3, None, 'Conventional tripping current'],
                     't_r'       : ['Tr', '', 1, None, 'Time multiplier setting'],
                     't_conv'    : ['T conv', 'Hrs', 2, None, 'Conventional time'],
-                    'k_iec'     : ['k', '', 80, None, '', 'float', False],
+                    'k_iec'     : ['k', '', 800, None, '', 'float', False],
                     'c_iec'     : ['c', '', 0, None, '', 'float', False],
                     'alpha_iec' : ['alpha', '', 2, None, '', 'float', False],
-                    'ir_i2t'    : ['Ir i2t', xIn, 6, None, '', 'float', False],
-                    'tr_i2t'    : ['Tr i2t', 's', 1, None, 'I2t time delay at I i2t fault current', 'float', False],
+                    'ir_i2t'    : ['Ir i2t', 'xIr', 6, None, '', 'float', False],
+                    'tr_i2t'    : ['Tr i2t', 's', 16, None, 'I2t time delay at I i2t fault current', 'float', False],
                     't_min'     : ['Tmin', 's', 0.1, None, 'Minimum trip time'],
-                    'tol_tr_p'  : ['Tr tol (+)', '%', 20, None, 'Time delay tolerance (+)'],
-                    'tol_tr_m'  : ['Tr tol (-)', '%', 20, None, 'Time delay tolerance (-)'],}                            
+                    'tol_ir_p'  : ['Ir tol (+)', '%', 10, None, 'Current pickup tolerance (+)', [1,0,None]],
+                    'tol_ir_m'  : ['Ir tol (-)', '%', 10, None, 'Current pickup tolerance (-)', [1,0,99]],
+                    'tol_tr_p'  : ['Tr tol (+)', '%', 10, None, 'Time delay tolerance (+)', [1,0,None]],
+                    'tol_tr_m'  : ['Tr tol (-)', '%', 10, None, 'Time delay tolerance (-)', [1,0,99]]}
         curves = {'curve_u': curve_u, 'curve_l': curve_l}
 
     elif protection_type in ('Magnetic'):
@@ -664,37 +673,39 @@ def get_protection_model(protection_type, ground_model=False):
         Tm = 'd.t_m*(100+d.tol_tm_p)/100'
         Ii = '(d.i_i*(100+d.tol_ii_p)/100)*' + In
         Ti = 'd.t_i*(100+d.tol_ti_p)/100'
-        i2t_tol = '(100+d.tol_tm_p)/100'
+        i2t_tol = '(100+d.tol_m_i2t_p)/100'
         curve_u1, curve_u2, curve_u3, curve_u4 = get_curves(Im, Tm, Ii, Ti, i2t_tol)
         # Lower curves
         Im = '(d.i_m*(100-d.tol_im_m)/100)*' + In
         Tm = 'd.t_m*(100-d.tol_tm_m)/100'
         Ii = '(d.i_i*(100-d.tol_ii_m)/100)*' + In
         Ti = 'd.t_i*(100-d.tol_ti_m)/100'
-        i2t_tol = '(100-d.tol_tm_m)/100'
+        i2t_tol = '(100-d.tol_m_i2t_m)/100'
         curve_l1, curve_l2, curve_l3, curve_l4 = get_curves(Im, Tm, Ii, Ti, i2t_tol)
 
         parameters = {  'head_m'        : ['Magnetic protection', '', '', None, '', 'heading'],
-                        'i_m'           : ['Im', xIn, 6, None, 'Magnetic pickup current'],
+                        'i_m'           : ['Im', xIn, 10, None, 'Magnetic pickup current'],
                         't_m'           : ['Tm', 's', 0.1, None, 'Magnetic trip time delay'],
-                        'tol_im_p'      : ['Im tol (+)', '%', 10, None, 'Current pickup tolerance (+)'],
-                        'tol_im_m'      : ['Im tol (-)', '%', 10, None, 'Current pickup tolerance (-)'],
-                        'tol_tm_p'      : ['Tm tol (+)', '%', 20, None, 'Time delay tolerance (+)'],
-                        'tol_tm_m'      : ['Tm tol (-)', '%', 20, None, 'Time delay tolerance (-)'],
+                        'tol_im_p'      : ['Im tol (+)', '%', 10, None, 'Current pickup tolerance (+)', [1,0,None]],
+                        'tol_im_m'      : ['Im tol (-)', '%', 10, None, 'Current pickup tolerance (-)', [1,0,99]],
+                        'tol_tm_p'      : ['Tm tol (+)', '%', 15, None, 'Time delay tolerance (+)', [1,0,None]],
+                        'tol_tm_m'      : ['Tm tol (-)', '%', 15, None, 'Time delay tolerance (-)', [1,0,99]],
                         
                         'head_i2t'      : ['I2t protection', '', '', None, '', 'heading'],
                         'i2t_on'        : ['Enable I2t protection', '', False, [True, False], '', 'bool', True, i2t_default_values_dict],
-                        'i_i2t'         : ['I i2t', xIn, 6, None, '', 'float', False],
-                        't_i2t'         : ['T i2t', 's', 1, None, 'I2t time delay at I i2t fault current', 'float', False],
+                        'i_i2t'         : ['I i2t', xIn, 10, None, '', 'float', False],
+                        't_i2t'         : ['T i2t', 's', 0.1, None, 'I2t time delay at I i2t fault current', 'float', False],
+                        'tol_m_i2t_p'  : ['Tm (I2t) tol (+)', '%', 15, None, 'Time delay tolerance (+)', [1,0,None], False],
+                        'tol_m_i2t_m'  : ['Tm (I2t) tol (-)', '%', 15, None, 'Time delay tolerance (-)', [1,0,99], False],
                         
                         'head_i'        : ['Instantaneous protection', '', '', None, '', 'heading'],
                         'i_i_on'        : ['Enable instantaneous protection', '', False, [True, False], '', 'bool', True, ii_default_values_dict],
-                        'i_i'           : ['Ii', xIn, 25, None, 'Instantaneous pickup current', 'float', False],
+                        'i_i'           : ['Ii', xIn, 15, None, 'Instantaneous pickup current', 'float', False],
                         't_i'           : ['Ti', 's', 0.01, None, 'Instantaneous trip time delay', 'float', False],
-                        'tol_ii_p'      : ['Ii tol (+)', '%', 10, None, 'Current pickup tolerance (+)', 'float', False],
-                        'tol_ii_m'      : ['Ii tol (-)', '%', 10, None, 'Current pickup tolerance (-)', 'float', False],
-                        'tol_ti_p'      : ['Ti tol (+)', '%', 100, None, 'Time delay tolerance (+)', 'float', False],
-                        'tol_ti_m'      : ['Ti tol (-)', '%', 90, None, 'Time delay tolerance (-)', 'float', False]}
+                        'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', [1,0,None], False],
+                        'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False],
+                        'tol_ti_p'      : ['Ti tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None], False],
+                        'tol_ti_m'      : ['Ti tol (-)', '%', 99, None, 'Time delay tolerance (-)', [1,0,99], False]}
         curves = {'select_expr_list': select_expr_list,
                     'curve_u1': curve_u1, 'curve_l1': curve_l1,
                     'curve_u2': curve_u2, 'curve_l2': curve_l2,
@@ -703,44 +714,54 @@ def get_protection_model(protection_type, ground_model=False):
 
     elif protection_type in ('Thermal Magnetic',):
 
-        def get_curves(Ir, Tr, T_conv, Im, Tm, r_tol):
-            kr_I2t = '((d.ir_i2t)**2)*d.tr_i2t' + '*' + r_tol
-            k_iec = 'd.k_iec' + '*' + r_tol
+        def get_curves(Ir, I1, Tr, T_conv, Im, Tm, i_tol, t_tol, curve_type):
+            kr_I2t = '((d.ir_i2t)**2)*d.tr_i2t'
+            k_iec = 'd.k_iec'
             c_iec = 'd.c_iec'
             alpha_iec = 'd.alpha_iec'
             curve_vars = {  'tms'         : Tr, 
                             'i_n'         : Ir, 
-                            'i1'          : Ir + '*1.1',
+                            'i1'          : I1 + '*1.1',
                             'i2'          : Im,
                             't_min'       : Tm, 
-                            'n'           : 50,
+                            'n'           : 100,
+                            'i_tol'       : i_tol,
+                            't_tol'       : t_tol,
+                            'curve_type'  : curve_type,
+
                             'k_i2t'       : kr_I2t,
                             'k_iec'       : k_iec,
                             'c_iec'       : c_iec,
                             'alpha_iec'   : alpha_iec,
                             }
-            curve = [   ('point', Ir, T_conv),
+            curve = [   ('point', I1, T_conv),
                         ('d.curve_l', curve_vars),
                         ('point', Im, Tm),
                         ('point', Isc, Tm),]
             return curve
         
         # Upper curve
-        Ir = 'd.i_f*d.i_r*' + In
-        Tr = 'd.t_r*(100+d.tol_tr_p)/100'
+        Ir = 'd.i_r*' + In
+        I1 = 'd.i_f*d.i_r*' + In
+        Tr = 'd.t_r'
         T_conv = 'd.t_conv*3600'
         Im = '(d.i_m*(100+d.tol_im_p)/100)*' + In
         Tm = 'd.t_m*(100+d.tol_tm_p)/100'
-        r_tol = '(100+d.tol_tr_p)/100'
-        curve_u = get_curves(Ir, Tr, T_conv, Im, Tm, r_tol)
+        i_tol = 'd.i_f*100-100'
+        t_tol = 'd.tol_tr_p'
+        curve_type = PROT_UPPER
+        curve_u = get_curves(Ir, I1, Tr, T_conv, Im, Tm, i_tol, t_tol, curve_type)
         # Lower curve
-        Ir = 'd.i_nf*d.i_r*' + In
-        Tr = 'd.t_r*(100-d.tol_tr_m)/100'
+        Ir = 'd.i_r*' + In
+        I1 = 'd.i_nf*d.i_r*' + In
+        Tr = 'd.t_r'
         T_conv = 'd.t_conv*3600'
         Im = '(d.i_m*(100-d.tol_im_m)/100)*' + In
         Tm = 'd.t_m*(100-d.tol_tm_m)/100'
-        r_tol = '(100-d.tol_tr_m)/100'
-        curve_l = get_curves(Ir, Tr, T_conv, Im, Tm, r_tol)
+        i_tol = 'd.i_nf*100-100'
+        t_tol = '-d.tol_tr_m'
+        curve_type = PROT_LOWER
+        curve_l = get_curves(Ir, I1, Tr, T_conv, Im, Tm, i_tol, t_tol, curve_type)
         
         parameters = {'head_t'  : ['Thermal protection', '', '', None, '', 'heading'],
                     'curve_l'   : ['Thermal trip curve', '', 'IEC', long_trip_curves, '', 'str', True, curves_default_values_dict],
@@ -749,21 +770,21 @@ def get_protection_model(protection_type, ground_model=False):
                     'i_f'       : ['If', 'xIr', 1.3, None, 'Conventional tripping current'],
                     't_r'       : ['Tr', '', 1, None, 'Time multiplier setting'],
                     't_conv'    : ['T conv', 'Hrs', 2, None, 'Conventional time'],
-                    'k_iec'     : ['k', '', 80, None, '', 'float', True],
+                    'k_iec'     : ['k', '', 800, None, '', 'float', True],
                     'c_iec'     : ['c', '', 0, None, '', 'float', True],
                     'alpha_iec' : ['alpha', '', 2, None, '', 'float', True],
-                    'ir_i2t'    : ['Ir i2t', xIn, 6, None, '', 'float', False],
-                    'tr_i2t'    : ['Tr i2t', 's', 1, None, 'I2t time delay at I i2t fault current', 'float', False],
-                    'tol_tr_p'  : ['Tr tol (+)', '%', 20, None, 'Time delay tolerance (+)'],
-                    'tol_tr_m'  : ['Tr tol (-)', '%', 20, None, 'Time delay tolerance (-)'],
+                    'ir_i2t'    : ['Ir i2t', 'xIr', 6, None, '', 'float', False],
+                    'tr_i2t'    : ['Tr i2t', 's', 16, None, 'I2t time delay at I i2t fault current', 'float', False],
+                    'tol_tr_p'  : ['Tr tol (+)', '%', 50, None, 'Time delay tolerance (+)', [1,0,None]],
+                    'tol_tr_m'  : ['Tr tol (-)', '%', 50, None, 'Time delay tolerance (-)', [1,0,99]],
                     
                     'head_m'        : ['Magnetic protection', '', '', None, '', 'heading'],
-                    'i_m'           : ['Im', xIn, 6, None, 'Magnetic pickup current'],
-                    't_m'           : ['Tm', 's', 0.1, None, 'Magnetic trip time delay'],
-                    'tol_im_p'      : ['Im tol (+)', '%', 20, None, 'Current pickup tolerance (+)'],
-                    'tol_im_m'      : ['Im tol (-)', '%', 20, None, 'Current pickup tolerance (-)'],
-                    'tol_tm_p'      : ['Tm tol (+)', '%', 100, None, 'Time delay tolerance (+)'],
-                    'tol_tm_m'      : ['Tm tol (-)', '%', 90, None, 'Time delay tolerance (-)']}
+                    'i_m'           : ['Im', xIn, 10, None, 'Magnetic pickup current'],
+                    't_m'           : ['Tm', 's', 0.01, None, 'Magnetic trip time delay'],
+                    'tol_im_p'      : ['Im tol (+)', '%', 20, None, 'Current pickup tolerance (+)', [1,0,None]],
+                    'tol_im_m'      : ['Im tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99]],
+                    'tol_tm_p'      : ['Tm tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None]],
+                    'tol_tm_m'      : ['Tm tol (-)', '%', 99, None, 'Time delay tolerance (-)', [1,0,99]]}
         curves = {'curve_u': curve_u, 'curve_l': curve_l}
 
     elif protection_type in ('Microprocessor',):
@@ -772,71 +793,81 @@ def get_protection_model(protection_type, ground_model=False):
                             'd.i_i_on is False and d.i2t_on is True',
                             'd.i_i_on is True and d.i2t_on is True']
         
-        def get_curves(Ir, Tr, T_conv, Im, Tm, Ii, Ti, r_tol, i2t_tol):
+        def get_curves(Ir, I1, Tr, T_conv, Im, Tm, Ii, Ti, i_tol, t_tol, curve_type, i2t_tol):
             k_I2T = '((d.i_i2t)**2)*d.t_i2t'
-            kr_I2t = '((d.ir_i2t)**2)*d.tr_i2t' + '*' + r_tol
-            k_iec = 'd.k_iec' + '*' + r_tol
+            kr_I2t = '((d.ir_i2t)**2)*d.tr_i2t'
+            k_iec = 'd.k_iec'
             c_iec = 'd.c_iec'
             alpha_iec = 'd.alpha_iec'
             curve_vars = {'tms'         : Tr, 
                             'i_n'         : Ir, 
-                            'i1'          : Ir + '*1.1',
+                            'i1'          : I1 + '*1.1',
                             'i2'          : Im,
                             't_min'       : Tm, 
-                            'n'           : 50,
+                            'n'           : 100,
+                            'i_tol'       : i_tol,
+                            't_tol'       : t_tol,
+                            'curve_type'  : curve_type,
+
                             'k_i2t'       : kr_I2t,
                             'k_iec'       : k_iec,
                             'c_iec'       : c_iec,
                             'alpha_iec'   : alpha_iec,
                             }
             # M
-            curve1 = [  ('point', Ir, T_conv),
+            curve1 = [  ('point', I1, T_conv),
                         ('d.curve_l', curve_vars),
                         ('point', Im, Tm),
                         ('point', Isc, Tm),]
             # M, I
-            curve2 = [('point', Ir, T_conv),
+            curve2 = [('point', I1, T_conv),
                         ('d.curve_l', curve_vars),
                         ('point', Im, Tm),
                         ('point', Ii, Tm),
                         ('point', Ii, Ti),
                         ('point', Isc, Ti),]
             # M, I2t
-            curve3 = [('point', Ir, T_conv),
+            curve3 = [('point', I1, T_conv),
                         ('d.curve_l', curve_vars),
-                        ('I2T', i2t_tol, In, Im, Isc, Tm, 50, k_I2T, 2),
+                        ('I2T', i2t_tol, In, Im, Isc, Tm, 100, k_I2T, 2),
                         ('point', Isc, Tm),]
             # M, I, I2t
-            curve4 = [('point', Ir, T_conv),
+            curve4 = [('point', I1, T_conv),
                         ('d.curve_l', curve_vars),
-                        ('I2T', i2t_tol, In, Im, Ii, Tm, 50, k_I2T, 2),
+                        ('I2T', i2t_tol, In, Im, Ii, Tm, 100, k_I2T, 2),
                         ('point', Ii, Tm),
                         ('point', Ii, Ti),
                         ('point', Isc, Ti),]
             return curve1, curve2, curve3, curve4
         
         # Upper curves
-        Ir = 'd.i_f*d.i_r*' + In
-        Tr = 'd.t_r*(100+d.tol_tr_p)/100'
+        Ir = 'd.i_r*' + In
+        I1 = 'd.i_f*d.i_r*' + In
+        Tr = 'd.t_r'
         T_conv = 'd.t_conv*3600'
         Im = '(d.i_m*(100+d.tol_im_p)/100)*' + In
         Tm = 'd.t_m*(100+d.tol_tm_p)/100'
         Ii = '(d.i_i*(100+d.tol_ii_p)/100)*' + In
         Ti = 'd.t_i*(100+d.tol_ti_p)/100'
-        r_tol = '(100+d.tol_tr_p)/100'
-        i2t_tol = '(100+d.tol_tm_p)/100'
-        curve_u1, curve_u2, curve_u3, curve_u4 = get_curves(Ir, Tr, T_conv, Im, Tm, Ii, Ti, r_tol, i2t_tol)
+        i_tol = 'd.i_f*100-100'
+        t_tol = 'd.tol_tr_p'
+        curve_type = PROT_UPPER
+        i2t_tol = '(100+d.tol_m_i2t_p)/100'
+        curve_u1, curve_u2, curve_u3, curve_u4 = get_curves(Ir, I1, Tr, T_conv, Im, Tm, Ii, Ti, i_tol, t_tol, curve_type, i2t_tol)
         # Lower curves
-        Ir = 'd.i_nf*d.i_r*' + In
-        Tr = 'd.t_r*(100-d.tol_tr_m)/100'
+        Ir = 'd.i_r*' + In
+        I1 = 'd.i_nf*d.i_r*' + In
+        Tr = 'd.t_r'
         T_conv = 'd.t_conv*3600'
         Im = '(d.i_m*(100-d.tol_im_m)/100)*' + In
         Tm = 'd.t_m*(100-d.tol_tm_m)/100'
         Ii = '(d.i_i*(100-d.tol_ii_m)/100)*' + In
         Ti = 'd.t_i*(100-d.tol_ti_m)/100'
-        r_tol = '(100-d.tol_tr_m)/100'
-        i2t_tol = '(100-d.tol_tm_m)/100'
-        curve_l1, curve_l2, curve_l3, curve_l4 = get_curves(Ir, Tr, T_conv, Im, Tm, Ii, Ti, r_tol, i2t_tol)
+        i_tol = 'd.i_nf*100-100'
+        t_tol = '-d.tol_tr_m'
+        curve_type = PROT_LOWER
+        i2t_tol = '(100-d.tol_m_i2t_m)/100'
+        curve_l1, curve_l2, curve_l3, curve_l4 = get_curves(Ir, I1, Tr, T_conv, Im, Tm, Ii, Ti, i_tol, t_tol, curve_type, i2t_tol)
 
         parameters = {  'head_l'    : ['Long time protection', '', '', None, '', 'heading'],
                         'curve_l'   : ['Long time trip curve', '', 'I2T', long_trip_curves, '', 'str', True, curves_default_values_dict],
@@ -845,33 +876,35 @@ def get_protection_model(protection_type, ground_model=False):
                         'i_f'       : ['If', 'xIr', 1.3, None, 'Conventional tripping current'],
                         't_r'       : ['Tr', '', 1, None, 'Time multiplier setting'],
                         't_conv'    : ['T conv', 'Hrs', 2, None, 'Conventional time'],
-                        'k_iec'     : ['k', '', 80, None, '', 'float', False],
+                        'k_iec'     : ['k', '', 800, None, '', 'float', False],
                         'c_iec'     : ['c', '', 0, None, '', 'float', False],
                         'alpha_iec' : ['alpha', '', 2, None, '', 'float', False],
-                        'ir_i2t'    : ['Ir i2t', xIn, 6, None, '', 'float', True],
-                        'tr_i2t'    : ['Tr i2t', 's', 1, None, 'I2t time delay at I i2t fault current', 'float', True],
-                        'tol_tr_p'  : ['Tr tol (+)', '%', 20, None, 'Time delay tolerance (+)'],
-                        'tol_tr_m'  : ['Tr tol (-)', '%', 20, None, 'Time delay tolerance (-)'],
+                        'ir_i2t'    : ['Ir i2t', 'xIr', 6, None, '', 'float', True],
+                        'tr_i2t'    : ['Tr i2t', 's', 16, None, 'I2t time delay at I i2t fault current', 'float', True],
+                        'tol_tr_p'  : ['Tr tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None]],
+                        'tol_tr_m'  : ['Tr tol (-)', '%', 20, None, 'Time delay tolerance (-)', [1,0,99]],
 
                         'head_s'        : ['Short time protection', '', '', None, '', 'heading'],
                         'i_m'           : ['Isd', xIn, 8, None, 'Short time pickup current'],
                         't_m'           : ['Tsd', 's', 0.1, None, 'Short time time delay'],
                         'tol_im_p'      : ['Isd tol (+)', '%', 10, None, 'Current pickup tolerance (+)'],
                         'tol_im_m'      : ['Isd tol (-)', '%', 10, None, 'Current pickup tolerance (-)'],
-                        'tol_tm_p'      : ['Tsd tol (+)', '%', 20, None, 'Time delay tolerance (+)'],
-                        'tol_tm_m'      : ['Tsd tol (-)', '%', 20, None, 'Time delay tolerance (-)'],
+                        'tol_tm_p'      : ['Tsd tol (+)', '%', 15, None, 'Time delay tolerance (+)'],
+                        'tol_tm_m'      : ['Tsd tol (-)', '%', 15, None, 'Time delay tolerance (-)'],
                         'i2t_on'        : ['Enable I2t protection', '', False, [True, False], '', 'bool', True, i2t_default_values_dict],
-                        'i_i2t'         : ['I i2t', xIn, 6, None, '', 'float', False],
-                        't_i2t'         : ['T i2t', 's', 1, None, 'I2t time delay at I i2t fault current', 'float', False],
+                        'i_i2t'         : ['I i2t', xIn, 10, None, '', 'float', False],
+                        't_i2t'         : ['T i2t', 's', 0.1, None, 'I2t time delay at I i2t fault current', 'float', False],
+                        'tol_m_i2t_p'  : ['Tm (I2t) tol (+)', '%', 15, None, 'Time delay tolerance (+)', [1,0,None], False],
+                        'tol_m_i2t_m'  : ['Tm (I2t) tol (-)', '%', 15, None, 'Time delay tolerance (-)', [1,0,99], False],
                         
                         'head_i'        : ['Instantaneous protection', '', '', None, '', 'heading'],
                         'i_i_on'        : ['Enable instantaneous protection', '', False, [True, False], '', 'bool', True, ii_default_values_dict],
-                        'i_i'           : ['Ii', xIn, 25, None, 'Instantaneous pickup current', 'float', False],
+                        'i_i'           : ['Ii', xIn, 15, None, 'Instantaneous pickup current', 'float', False],
                         't_i'           : ['Ti', 's', 0.01, None, 'Instantaneous trip time delay', 'float', False],
-                        'tol_ii_p'      : ['Ii tol (+)', '%', 10, None, 'Current pickup tolerance (+)', 'float', False],
-                        'tol_ii_m'      : ['Ii tol (-)', '%', 10, None, 'Current pickup tolerance (-)', 'float', False],
-                        'tol_ti_p'      : ['Ti tol (+)', '%', 100, None, 'Time delay tolerance (+)', 'float', False],
-                        'tol_ti_m'      : ['Ti tol (-)', '%', 90, None, 'Time delay tolerance (-)', 'float', False]
+                        'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', [1,0,None], False],
+                        'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False],
+                        'tol_ti_p'      : ['Ti tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None], False],
+                        'tol_ti_m'      : ['Ti tol (-)', '%', 99, None, 'Time delay tolerance (-)', [1,0,99], False]
                         }
 
         curves = {'select_expr_list': select_expr_list,
@@ -894,7 +927,7 @@ def get_thermal_protection_models(prot_class, magnetic=False):
                 'Class 30': [418.5,1065]}
 
     # Instantaneous trip constants
-    ii_default_values_dict = {  True    : {'i_i': 13, 't_i': 0.01, 'tol_ii_p': 20, 'tol_ii_m': 20, 'tol_ti_p': 100, 'tol_ti_m': 90}, 
+    ii_default_values_dict = {  True    : {'i_i': 13, 't_i': 0.01, 'tol_ii_p': 20, 'tol_ii_m': 20, 'tol_ti_p': 0, 'tol_ti_m': 99}, 
                                 False   : {'i_i': None, 't_i': None, 'tol_ii_p': None, 'tol_ii_m': None, 'tol_ti_p': None, 'tol_ti_m': None}}
         
     In = 'f.In'
@@ -906,7 +939,7 @@ def get_thermal_protection_models(prot_class, magnetic=False):
         def get_curves(Ir, Tr, t_min):
             T_conv = '2*3600'
             curve = [   ('point', Ir, T_conv),
-                        ('THERMAL', Tr, Ir, Ir + '*1.05', Isc, t_min, 50)]
+                        ('THERMAL', Tr, Ir, Ir + '*1.05', Isc, t_min, 100)]
             return curve
         
         # Upper curve
@@ -932,9 +965,9 @@ def get_thermal_protection_models(prot_class, magnetic=False):
         def get_curves(Ir, Tr, t_min, Ii, Ti):
             T_conv = '2*3600'
             curve1 = [   ('point', Ir, T_conv),
-                        ('THERMAL', Tr, Ir, Ir + '*1.05', Isc, t_min, 50)]
+                        ('THERMAL', Tr, Ir, Ir + '*1.05', Isc, t_min, 100)]
             curve2 = [   ('point', Ir, T_conv),
-                        ('THERMAL', Tr, Ir, Ir + '*1.05', Ii, Ti, 50),
+                        ('THERMAL', Tr, Ir, Ir + '*1.05', Ii, Ti, 100),
                         ('point', Ii, Ti),
                         ('point', Isc, Ti)]
             return curve1, curve2
@@ -961,10 +994,10 @@ def get_thermal_protection_models(prot_class, magnetic=False):
                     'i_i_on'        : ['Enable instantaneous protection', '', False, [True, False], '', 'bool', True, ii_default_values_dict],
                     'i_i'           : ['Ii', xIn, 13, None, 'Instantaneous pickup current', 'float', False],
                     't_i'           : ['Ti', 's', 0.01, None, 'Instantaneous trip time delay', 'float', False],
-                    'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', 'float', False],
-                    'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', 'float', False],
-                    'tol_ti_p'      : ['Ti tol (+)', '%', 100, None, 'Time delay tolerance (+)', 'float', False],
-                    'tol_ti_m'      : ['Ti tol (-)', '%', 90, None, 'Time delay tolerance (-)', 'float', False]}
+                    'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', [1,0,None], False],
+                    'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False],
+                    'tol_ti_p'      : ['Ti tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None], False],
+                    'tol_ti_m'      : ['Ti tol (-)', '%', 99, None, 'Time delay tolerance (-)', [1,0,99], False]}
         
         curves = {'select_expr_list': select_expr_list,
                     'curve_u1': curve_u1, 'curve_l1': curve_l1,
