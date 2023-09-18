@@ -686,6 +686,7 @@ class MainWindow():
             log.warning('MainWindow - on_run_rulescheck - SLG short circuit simulation not run - aborted')
             return
         self.project.run_rulescheck()
+        self.properties_notebook.set_current_page(2)  # Switch to messages tab
         self.display_status(misc.INFO, "Rules check run successfully. Please check messages tab.")
 
     # Draw signal handler methods
