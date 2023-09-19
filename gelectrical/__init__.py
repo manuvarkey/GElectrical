@@ -566,6 +566,7 @@ class MainWindow():
                 progress.add_message('Running Diagnostics...')
                 progress.set_fraction(0.2)
                 ret_code = self.project.run_diagnostics()
+                self.properties_notebook.set_current_page(2)  # Switch to messages tab
             else:
                 ret_code = misc.OK
             
