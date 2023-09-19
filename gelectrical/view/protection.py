@@ -56,16 +56,16 @@ class ProtectionViewDialog():
         self.graph_database = {}
         self.graph_uids = []
 
-        self.fieldviews = []  # Field views corresponding to each page
-        self.fieldviews_graph = []  # Parameter field views corresponding to each page
-        self.titles = []  # Tab titles corresponding to each page
-        self.fields = []  # Fields corresponding to each page
-        self.para_fields = []  # Parameter field corresponding to each page
+        self.fieldviews = []  # Field views corresponding to each protection model
+        self.fieldviews_graph = []  # Parameter field views corresponding to each protection model
+        self.titles = []  # Tab titles corresponding to each protection model
+        self.fields = []  # Fields corresponding to each protection model
+        self.para_fields = []  # Parameter field corresponding to each protection model
 
         self.element_mapping = []  # Maps element index -> model_id, sub_model_id, el_class, g_index
-        self.para_element_mapping = []  # Maps page/ prot_models/ para_fields index -> element index, el_class
-        self.field_element_mapping = []  # Maps page/ fields index -> element index
-        self.prot_models = []  # Protection model corresponding to each page
+        self.para_element_mapping = []  # Maps protection model -> element index, el_class
+        self.field_element_mapping = []  # Maps protection model -> element index
+        self.prot_models = []  # List of protection models
         self.l_models = []
         self.g_models = []
         self.d_models = [] 
@@ -267,10 +267,11 @@ class ProtectionViewDialog():
                     return set_field
                 
                 field_view_graph.update(para_fields, None, get_field_func_para(prot_index), get_set_field_para(prot_index))
-            
+            else:
+                self.fieldviews.append(None)
+                self.fieldviews_graph.append(None)
         # Update models
         self.update_models()
-
         # Update combo
         self.combobox_title.remove_all()
         for graph_uid, (title, graph_model) in self.graph_database.items():
