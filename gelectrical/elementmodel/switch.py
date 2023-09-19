@@ -174,8 +174,8 @@ class ProtectionDevice(Switch):
 
         # If custom enabled, remove protection models
         if code == 'custom' and value is True:
-            self.fields['pcurve_l']['value'] = None
-            self.fields['pcurve_g']['value'] = None            
+            self.fields['pcurve_l']['value'] = misc.get_blank_data_struct('protection')
+            self.fields['pcurve_g']['value'] = misc.get_blank_data_struct('protection')
 
         # Enable or disable curves based on value of custom
         if self.fields['custom']['value']:
@@ -187,13 +187,22 @@ class ProtectionDevice(Switch):
             self.fields['prot_0_curve_type']['selection_list'] = None
             self.fields['type']['status_enable'] = True
             self.fields['subtype']['status_enable'] = True
-            if self.fields['pcurve_l']['value']:
+            self.fields['pcurve_l']['status_inactivate'] = False
+            self.fields['pcurve_g']['status_inactivate'] = False
+            if self.fields['pcurve_l']['value'] is not None:
                 self.fields['pcurve_l']['status_enable'] = True
                 self.fields['prot_curve_type']['status_enable'] = True
-            if self.fields['pcurve_g']['value']:
+            else:
+                self.fields['pcurve_l']['status_enable'] = False
+                self.fields['prot_curve_type']['status_enable'] = False
+            if self.fields['pcurve_g']['value'] is not None:
                 self.fields['I0']['status_enable'] = True
                 self.fields['pcurve_g']['status_enable'] = True
                 self.fields['prot_0_curve_type']['status_enable'] = True
+            else:
+                self.fields['I0']['status_enable'] = False
+                self.fields['pcurve_g']['status_enable'] = False
+                self.fields['prot_0_curve_type']['status_enable'] = False
         else:
             # Set types
             misc.set_field_selection_list(self.fields, 'type', self.list_types, modified)
@@ -253,19 +262,21 @@ class ProtectionDevice(Switch):
                 self.fields['I0']['selection_list'] = None
 
 
-            # Line protection model status_enable
+            # Line protection model status
             if self.fields['prot_curve_type']['value'] in ('Disabled', 'None', ''):
                 self.fields['pcurve_l']['status_enable'] = False
             else:
                 self.fields['pcurve_l']['status_enable'] = True
+            self.fields['pcurve_l']['status_inactivate'] = True
 
-            # Ground protection model status_enable
+            # Ground protection model status
             if self.fields['prot_0_curve_type']['value'] in ('Disabled', 'None', ''):
                 self.fields['I0']['status_enable'] = False
                 self.fields['pcurve_g']['status_enable'] = False
             else:
                 self.fields['I0']['status_enable'] = True
                 self.fields['pcurve_g']['status_enable'] = True
+            self.fields['pcurve_g']['status_inactivate'] = True
 
         # Update models
         if code in ('custom', 'type', 'subtype', 'prot_curve_type', 'prot_0_curve_type'):
@@ -860,7 +871,7 @@ Adds a contactor element used for on-load switching of loads.
         modified = {}
         # If custom enabled, remove protection models
         if code == 'custom' and value is True:
-            self.fields['pcurve_l']['value'] = None
+            self.fields['pcurve_l']['value'] = misc.get_blank_data_struct('protection')
 
         # Handle case when custom is enabled
         if self.fields['custom']['value']:
@@ -872,8 +883,7 @@ Adds a contactor element used for on-load switching of loads.
         if self.fields['trip_unit']['value']:
             self.fields['prot_curve_type']['status_enable'] = True
             self.fields['Isc']['status_enable'] = True
-            if self.fields['pcurve_l']['value']:
-                self.fields['pcurve_l']['status_enable'] = True
+            self.fields['pcurve_l']['status_enable'] = True
         else:
             self.fields['prot_curve_type']['status_enable'] = False
             self.fields['Isc']['status_enable'] = False

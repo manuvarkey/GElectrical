@@ -311,7 +311,8 @@ Creates a generic three phase motor element.
                             'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85, alter_structure=True),
                             'k'     : self.get_field_dict('float', 'Isc/In', '', 7, alter_structure=True),
                             'rx'    : self.get_field_dict('float', 'R/X', '', 0.42),
-                            'dcurve': self.get_field_dict('data', 'Damage curve', '', None)})
+                            'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
+                                                          status_inactivate=True),})
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
@@ -423,7 +424,8 @@ Creates a generic single phase motor element.
         self.fields.update({'p_kw'  : self.get_field_dict('float', 'Mechanical rated power', 'kW', 1, alter_structure=True),
                             'efficiency'  : self.get_field_dict('float', 'Efficiency at operating point', '%', 85, alter_structure=True),
                             'k'     : self.get_field_dict('float', 'Isc/In', '', 5, alter_structure=True),
-                            'dcurve': self.get_field_dict('data', 'Damage curve', '', None)})
+                            'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
+                                                          status_inactivate=True)})
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 

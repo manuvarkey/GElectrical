@@ -103,7 +103,8 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                        'df':            self.get_field_dict('float', 'DF', '', 1,
                                                                     alter_structure=True),
                        'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
-                                                                    alter_structure=True)}
+                                                                    alter_structure=True,
+                                                                    status_inactivate=True)}
         self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
                                                     misc.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 

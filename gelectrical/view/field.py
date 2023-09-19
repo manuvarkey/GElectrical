@@ -20,7 +20,7 @@
 #  
 # 
 
-import logging, copy, pickle, codecs, bisect
+import logging, copy, pickle, codecs, bisect, json
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 import cairo
 
@@ -188,6 +188,52 @@ class FieldView:
                 misc.update_params_from_fields(parameters, modified_fields['Parameters'])
                 set_field(code, data_new)
                 self.update_widgets()
+        
+        def load_data_callback(widget, set_field, code):
+            # Function to load data from file
+            file_filter = Gtk.FileFilter()
+            file_filter.set_name('JSON file')
+            file_filter.add_pattern("*.json")
+            file_filter.add_pattern("*.JSON")
+            file_filter.set_name("JSON")
+            # Create a filechooserdialog to open:
+            # The arguments are: title of the window, parent_window, action,
+            # (buttons, response)
+            open_dialog = Gtk.FileChooserNative.new("Open data file", self.window,
+                                                    Gtk.FileChooserAction.OPEN,
+                                                    "Open", "Cancel")
+            # Remote files can be selected in the file selector
+            open_dialog.set_local_only(True)
+            # Dialog always on top of the parent window
+            open_dialog.set_modal(True)
+            # Set filters
+            open_dialog.set_filter(file_filter)
+            
+            response_id = open_dialog.run()
+            # If response is "ACCEPT" (the button "Open" has been clicked)
+            if response_id == Gtk.ResponseType.ACCEPT:
+                try:
+                    filename = open_dialog.get_filename()
+                    with open(filename, 'r') as fp:
+                        data_struct = json.load(fp)
+                    old_data = copy.deepcopy(self.fields[code])
+                    # Rough validation
+                    if misc.validate_protection_data_struct(data_struct, code):
+                        set_field(code, data_struct)
+                        log.info("load_data_callback - Data loaded successfully")
+                    else:
+                        log.warning("load_data_callback - Wrong data file selected")
+                        misc.display_message(self.window, 'Wrong data file selected. Data not loaded.', message_type='warning')
+                except:
+                    log.exception("load_data_callback - Error opening file")
+                    self.fields[code] = old_data
+                    misc.display_message(self.window, 'Error opening data file. Data not loaded.', message_type='error')
+                self.update_widgets()
+            # If response is "CANCEL" (the button "Cancel" has been clicked)
+            elif response_id == Gtk.ResponseType.CANCEL:
+                log.info("load_data_callback - cancelled: FileChooserAction.OPEN")
+            # Destroy dialog
+            open_dialog.destroy()
                             
         def changed_callback(widget):
             widget.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, 'dialog-error')
@@ -425,6 +471,7 @@ class FieldView:
                         label_widget.props.editable = False
                         show_graph_button = Gtk.Button.new_from_icon_name('view-fullscreen-symbolic',
                                                                             Gtk.IconSize.BUTTON)
+                        show_graph_button.set_tooltip_text('Display graph')
                         show_graph_button.connect("clicked", show_graph_dialog_callback, 
                                                     title, models,
                                                     xlim, ylim, xlabel, ylabel)
@@ -447,24 +494,31 @@ class FieldView:
                                 title_widget.pack_start(label_widget, True, True, 6)
                                 title_widget.pack_start(show_graph_button, False, False, 6)
                         elif field['type'] == 'data':
+                            load_data_button = Gtk.Button.new_from_icon_name('insert-object-symbolic',
+                                                                            Gtk.IconSize.BUTTON)
+                            load_data_button.set_tooltip_text('Load data from file')
                             edit_button = Gtk.Button.new_from_icon_name('document-properties-symbolic',
                                                                             Gtk.IconSize.BUTTON)
+                            edit_button.set_tooltip_text('Edit parameters')
                             button_box = Gtk.ButtonBox(Gtk.Orientation.HORIZONTAL)
                             title_widget.pack_start(label_widget, True, True, 6)
                             title_widget.pack_start(button_box, False, False, 6)
+                            button_box.pack_start(load_data_button, False, False, 0)
                             button_box.pack_start(edit_button, False, False, 0)
                             button_box.pack_start(show_graph_button, False, False, 0)
                             button_box.set_layout(Gtk.ButtonBoxStyle.EXPAND)
-                            if field[self.inactivate_code] == False:
-                                parameters = field['value']['parameters']
-                                if parameters:
-                                    parameter_fields = misc.get_fields_from_params(parameters)
-                                    edit_button.set_sensitive(True)
-                                    edit_button.connect("clicked", edit_graph_parameters_callback, self.set_field, code, parameter_fields)
-                                else:
-                                    edit_button.set_sensitive(False)
+                            parameters = field['value']['parameters']
+                            if parameters:
+                                parameter_fields = misc.get_fields_from_params(parameters)
+                                edit_button.set_sensitive(True)
+                                edit_button.connect("clicked", edit_graph_parameters_callback, self.set_field, code, parameter_fields)
                             else:
                                 edit_button.set_sensitive(False)
+                            if field[self.inactivate_code] == False:
+                                load_data_button.set_sensitive(True)
+                                load_data_button.connect("clicked", load_data_callback, self.set_field, code)
+                            else:
+                                load_data_button.set_sensitive(False)
                         
                     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
                     hbox_sub = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)

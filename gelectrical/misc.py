@@ -1378,6 +1378,30 @@ def update_params_from_fields(parameters, fields):
             if len(parameters[key]) >= 7:
                 parameters[key][6] = field['status_enable']
 
+def validate_protection_data_struct(data_struct, code):
+    check_keys_1 = {'type', 'parameters', 'data', 'graph_model'}
+    if code in ['pcurve_l', 'pcurve_g']:
+        prot_type = 'protection'
+    elif code in ['dcurve']:
+        prot_type = 'damage'
+    else:
+        return False
+    if isinstance(data_struct, dict):
+        keys = set(data_struct.keys())
+        if check_keys_1 & keys == check_keys_1:
+            if (isinstance(data_struct['type'], str) and data_struct['type'] == prot_type) and \
+               (isinstance(data_struct['parameters'], dict)) and \
+               (isinstance(data_struct['graph_model'], list)):
+                return True
+    return False
+
+def get_blank_data_struct(data_type='protection'):
+    data_struct = { 'type'          : data_type,
+                    'parameters'    : {},
+                    'data'          : {'curve_u': [], 'curve_l': []},
+                    'graph_model'   : []}
+    return data_struct
+
     
 ELEMENT_FIELD = 0
 ELEMENT_RESULT = 1
