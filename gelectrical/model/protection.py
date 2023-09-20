@@ -629,7 +629,7 @@ def get_protection_model(protection_type, ground_model=False):
                     'c_iec'     : ['c', '', 0, None, '', 'float', False],
                     'alpha_iec' : ['alpha', '', 2, None, '', 'float', False],
                     'ir_i2t'    : ['Ir i2t', 'xIr', 6, None, '', 'float', False],
-                    'tr_i2t'    : ['Tr i2t', 's', 16, None, 'I2t time delay at I i2t fault current', 'float', False],
+                    'tr_i2t'    : ['Tr i2t', 's', 16, None, 'Operation time @ Ir i2t', 'float', False],
                     't_min'     : ['Tmin', 's', 0.1, None, 'Minimum trip time'],
                     'tol_ir_p'  : ['Ir tol (+)', '%', 10, None, 'Current pickup tolerance (+)', [1,0,None]],
                     'tol_ir_m'  : ['Ir tol (-)', '%', 10, None, 'Current pickup tolerance (-)', [1,0,99]],
@@ -694,7 +694,7 @@ def get_protection_model(protection_type, ground_model=False):
                         'head_i2t'      : ['I2t protection', '', '', None, '', 'heading'],
                         'i2t_on'        : ['Enable I2t protection', '', False, [True, False], '', 'bool', True, i2t_default_values_dict],
                         'i_i2t'         : ['I i2t', xIn, 10, None, '', 'float', False],
-                        't_i2t'         : ['T i2t', 's', 0.1, None, 'I2t time delay at I i2t fault current', 'float', False],
+                        't_i2t'         : ['T i2t', 's', 0.1, None, 'Operation time @ I i2t', 'float', False],
                         'tol_m_i2t_p'  : ['Tm (I2t) tol (+)', '%', 15, None, 'Time delay tolerance (+)', [1,0,None], False],
                         'tol_m_i2t_m'  : ['Tm (I2t) tol (-)', '%', 15, None, 'Time delay tolerance (-)', [1,0,99], False],
                         
@@ -774,7 +774,7 @@ def get_protection_model(protection_type, ground_model=False):
                     'c_iec'     : ['c', '', 0, None, '', 'float', True],
                     'alpha_iec' : ['alpha', '', 2, None, '', 'float', True],
                     'ir_i2t'    : ['Ir i2t', 'xIr', 6, None, '', 'float', False],
-                    'tr_i2t'    : ['Tr i2t', 's', 16, None, 'I2t time delay at I i2t fault current', 'float', False],
+                    'tr_i2t'    : ['Tr i2t', 's', 16, None, 'Operation time @ Ir i2t', 'float', False],
                     'tol_tr_p'  : ['Tr tol (+)', '%', 50, None, 'Time delay tolerance (+)', [1,0,None]],
                     'tol_tr_m'  : ['Tr tol (-)', '%', 50, None, 'Time delay tolerance (-)', [1,0,99]],
                     
@@ -880,7 +880,7 @@ def get_protection_model(protection_type, ground_model=False):
                         'c_iec'     : ['c', '', 0, None, '', 'float', False],
                         'alpha_iec' : ['alpha', '', 2, None, '', 'float', False],
                         'ir_i2t'    : ['Ir i2t', 'xIr', 6, None, '', 'float', True],
-                        'tr_i2t'    : ['Tr i2t', 's', 16, None, 'I2t time delay at I i2t fault current', 'float', True],
+                        'tr_i2t'    : ['Tr i2t', 's', 16, None, 'Operation time @ Ir i2t', 'float', True],
                         'tol_tr_p'  : ['Tr tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None]],
                         'tol_tr_m'  : ['Tr tol (-)', '%', 20, None, 'Time delay tolerance (-)', [1,0,99]],
 
@@ -893,7 +893,7 @@ def get_protection_model(protection_type, ground_model=False):
                         'tol_tm_m'      : ['Tsd tol (-)', '%', 15, None, 'Time delay tolerance (-)'],
                         'i2t_on'        : ['Enable I2t protection', '', False, [True, False], '', 'bool', True, i2t_default_values_dict],
                         'i_i2t'         : ['I i2t', xIn, 10, None, '', 'float', False],
-                        't_i2t'         : ['T i2t', 's', 0.1, None, 'I2t time delay at I i2t fault current', 'float', False],
+                        't_i2t'         : ['T i2t', 's', 0.1, None, 'Operation time @ I i2t', 'float', False],
                         'tol_m_i2t_p'  : ['Tm (I2t) tol (+)', '%', 15, None, 'Time delay tolerance (+)', [1,0,None], False],
                         'tol_m_i2t_m'  : ['Tm (I2t) tol (-)', '%', 15, None, 'Time delay tolerance (-)', [1,0,99], False],
                         
