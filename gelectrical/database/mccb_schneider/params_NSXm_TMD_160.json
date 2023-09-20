@@ -1,0 +1,23 @@
+{
+	"type": "protection",
+	"parameters": {
+		"i_r": ["Ir", "xIn", 1, [0.7, 0.8, 0.9, 1], "Thermal protection pickup current"],
+		"i_m": ["Im", "xIn", 8, [8], "Magnetic pickup current"]
+	},
+	"data": {
+		"curve_u": [
+		    ["point", "1.3*f.In*d.i_r", "3600 if f.In <= 63  else 2*3600"],
+		    ["POLYLOG", 1, "1.28*d.i_r*f.In", "1.35*f.In*d.i_r", "(d.i_m*(100+20)/100)*f.In", 0.01 , 50, [2.53527, -1.32902, -0.32136, -0.07484, -0.04322, 0.00413], 1],
+			["point", "(d.i_m*(100+20)/100)*f.In", 0.01],
+			["point", "1000*f.Isc", 0.01]
+		],
+		"curve_l": [
+		    ["point", "1.05*f.In*d.i_r", "3600 if f.In <= 63  else 2*3600"],
+		    ["POLYLOG", 1, "1.03*d.i_r*f.In", "1.1*f.In*d.i_r", "(d.i_m*(100-20)/100)*f.In", 0.01 , 50, [1.74922, -1.62211, -0.08095, 0.15713, 0.01682], 1],
+			["point", "(d.i_m*(100-20)/100)*f.In", 0.001],
+			["point", "1000*f.Isc", 0.001]
+		]
+	},
+	"graph_model": []
+}
+

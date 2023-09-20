@@ -80,3 +80,13 @@ item_name;item_category;custom;type;subtype;prot_curve_type;prot_0_curve_type;In
 160A, TM-D, Compact NSX;MCCB – Schneider Compact NSX;True;Schneider Compact NSX;MCCB;TM-D;;160;50;('mccb_schneider', '', 'params_NSX_TMD_160.json');
 200A, TM-D, Compact NSX;MCCB – Schneider Compact NSX;True;Schneider Compact NSX;MCCB;TM-D;;200;50;('mccb_schneider', '', 'params_NSX_TMD_200.json');
 250A, TM-D, Compact NSX;MCCB – Schneider Compact NSX;True;Schneider Compact NSX;MCCB;TM-D;;250;50;('mccb_schneider', '', 'params_NSX_TMD_250.json');
+16A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;16;50;('mccb_schneider', '', 'params_NSXm_TMD_16.json');
+25A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;25;50;('mccb_schneider', '', 'params_NSXm_TMD_25.json');
+32A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;32;50;('mccb_schneider', '', 'params_NSXm_TMD_32.json');
+40A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;40;50;('mccb_schneider', '', 'params_NSXm_TMD_40.json');
+50A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;50;50;('mccb_schneider', '', 'params_NSXm_TMD_50.json');
+63A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;63;50;('mccb_schneider', '', 'params_NSXm_TMD_63.json');
+80A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;80;50;('mccb_schneider', '', 'params_NSXm_TMD_80.json');
+100A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;100;50;('mccb_schneider', '', 'params_NSXm_TMD_100.json');
+125A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;125;50;('mccb_schneider', '', 'params_NSXm_TMD_125.json');
+160A, TM-D, Compact NSXm;MCCB – Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;160;50;('mccb_schneider', '', 'params_NSXm_TMD_160.json');
