@@ -204,7 +204,7 @@ class DrawingView:
                                 self.multiselect_fields[field_code]['value'] = ''
                             elif field['type'] in ('int', 'float'):
                                 self.multiselect_fields[field_code]['value'] = 0
-                            if field['type'] == 'bool':
+                            elif field['type'] == 'bool':
                                 self.multiselect_fields[field_code]['value'] = False
                             message = '<span foreground="{}"><i>&lt;multiple values&gt; </i></span>'.format(misc.COLOR_INACTIVE)
                             self.multiselect_fields[field_code]['click_to_edit_message'] = message

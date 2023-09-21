@@ -432,7 +432,11 @@ class FieldView:
                         if field['type'] == 'graph':
                             title, models = self.fields[code]['selection_list'][cur_uid]
                         elif field['type'] == 'data':
-                            title, models = self.fields[code]['selection_list'][cur_uid]['graph_model']
+                            if self.fields[code]['selection_list'][cur_uid]['graph_model']:
+                                title, models = self.fields[code]['selection_list'][cur_uid]['graph_model']
+                            else:
+                                title = ''
+                                models = []
 
                         def set_field_graph(code, graphview, index):
                             graph_uid = graph_uids[index]
@@ -458,7 +462,11 @@ class FieldView:
                         if field['type'] == 'graph':
                             title, models = field['value']
                         elif field['type'] == 'data':
-                            title, models = field['value']['graph_model']
+                            if field['value']['graph_model']:
+                                title, models = field['value']['graph_model']
+                            else:
+                                title = ''
+                                models = []
 
                         if self.show_graphs:
                             for model in models:
