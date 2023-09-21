@@ -294,7 +294,7 @@ class ProtectionModel():
             d_i = np.array(d_i_points)*i_n
             d_t = np.array(d_t_points)*tms
             if i2 > i1:
-                include_arg = (d_i > i1) & (d_i < i2)
+                include_arg = (d_i >= i1) & (d_i <= i2)
                 i_array = d_i[include_arg]
                 t_array_1 = d_t[include_arg]
                 t_array_2 = np.ones(i_array.shape)*t_min

@@ -189,26 +189,31 @@ class DatabaseView:
                                         validated = data
                                 except:
                                     validated = None
+                                    log.exception('run_dialog - validation failure while reading graph field')
                             elif data_type == 'data':
                                 try:
-                                    (subdir, data_filename, params_filename) = eval(value)
-                                    dirname = misc.dir_from_path(self.data_path)
-                                    valuepath_params = misc.posix_path(dirname, subdir, params_filename)
-                                    with open(valuepath_params, 'r') as fp:
-                                        data_struct = json.load(fp)
-                                    validated = data_struct
-                                    if data_filename:
-                                        valuepath = misc.posix_path(dirname, subdir, data_filename)
-                                        data = np.loadtxt(valuepath, delimiter=',')
-                                        curve_u = []
-                                        curve_l = []
-                                        for row in data:
-                                            curve_u.append(('point', str(row[0])+'*f.In', str(row[1])))
-                                            curve_l.append(('point', str(row[2])+'*f.In', str(row[3])))
-                                        validated['data']['curve_u'] = curve_u
-                                        validated['data']['curve_l'] = curve_l
+                                    if value:
+                                        (subdir, data_filename, params_filename) = eval(value)
+                                        dirname = misc.dir_from_path(self.data_path)
+                                        valuepath_params = misc.posix_path(dirname, subdir, params_filename)
+                                        with open(valuepath_params, 'r') as fp:
+                                            data_struct = json.load(fp)
+                                        validated = data_struct
+                                        if data_filename:
+                                            valuepath = misc.posix_path(dirname, subdir, data_filename)
+                                            data = np.loadtxt(valuepath, delimiter=',')
+                                            curve_u = []
+                                            curve_l = []
+                                            for row in data:
+                                                curve_u.append(('point', str(row[0])+'*f.In', str(row[1])))
+                                                curve_l.append(('point', str(row[2])+'*f.In', str(row[3])))
+                                            validated['data']['curve_u'] = curve_u
+                                            validated['data']['curve_l'] = curve_l
+                                    else:
+                                        validated = None
                                 except:
                                     validated = None
+                                    log.exception('run_dialog - validation failure while reading data field')
                             else:
                                 validated = value
                             validated_dict[code] = validated
