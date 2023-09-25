@@ -1124,7 +1124,9 @@ def open_file(filename, abs=True):
         filename_mod = filename
         
     if platform.system() == 'Linux':
-        subprocess.call(('xdg-open', filename_mod))
+        ret_code = subprocess.call(('xdg-open', filename_mod))
+        if ret_code:
+            log.error('open_file - Error opening file - ' + filename_mod)
     elif platform.system() == 'Windows':
         os.startfile(filename_mod)
         

@@ -140,10 +140,14 @@ class FieldView:
                 self.update_alter_dict_status(code)
                 self.update_widgets()
 
-        def activate_callback_path(widget, get_field, set_field, code):
+        def activate_callback_path(widget, get_field, set_field, code, text):
             field = get_field(code)
             if field['status_inactivate']:
                 filename = field['value']
+                # Copy path to clipboard
+                clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+                clipboard.set_text(text,-1) # push to clipboard
+                # Launch file
                 misc.open_file(filename)
                 
         def activate_callback_graphtitle(widget, get_field, set_field, code):
@@ -390,9 +394,11 @@ class FieldView:
 
                 elif field['type'] == 'path':
                     label = (field['value'][:20] + ' ... ' + field['value'][-20:] ) if len(field['value']) > 50 else field['value']
+                    label_full = field['value']
                     data_widget = Gtk.Button.new_with_label(label)
+                    data_widget.set_tooltip_text(label_full)
                     data_widget.get_children()[0].set_xalign(0)
-                    data_widget.connect("clicked", activate_callback_path, get_field, set_field, code)
+                    data_widget.connect("clicked", activate_callback_path, get_field, set_field, code, label_full)
                     # Pack
                     hbox.pack_start(caption_widget, False, False, 0)
                     hbox.pack_start(data_widget, True, True, 0)
