@@ -359,16 +359,19 @@ Adds a fuse element used for the protection of circuit elements.
                       [1, 6]]
         # Data drapdowns
         fuse_types = ['LV fuses', 'MV fuses']
-        fuse_subtypes_lv = ['gG']
+        fuse_subtypes_lv = ['gG', 'aM']
         fuse_prottypes_gg = ['gG IEC']
+        fuse_prottypes_am = ['aM IEC']
         pole_types = ['SP', 'TP']
-        current_values = [16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250]
+        current_values = [2,4,6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250]
 
-        self.dict_in = {('LV fuses', 'gG', 'gG IEC'): current_values}
+        self.dict_in = {('LV fuses', 'gG', 'gG IEC'): current_values,
+                        ('LV fuses', 'aM', 'aM IEC'): current_values}
         self.dict_i0 = {}
         self.list_types = fuse_types
         self.dict_subtype = {'LV fuses': fuse_subtypes_lv}
-        self.dict_prot_curve_type = {('LV fuses', 'gG'): fuse_prottypes_gg}
+        self.dict_prot_curve_type = {('LV fuses', 'gG'): fuse_prottypes_gg,
+                                     ('LV fuses', 'aM'): fuse_prottypes_am}
         self.dict_prot_0_curve_type = {}
 
         # Set fields
@@ -428,6 +431,7 @@ Adds a fuse element used for the protection of circuit elements.
     def get_line_protection_model(self):
         f = FieldDict(self.fields)
         In = f.In
+        Un = f.Un
         Isc = f.Isc        
 
         curve_u = []
@@ -437,7 +441,12 @@ Adds a fuse element used for the protection of circuit elements.
 
         # gG fuse data parameters
         ## IEC 60269-1 - (I_min @ 10s, I_max @ 5s, I_min @ 0.1s, I_max @ 0.1s) in A
-        gg_current_gates = {  16: [33,65,85,150],
+        gg_current_gates = {    2:  [3.7,9.2,6,23],
+                                4:  [7.8,18.5,14,47],
+                                6:  [11,28,26,72],
+                                10:  [22,46.5,58,110],
+            
+                                16: [33,65,85,150],
                                 20: [42,85,110,200],
                                 25: [52,110,150,260],
 
@@ -462,7 +471,11 @@ Adds a fuse element used for the protection of circuit elements.
                                 1000: [4000,9500,14140,24000],
                                 1250: [5000,13000,19000,35000]}
         ## IEC 60269-1 - (I2t_min, I2t_max) @ 0.01 s in 1e3 A2/s
-        gg_current_gates_prearc = {   16: [0.3,1],
+        gg_current_gates_prearc = {     2:  [0.001, 0.023],
+                                        4:  [0.00625, 0.09025],
+                                        6:  [0.024, 0.225],
+                                        10: [0.1, 0.576],
+                                        16: [0.3,1],
                                         20: [0.5,1.8],
                                         25: [1,3],
                                         32: [1.8,5],
@@ -483,7 +496,11 @@ Adds a fuse element used for the protection of circuit elements.
                                         1000: [7840,25000],
                                         1250: [13700,47000]}
         ## IEC 60269-1 - Conventional time in Hrs
-        gg_conv_times = { 16: 1,
+        gg_conv_times = {   2:  1,
+                            4:  1,
+                            6:  1,
+                            10: 1,
+                            16: 1,
                             20: 1,
                             25: 1,
                             32: 1,
@@ -509,8 +526,8 @@ Adds a fuse element used for the protection of circuit elements.
                 # gG fuse
                 if f.subtype == 'gG':
                     if f.prot_curve_type == 'gG IEC':
-                        i_nf = 1.25
-                        i_f = 1.6
+                        i_nf = 1.5 if In < 16 else 1.25
+                        i_f = 2.1 if In <= 4 else (1.9 if In < 16 else 1.6)
                         t_conv = gg_conv_times[In]
                         (i_min_10, i_max_5, i_min_0_1, I_max_0_1) = gg_current_gates[In]
                         (i2t_min_0_01, i2t_max_0_01) = gg_current_gates_prearc[In]
@@ -518,17 +535,36 @@ Adds a fuse element used for the protection of circuit elements.
                         i_max_0_01 = math.sqrt(i2t_max_0_01*1000/0.01)
                         u_points = [ (In*i_f, t_conv*3600),
                                     (i_max_5, 5),
-                                    (I_max_0_1, 0.1)]
-                        curve_u = misc.log_interpolate(u_points, num=10)
-                        curve_u += [('point', i_max_0_01, 0.01),
-                                    ('point', 1000*Isc, 0.01)]
+                                    (I_max_0_1, 0.1),
+                                    (i_max_0_01, 0.01)]
+                        curve_u = [('point', *row) for row in u_points]
                         l_points = [ (In*i_nf, t_conv*3600),
                                     (i_min_10, 10),
                                     (i_min_0_1,0.1),
                                     (i_min_0_01, 0.01)]
-                        curve_l = misc.log_interpolate(l_points, num=10)
-                        curve_l += [('point', i_min_0_01, 0.001),
-                                    ('point', 1000*Isc, 0.001)]
+                        curve_l = [('point', *row) for row in l_points]
+                        # Get protection model
+                        parameters = dict()
+                        curves = {'curve_u': curve_u, 'curve_l': curve_l}
+                if f.subtype == 'aM':
+                    if f.prot_curve_type == 'aM IEC':
+                        i_nf = 4
+                        i_f = 6.3
+                        t_conv = gg_conv_times[In]
+                        i2t_max_0_01 = 18*In**2 if Un < 400 else (24*In**2 if Un <= 500 else 35*In**2)
+                        i_max_0_01 = math.sqrt(i2t_max_0_01/0.01)
+                        u_points = [(In*i_f, t_conv*3600),
+                                    (6.3*In, 60),
+                                    (12.5*In, 0.5),
+                                    (19*In, 0.1),
+                                    (i_max_0_01, 0.01)]
+                        curve_u = [('point', *row) for row in u_points]
+                        l_points = [(In*i_nf, t_conv*3600),
+                                    (4*In, 60),
+                                    (8*In, 0.5),
+                                    (10*In, 0.2),
+                                    (10*In, 0.01)]
+                        curve_l = [('point', *row) for row in l_points]
                         # Get protection model
                         parameters = dict()
                         curves = {'curve_u': curve_u, 'curve_l': curve_l}
