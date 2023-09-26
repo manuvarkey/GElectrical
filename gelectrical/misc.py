@@ -1117,7 +1117,7 @@ def posix_path(*args):
         else:
             return path
         
-def open_file(filename, abs=True):
+def open_file(filename, abs=False):
     if abs:
         filename_mod = abs_path(filename)
     else:

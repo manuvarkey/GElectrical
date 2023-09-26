@@ -1185,7 +1185,7 @@ class MainApp(Gtk.Application):
     def on_help(self, action, param):
         """Launch help file"""
         log.info('MainApp - Launch Help file')
-        misc.open_file('https://gelectrical.readthedocs.io', abs=False)
+        misc.open_file('https://gelectrical.readthedocs.io')
 
     def on_keyboardshortcuts(self, action, param):
         """Launch shortcuts window"""
