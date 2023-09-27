@@ -865,37 +865,36 @@ class MainWindow():
         
         self.id = id
         self.project_active = False
-        
-        # Setup main data model
-        self.program_settings = dict()
-        self.program_state = dict()
+        self.filename = None  # Project Filename
+        self.program_settings = dict()  # Project program user facing settings
+        self.program_state = dict()  # Project program state to be used by other modules
         
         # Initialise undo/redo stack
         self.stack = undo.Stack()
         undo.setstack(self.stack)
         # Save point in stack for checking change state
-        self.stack.savepoint()
+        self.stack.savepoint()        
 
-        # Fill in default values
-        self.program_state['mode'] = misc.MODE_DEFAULT
-        self.program_state['stack'] = self.stack
-        self.filename = None  # Project Filename
-        self.program_state['filename'] = self.filename
-            
+        # Setup program settings and directories
         log.info('Setting up program settings')
         dirs = appdirs.AppDirs(misc.PROGRAM_NAME, misc.PROGRAM_AUTHOR, version=misc.PROGRAM_VER)
         settings_dir = dirs.user_data_dir
-        self.user_library_dir = misc.posix_path(dirs.user_data_dir,'database')
+        self.user_library_dir = misc.posix_path(settings_dir,'database')
         misc.USER_LIBRARY_DIR = self.user_library_dir  # Update path in misc for use by other routines
         self.settings_filename = misc.posix_path(settings_dir,'settings.ini')
         # Create directory if does not exist
         if not os.path.exists(settings_dir):
             os.makedirs(settings_dir)
+            log.info('Settings directory created at ' + str(settings_dir))
+        else:
+            log.info('Settings directory exists at ' + str(settings_dir))
         if not os.path.exists(self.user_library_dir):
             os.makedirs(self.user_library_dir)
+            log.info('User library directory created at ' + str(self.user_library_dir))
+        else:
+            log.info('User library directory exists at ' + str(self.user_library_dir))
         default_program_settings = copy.deepcopy(misc.default_program_settings)
-        # Update static program setting values
-        default_program_settings['Paths']['library_path']['value'] = self.user_library_dir
+        # Update program settings from settings file
         try:
             if os.path.exists(self.settings_filename):
                 with open(self.settings_filename, 'r') as fp:
@@ -911,12 +910,18 @@ class MainWindow():
             # If an error load default program preference
             self.program_settings = default_program_settings
             log.info('Program settings initialisation failed - falling back on default values')
-        self.program_state['program_settings_main'] = self.program_settings['Defaults']
-        self.program_state['program_settings'] = self.program_settings
-        # Setup program settings
+        # Update static program setting values
+        self.program_settings['Paths']['library_path']['value'] = self.user_library_dir
+        # Apply settings from program settings
         self.update_program_settings()
         log.info('Program settings initialised')
-            
+
+        # Set program state variables
+        self.program_state['mode'] = misc.MODE_DEFAULT
+        self.program_state['stack'] = self.stack
+        self.program_state['filename'] = self.filename
+        self.program_state['program_settings_main'] = self.program_settings['Defaults']
+        self.program_state['program_settings'] = self.program_settings
         # Setup elements
         self.program_state['element_models'] = dict()
         self.program_state['element_models'][switch.Switch.code] = switch.Switch
@@ -951,6 +956,7 @@ class MainWindow():
         self.program_state['element_models'][ward.XWard.code] = ward.XWard
         self.program_state['element_models'][shunt.Shunt.code] = shunt.Shunt
         self.program_state['element_models'][displayelements.DisplayElementText.code] = displayelements.DisplayElementText
+        
         # Setup main window
         self.builder = Gtk.Builder()
         self.builder.add_from_file(misc.abs_path("interface", "mainwindow.glade"))
@@ -1077,12 +1083,13 @@ class MainWindow():
         # Setup about dialog
         self.about_dialog = self.builder.get_object("aboutdialog")
         
-        # Darg-Drop support for files
+        # Drag-Drop support for files
         self.window.drag_dest_set( Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT | Gtk.DestDefaults.DROP,
                   [Gtk.TargetEntry.new("text/uri-list", 0, 80)], 
                   Gdk.DragAction.COPY)
         self.window.connect('drag-data-received', self.drag_data_received)
 
+        # Show window
         self.window.show_all()
         log.info('MainWindow - Initialised')
         
