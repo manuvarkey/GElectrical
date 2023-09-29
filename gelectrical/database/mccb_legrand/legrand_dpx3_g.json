@@ -1,0 +1,22 @@
+{
+  "type": "protection",
+  "parameters": {"trip_on" : ["Trip unit enabled ?", "", false, null, "Whether trip unit is enabled", "bool"],
+                 "i_g" : ["Ig", "A", 0.03, [0.03,0.3,1,3], "Rated residual operating current"],
+                 "t_g" : ["tg", "s", 0, [0,0.3,1,3], "Operating time delay"]},
+  "data": {
+    "select_expr_list" : ["d.trip_on is True", "d.trip_on is False"],
+    "curve_u1": [
+      ["point", "d.i_g", 3600],
+      ["point", "d.i_g", "max(0.01, d.t_g*1.2)"],
+      ["point", "1000*f.Isc", "max(0.01, d.t_g*1.2)"]
+    ],
+    "curve_l1": [
+      ["point", "d.i_g*0.5", 3600],
+      ["point", "d.i_g*0.5", "max(0.001, d.t_g*0.8)"],
+      ["point", "1000*f.Isc", "max(0.001, d.t_g*0.8)"]
+    ],
+    "curve_u2": [],
+    "curve_l2": []
+  },
+  "graph_model": []
+}
