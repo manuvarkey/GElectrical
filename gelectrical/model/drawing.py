@@ -452,7 +452,8 @@ class DrawingModel:
                     assembly.fields['text3']['value'] = element.fields['text3']['value']
                     # Update element assembly ids
                     for element in selected:
-                        element.set_gid_assembly(gid_assembly)
+                        if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                            element.set_gid_assembly(gid_assembly)
                     self.update_element_at_index(assembly, index)
                     return
             # For new items
@@ -461,7 +462,8 @@ class DrawingModel:
             assembly.set_gid(gid_assembly)
             # Update element assembly ids
             for element in selected:
-                element.set_gid_assembly(gid_assembly)
+                if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                    element.set_gid_assembly(gid_assembly)
             self.insert_element_at_index(assembly)
         
     def delete_selected_rows(self):
