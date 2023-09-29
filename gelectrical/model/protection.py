@@ -799,9 +799,10 @@ def get_protection_model(protection_type, ground_model=False):
             k_iec = 'd.k_iec'
             c_iec = 'd.c_iec'
             alpha_iec = 'd.alpha_iec'
+            I1_ = I1 + " if d.curve_l == 'I2T' else " + I1 + "*1.1"
             curve_vars = {'tms'         : Tr, 
                             'i_n'         : Ir, 
-                            'i1'          : I1 + '*1.1',
+                            'i1'          : I1_,
                             'i2'          : Im,
                             't_min'       : Tm, 
                             'n'           : 100,
@@ -829,12 +830,12 @@ def get_protection_model(protection_type, ground_model=False):
             # M, I2t
             curve3 = [('point', I1, T_conv),
                         ('d.curve_l', curve_vars),
-                        ('I2T', i2t_tol, In, Im, Isc, Tm, 100, k_I2T, 2),
+                        ('I2T', i2t_tol, Ir, Im, Isc, Tm, 100, k_I2T, 2),
                         ('point', Isc, Tm),]
             # M, I, I2t
             curve4 = [('point', I1, T_conv),
                         ('d.curve_l', curve_vars),
-                        ('I2T', i2t_tol, In, Im, Ii, Tm, 100, k_I2T, 2),
+                        ('I2T', i2t_tol, Ir, Im, Ii, Tm, 100, k_I2T, 2),
                         ('point', Ii, Tm),
                         ('point', Ii, Ti),
                         ('point', Isc, Ti),]
@@ -845,7 +846,7 @@ def get_protection_model(protection_type, ground_model=False):
         I1 = 'd.i_f*d.i_r*' + In
         Tr = 'd.t_r'
         T_conv = 'd.t_conv*3600'
-        Im = '(d.i_m*(100+d.tol_im_p)/100)*' + In
+        Im = '(d.i_m*(100+d.tol_im_p)/100)*' + Ir
         Tm = 'd.t_m*(100+d.tol_tm_p)/100'
         Ii = '(d.i_i*(100+d.tol_ii_p)/100)*' + In
         Ti = 'd.t_i*(100+d.tol_ti_p)/100'
@@ -859,7 +860,7 @@ def get_protection_model(protection_type, ground_model=False):
         I1 = 'd.i_nf*d.i_r*' + In
         Tr = 'd.t_r'
         T_conv = 'd.t_conv*3600'
-        Im = '(d.i_m*(100-d.tol_im_m)/100)*' + In
+        Im = '(d.i_m*(100-d.tol_im_m)/100)*' + Ir
         Tm = 'd.t_m*(100-d.tol_tm_m)/100'
         Ii = '(d.i_i*(100-d.tol_ii_m)/100)*' + In
         Ti = 'd.t_i*(100-d.tol_ti_m)/100'
@@ -885,14 +886,14 @@ def get_protection_model(protection_type, ground_model=False):
                         'tol_tr_m'  : ['Tr tol (-)', '%', 20, None, 'Time delay tolerance (-)', [1,0,99]],
 
                         'head_s'        : ['Short time protection', '', '', None, '', 'heading'],
-                        'i_m'           : ['Isd', xIn, 8, None, 'Short time pickup current'],
+                        'i_m'           : ['Isd', 'xIr', 8, None, 'Short time pickup current'],
                         't_m'           : ['Tsd', 's', 0.1, None, 'Short time time delay'],
                         'tol_im_p'      : ['Isd tol (+)', '%', 10, None, 'Current pickup tolerance (+)'],
                         'tol_im_m'      : ['Isd tol (-)', '%', 10, None, 'Current pickup tolerance (-)'],
                         'tol_tm_p'      : ['Tsd tol (+)', '%', 15, None, 'Time delay tolerance (+)'],
                         'tol_tm_m'      : ['Tsd tol (-)', '%', 15, None, 'Time delay tolerance (-)'],
                         'i2t_on'        : ['Enable I2t protection', '', False, [True, False], '', 'bool', True, i2t_default_values_dict],
-                        'i_i2t'         : ['I i2t', xIn, 10, None, '', 'float', False],
+                        'i_i2t'         : ['I i2t', 'xIr', 10, None, '', 'float', False],
                         't_i2t'         : ['T i2t', 's', 0.1, None, 'Operation time @ I i2t', 'float', False],
                         'tol_m_i2t_p'  : ['Tm (I2t) tol (+)', '%', 15, None, 'Time delay tolerance (+)', [1,0,None], False],
                         'tol_m_i2t_m'  : ['Tm (I2t) tol (-)', '%', 15, None, 'Time delay tolerance (-)', [1,0,99], False],
