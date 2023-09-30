@@ -1,0 +1,136 @@
+{
+  "type": "protection",
+  "parameters": {
+    "trip_on": [
+      "Trip unit enabled ?",
+      "",
+      false,
+      null,
+      "Whether trip unit is enabled",
+      "bool"
+    ],
+    "i_m": [
+      "Ig",
+      "xI0",
+      0.3,
+      null,
+      "Ground fault pickup current",
+      [
+        2,
+        0.1,
+        1
+      ]
+    ],
+    "t_m": [
+      "tg",
+      "s",
+      0,
+      [
+        0,
+        0.1,
+        0.2,
+        0.3,
+        0.4
+      ],
+      "Short-time tripping delay (@ 10xIg for I2T=ON)"
+    ],
+    "i2t_on": [
+      "I2t ON",
+      "",
+      false,
+      null,
+      "",
+      "bool"
+    ]
+  },
+  "data": {
+    "select_expr_list": [
+      "d.trip_on is True and d.i2t_on is False",
+      "d.trip_on is True and d.i2t_on is True",
+      "d.trip_on is False"
+    ],
+    "curve_u1": [
+      [
+        "point",
+        "d.i_m*f.I0*1.1",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "point",
+        "d.i_m*f.I0*1.1",
+        "{0: 0.08, 0.1: 0.14, 0.2: 0.2, 0.3: 0.32, 0.4: 0.5}[d.t_m]"
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "{0: 0.08, 0.1: 0.14, 0.2: 0.2, 0.3: 0.32, 0.4: 0.5}[d.t_m]"
+      ]
+    ],
+    "curve_l1": [
+      [
+        "point",
+        "d.i_m*f.I0*0.9",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "point",
+        "d.i_m*f.I0*0.9",
+        "{0: 0.02, 0.1: 0.08, 0.2: 0.14, 0.3: 0.23, 0.4: 0.35}[d.t_m]"
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "{0: 0.02, 0.1: 0.08, 0.2: 0.14, 0.3: 0.23, 0.4: 0.35}[d.t_m]"
+      ]
+    ],
+    "curve_u2": [
+      [
+        "point",
+        "d.i_m*f.I0*1.1",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        "{0: 0.08, 0.1: 0.14, 0.2: 0.2, 0.3: 0.32, 0.4: 0.5}[d.t_m]/d.t_m if d.t_m != 0 else 1",
+        "f.I0",
+        "d.i_m*f.I0*1.1",
+        "1000*f.Isc",
+        "{0: 0.08, 0.1: 0.14, 0.2: 0.2, 0.3: 0.32, 0.4: 0.5}[d.t_m]",
+        100,
+        "100*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "{0: 0.08, 0.1: 0.14, 0.2: 0.2, 0.3: 0.32, 0.4: 0.5}[d.t_m]"
+      ]
+    ],
+    "curve_l2": [
+      [
+        "point",
+        "d.i_m*f.I0*0.9",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        "{0: 0.02, 0.1: 0.08, 0.2: 0.14, 0.3: 0.23, 0.4: 0.35}[d.t_m]/d.t_m if d.t_m != 0 else 1",
+        "f.I0",
+        "d.i_m*f.I0*0.9",
+        "1000*f.Isc",
+        "{0: 0.02, 0.1: 0.08, 0.2: 0.14, 0.3: 0.23, 0.4: 0.35}[d.t_m]",
+        100,
+        "100*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "{0: 0.02, 0.1: 0.08, 0.2: 0.14, 0.3: 0.23, 0.4: 0.35}[d.t_m]"
+      ]
+    ],
+    "curve_u3": [],
+    "curve_l3": []
+  },
+  "graph_model": []
+}
