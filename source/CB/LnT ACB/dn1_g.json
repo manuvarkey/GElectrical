@@ -1,0 +1,68 @@
+{
+  "type": "protection",
+  "parameters": {
+    "trip_on": [
+      "Trip unit enabled ?",
+      "",
+      false,
+      null,
+      "Whether trip unit is enabled",
+      "bool"
+    ],
+    "i_m": [
+      "Ig",
+      "xI0",
+      0.2,
+      [
+        0.2,
+        0.3,
+        0.4,
+        0.5
+      ],
+      "Ground fault pickup current"
+    ]
+  },
+  "data": {
+    "select_expr_list": [
+      "d.trip_on is True",
+      "d.trip_on is False"
+    ],
+    "curve_u1": [
+      [
+        "point",
+        "d.i_m*f.I0*1.1",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "point",
+        "d.i_m*f.I0*1.1",
+        0.09
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.09
+      ]
+    ],
+    "curve_l1": [
+      [
+        "point",
+        "d.i_m*f.I0*0.9",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "point",
+        "d.i_m*f.I0*0.9",
+        0.025
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.025
+      ]
+    ],
+    "curve_u2": [],
+    "curve_l2": []
+  },
+  "graph_model": []
+}

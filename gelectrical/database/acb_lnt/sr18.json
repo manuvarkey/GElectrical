@@ -1,0 +1,253 @@
+{
+  "type": "protection",
+  "parameters": {
+    "head_l": [
+      "Long time protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "lt_on": [
+      "Enable long time protection",
+      "",
+      true,
+      null,
+      "",
+      "bool"
+    ],
+    "i_r": [
+      "Ir",
+      "xIn",
+      1,
+      [
+        0.5,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        1
+      ],
+      "Long-time pickup current"
+    ],
+    "head_s": [
+      "Short time protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "st_on": [
+      "Enable short time protection",
+      "",
+      true,
+      null,
+      "",
+      "bool"
+    ],
+    "i_m": [
+      "Isd",
+      "xIr",
+      6,
+      [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "Short-time pickup current"
+    ],
+    "t_m": [
+      "tsd",
+      "s",
+      0.02,
+      [
+        0.02,
+        0.06,
+        0.1,
+        0.16,
+        0.2,
+        0.26,
+        0.3,
+        0.4,
+        0.5,
+        0.6
+      ],
+      "Short-time tripping delay (@ 10xIsd for I2T=ON)"
+    ],
+    "head_i": [
+      "Instantaneous protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "i_i": [
+      "Ii",
+      "xIn",
+      12,
+      [
+        6,
+        12
+      ],
+      "Instantaneous pickup current"
+    ]
+  },
+  "data": {
+    "select_expr_list": [
+      "d.lt_on is True",
+      "d.lt_on is False"
+    ],
+    "curve_u1": [
+      [
+        "point",
+        "1.2*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.2*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*1.1 if d.st_on else d.i_i*f.In*1.15",
+          "t_min": "max(0.06, d.t_m + 0.04) if d.st_on else 0.06",
+          "n": 100,
+          "i_tol": "1.2*f.In*d.i_r*100-100",
+          "t_tol": 20,
+          "curve_type": 1,
+          "k_i2t": "6**2*2.5"
+        }
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*1.1 if d.st_on else d.i_i*f.In*1.15",
+        "max(0.06, d.t_m + 0.04) if d.st_on else 0.06"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.15",
+        "max(0.06, d.t_m + 0.04) if d.st_on else 0.06"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.15",
+        0.06
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.06
+      ]
+    ],
+    "curve_l1": [
+      [
+        "point",
+        "1.05*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.05*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*0.9 if d.st_on else d.i_i*f.In*0.85",
+          "t_min": "max(0.02, d.t_m - 0.04) if d.st_on else 0.02",
+          "n": 100,
+          "i_tol": "1.05*f.In*d.i_r*100-100",
+          "t_tol": -20,
+          "curve_type": -1,
+          "k_i2t": "6**2*2.5"
+        }
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*0.9 if d.st_on else d.i_i*f.In*0.85",
+        "max(0.02, d.t_m - 0.04) if d.st_on else 0.02"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.85",
+        "max(0.02, d.t_m - 0.04) if d.st_on else 0.02"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.85",
+        0.02
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.02
+      ]
+    ],
+    "curve_u2": [
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*1.1 if d.st_on else d.i_i*f.In*1.15",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*1.1 if d.st_on else d.i_i*f.In*1.15",
+        "max(0.06, d.t_m + 0.04) if d.st_on else 0.06"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.15",
+        "max(0.06, d.t_m + 0.04) if d.st_on else 0.06"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.15",
+        0.06
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.06
+      ]
+    ],
+    "curve_l2": [
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*0.9 if d.st_on else d.i_i*f.In*0.85",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*0.9 if d.st_on else d.i_i*f.In*0.85",
+        "max(0.02, d.t_m - 0.04) if d.st_on else 0.02"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.85",
+        "max(0.02, d.t_m - 0.04) if d.st_on else 0.02"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.85",
+        0.02
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.02
+      ]
+    ]
+  },
+  "graph_model": []
+}
