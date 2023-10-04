@@ -120,6 +120,20 @@ item_name;item_category;custom;type;subtype;prot_curve_type;prot_0_curve_type;In
 400A, DN3-TM, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN3-TM;;400;400;36;('mccb_lnt', '', 'lnt_mccb_d3.json');
 500A, DN3-TM, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN3-TM;;500;500;36;('mccb_lnt', '', 'lnt_mccb_d3.json');
 630A, DN3-TM, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN3-TM;;630;630;36;('mccb_lnt', '', 'lnt_mccb_d3.json');
+40A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;40;40;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+63A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;63;63;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+80A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;80;80;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+100A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;100;100;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+125A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;125;125;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+160A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;160;160;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+200A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;200;200;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+250A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;250;250;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+320A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;320;320;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+400A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;400;400;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+320A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;320;320;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+400A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;400;400;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+500A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;500;500;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
+630A, DN2-MP, DSINE;MCCB - L&T DSINE;True;L&T DSINE;MCCB;DN2-MP;;630;630;36;('mccb_lnt', '', 'mtx_1_2_l.json');('mccb_lnt', '', 'mtx_1_2_g.json')
 16A, TM, DPX3 160;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;;16;16;16;('mccb_legrand', '', 'legrand_dpx3_160_16.json');
 25A, TM, DPX3 160;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;;25;25;16;('mccb_legrand', '', 'legrand_dpx3_160_25.json');
 40A, TM, DPX3 160;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;;40;40;16;('mccb_legrand', '', 'legrand_dpx3_160.json');
@@ -192,3 +206,14 @@ item_name;item_category;custom;type;subtype;prot_curve_type;prot_0_curve_type;In
 100A, TM-D, Compact NSXm;MCCB - Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;100;100;16;('mccb_schneider', '', 'params_NSXm_TMD_100.json');
 125A, TM-D, Compact NSXm;MCCB - Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;125;125;16;('mccb_schneider', '', 'params_NSXm_TMD_125.json');
 160A, TM-D, Compact NSXm;MCCB - Schneider Compact NSXm;True;Schneider Compact NSXm;MCCB;TM-D;;160;160;16;('mccb_schneider', '', 'params_NSXm_TMD_160.json');
+630A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;630;630;42;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+800A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;800;800;42;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+1000A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;1000;1000;42;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+1250A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;1250;1250;42;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+1600A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;1600;1600;42;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+2000A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;2000;2000;42;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+2500A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;2500;2500;65;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+3200A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;3200;3200;65;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+4000A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;4000;4000;100;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+5000A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;5000;5000;100;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
+6300A, Micrologic, MasterPact;ACB - Schneider MasterPact;True;Schneider MasterPact;ACB;Micrologic;Micrologic;6300;6300;100;('mccb_schneider', '', 'micrologic_l.json');('mccb_schneider', '', 'micrologic_g.json')
