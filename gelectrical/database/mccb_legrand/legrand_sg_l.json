@@ -1,0 +1,275 @@
+{
+  "type": "protection",
+  "parameters": {
+    "head_l": [
+      "Long time protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "i_r": [
+      "Ir",
+      "xIn",
+      1,
+      null,
+      "Long-time pickup current",
+      [
+        2,
+        0.4,
+        1
+      ]
+    ],
+    "t_r": [
+      "tr",
+      "s",
+      5,
+      [
+        3,
+        5,
+        10,
+        15,
+        20,
+        30
+      ],
+      "Long-time tripping delay @ 6xIr"
+    ],
+    "head_s": [
+      "Short time protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "i_m": [
+      "Isd",
+      "xIr",
+      6,
+      [
+        1.5,
+        2,
+        2.5,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "Short-time pickup current"
+    ],
+    "t_m": [
+      "tsd",
+      "s",
+      0.1,
+      [
+        0,
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5
+      ],
+      "Short-time tripping delay (@ 10xIsd for I2T=ON)"
+    ],
+    "i2t_on": [
+      "I2t ON",
+      "",
+      false,
+      null,
+      "",
+      "bool"
+    ]
+  },
+  "data": {
+    "select_expr_list": [
+      "d.i2t_on is False",
+      "d.i2t_on is True"
+    ],
+    "curve_u1": [
+      [
+        "point",
+        "1.2*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.2*f.In*d.i_r",
+          "i2": "min(d.i_m*d.i_r*f.In*1.1, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2)",
+          "t_min": "max(d.t_m*1.2, 0.01)",
+          "n": 100,
+          "i_tol": "1.2*f.In*d.i_r*100-100",
+          "t_tol": 20,
+          "curve_type": 1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "point",
+        "min(d.i_m*d.i_r*f.In*1.1, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2)",
+        "max(d.t_m*1.2, 0.01)"
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2",
+        "max(d.t_m*1.2, 0.01)"
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2",
+        0.01
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.01
+      ]
+    ],
+    "curve_l1": [
+      [
+        "point",
+        "1.05*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.05*f.In*d.i_r",
+          "i2": "min(d.i_m*d.i_r*f.In*0.9, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8)",
+          "t_min": "max(d.t_m*0.8, 0.001)",
+          "n": 100,
+          "i_tol": "1.05*f.In*d.i_r*100-100",
+          "t_tol": -20,
+          "curve_type": -1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "point",
+        "min(d.i_m*d.i_r*f.In*0.9, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8)",
+        "max(d.t_m*0.8, 0.001)"
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8",
+        "max(d.t_m*0.8, 0.001)"
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8",
+        0.001
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.001
+      ]
+    ],
+    "curve_u2": [
+      [
+        "point",
+        "1.2*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.2*f.In*d.i_r",
+          "i2": "min(d.i_m*d.i_r*f.In*1.1, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2)",
+          "t_min": "max(d.t_m*1.2, 0.01)",
+          "n": 100,
+          "i_tol": "1.2*f.In*d.i_r*100-100",
+          "t_tol": 20,
+          "curve_type": 1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "I2T",
+        1.2,
+        "d.i_r*f.In",
+        "min(d.i_m*d.i_r*f.In*1.1, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2)",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2",
+        "max(d.t_m*1.2, 0.01)",
+        100,
+        "144*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2",
+        "max(d.t_m*1.2, 0.01)"
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*1.2",
+        0.01
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.01
+      ]
+    ],
+    "curve_l2": [
+      [
+        "point",
+        "1.05*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.05*f.In*d.i_r",
+          "i2": "min(d.i_m*d.i_r*f.In*0.9, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8)",
+          "t_min": "max(d.t_m*0.8, 0.001)",
+          "n": 100,
+          "i_tol": "1.05*f.In*d.i_r*100-100",
+          "t_tol": -20,
+          "curve_type": -1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "I2T",
+        0.8,
+        "d.i_r*f.In",
+        "min(d.i_m*d.i_r*f.In*0.9, (4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8)",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8",
+        "max(d.t_m*0.8, 0.001)",
+        100,
+        "144*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8",
+        "max(d.t_m*0.8, 0.001)"
+      ],
+      [
+        "point",
+        "(4000 if f.In<=250 else (5000 if f.In<=630 else 20000))*0.8",
+        0.001
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.001
+      ]
+    ]
+  },
+  "graph_model": []
+}

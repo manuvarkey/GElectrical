@@ -156,6 +156,7 @@ item_name;item_category;custom;type;subtype;prot_curve_type;prot_0_curve_type;In
 800A, TM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;;800;800;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');
 1000A, TM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;;1000;1000;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');
 1250A, TM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;;1250;1250;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');
+1600A, TM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;;1600;1600;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');
 16A, TM-ELM, DPX3 160;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;ELM;16;16;16;('mccb_legrand', '', 'legrand_dpx3_160_16.json');('mccb_legrand', '', 'legrand_dpx3_g.json')
 25A, TM-ELM, DPX3 160;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;ELM;25;25;16;('mccb_legrand', '', 'legrand_dpx3_160_25.json');('mccb_legrand', '', 'legrand_dpx3_g.json')
 40A, TM-ELM, DPX3 160;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;ELM;40;40;16;('mccb_legrand', '', 'legrand_dpx3_160.json');('mccb_legrand', '', 'legrand_dpx3_g.json')
@@ -178,6 +179,22 @@ item_name;item_category;custom;type;subtype;prot_curve_type;prot_0_curve_type;In
 800A, TM-ELM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;ELM;800;800;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');('mccb_legrand', '', 'legrand_dpx3_g.json')
 1000A, TM-ELM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;ELM;1000;1000;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');('mccb_legrand', '', 'legrand_dpx3_g.json')
 1250A, TM-ELM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;ELM;1250;1250;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');('mccb_legrand', '', 'legrand_dpx3_g.json')
+1600A, TM-ELM, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;TM;ELM;1600;1600;36;('mccb_legrand', '', 'legrand_dpx3_630_1600.json');('mccb_legrand', '', 'legrand_dpx3_g.json')
+100A, MP-Sg, DPX3 250;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;100;100;25;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+160A, MP-Sg, DPX3 250;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;160;160;25;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+200A, MP-Sg, DPX3 250;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;200;200;25;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+250A, MP-Sg, DPX3 250;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;250;250;25;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+250A, MP-Sg, DPX3 630;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;250;250;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+320A, MP-Sg, DPX3 630;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;320;320;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+400A, MP-Sg, DPX3 630;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;400;400;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+500A, MP-Sg, DPX3 630;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;500;500;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+630A, MP-Sg, DPX3 630;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;630;630;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+500A, MP-Sg, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;500;500;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+630A, MP-Sg, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;630;630;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+800A, MP-Sg, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;800;800;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+1000A, MP-Sg, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;1000;1000;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+1250A, MP-Sg, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;1250;1250;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
+1600A, MP-Sg, DPX3 1600;MCCB - Legrand DPX3;True;Legrand DPX3;MCCB;MP-Sg;MP-Sg;1600;1600;36;('mccb_legrand', '', 'legrand_sg_l.json');('mccb_legrand', '', 'legrand_sg_g.json')
 16A, TM-D, Compact NSX;MCCB - Schneider Compact NSX;True;Schneider Compact NSX;MCCB;TM-D;;16;16;25;('mccb_schneider', '', 'params_NSX_TMD_16.json');
 25A, TM-D, Compact NSX;MCCB - Schneider Compact NSX;True;Schneider Compact NSX;MCCB;TM-D;;25;25;25;('mccb_schneider', '', 'params_NSX_TMD_25.json');
 32A, TM-D, Compact NSX;MCCB - Schneider Compact NSX;True;Schneider Compact NSX;MCCB;TM-D;;32;32;25;('mccb_schneider', '', 'params_NSX_TMD_32.json');
