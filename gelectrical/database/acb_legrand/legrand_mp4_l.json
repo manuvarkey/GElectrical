@@ -1,0 +1,442 @@
+{
+  "type": "protection",
+  "parameters": {
+    "head_l": [
+      "Long time protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "i_r": [
+      "Ir",
+      "xIn",
+      1,
+      null,
+      "Long-time pickup current",
+      [
+        2,
+        0.4,
+        1
+      ]
+    ],
+    "t_r": [
+      "tr",
+      "s",
+      5,
+      [
+        5,
+        10,
+        20,
+        30
+      ],
+      "Long-time tripping delay @ 6xIr"
+    ],
+    "head_s": [
+      "Short time protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "i_m": [
+      "Isd",
+      "xIr",
+      8,
+      [
+        1.5,
+        2,
+        2.5,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "Short-time pickup current"
+    ],
+    "t_m": [
+      "tsd",
+      "s",
+      0.1,
+      [
+        0.1,
+        0.2,
+        0.3
+      ],
+      "Short-time tripping delay (@ 12xIsd for I2T=ON)"
+    ],
+    "i2t_on": [
+      "I2t ON",
+      "",
+      false,
+      null,
+      "",
+      "bool"
+    ],
+    "head_i": [
+      "Instantaneous protection",
+      "",
+      "",
+      null,
+      "",
+      "heading"
+    ],
+    "i_i_on": [
+      "Instantaneous ON",
+      "",
+      true,
+      null,
+      "",
+      "bool"
+    ],
+    "i_i": [
+      "Ii",
+      "xIn",
+      15,
+      [
+        2,
+        3,
+        4,
+        6,
+        8,
+        10,
+        12,
+        15
+      ],
+      "Instantaneous pickup current"
+    ]
+  },
+  "data": {
+    "select_expr_list": [
+      "d.i_i_on is False and d.i2t_on is False",
+      "d.i_i_on is True and d.i2t_on is False",
+      "d.i_i_on is False and d.i2t_on is True",
+      "d.i_i_on is True and d.i2t_on is True"
+    ],
+    "curve_u1": [
+      [
+        "point",
+        "1.2*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.2*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*1.1",
+          "t_min": "d.t_m*1.2",
+          "n": 100,
+          "i_tol": "1.2*f.In*d.i_r*100-100",
+          "t_tol": 20,
+          "curve_type": 1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*1.1",
+        "d.t_m*1.2"
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "d.t_m*1.2"
+      ]
+    ],
+    "curve_l1": [
+      [
+        "point",
+        "1.05*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.05*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*0.9",
+          "t_min": "d.t_m*0.8",
+          "n": 100,
+          "i_tol": "1.05*f.In*d.i_r*100-100",
+          "t_tol": -20,
+          "curve_type": -1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*0.9",
+        "d.t_m*0.8"
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "d.t_m*0.8"
+      ]
+    ],
+    "curve_u2": [
+      [
+        "point",
+        "1.2*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.2*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*1.1",
+          "t_min": "d.t_m*1.2",
+          "n": 100,
+          "i_tol": "1.2*f.In*d.i_r*100-100",
+          "t_tol": 20,
+          "curve_type": 1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*1.1",
+        "d.t_m*1.2"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.2",
+        "d.t_m*1.2"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.2",
+        0.06
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.06
+      ]
+    ],
+    "curve_l2": [
+      [
+        "point",
+        "1.05*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.05*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*0.9",
+          "t_min": "d.t_m*0.8",
+          "n": 100,
+          "i_tol": "1.05*f.In*d.i_r*100-100",
+          "t_tol": -20,
+          "curve_type": -1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "point",
+        "d.i_m*d.i_r*f.In*0.9",
+        "d.t_m*0.8"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.8",
+        "d.t_m*0.8"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.8",
+        0.03
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.03
+      ]
+    ],
+    "curve_u3": [
+      [
+        "point",
+        "1.2*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.2*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*1.1",
+          "t_min": "d.t_m*1.2",
+          "n": 100,
+          "i_tol": "1.2*f.In*d.i_r*100-100",
+          "t_tol": 20,
+          "curve_type": 1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "I2T",
+        1.2,
+        "d.i_r*f.In",
+        "d.i_m*d.i_r*f.In*1.1",
+        "1000*f.Isc",
+        "d.t_m*1.2",
+        100,
+        "144*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "d.t_m*1.2"
+      ]
+    ],
+    "curve_l3": [
+      [
+        "point",
+        "1.05*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.05*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*0.9",
+          "t_min": "d.t_m*0.8",
+          "n": 100,
+          "i_tol": "1.05*f.In*d.i_r*100-100",
+          "t_tol": -20,
+          "curve_type": -1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "I2T",
+        0.8,
+        "d.i_r*f.In",
+        "d.i_m*d.i_r*f.In*0.9",
+        "1000*f.Isc",
+        "d.t_m*0.8",
+        100,
+        "144*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        "d.t_m*0.8"
+      ]
+    ],
+    "curve_u4": [
+      [
+        "point",
+        "1.2*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.2*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*1.1",
+          "t_min": "d.t_m*1.2",
+          "n": 100,
+          "i_tol": "1.2*f.In*d.i_r*100-100",
+          "t_tol": 20,
+          "curve_type": 1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "I2T",
+        1.2,
+        "d.i_r*f.In",
+        "d.i_m*d.i_r*f.In*1.1",
+        "d.i_i*f.In*1.2",
+        "d.t_m*1.2",
+        100,
+        "144*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.2",
+        "d.t_m*1.2"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*1.2",
+        0.06
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.06
+      ]
+    ],
+    "curve_l4": [
+      [
+        "point",
+        "1.05*f.In*d.i_r",
+        "3600 if f.In <= 63  else 2*3600"
+      ],
+      [
+        "I2T",
+        {
+          "tms": 1,
+          "i_n": "d.i_r*f.In",
+          "i1": "1.05*f.In*d.i_r",
+          "i2": "d.i_m*d.i_r*f.In*0.9",
+          "t_min": "d.t_m*0.8",
+          "n": 100,
+          "i_tol": "1.05*f.In*d.i_r*100-100",
+          "t_tol": -20,
+          "curve_type": -1,
+          "k_i2t": "36*d.t_r"
+        }
+      ],
+      [
+        "I2T",
+        0.8,
+        "d.i_r*f.In",
+        "d.i_m*d.i_r*f.In*0.9",
+        "d.i_i*f.In*0.8",
+        "d.t_m*0.8",
+        100,
+        "144*d.t_m",
+        2
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.8",
+        "d.t_m*0.8"
+      ],
+      [
+        "point",
+        "d.i_i*f.In*0.8",
+        0.03
+      ],
+      [
+        "point",
+        "1000*f.Isc",
+        0.03
+      ]
+    ]
+  },
+  "graph_model": []
+}
