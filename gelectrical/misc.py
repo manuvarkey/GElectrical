@@ -1076,6 +1076,14 @@ def get_user_input_text(parent, message, title='', oldval=None, multiline=False)
     else:
         return None
     
+def set_widget_font(widget, fontname, fontsize=None):
+    context = widget.get_pango_context() 
+    font = context.get_font_description()
+    font.set_family(fontname)
+    if fontsize:
+        font.set_size(fontsize * Pango.SCALE)
+    context.set_font_description(font)
+    
 def file_to_uri(filename):
     if platform.system() == 'Windows':
         path = pathlib.PureWindowsPath(filename)
