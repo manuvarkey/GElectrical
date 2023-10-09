@@ -564,8 +564,8 @@ def get_protection_model(protection_type, ground_model=False):
     i2t_default_values_dict = { True   : {'t_i2t': 0.1, 'i_i2t': 10, 'tol_m_i2t_p': 15,'tol_m_i2t_m': 15}, 
                                 False   : {'t_i2t': None, 'i_i2t': None, 'tol_m_i2t_p': None,'tol_m_i2t_m': None}}
     # Instantaneous trip constants
-    ii_default_values_dict = {  True    : {'i_i': 15, 't_i': 0.01, 'tol_ii_p': 20, 'tol_ii_m': 20, 'tol_ti_p': 0, 'tol_ti_m': 99}, 
-                                False   : {'i_i': None, 't_i': None, 'tol_ii_p': None, 'tol_ii_m': None, 'tol_ti_p': None, 'tol_ti_m': None}}
+    ii_default_values_dict = {  True    : {'i_i': 15, 't_i_p': 0.01, 't_i_m': 0.001, 'tol_ii_p': 20, 'tol_ii_m': 20}, 
+                                False   : {'i_i': None, 't_i_p': None, 't_i_m': None, 'tol_ii_p': None, 'tol_ii_m': None}}
     if ground_model is True:
         In = 'f.I0'
         xIn = 'xI0'
@@ -672,14 +672,14 @@ def get_protection_model(protection_type, ground_model=False):
         Im = '(d.i_m*(100+d.tol_im_p)/100)*' + In
         Tm = 'd.t_m*(100+d.tol_tm_p)/100'
         Ii = '(d.i_i*(100+d.tol_ii_p)/100)*' + In
-        Ti = 'd.t_i*(100+d.tol_ti_p)/100'
+        Ti = 'd.t_i_p'
         i2t_tol = '(100+d.tol_m_i2t_p)/100'
         curve_u1, curve_u2, curve_u3, curve_u4 = get_curves(Im, Tm, Ii, Ti, i2t_tol)
         # Lower curves
         Im = '(d.i_m*(100-d.tol_im_m)/100)*' + In
         Tm = 'd.t_m*(100-d.tol_tm_m)/100'
         Ii = '(d.i_i*(100-d.tol_ii_m)/100)*' + In
-        Ti = 'd.t_i*(100-d.tol_ti_m)/100'
+        Ti = 'd.t_i_m'
         i2t_tol = '(100-d.tol_m_i2t_m)/100'
         curve_l1, curve_l2, curve_l3, curve_l4 = get_curves(Im, Tm, Ii, Ti, i2t_tol)
 
@@ -701,11 +701,10 @@ def get_protection_model(protection_type, ground_model=False):
                         'head_i'        : ['Instantaneous protection', '', '', None, '', 'heading'],
                         'i_i_on'        : ['Enable instantaneous protection', '', False, [True, False], '', 'bool', True, ii_default_values_dict],
                         'i_i'           : ['Ii', xIn, 15, None, 'Instantaneous pickup current', 'float', False],
-                        't_i'           : ['Ti', 's', 0.01, None, 'Instantaneous trip time delay', 'float', False],
+                        't_i_p'         : ['Ti (max)', 's', 0.01, None, 'Instantaneous trip time delay (max)', 'float', False],
+                        't_i_m'         : ['Ti (min)', 's', 0.01, None, 'Instantaneous trip time delay (min)', 'float', False],
                         'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', [1,0,None], False],
-                        'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False],
-                        'tol_ti_p'      : ['Ti tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None], False],
-                        'tol_ti_m'      : ['Ti tol (-)', '%', 99, None, 'Time delay tolerance (-)', [1,0,99], False]}
+                        'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False]}
         curves = {'select_expr_list': select_expr_list,
                     'curve_u1': curve_u1, 'curve_l1': curve_l1,
                     'curve_u2': curve_u2, 'curve_l2': curve_l2,
@@ -849,7 +848,7 @@ def get_protection_model(protection_type, ground_model=False):
         Im = '(d.i_m*(100+d.tol_im_p)/100)*' + Ir
         Tm = 'd.t_m*(100+d.tol_tm_p)/100'
         Ii = '(d.i_i*(100+d.tol_ii_p)/100)*' + In
-        Ti = 'd.t_i*(100+d.tol_ti_p)/100'
+        Ti = 'd.t_i_p'
         i_tol = 'd.i_f*100-100'
         t_tol = 'd.tol_tr_p'
         curve_type = PROT_UPPER
@@ -863,7 +862,7 @@ def get_protection_model(protection_type, ground_model=False):
         Im = '(d.i_m*(100-d.tol_im_m)/100)*' + Ir
         Tm = 'd.t_m*(100-d.tol_tm_m)/100'
         Ii = '(d.i_i*(100-d.tol_ii_m)/100)*' + In
-        Ti = 'd.t_i*(100-d.tol_ti_m)/100'
+        Ti = 'd.t_i_m'
         i_tol = 'd.i_nf*100-100'
         t_tol = '-d.tol_tr_m'
         curve_type = PROT_LOWER
@@ -901,11 +900,10 @@ def get_protection_model(protection_type, ground_model=False):
                         'head_i'        : ['Instantaneous protection', '', '', None, '', 'heading'],
                         'i_i_on'        : ['Enable instantaneous protection', '', False, [True, False], '', 'bool', True, ii_default_values_dict],
                         'i_i'           : ['Ii', xIn, 15, None, 'Instantaneous pickup current', 'float', False],
-                        't_i'           : ['Ti', 's', 0.01, None, 'Instantaneous trip time delay', 'float', False],
+                        't_i_p'         : ['Ti (max)', 's', 0.01, None, 'Instantaneous trip time delay (max)', 'float', False],
+                        't_i_m'         : ['Ti (min)', 's', 0.01, None, 'Instantaneous trip time delay (min)', 'float', False],
                         'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', [1,0,None], False],
-                        'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False],
-                        'tol_ti_p'      : ['Ti tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None], False],
-                        'tol_ti_m'      : ['Ti tol (-)', '%', 99, None, 'Time delay tolerance (-)', [1,0,99], False]
+                        'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False]
                         }
 
         curves = {'select_expr_list': select_expr_list,
@@ -928,8 +926,8 @@ def get_thermal_protection_models(prot_class, magnetic=False):
                 'Class 30': [418.5,1065]}
 
     # Instantaneous trip constants
-    ii_default_values_dict = {  True    : {'i_i': 13, 't_i': 0.01, 'tol_ii_p': 20, 'tol_ii_m': 20, 'tol_ti_p': 0, 'tol_ti_m': 99}, 
-                                False   : {'i_i': None, 't_i': None, 'tol_ii_p': None, 'tol_ii_m': None, 'tol_ti_p': None, 'tol_ti_m': None}}
+    ii_default_values_dict = {  True    : {'i_i': 13, 't_i_p': 0.01, 't_i_m': 0.001, 'tol_ii_p': 20, 'tol_ii_m': 20}, 
+                                False   : {'i_i': None, 't_i_p': None, 'tol_ii_p': None, 'tol_ii_m': None, 'tol_ii_m': None}}
         
     In = 'f.In'
     xIn = 'xIn'
@@ -978,14 +976,14 @@ def get_thermal_protection_models(prot_class, magnetic=False):
         Tr = tms_dict[prot_class][1]
         t_min = 'd.t_min'
         Ii = '(d.i_i*(100+d.tol_ii_p)/100)*' + In
-        Ti = 'd.t_i*(100+d.tol_ti_p)/100'
+        Ti = 'd.t_i_p'
         curve_u1, curve_u2 = get_curves(Ir, Tr, t_min, Ii, Ti)
         # Lower curve
         Ir = '1.05*d.i_r*' + In
         Tr = tms_dict[prot_class][0]
         t_min = 0
         Ii = '(d.i_i*(100-d.tol_ii_m)/100)*' + In
-        Ti = 'd.t_i*(100-d.tol_ti_m)/100'
+        Ti = 'd.t_i_m'
         curve_l1, curve_l2 = get_curves(Ir, Tr, t_min, Ii, Ti)
         
         parameters = {'head_t'  : ['Thermal protection', '', '', None, '', 'heading'],
@@ -994,11 +992,10 @@ def get_thermal_protection_models(prot_class, magnetic=False):
                     'head_i'        : ['Instantaneous protection', '', '', None, '', 'heading'],
                     'i_i_on'        : ['Enable instantaneous protection', '', False, [True, False], '', 'bool', True, ii_default_values_dict],
                     'i_i'           : ['Ii', xIn, 13, None, 'Instantaneous pickup current', 'float', False],
-                    't_i'           : ['Ti', 's', 0.01, None, 'Instantaneous trip time delay', 'float', False],
+                    't_i_p'         : ['Ti (max)', 's', 0.01, None, 'Instantaneous trip time delay (max)', 'float', False],
+                    't_i_m'         : ['Ti (min)', 's', 0.01, None, 'Instantaneous trip time delay (min)', 'float', False],
                     'tol_ii_p'      : ['Ii tol (+)', '%', 20, None, 'Current pickup tolerance (+)', [1,0,None], False],
-                    'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False],
-                    'tol_ti_p'      : ['Ti tol (+)', '%', 0, None, 'Time delay tolerance (+)', [1,0,None], False],
-                    'tol_ti_m'      : ['Ti tol (-)', '%', 99, None, 'Time delay tolerance (-)', [1,0,99], False]}
+                    'tol_ii_m'      : ['Ii tol (-)', '%', 20, None, 'Current pickup tolerance (-)', [1,0,99], False]}
         
         curves = {'select_expr_list': select_expr_list,
                     'curve_u1': curve_u1, 'curve_l1': curve_l1,
