@@ -731,18 +731,18 @@ Adds a circuit breaker element used for the protection of circuit elements.
                     i_m_min, i_m_max = sub_types_mcb_dict[self.fields['prot_curve_type']['value']]
                     i_m_min_s = str(i_m_min)+'*f.In'
                     i_m_max_s = str(i_m_max)+'*f.In'
-                    T_conv = '3600 if f.In <= 63  else 2*3600'
+                    T_conv = '1e5'
                     ku = '125 if f.In <= 32  else 250'
                     kl = 4
                     alphau = 2
                     alphal = 2
                     curve_u = [ ('point', '1.45*f.In', T_conv),
-                                ('IEC', 1, '1.45*f.In', '1.5*f.In', i_m_max_s, 0, 50,
+                                ('IEC', 1, '1.45*f.In', '1.46*f.In', i_m_max_s, 0, 50,
                                     ku, 0, alphau),
                                 ('point', i_m_max_s, 'd.t_m_max'),
                                 ('point', '1000*f.Isc', 'd.t_m_max')]
                     curve_l = [ ('point', '1.13*f.In', T_conv),
-                                ('IEC', 1, '1.13*f.In', '1.2*f.In', i_m_min_s, 0, 50,
+                                ('IEC', 1, '1.13*f.In', '1.14*f.In', i_m_min_s, 0, 50,
                                     kl, 0, alphal),
                                 ('point', i_m_min_s, 0.001),
                                 ('point', '1000*f.Isc', 0.001)]
@@ -775,24 +775,24 @@ Adds a circuit breaker element used for the protection of circuit elements.
 
                 if f.subtype in ('RCCB','RCBO'):
                     if f.prot_0_curve_type in ('Selective',):
-                        curve_u = [ ('point', 'f.I0', 3600),
+                        curve_u = [ ('point', 'f.I0', 1e5),
                                     ('point', 'f.I0', 0.5),
                                     ('point', '2*f.I0', 0.2),
                                     ('point', '5*f.I0', 0.15),
                                     ('point', '10*f.I0', 0.15),
                                     ('point', '1000*f.Isc', 0.15)]
-                        curve_l = [ ('point', 'f.I0*0.5', 3600),
+                        curve_l = [ ('point', 'f.I0*0.5', 1e5),
                                 ('point', 'f.I0*0.5', 0.06),
                                 ('point', '1000*f.Isc', 0.06)]
                         parameters = {}
                     else:
-                        curve_u = [ ('point', 'f.I0', 3600),
+                        curve_u = [ ('point', 'f.I0', 1e5),
                                     ('point', 'f.I0', 0.3),
                                     ('point', '2*f.I0', 0.15),
                                     ('point', '5*f.I0 if f.I0 > 0.03 else 0.25', 0.04),
                                     ('point', '10*f.I0 if f.I0 > 0.03 else 0.5', 0.04),
                                     ('point', '1000*f.Isc', 0.04)]
-                        curve_l = [ ('point', 'f.I0*0.5', 3600),
+                        curve_l = [ ('point', 'f.I0*0.5', 1e5),
                                     ('point', 'f.I0*0.5', 0.001),
                                     ('point', '1000*f.Isc', 0.001)]
                         parameters = {}
