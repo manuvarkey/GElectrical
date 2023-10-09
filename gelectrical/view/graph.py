@@ -95,7 +95,7 @@ class GraphImage():
             
         self.plot.grid(True, which='major', alpha=0.3, color=misc.COLOR_GRID)
         self.plot.minorticks_on()
-        self.plot.grid(True, which='minor', alpha=0.1, color=misc.COLOR_GRID)
+        # self.plot.grid(True, which='minor', alpha=0.1, color=misc.COLOR_GRID)
 
         if 'marker' in self.graph_params and not self.graph_params['marker']:
             opt_marker = ''
@@ -112,11 +112,9 @@ class GraphImage():
                                 marker=opt_marker, markersize=4, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
                 self.plot.fill(model.xval, model.yval, label=model.title, 
-                                color=color, edgecolor=misc.COLOR_NORMAL, linewidth=1,
-                                alpha=0.5, hatch='////')
+                                color=color, alpha=0.2)
                 self.plot.fill(model.xval, model.yval, 
-                                color='none', edgecolor=misc.COLOR_NORMAL, linewidth=1,
-                                alpha=0.5)
+                                color='none', edgecolor=color, linewidth=2)
             elif model.mode == misc.GRAPH_DATATYPE_MARKER:
                 self.plot.plot(model.xval, model.yval, label=model.title, color=color, 
                                linestyle='dashed', linewidth=1)
@@ -280,20 +278,18 @@ class GraphView():
             color = self.colors[slno % len(self.colors)]
             if model.mode == misc.GRAPH_DATATYPE_PROFILE:
                 self.plot.plot(model.xval, model.yval, label=model.title, 
-                                marker=opt_marker, color=color)
+                                marker=opt_marker, color=color, linewidth=2)
             elif model.mode == misc.GRAPH_DATATYPE_FREE:
                 self.plot.scatter(model.xval, model.yval, label=model.title, 
                                 marker=opt_marker, color=color)
             elif model.mode == misc.GRAPH_DATATYPE_POLYGON:
                 self.plot.fill(model.xval, model.yval, label=model.title, 
-                                color=color, edgecolor=misc.COLOR_NORMAL, linewidth=1,
-                                alpha=0.5, hatch='////')
+                                color=color, alpha=0.2, hatch='////')
                 self.plot.fill(model.xval, model.yval, 
-                                color='none', edgecolor=misc.COLOR_NORMAL, linewidth=1,
-                                alpha=0.5)
+                                color='none', edgecolor=color, linewidth=2)
             elif model.mode == misc.GRAPH_DATATYPE_MARKER:
                 self.plot.plot(model.xval, model.yval, label=model.title, color=color, 
-                               linestyle='dashed', linewidth=1)
+                               linestyle='dashed', linewidth=2)
         # Set legends title and stuff
         if len(self.models) > 1:
             self.plot.legend(prop={'family':misc.GRAPH_FONT_FACE, 'size':misc.GRAPH_FONT_SIZE})
