@@ -91,10 +91,10 @@ class ElementModel:
         if select == True and self.selected == True:
             (x, y, width, height) = self.get_dimensions()
             misc.draw_rectangle(context,
-                                x,
-                                y,
-                                width,
-                                height,
+                                x-0.5*misc.M,
+                                y-0.5*misc.M,
+                                width+1*misc.M,
+                                height+1*misc.M,
                                 radius=misc.RECTANGLE_RADIUS,
                                 color=self.selected_color,
                                 stroke_width=misc.STROKE_WIDTH_SELECTED,

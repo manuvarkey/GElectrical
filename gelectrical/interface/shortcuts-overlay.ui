@@ -57,6 +57,24 @@
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Group selected elements</property>
+                <property name="accelerator">&lt;Primary&gt;g</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Select all elements</property>
+                <property name="accelerator">&lt;Primary&gt;a</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Deselect all elements</property>
+                <property name="accelerator">Escape</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Delete Element</property>
                 <property name="accelerator">Delete</property>
               </object>

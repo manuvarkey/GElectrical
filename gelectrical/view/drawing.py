@@ -451,7 +451,7 @@ class DrawingView:
             # Select all  
             if keyname in (Gdk.KEY_a, Gdk.KEY_A):
                 self.drawing_model.select_all()
-                self.refresh()
+                self.refresh(redraw=True)
             # Cut
             elif keyname in (Gdk.KEY_x, Gdk.KEY_X):
                 self.copy_selected()
@@ -481,7 +481,7 @@ class DrawingView:
                     self.drawing_model.reset_wire_points()
                 else:
                     self.drawing_model.deselect_all()
-                    self.refresh()
+                    self.refresh(redraw=True)
                 
             # Delete
             elif keyname in (Gdk.KEY_Delete, Gdk.KEY_KP_Delete):

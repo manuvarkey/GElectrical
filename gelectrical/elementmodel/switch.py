@@ -985,10 +985,10 @@ Adds a changeover switch element used for on-load switching of sources/ loads.
                                                     selection_list=['Model 1', 'Model 2']),
                        'position':  self.get_field_dict('int', 'Position', '', 1,
                                                         selection_list=[1,2])}
-        self.text_model = [[(5.5,1), "${ref}", True],
-                           [(5.5,None), "${'%g'%(In)}A, ${type}", True],
-                           [(5.5,None), "${poles}", True],
-                           [(5.5,None), "${name}", True]]
+        self.text_model = [[(6.5,1), "${ref}", True],
+                           [(6.5,None), "${'%g'%(In)}A, ${type}", True],
+                           [(6.5,None), "${poles}", True],
+                           [(6.5,None), "${name}", True]]
         self.calculate_parameters()
         self.assign_tootltips()
         
@@ -998,60 +998,60 @@ Adds a changeover switch element used for on-load switching of sources/ loads.
 
     def calculate_parameters(self):
         if self.fields['model']['value'] == 'Model 1':
-            self.ports = [[2, 0],
-                        [0, 6],
-                        [4, 6]]
+            self.ports = [[3, 0],
+                        [1, 6],
+                        [5, 6]]
             if self.fields['position']['value'] == 1:
                 self.schem_model = [ 
-                             ['LINE',(2,0),(2,1.5), []],
-                             ['LINE',(0,4.5),(0,6), []],
-                             ['LINE',(4,4.5),(4,6), []],
-                             ['LINE',(2,2),(0,4), []],
-                             ['LINE',(2,2),(4,4), [5,5], 'thin'],
+                             ['LINE',(3,0),(3,1.5), []],
+                             ['LINE',(1,4.5),(1,6), []],
+                             ['LINE',(5,4.5),(5,6), []],
+                             ['LINE',(3,2),(1,4), []],
+                             ['LINE',(3,2),(5,4), [5,5], 'thin'],
                              # Circle
-                             ['CIRCLE', (2,2), 0.5, False, []],
-                             ['CIRCLE', (0,4), 0.5, False, []],
-                             ['CIRCLE', (4,4), 0.5, False, []],
+                             ['CIRCLE', (3,2), 0.5, False, []],
+                             ['CIRCLE', (1,4), 0.5, False, []],
+                             ['CIRCLE', (5,4), 0.5, False, []],
                            ]
             else:
                 self.schem_model = [ 
-                             ['LINE',(2,0),(2,1.5), []],
-                             ['LINE',(0,4.5),(0,6), []],
-                             ['LINE',(4,4.5),(4,6), []],
-                             ['LINE',(2,2),(0,4), [5,5], 'thin'],
-                             ['LINE',(2,2),(4,4), []],
+                             ['LINE',(3,0),(3,1.5), []],
+                             ['LINE',(1,4.5),(1,6), []],
+                             ['LINE',(5,4.5),(5,6), []],
+                             ['LINE',(3,2),(1,4), [5,5], 'thin'],
+                             ['LINE',(3,2),(5,4), []],
                              # Circle
-                             ['CIRCLE', (2,2), 0.5, False, []],
-                             ['CIRCLE', (0,4), 0.5, False, []],
-                             ['CIRCLE', (4,4), 0.5, False, []],
+                             ['CIRCLE', (3,2), 0.5, False, []],
+                             ['CIRCLE', (1,4), 0.5, False, []],
+                             ['CIRCLE', (5,4), 0.5, False, []],
                            ]
         elif self.fields['model']['value'] == 'Model 2':
-            self.ports = [[2, 6],
-                        [0, 0],
-                        [4, 0]]
+            self.ports = [[3, 6],
+                        [1, 0],
+                        [5, 0]]
             if self.fields['position']['value'] == 1:
                 self.schem_model = [ 
-                             ['LINE',(2,6),(2,4.5), []],
-                             ['LINE',(0,1.5),(0,0), []],
-                             ['LINE',(4,1.5),(4,0), []],
-                             ['LINE',(2,4),(0,2), []],
-                             ['LINE',(2,4),(4,2), [5,5], 'thin'],
+                             ['LINE',(3,6),(3,4.5), []],
+                             ['LINE',(1,1.5),(1,0), []],
+                             ['LINE',(5,1.5),(5,0), []],
+                             ['LINE',(3,4),(1,2), []],
+                             ['LINE',(3,4),(5,2), [5,5], 'thin'],
                              # Circle
-                             ['CIRCLE', (2,4), 0.5, False, []],
-                             ['CIRCLE', (0,2), 0.5, False, []],
-                             ['CIRCLE', (4,2), 0.5, False, []],
+                             ['CIRCLE', (3,4), 0.5, False, []],
+                             ['CIRCLE', (1,2), 0.5, False, []],
+                             ['CIRCLE', (5,2), 0.5, False, []],
                            ]
             else:
                 self.schem_model = [ 
-                              ['LINE',(2,6),(2,4.5), []],
-                             ['LINE',(0,1.5),(0,0), []],
-                             ['LINE',(4,1.5),(4,0), []],
-                             ['LINE',(2,4),(0,2), [5,5], 'thin'],
-                             ['LINE',(2,4),(4,2), []],
+                              ['LINE',(3,6),(3,4.5), []],
+                             ['LINE',(1,1.5),(1,0), []],
+                             ['LINE',(5,1.5),(5,0), []],
+                             ['LINE',(3,4),(1,2), [5,5], 'thin'],
+                             ['LINE',(3,4),(5,2), []],
                              # Circle
-                             ['CIRCLE', (2,4), 0.5, False, []],
-                             ['CIRCLE', (0,2), 0.5, False, []],
-                             ['CIRCLE', (4,2), 0.5, False, []],
+                             ['CIRCLE', (3,4), 0.5, False, []],
+                             ['CIRCLE', (1,2), 0.5, False, []],
+                             ['CIRCLE', (5,2), 0.5, False, []],
                            ]
         
     def get_nodes(self, code):
