@@ -57,6 +57,21 @@
   <project_group>Office</project_group>
   <content_rating type="oars-1.1" />
   <releases>
+    <release date="2023-10-10" version="1.0">
+      <description>
+        <p>This release brings new features and bug fixes</p>
+        <ul>
+          <li>Complete overhaul of protection model. Protection module now supports greater flexibility to model most protection functions available in the industry.</li>
+          <li>Added L&amp;T, Schneider and Legrand MCB, MCCB, ACB protection models to standard library.</li>
+          <li>Support for protection coordination of elements from different sheets.</li>
+          <li>Support for exporting protection coordination settings to spreadhseet.</li>
+          <li>Added protection models for contactor and RCBO.</li>
+          <li>Improvements to element numbering - order based location of element.</li>
+          <li>Improvements to reporting module - program settings now allow greater control of exported items.</li>
+          <li>Support for tab reordering.</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-04-28" version="0.6">
       <description>
         <p>This release brings new features and bug fixes</p>
