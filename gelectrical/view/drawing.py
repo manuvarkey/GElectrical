@@ -295,7 +295,9 @@ class DrawingView:
             self.drawing_model.draw_wire(context, self.x, self.y, grid_constraint=True)
         
         # Draw rectangles around port on hovering
-        port = self.drawing_model.get_port_around_coordinate(self.x, self.y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT)
+        port = self.drawing_model.get_port_around_coordinate(self.x, self.y, 
+                    w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT,
+                    ignore_display_elements=True)
         if port:
             # Draw port selection rectangle
             misc.draw_rectangle(context,
@@ -308,6 +310,10 @@ class DrawingView:
 
     def on_button_press(self, w, e):
         """Handle button press events"""
+
+        port = self.drawing_model.get_port_around_coordinate(self.x, self.y, 
+                w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT,
+                ignore_display_elements=True)
         
         if (e.type == Gdk.EventType.BUTTON_PRESS \
             and e.button == MouseButtons.MIDDLE_BUTTON) \
@@ -315,7 +321,6 @@ class DrawingView:
             
             if self.get_mode() == misc.MODE_ADD_WIRE:
                 # Check for any nearby port
-                port = self.drawing_model.get_port_around_coordinate(self.x, self.y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT)
                 if self.drawing_model.get_num_wire_points() > 0:
                     # Add port
                     if port:
@@ -336,27 +341,34 @@ class DrawingView:
             and e.button == MouseButtons.LEFT_BUTTON:
             
             if self.get_mode() == misc.MODE_DEFAULT:
-                selected_initial = self.drawing_model.get_selected()
-                if not(e.state & Gdk.ModifierType.SHIFT_MASK):  # If shift not pressed, deselect all items
-                    self.drawing_model.deselect_all()
-                selected = self.drawing_model.update_select(x=e.x/self.scale, y=e.y/self.scale, whitelist=self.whitelist)
-                selected_list = self.drawing_model.get_selected()
-                if selected is False:
-                    if self.properties_view:
-                        self.properties_view.clean()  # Clear properties
-                    if self.results_view:
-                        self.results_view.clean()  # Clear results
-                    self.select_page()
-                    if selected_initial:  # If existing selection, deselect all
-                        self.drawing_model.deselect_all()
-                        self.refresh()
-                    else:  # If no selection, start box select
-                        self.select_x = self.x
-                        self.select_y = self.y
-                        self.set_mode(misc.MODE_SELECTION)  # Start box selection
-                else:
-                    self.select_elements(selected_list)
+                # If port highlighted start wire insert mode
+                if port:
+                    self.set_mode(misc.MODE_ADD_WIRE)
+                    self.drawing_model.add_wire_point(*port, grid_constraint=False)
                     self.refresh()
+                # Else check selection
+                else:
+                    selected_initial = self.drawing_model.get_selected()
+                    if not(e.state & Gdk.ModifierType.SHIFT_MASK):  # If shift not pressed, deselect all items
+                        self.drawing_model.deselect_all()
+                    selected = self.drawing_model.update_select(x=e.x/self.scale, y=e.y/self.scale, whitelist=self.whitelist)
+                    selected_list = self.drawing_model.get_selected()
+                    if selected is False:
+                        if self.properties_view:
+                            self.properties_view.clean()  # Clear properties
+                        if self.results_view:
+                            self.results_view.clean()  # Clear results
+                        self.select_page()
+                        if selected_initial:  # If existing selection, deselect all
+                            self.drawing_model.deselect_all()
+                            self.refresh()
+                        else:  # If no selection, start box select
+                            self.select_x = self.x
+                            self.select_y = self.y
+                            self.set_mode(misc.MODE_SELECTION)  # Start box selection
+                    else:
+                        self.select_elements(selected_list)
+                        self.refresh()
             
             elif self.get_mode() == misc.MODE_SELECTION:
                 x = min(e.x/self.scale, self.select_x)
@@ -374,7 +386,6 @@ class DrawingView:
             
             elif self.get_mode() == misc.MODE_INSERT:
                 # Check for any nearby port
-                port = self.drawing_model.get_port_around_coordinate(self.x, self.y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT)
                 self.drawing_model.make_floating_model_permenant(port)
                 # If shift pressed, continue insert
                 if e.state & Gdk.ModifierType.SHIFT_MASK:
@@ -386,7 +397,6 @@ class DrawingView:
                     
             elif self.get_mode() == misc.MODE_ADD_WIRE:
                 # Check for any nearby port
-                port = self.drawing_model.get_port_around_coordinate(self.x, self.y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT)
                 if port:
                     # If first point
                     if self.drawing_model.get_num_wire_points() == 0:
@@ -404,7 +414,11 @@ class DrawingView:
                     
         elif e.type == Gdk.EventType.BUTTON_PRESS \
             and e.button == MouseButtons.RIGHT_BUTTON:
-            if self.get_mode() in (misc.MODE_INSERT, misc.MODE_ADD_WIRE):
+
+            if self.get_mode() == misc.MODE_DEFAULT:
+                self.drawing_model.deselect_all()
+                self.refresh()
+            elif self.get_mode() in (misc.MODE_INSERT, misc.MODE_ADD_WIRE, misc.MODE_SELECTION):
                 self.set_mode(misc.MODE_DEFAULT)  # End insertion/ wire
                 self.drawing_model.reset_floating_model()
                 self.drawing_model.reset_wire_points()
@@ -420,10 +434,16 @@ class DrawingView:
             if self.get_mode() in (misc.MODE_INSERT, misc.MODE_SELECTION, misc.MODE_ADD_WIRE):
                 self.refresh()
             else:
-                port = self.drawing_model.get_port_around_coordinate(self.x, self.y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT)
+                port = self.drawing_model.get_port_around_coordinate(self.x, self.y, 
+                        w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT,
+                        ignore_display_elements=True)
                 if port != self.highlighted_port:
                     self.highlighted_port = port
                     self.refresh()
+                if port is None:
+                    self.drawing_area.get_window().set_cursor(None)
+                else:
+                    self.drawing_area.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.CROSSHAIR))
                 
     def on_mouse_scroll(self, w, e):
         """Handle scroll events"""

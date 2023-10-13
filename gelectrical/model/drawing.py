@@ -277,7 +277,7 @@ class DrawingModel:
         y = round(y/self.grid_width, 0)*self.grid_width
         return x,y
     
-    def get_port_around_coordinate(self, x, y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT):
+    def get_port_around_coordinate(self, x, y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT, ignore_display_elements=False):
         """Draw the selected schematic model"""
         w = int(w)
         h = int(h)
@@ -289,7 +289,11 @@ class DrawingModel:
             # Check for overlap
             port = element.check_overlap_ports(rect)
             if port:
-                return port
+                if ignore_display_elements:
+                    if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                        return port
+                else:
+                    return port
         
     ## Modify Functions
     
