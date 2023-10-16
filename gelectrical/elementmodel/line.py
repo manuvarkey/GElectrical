@@ -830,7 +830,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             if Sph > i0 and Sph <= i1:
                 Imax += A*Sph**m
         if i_nuetral_frac >= neutral_xsec_times:  # Case when current rating based on neutral conductor
-            Imax = Imax*neutral_xsec_times/i_nuetral_frac
+            Imax = Imax if i_nuetral_frac == 0 else Imax*neutral_xsec_times/i_nuetral_frac
         Imax = round(Imax) if Imax >= 20 else round(Imax*2)/2
         
         # Reduction factors
