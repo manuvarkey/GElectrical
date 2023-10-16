@@ -66,6 +66,7 @@ class DrawingView:
         self.on_end_callback = None
         self.hadjustment = 0
         self.vadjustment = 0
+        self.drag_el = None
         
         self.dirty_draw = True  # Flag to keep track of whether a drawing is to be fully redrawn
         self.highlighted_port = None  # Flag to keep track of the currently highlighted port
@@ -80,6 +81,12 @@ class DrawingView:
         self.drawing_area.connect("button-press-event", self.on_button_press)
         self.drawing_area.connect("motion-notify-event", self.on_pointer_move)
         self.drawing_area.connect("scroll-event", self.on_mouse_scroll)
+        self.drawing_area.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, None, Gdk.DragAction.PRIVATE)
+        self.drawing_area.drag_dest_set(Gtk.DestDefaults.MOTION, None, Gdk.DragAction.PRIVATE)
+        self.drawing_area.drag_dest_set_track_motion(True)
+        self.drawing_area.connect("drag-begin", self.on_drag_begin)
+        self.drawing_area.connect("drag-end", self.on_drag_end)
+        self.drawing_area.connect("drag-motion", self.on_drag_motion)
         self.drawing_area.connect("key-press-event", self.on_key_press)
         self.drawing_area.add_events(Gdk.EventMask.BUTTON_PRESS_MASK | 
                                      Gdk.EventMask.POINTER_MOTION_MASK | 
@@ -459,6 +466,27 @@ class DrawingView:
             if self.scale >= 0.6:
                 self.scale -= 0.2
                 self.refresh(redraw=True)
+
+    def on_drag_begin(self, w, c):
+        elno, element = self.drawing_model.get_element_around_coordinate(self.x, self.y)
+        self.drag_el = elno
+        if element and element.code not in ('element_assembly'):
+            element_copy = self.drawing_model.get_element_copy(element)
+            self.drawing_model.add_floating_model([element_copy])
+            self.drawing_model.delete_rows([self.drag_el])
+            self.set_mode(misc.MODE_INSERT)
+    
+    def on_drag_motion(self, widget, context, x, y, time):
+        self.x = x/self.scale
+        self.y = y/self.scale
+        self.refresh()
+
+    def on_drag_end(self, widget, context):
+        if self.drag_el is not None:
+            self.drawing_model.make_floating_model_permenant()
+            self.drawing_model.reset_floating_model()
+            self.set_mode(misc.MODE_DEFAULT)
+        self.drag_el = None
                     
     def on_key_press(self, w, e):
         """Handle key press events"""

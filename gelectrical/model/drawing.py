@@ -272,20 +272,32 @@ class DrawingModel:
                 selected.append(slno)
         return selected
     
+    def get_element_copy(self, element):
+        element_model = element.get_model()
+        code = element.code
+        if code == 'element_assembly':
+            element_copy = ElementAssembly()
+        elif code == 'element_wire':
+            element_copy = Wire()
+        else:
+            element_copy = self.element_models[code](project_settings=self.program_state['project_settings'])
+        element_copy.set_model(element_model, self.get_gid())
+        return element_copy
+    
     def get_grid_point(self, x, y):
         x = round(x/self.grid_width, 0)*self.grid_width
         y = round(y/self.grid_width, 0)*self.grid_width
         return x,y
     
     def get_port_around_coordinate(self, x, y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT, ignore_display_elements=False):
-        """Draw the selected schematic model"""
+        """Get port around given coordinate"""
         w = int(w)
         h = int(h)
         x = int(x-w/2)
         y = int(y-h/2)
+        # Form selection rectangle
+        rect = cairo.RectangleInt(x, y, w, h)
         for element in self.elements:
-            # Form selection rectangle
-            rect = cairo.RectangleInt(x, y, w, h)
             # Check for overlap
             port = element.check_overlap_ports(rect)
             if port:
@@ -294,6 +306,24 @@ class DrawingModel:
                         return port
                 else:
                     return port
+                
+    def get_element_around_coordinate(self, x, y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT, ignore_display_elements=False):
+        """Get element around given coordinate"""
+        w = int(w)
+        h = int(h)
+        x = int(x-w/2)
+        y = int(y-h/2)
+        # Form selection rectangle
+        rect = cairo.RectangleInt(x, y, w, h)
+        for slno, element in enumerate(self.elements):
+            # Check for overlap
+            if element.check_overlap(rect):
+                if ignore_display_elements:
+                    if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                        return slno, element
+                else:
+                    return slno, element
+        return None, None
         
     ## Modify Functions
     
@@ -525,15 +555,7 @@ class DrawingModel:
                 elements_copy = []
                 # Insert elements inside elementgroup
                 for el_no, element in enumerate(self.floating_model.elements):
-                    element_model = element.get_model()
-                    code = element.code
-                    if code == 'element_assembly':
-                        element_copy = ElementAssembly()
-                    elif code == 'element_wire':
-                        element_copy = Wire()
-                    else:
-                        element_copy = self.element_models[code](project_settings=self.program_state['project_settings'])
-                    element_copy.set_model(element_model, self.get_gid())
+                    element_copy = self.get_element_copy(element)
                     if element_copy.code in misc.LOADPROFILE_CODES:
                         element_copy.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     self.insert_element_at_index(element_copy)
