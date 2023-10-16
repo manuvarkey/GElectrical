@@ -6,7 +6,7 @@
     <property name="can-focus">False</property>
     <property name="type-hint">dialog</property>
     <property name="program-name">GElectrical</property>
-    <property name="version">1.0</property>
+    <property name="version">1.1</property>
     <property name="copyright" translatable="yes">Copyright © 2020 Manu Varkey</property>
     <property name="comments" translatable="yes">Free and opensource electrical system analysis software for LV/MV electrical distribution networks.</property>
     <property name="website">https://manuvarkey.github.io/GElectrical</property>
