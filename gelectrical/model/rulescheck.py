@@ -165,6 +165,14 @@ def rules_check(network, sim_settings, rules_settings, rules):
         <expression>       : Expression using class notation to access elements
             ex: "e.f.i_ka + e.f.i_ka_max"
     """
+
+    def eval_(expression_, dict_file):
+        """Fail safe eval function"""
+        try:
+            return eval(expression_, dict_file)
+        except:
+            return None
+
     results_dict_pass = dict()
     results_dict_fail = dict()
     ss = FieldDict(sim_settings)
@@ -180,14 +188,14 @@ def rules_check(network, sim_settings, rules_settings, rules):
             check_expression, (match_codes, match_expression, match_type), *args = rule
             
             # Check if match_criterion satisfied
-            if element.code in match_codes and eval(match_expression, {'e':cur_element_var,'sr':sr,'ss':ss}):
+            if element.code in match_codes and eval_(match_expression, {'e':cur_element_var,'sr':sr,'ss':ss}):
                 args_eval = []
 
                 # Fill arguments from rule
                 for arg in args:
                     if arg[0] == 'self':
                         expr = arg[1]
-                        args_eval.append([eval(expr, {'e':cur_element_var,'sr':sr,'ss':ss})])
+                        args_eval.append([eval_(expr, {'e':cur_element_var,'sr':sr,'ss':ss})])
 
                     elif arg[0] in ('upstream', 'downstream', 'upstream_node', 'downstream_node'):
                         if arg[0] == 'upstream':
@@ -208,7 +216,7 @@ def rules_check(network, sim_settings, rules_settings, rules):
                             args_eval_sub = []
                             for arg_element in arg_element_dict.values():
                                 e = Element(arg_element)
-                                args_eval_sub.append(eval(expr, {'e':e,'sr':sr,'ss':ss}))
+                                args_eval_sub.append(eval_(expr, {'e':e,'sr':sr,'ss':ss}))
                             args_eval.append(args_eval_sub)
                         else:
                             if match_type in ('all', 'any'):
@@ -227,12 +235,12 @@ def rules_check(network, sim_settings, rules_settings, rules):
                         arg_element_dict = dict()
                         for eid_sub, element_sub in network.base_elements.items():
                             sub_element_var = Element(element_sub)
-                            if element_sub.code in codes and eval(cond_expr, {'e':sub_element_var,'sr':sr,'ss':ss}):
+                            if element_sub.code in codes and eval_(cond_expr, {'e':sub_element_var,'sr':sr,'ss':ss}):
                                 arg_element_dict[eid_sub] = sub_element_var
                         if arg_element_dict:
                             args_eval_sub = []
                             for arg_element in arg_element_dict.values():
-                                args_eval_sub.append(eval(expr, {'e':arg_element,'sr':sr,'ss':ss}))
+                                args_eval_sub.append(eval_(expr, {'e':arg_element,'sr':sr,'ss':ss}))
                             args_eval.append(args_eval_sub)
                         else:
                             if match_type in ('all', 'any'):
@@ -256,7 +264,7 @@ def rules_check(network, sim_settings, rules_settings, rules):
                             args_eval_pair.append((arg1, 0, 0))
                     # Evaluate argument pairs
                     for (arg1, arg2, arg3) in args_eval_pair:
-                        if eval(check_expression, {'arg1':arg1, 'arg2':arg2, 'arg3':arg3, 'sr':sr, 'ss':ss}):
+                        if eval_(check_expression, {'arg1':arg1, 'arg2':arg2, 'arg3':arg3, 'sr':sr, 'ss':ss}):
                             if match_type in ('any', 'any_ifexist'):
                                 break
                         else:
