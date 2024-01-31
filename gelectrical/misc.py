@@ -1503,7 +1503,7 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                     if image_path:
                         image_file = abs_path('icons', image_path)
                         data_uri = base64.b64encode(open(image_file, 'rb').read()).decode('utf-8')
-                        img_tag = "<div class='parent flex-parent'><div class='child flex-left'><img class='img_table' src='data:image/svg;base64,{0}'></div><div class='child flex-right'>{1}</div></div>".format(data_uri, value)
+                        img_tag = "<div class='parent flex-parent'><div class='child flex-left'><img class='img_table' src='data:image/svg+xml;base64,{0}'></div><div class='child flex-right'>{1}</div></div>".format(data_uri, value)
                         table['Value'].append(img_tag)
                     else:
                         table['Value'].append(value)

@@ -83,10 +83,6 @@ html {
   padding: .1cm;
   border-bottom: .25pt solid #729fcf;
 }
-
-#contents ul li a:before {
-  content: target-text(attr(href));
-}
 #contents ul li a:after {
   content: target-counter(attr(href), page);
   font-style: italic;

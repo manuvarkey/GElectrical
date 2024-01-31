@@ -8,6 +8,7 @@
     <meta name=dcterms.modified content="{{gen_variables['doc_mod_date']}}">
     <meta name=generator content="{{gen_variables['doc_creator']|e}}">
     <html lang=lang content="{{gen_variables['doc_lang']|e}}">
+    <link rel="stylesheet" href="report.css">
   </head>
 
   <body>
@@ -35,7 +36,7 @@
       <h3><a href="#elements">Elements</a></h3>
       <ul>
         {% for element_caption in element_captions %}
-        <li><a href="#{{element_caption|e}}"></a></li>
+        <li><a href="#{{element_caption|e}}">{{element_captions[element_caption]}}</a></li>
         {% endfor %}
       </ul>
       {% endif %}
@@ -44,7 +45,7 @@
       <h3><a href="#boq">Bill of quantities</a></h3>
       <ul>
         {% for boq_caption in boq_captions %}
-        <li><a href="#{{boq_caption|e}}"></a></li>
+        <li><a href="#{{boq_caption|e}}">{{boq_captions[boq_caption]}}</a></li>
         {% endfor %}
       </ul>
       {% endif %}
@@ -53,7 +54,7 @@
       <h3><a href="#loadprofiles">Load Profiles</a></h3>
       <ul>
         {% for loadprofile_caption in loadprofile_captions %}
-        <li><a href="#{{loadprofile_caption|e}}"></a></li>
+        <li><a href="#{{loadprofile_caption|e}}">{{loadprofile_captions[loadprofile_caption]}}</a></li>
         {% endfor %}
       </ul>
       {% endif %}
@@ -61,11 +62,11 @@
       {% if analysis_flag == True %}
       <h3><a href="#analysis">Analysis</a></h3>
       <ul>
-        <li><a href="#analysis-options"></a></li>
-        <li><a href="#analysis-results"></a></li>
+        <li><a href="#analysis-options">Analysis options</a></li>
+        <li><a href="#analysis-results">Analysis results</a></li>
           <ul>
             {% for ana_caption in ana_res_captions %}
-            <li><a href="#{{ana_caption|e}}"></a></li>
+            <li><a href="#{{ana_caption|e}}">{{ana_res_captions[ana_caption]}}</a></li>
             {% endfor %}
           </ul>
       </ul>

@@ -622,10 +622,9 @@ class MainWindow():
                         call_3 = executor.submit(self.project.export_json, filename, call_at_exit)
                         
                         def call_at_exit():
-                            progress.add_message('Exported PDF Report.')
+                            progress.add_message('Exported HTML, PDF reports.')
                             progress.set_fraction(progress.get_fraction() + 0.2)
-                        filename = misc.posix_path(settings['folder'], 'report.pdf')
-                        call_4 = executor.submit(self.project.export_pdf_report, filename, settings, call_at_exit)
+                        call_4 = executor.submit(self.project.export_pdf_report, settings['folder'], settings, call_at_exit)
                         
                         def call_at_exit():
                             progress.add_message('Exported drawing.')

@@ -143,7 +143,10 @@ class GraphImage():
         buf = BytesIO()
         self.figure.savefig(buf, format=file_format, bbox_inches='tight')
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
-        return f"<img src='data:image/png;base64,{data}'/>"
+        if file_format == 'svg':
+            return f"<img src='data:image/svg+xml;base64,{data}'/>"
+        elif file_format == 'png':
+            return f"<img src='data:image/png;base64,{data}'/>"
         
 
 class MouseButtons:

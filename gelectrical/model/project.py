@@ -768,7 +768,7 @@ class ProjectModel:
         if call_at_exit:
             call_at_exit()
         
-    def export_pdf_report(self, filename, settings, call_at_exit=None):
+    def export_pdf_report(self, foldername, settings, call_at_exit=None):
         template_path = misc.abs_path("templates")
         env = Environment(loader=FileSystemLoader(template_path))
         
@@ -1005,8 +1005,15 @@ class ProjectModel:
         css_out = template_css.render(template_vars_css)
         css_obj = io.BytesIO(bytes(css_out, 'utf-8'))
         
-        # Render PDF
-        HTML(string=html_out).write_pdf(filename, stylesheets=[css_obj])
+        # Render HTML, PDF
+        filename_pdf = misc.posix_path(foldername, 'report.pdf')
+        filename_html = misc.posix_path(foldername, 'report.html')
+        filename_css = misc.posix_path(foldername, 'report.css')
+        with open(filename_html, 'w') as fp:
+            fp.write(html_out)
+        with open(filename_css, 'w') as fp:
+            fp.write(css_out)
+        HTML(string=html_out).write_pdf(filename_pdf, stylesheets=[css_obj])
         
         if call_at_exit:
             call_at_exit()
