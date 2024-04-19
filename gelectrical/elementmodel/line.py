@@ -1337,9 +1337,8 @@ Creates a bus trunking element with known parameters.
         i_pk = self.fields['i_pk']['value']*1000 * self.fields['parallel']['value']
         curve_u = [('point', i_z, 3600),
                     ('point', i_cw/math.sqrt(10), 10),
-                    #('point', i_cw, 1),
-                    ('point', i_pk, i_cw**2/i_pk**2),
-                    ('point', i_pk, 0.01)]
+                    ('point', i_cw, 1),
+                    ('point', i_cw, 0.01)]
         curve_l = []
         param = {}
         curves = {'curve_u': curve_u, 'curve_l': curve_l}
