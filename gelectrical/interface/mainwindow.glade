@@ -336,7 +336,7 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
                         <property name="halign">start</property>
                         <property name="label" translatable="yes">Wire</property>
                         <property name="use-underline">True</property>
-                        <property name="icon-name">wire-symbolic</property>
+                        <property name="icon-name">wiredraw-symbolic</property>
                         <signal name="clicked" handler="on_draw_drawwire" swapped="no"/>
                         <accelerator key="w" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
@@ -435,8 +435,8 @@ Cross reference elements allows connecting different parts of the scheme within/
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-in-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomin" swapped="no"/>
-                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -469,8 +469,8 @@ Cross reference elements allows connecting different parts of the scheme within/
                         <property name="use-underline">True</property>
                         <property name="icon-name">zoom-out-symbolic</property>
                         <signal name="clicked" handler="on_draw_zoomout" swapped="no"/>
-                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

@@ -63,15 +63,20 @@ class FieldView:
         self.set_field = set_field
         
         # Add item name
+        
+        self.name_row = Gtk.ListBoxRow()
         if caption:
-            self.name_row = Gtk.ListBoxRow()
             self.name_widget = Gtk.Label('<b>' + self.caption + '</b>', xalign=0)
             self.name_widget.set_use_markup(True)
-            self.name_widget.props.margin_top = 6
-            self.name_widget.props.margin_bottom = 6
-            self.name_row.add(self.name_widget)
-            self.listbox.add(self.name_row)
-            self.field_rows.append((self.name_row, None))
+        else:
+            self.name_widget = Gtk.Separator()
+        self.name_row.props.margin_top = 6
+        self.name_row.props.margin_bottom = 6
+        self.name_row.props.margin_start = 6
+        self.name_row.props.margin_end = 6
+        self.name_row.add(self.name_widget)
+        self.listbox.add(self.name_row)
+        self.field_rows.append((self.name_row, None))
         
         # Callbacks
         def activate_callback(widget, get_field, set_field, code):
@@ -280,6 +285,8 @@ class FieldView:
             if field[self.enable_code]:
                 row = Gtk.ListBoxRow()
                 row.set_tooltip_markup(field['tooltip'])
+                row.props.margin_start = 6
+                row.props.margin_end = 6
                 data_widget = None
                 # Create widgets
                 hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
@@ -645,6 +652,7 @@ class FieldViewDialog():
         action_area = self.dialog_window.get_action_area()
         
         self.notebook = Gtk.Notebook()
+        self.notebook.props.show_border = True
         content_area.pack_start(self.notebook, True, True, 0)
         action_area.props.margin_top = 12
         action_area.props.margin_bottom = 6
