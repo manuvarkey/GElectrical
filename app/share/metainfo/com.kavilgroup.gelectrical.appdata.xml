@@ -4,7 +4,9 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
   <name>GElectrical</name>
-  <developer_name>Manu Varkey</developer_name>
+  <developer id="com.kavilgroup">
+    <name>Manu Varkey</name>
+  </developer>
   <summary>Electrical distribution network design and analysis</summary>
   <description>
     <p>
