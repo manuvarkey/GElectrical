@@ -21,6 +21,10 @@
 #
 #
 
+# Temporary measure to ignore Pandas warnings in pandapower until 3.0  #TODO
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import logging
 import copy
 import cmath
@@ -90,10 +94,13 @@ class PandaPowerModel:
         elif mode == misc.POWER_MODEL_LINEFAULT:
             self.power_model_lf = pp.create_empty_network()
             power_model = self.power_model_lf
-            
+
         elif mode == misc.POWER_MODEL_GROUNDFAULT:
             self.power_model_gf = pp.create_empty_network()
             power_model = self.power_model_gf
+        else:
+            log.warning('PandaPowerModel - build_powermodel - model generation failed, unknown mode selected')
+            return
 
         def get_node(local_node):
             if local_node in self.node_mapping:
@@ -128,14 +135,6 @@ class PandaPowerModel:
                     node = get_node(local_nodes[0])
                     element = pp.create_ext_grid(
                         power_model, bus=node, **model)
-                    power_model.ext_grid.at[element,
-                                                 'x0x_max'] = model['x0x_max']
-                    power_model.ext_grid.at[element,
-                                                 'r0x0_max'] = model['r0x0_max']
-                    power_model.ext_grid.at[element,
-                                                 'x0x_min'] = model['x0x_min']
-                    power_model.ext_grid.at[element,
-                                                 'r0x0_min'] = model['r0x0_min']
                     self.power_elements[e_code] = (elementcode, element)
                     self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'trafo':
@@ -143,18 +142,6 @@ class PandaPowerModel:
                     node1 = get_node(local_nodes[1])
                     element = pp.create_transformer_from_parameters(
                         power_model, hv_bus=node0, lv_bus=node1, **model)
-                    power_model.trafo.at[element,
-                                              'vector_group'] = model['vector_group']
-                    power_model.trafo.at[element,
-                                              'vk0_percent'] = model['vk0_percent']
-                    power_model.trafo.at[element,
-                                              'vkr0_percent'] = model['vkr0_percent']
-                    power_model.trafo.at[element,
-                                              'mag0_percent'] = model['mag0_percent']
-                    power_model.trafo.at[element,
-                                              'mag0_rx'] = model['mag0_rx']
-                    power_model.trafo.at[element,
-                                              'si0_hv_partial'] = model['si0_hv_partial']
                     self.power_elements[e_code] = (elementcode, element)
                     self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'trafo3w':
@@ -201,15 +188,6 @@ class PandaPowerModel:
                     node1 = get_node(local_nodes[1])
                     element = pp.create_line_from_parameters(
                         power_model, from_bus=node0, to_bus=node1, **model)
-                    # Add value explicitly to avoid bug in PP
-                    power_model.line.at[element,
-                                             'endtemp_degree'] = model['endtemp_degree']
-                    power_model.line.at[element,
-                                             'r0_ohm_per_km'] = model['r0_ohm_per_km']
-                    power_model.line.at[element,
-                                             'x0_ohm_per_km'] = model['x0_ohm_per_km']
-                    power_model.line.at[element,
-                                             'c0_nf_per_km'] = model['c0_nf_per_km']
                     self.power_elements[e_code] = (elementcode, element)
                     self.power_elements_inverted[elementcode, element] = e_code
                 elif elementcode == 'dcline':
@@ -493,29 +471,29 @@ class PandaPowerModel:
                 #             for line_code in lines:
                 #                 (linecode, line_index) = self.power_elements[line_code]
                 #                 # Add phantom power injection elements to take up balance power
-                #                 sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index, 
+                #                 sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index,
                 #                     p_a_mw=0, p_b_mw=0, p_c_mw=0,
                 #                     q_a_mvar=0, q_b_mvar=0, q_c_mvar=0)
                 #                 # Add control elements
-                #                 char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
+                #                 char_index = pp.control.util.characteristic.Characteristic(self.power_model,
                 #                     [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'asymmetric_sgen', 'p_a_mw', sgen_index, 'res_line_3ph', 'p_a_from_mw', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'asymmetric_sgen', 'p_a_mw', sgen_index, 'res_line_3ph', 'p_a_from_mw', line_index,
                 #                     char_index, tol=0.0001, order=1)
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'asymmetric_sgen', 'p_b_mw', sgen_index, 'res_line_3ph', 'p_b_from_mw', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'asymmetric_sgen', 'p_b_mw', sgen_index, 'res_line_3ph', 'p_b_from_mw', line_index,
                 #                     char_index, tol=0.0001, order=1)
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'asymmetric_sgen', 'p_c_mw', sgen_index, 'res_line_3ph', 'p_c_from_mw', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'asymmetric_sgen', 'p_c_mw', sgen_index, 'res_line_3ph', 'p_c_from_mw', line_index,
                 #                     char_index, tol=0.0001, order=1)
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'asymmetric_sgen', 'q_a_mvar', sgen_index, 'res_line_3ph', 'q_a_from_mvar', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'asymmetric_sgen', 'q_a_mvar', sgen_index, 'res_line_3ph', 'q_a_from_mvar', line_index,
                 #                     char_index, tol=0.0001, order=1)
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'asymmetric_sgen', 'q_b_mvar', sgen_index, 'res_line_3ph', 'q_b_from_mvar', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'asymmetric_sgen', 'q_b_mvar', sgen_index, 'res_line_3ph', 'q_b_from_mvar', line_index,
                 #                     char_index, tol=0.0001, order=1)
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'asymmetric_sgen', 'q_c_mvar', sgen_index, 'res_line_3ph', 'q_c_from_mvar', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'asymmetric_sgen', 'q_c_mvar', sgen_index, 'res_line_3ph', 'q_c_from_mvar', line_index,
                 #                     char_index, tol=0.0001, order=1)
                 # Method 2: Calculate net diversity factor per load and calculate sgen power
                 #   injection at each bus
@@ -554,7 +532,7 @@ class PandaPowerModel:
                                     q_b_mvar += self.power_model['asymmetric_load']['q_b_mvar'][load_index]*RF
                                     q_c_mvar += self.power_model['asymmetric_load']['q_c_mvar'][load_index]*RF
                             # Add phantom power injection element to take up balance power
-                            sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index, 
+                            sgen_index = pp.create_asymmetric_sgen(self.power_model, bus_index,
                                 p_a_mw=p_a_mw, p_b_mw=p_b_mw, p_c_mw=p_c_mw,
                                 q_a_mvar=q_a_mvar, q_b_mvar=q_b_mvar, q_c_mvar=q_c_mvar)
 
@@ -564,7 +542,7 @@ class PandaPowerModel:
             trafos = self.power_model.trafo.to_dict(orient='records')
             for trafo_index, values in enumerate(trafos):
                 if values['oltc']:
-                    trafo_controller = control.DiscreteTapControl.from_tap_step_percent(self.power_model, 
+                    trafo_controller = control.DiscreteTapControl.from_tap_step_percent(self.power_model,
                         trafo_index, 1, order=1)
             if pf_type == 'Power flow with diversity':
                 # Add diversity factor simulation elements
@@ -581,13 +559,13 @@ class PandaPowerModel:
                 #                 # Add phantom power injection elements to take up balance power
                 #                 sgen_index = pp.create_sgen(self.power_model, bus_index, p_mw=0, q_mvar=0)
                 #                 # Add control elements
-                #                 char_index = pp.control.util.characteristic.Characteristic(self.power_model, 
+                #                 char_index = pp.control.util.characteristic.Characteristic(self.power_model,
                 #                     [-1e10, 1e10], [-(1-DF)*1e10, (1-DF)*1e10]).index
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'sgen', 'p_mw', sgen_index, 'res_line', 'p_from_mw', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'sgen', 'p_mw', sgen_index, 'res_line', 'p_from_mw', line_index,
                 #                     char_index, tol=0.0001, order=2)
-                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model, 
-                #                     'sgen', 'q_mvar', sgen_index, 'res_line', 'q_from_mvar', line_index, 
+                #                 pp.control.controller.characteristic_control.CharacteristicControl(self.power_model,
+                #                     'sgen', 'q_mvar', sgen_index, 'res_line', 'q_from_mvar', line_index,
                 #                     char_index, tol=0.0001, order=2)
                 # Method 2: Calculate net diversity factor per load and calculate sgen power
                 #   injection at each bus
@@ -618,7 +596,7 @@ class PandaPowerModel:
                                     q_mvar += self.power_model['asymmetric_load']['q_b_mvar'][load_index]*RF
                                     q_mvar += self.power_model['asymmetric_load']['q_c_mvar'][load_index]*RF
                             # Add phantom power injection element to take up balance power
-                            sgen_index = pp.create_sgen(self.power_model, bus_index, 
+                            sgen_index = pp.create_sgen(self.power_model, bus_index,
                                 p_mw=p_mw, q_mvar=q_mvar)
             pp.runpp(self.power_model, run_control=True, calculate_voltage_angles = True)
 
@@ -626,29 +604,29 @@ class PandaPowerModel:
 
         R = round
 
-        def sum_func(x1,x2,x3, decimal): 
+        def sum_func(x1,x2,x3, decimal):
             result = x1 + x2 + x3
             return R(result, decimal)
 
-        def delv_func(v1, v2, angle1, angle2, decimal): 
+        def delv_func(v1, v2, angle1, angle2, decimal):
             result = abs(cmath.rect(v1, np.deg2rad(angle1)) - cmath.rect(v2, np.deg2rad(angle2)))*100
             return R(result, decimal)
 
-        def percentage_1_1_func(a,b, decimal): 
+        def percentage_1_1_func(a,b, decimal):
             result = a/b*100 if abs(b)>1e-4 else 0
             return R(result, decimal)
-        
-        def percentage_3_3_func(x1,x2,x3,y1,y2,y3, decimal): 
+
+        def percentage_3_3_func(x1,x2,x3,y1,y2,y3, decimal):
             a = x1 + x2 + x3
             b = y1 + y2 + y3
             return percentage_1_1_func(a,b, decimal)
 
-        def pf_1_1_func(p,q, decimal): 
+        def pf_1_1_func(p,q, decimal):
             s = (p**2 + q**2)**0.5
             result = p/s if abs(s)>1e-4 else 0
             return R(result, decimal)
 
-        def pf_3_3_func(pa,pb,pc,qa,qb,qc, decimal): 
+        def pf_3_3_func(pa,pb,pc,qa,qb,qc, decimal):
             p = pa + pb + pc
             q = qa + qb + qc
             return pf_1_1_func(p,q, decimal)
@@ -668,11 +646,11 @@ class PandaPowerModel:
                 result = getattr(self.power_model, 'res_bus').loc[bus_id]
 
             if runpp_3ph:
-                node_result['vm_a_pu'] = misc.get_field_dict('str', 'Va', 'pu < deg', 
+                node_result['vm_a_pu'] = misc.get_field_dict('str', 'Va', 'pu < deg',
                                         str(round(result['vm_a_pu'],4)) + ' < ' + str(round(result['va_a_degree'], 2)))
-                node_result['vm_b_pu'] = misc.get_field_dict('str', 'Vb', 'pu < deg', 
+                node_result['vm_b_pu'] = misc.get_field_dict('str', 'Vb', 'pu < deg',
                                         str(round(result['vm_b_pu'],4)) + ' < ' + str(round(result['va_b_degree'], 2)))
-                node_result['vm_c_pu'] = misc.get_field_dict('str', 'Vc', 'pu < deg', 
+                node_result['vm_c_pu'] = misc.get_field_dict('str', 'Vc', 'pu < deg',
                                         str(round(result['vm_c_pu'],4)) + ' < ' + str(round(result['va_c_degree'], 2)))
                 min_v = min(result['vm_a_pu'], result['vm_b_pu'], result['vm_c_pu'])
                 node_result['delv_perc_max'] = misc.get_field_dict(
@@ -686,7 +664,7 @@ class PandaPowerModel:
                 node_result['unbalance_perc'] = misc.get_field_dict(
                     'float', 'Voltage unbalance', '%', result['unbalance_percent'], decimal=2)
             else:
-                node_result['vm_pu'] = misc.get_field_dict('str', 'V', 'pu < deg', 
+                node_result['vm_pu'] = misc.get_field_dict('str', 'V', 'pu < deg',
                                         str(round(result['vm_pu'],4)) + ' < ' + str(round(result['va_degree'], 2)))
                 node_result['delv_perc_max'] = misc.get_field_dict(
                     'float', 'ΔV', '%', 100-result['vm_pu']*100, decimal=2)
@@ -701,7 +679,7 @@ class PandaPowerModel:
                     element_result = dict()
                     self.element_results[e_code] = element_result
                 (elementcode, element_id) = self.power_elements[e_code]
-                
+
                 # Get result table
                 if elementcode != 'switch':  # Remove elements without results
                     if runpp_3ph:
@@ -710,7 +688,7 @@ class PandaPowerModel:
                     else:
                         result = getattr(self.power_model, 'res_' +
                                         elementcode).loc[element_id]
-                
+
                 # Populate element results
                 if runpp_3ph:
                     if elementcode in ['load', 'sgen', 'storage']:
@@ -719,13 +697,13 @@ class PandaPowerModel:
                         element_result['q_mvar'] = misc.get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_mvar'],4))
                         element_result['pf'] = misc.get_field_dict(
-                            'float', 'PF', '', 
+                            'float', 'PF', '',
                             pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
                     elif elementcode in ['ext_grid', 'asymmetric_load', 'asymmetric_sgen']:
-                        element_result['p_mw'] = misc.get_field_dict('float', 'P', '', 
+                        element_result['p_mw'] = misc.get_field_dict('float', 'P', '',
                             sum_func(result['p_a_mw'], result['p_b_mw'], result['p_c_mw'], 4))
-                        element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
-                            pf_3_3_func(result['p_a_mw'], result['p_b_mw'], result['p_c_mw'], 
+                        element_result['pf'] = misc.get_field_dict('float', 'PF', '',
+                            pf_3_3_func(result['p_a_mw'], result['p_b_mw'], result['p_c_mw'],
                                         result['q_a_mvar'], result['q_b_mvar'], result['q_c_mvar'], 2))
                         element_result['p_a_mw'] = misc.get_field_dict(
                             'float', 'Pa', 'MW', R(result['p_a_mw'],4))
@@ -734,15 +712,15 @@ class PandaPowerModel:
                         element_result['p_c_mw'] = misc.get_field_dict(
                             'float', 'Pc', 'MW', R(result['p_c_mw'],4))
                     elif elementcode == 'trafo':
-                        element_result['p_hv_mw'] = misc.get_field_dict('float', 'P', 'MW', 
+                        element_result['p_hv_mw'] = misc.get_field_dict('float', 'P', 'MW',
                             sum_func(result['p_a_hv_mw'], result['p_b_hv_mw'], result['p_c_hv_mw'], 4))
-                        element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
-                            pf_3_3_func(result['p_a_hv_mw'], result['p_b_hv_mw'], result['p_c_hv_mw'], 
+                        element_result['pf'] = misc.get_field_dict('float', 'PF', '',
+                            pf_3_3_func(result['p_a_hv_mw'], result['p_b_hv_mw'], result['p_c_hv_mw'],
                                         result['q_a_hv_mvar'], result['q_b_hv_mvar'], result['q_c_hv_mvar'], 2))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
-                            'float', 'P loss', 'MW', 
+                            'float', 'P loss', 'MW',
                             sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 5))
                     elif elementcode == 'trafo3w':
                         element_result['p_hv_mw'] = misc.get_field_dict(
@@ -761,13 +739,13 @@ class PandaPowerModel:
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
                             'float', 'P loss', 'MW', R(result['pl_mw'], 5))
-                    elif elementcode in ['line']:                        
-                        element_result['p_from_mw'] = misc.get_field_dict('float', 'P', 'MW', 
+                    elif elementcode in ['line']:
+                        element_result['p_from_mw'] = misc.get_field_dict('float', 'P', 'MW',
                             sum_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 4))
-                        element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr', 
+                        element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr',
                             sum_func(result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 4))
-                        element_result['pf'] = misc.get_field_dict('float', 'PF', '', 
-                            pf_3_3_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 
+                        element_result['pf'] = misc.get_field_dict('float', 'PF', '',
+                            pf_3_3_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'],
                                         result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 2))
                         element_result['p_a_from_mw'] = misc.get_field_dict(
                             'float', 'Pa', 'MW', R(result['p_a_from_mw'],4))
@@ -778,9 +756,9 @@ class PandaPowerModel:
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
-                            'float', 'P loss', 'MW', 
+                            'float', 'P loss', 'MW',
                             sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 5))
-                        element_result['pl_perc_max'] = misc.get_field_dict('float', '% P Loss', '%', 
+                        element_result['pl_perc_max'] = misc.get_field_dict('float', '% P Loss', '%',
                             percentage_3_3_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'],
                                                 result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 2))
                 else:
@@ -790,7 +768,7 @@ class PandaPowerModel:
                         element_result['q_mvar'] = misc.get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_mvar'],4))
                         element_result['pf'] = misc.get_field_dict(
-                            'float', 'PF', '', 
+                            'float', 'PF', '',
                             pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
                     elif elementcode == 'trafo':
                         element_result['p_hv_mw'] = misc.get_field_dict(
@@ -824,7 +802,7 @@ class PandaPowerModel:
                         element_result['q_mvar'] = misc.get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_mvar'], 4))
                         element_result['pf'] = misc.get_field_dict(
-                            'float', 'PF', '', 
+                            'float', 'PF', '',
                             pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
                         element_result['vm_pu'] = misc.get_field_dict(
                             'float', 'V', 'pu', R(result['vm_pu'], 2))
@@ -843,25 +821,25 @@ class PandaPowerModel:
                         element_result['q_from_mvar'] = misc.get_field_dict(
                             'float', 'Q', 'MW', R(result['q_from_mvar'], 4))
                         element_result['pf'] = misc.get_field_dict(
-                            'float', 'PF', '', 
+                            'float', 'PF', '',
                             pf_1_1_func(result['p_from_mw'], result['q_from_mvar'], 2))
                         element_result['loading_percent_max'] = misc.get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
                             'float', 'P loss', 'MW', R(result['pl_mw'], 5))
                         element_result['pl_perc_max'] = misc.get_field_dict(
-                            'float', '% P Loss', '%', 
+                            'float', '% P Loss', '%',
                             percentage_1_1_func(result['pl_mw'], result['p_from_mw'], 2))
                         element_result['delv_max'] = misc.get_field_dict(
-                            'float', 'ΔV', '%', 
+                            'float', 'ΔV', '%',
                             delv_func(result['vm_from_pu'], result['vm_to_pu'],
                                       result['va_from_degree'], result['va_to_degree'], 2))
-                        
+
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
     def run_powerflow_timeseries(self, runpp_3ph=False):
         """Run power flow time series simulation"""
-    
+
         sgens = self.power_model.sgen.to_dict(orient='records')
         asymmetric_sgens = self.power_model.asymmetric_sgen.to_dict(orient='records')
         loads = self.power_model.load.to_dict(orient='records')
@@ -955,29 +933,29 @@ class PandaPowerModel:
         ds_qa = DFData(df_qa)
         ds_qb = DFData(df_qb)
         ds_qc = DFData(df_qc)
-        const_asgen_pa = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+        const_asgen_pa = control.ConstControl(self.power_model, element='asymmetric_sgen',
                                             element_index=self.power_model.asymmetric_sgen.index,
-                                            variable='p_a_mw', data_source=ds_pa, 
+                                            variable='p_a_mw', data_source=ds_pa,
                                             profile_name=self.power_model.asymmetric_sgen.index)
-        const_asgen_pb = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+        const_asgen_pb = control.ConstControl(self.power_model, element='asymmetric_sgen',
                                             element_index=self.power_model.asymmetric_sgen.index,
-                                            variable='p_b_mw', data_source=ds_pb, 
+                                            variable='p_b_mw', data_source=ds_pb,
                                             profile_name=self.power_model.asymmetric_sgen.index)
-        const_asgen_pc = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+        const_asgen_pc = control.ConstControl(self.power_model, element='asymmetric_sgen',
                                             element_index=self.power_model.asymmetric_sgen.index,
-                                            variable='p_c_mw', data_source=ds_pc, 
+                                            variable='p_c_mw', data_source=ds_pc,
                                             profile_name=self.power_model.asymmetric_sgen.index)
-        const_asgen_qa = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+        const_asgen_qa = control.ConstControl(self.power_model, element='asymmetric_sgen',
                                             element_index=self.power_model.asymmetric_sgen.index,
-                                            variable='q_a_mvar', data_source=ds_qa, 
+                                            variable='q_a_mvar', data_source=ds_qa,
                                             profile_name=self.power_model.asymmetric_sgen.index)
-        const_asgen_qb = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+        const_asgen_qb = control.ConstControl(self.power_model, element='asymmetric_sgen',
                                             element_index=self.power_model.asymmetric_sgen.index,
-                                            variable='q_b_mvar', data_source=ds_qb, 
+                                            variable='q_b_mvar', data_source=ds_qb,
                                             profile_name=self.power_model.asymmetric_sgen.index)
-        const_asgen_qc = control.ConstControl(self.power_model, element='asymmetric_sgen', 
+        const_asgen_qc = control.ConstControl(self.power_model, element='asymmetric_sgen',
                                             element_index=self.power_model.asymmetric_sgen.index,
-                                            variable='q_c_mvar', data_source=ds_qc, 
+                                            variable='q_c_mvar', data_source=ds_qc,
                                             profile_name=self.power_model.asymmetric_sgen.index)
         # Load controller
         for load_index, values in enumerate(loads):
@@ -1058,31 +1036,31 @@ class PandaPowerModel:
         ds_qa = DFData(df_qa)
         ds_qb = DFData(df_qb)
         ds_qc = DFData(df_qc)
-        const_load_pa = control.ConstControl(self.power_model, element='asymmetric_load', 
+        const_load_pa = control.ConstControl(self.power_model, element='asymmetric_load',
                                             element_index=self.power_model.asymmetric_load.index,
-                                            variable='p_a_mw', data_source=ds_pa, 
+                                            variable='p_a_mw', data_source=ds_pa,
                                             profile_name=self.power_model.asymmetric_load.index)
-        const_load_pb = control.ConstControl(self.power_model, element='asymmetric_load', 
+        const_load_pb = control.ConstControl(self.power_model, element='asymmetric_load',
                                             element_index=self.power_model.asymmetric_load.index,
-                                            variable='p_b_mw', data_source=ds_pb, 
+                                            variable='p_b_mw', data_source=ds_pb,
                                             profile_name=self.power_model.asymmetric_load.index)
-        const_load_pc = control.ConstControl(self.power_model, element='asymmetric_load', 
+        const_load_pc = control.ConstControl(self.power_model, element='asymmetric_load',
                                             element_index=self.power_model.asymmetric_load.index,
-                                            variable='p_c_mw', data_source=ds_pc, 
+                                            variable='p_c_mw', data_source=ds_pc,
                                             profile_name=self.power_model.asymmetric_load.index)
-        const_load_qa = control.ConstControl(self.power_model, element='asymmetric_load', 
+        const_load_qa = control.ConstControl(self.power_model, element='asymmetric_load',
                                             element_index=self.power_model.asymmetric_load.index,
-                                            variable='q_a_mvar', data_source=ds_qa, 
+                                            variable='q_a_mvar', data_source=ds_qa,
                                             profile_name=self.power_model.asymmetric_load.index)
-        const_load_qb = control.ConstControl(self.power_model, element='asymmetric_load', 
+        const_load_qb = control.ConstControl(self.power_model, element='asymmetric_load',
                                             element_index=self.power_model.asymmetric_load.index,
-                                            variable='q_b_mvar', data_source=ds_qb, 
+                                            variable='q_b_mvar', data_source=ds_qb,
                                             profile_name=self.power_model.asymmetric_load.index)
-        const_load_qc = control.ConstControl(self.power_model, element='asymmetric_load', 
+        const_load_qc = control.ConstControl(self.power_model, element='asymmetric_load',
                                             element_index=self.power_model.asymmetric_load.index,
-                                            variable='q_c_mvar', data_source=ds_qc, 
+                                            variable='q_c_mvar', data_source=ds_qc,
                                             profile_name=self.power_model.asymmetric_load.index)
-        
+
         # Output writer
         # Elements
         time_steps = range(n_ts)
@@ -1281,7 +1259,7 @@ class PandaPowerModel:
                 subcaption = caption + ' (min)'
                 result[subcode] = misc.get_field_dict(
                     'float', subcaption, unit, val_min, decimal=decimal)
-        
+
         def set_graphdata(result, table, data):
             model = []
             maintitle = ''
@@ -1366,20 +1344,20 @@ class PandaPowerModel:
                     subcaption = caption + ' (min)'
                     result[subcode] = misc.get_field_dict(
                         'float', subcaption, unit, val_min, decimal=decimal)
-                    
+
         def modfunc(x): return 100-x*100
 
-        def maxfunc(value_dict): 
+        def maxfunc(value_dict):
             values_arr = np.array(list(value_dict.values()))
             result = np.max(np.abs(values_arr), axis=0)
             return list(result)
-        
-        def sumfunc(value_dict): 
+
+        def sumfunc(value_dict):
             values_arr = np.array(list(value_dict.values()))
             result = np.sum(values_arr, axis=0)
             return list(result)
-        
-        def percentage_1_1_func(value_dict): 
+
+        def percentage_1_1_func(value_dict):
             values = np.array(list(value_dict.values()))
             values1 = values[0:1,:]
             values2 = values[1:2,:]
@@ -1387,8 +1365,8 @@ class PandaPowerModel:
             b = np.sum(values2, axis=0)
             result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
             return list(result)
-        
-        def percentage_3_3_func(value_dict): 
+
+        def percentage_3_3_func(value_dict):
             values = np.array(list(value_dict.values()))
             values1 = values[0:3,:]
             values2 = values[3:6,:]
@@ -1397,7 +1375,7 @@ class PandaPowerModel:
             result = np.divide(a, b, out=np.zeros_like(a), where=(np.abs(b)>1e-8))*100
             return list(result)
 
-        def pf_1_1_func(value_dict): 
+        def pf_1_1_func(value_dict):
             values = np.array(list(value_dict.values()))
             values1 = values[0,:]
             values2 = values[1,:]
@@ -1407,7 +1385,7 @@ class PandaPowerModel:
             result = np.divide(p, s, out=np.ones_like(p), where=(np.abs(s)>1e-8))
             return list(result)
 
-        def pf_3_3_func(value_dict): 
+        def pf_3_3_func(value_dict):
             values = np.array(list(value_dict.values()))
             values1 = values[0:3,:]
             values2 = values[3:6,:]
@@ -1518,10 +1496,10 @@ class PandaPowerModel:
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['avg','max'])
                         combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 5, None],
-                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'], 
+                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'],
                             sumfunc, stat_fields=['max'])
                         combine_graphdata(element_result, elementcode, ['pl_perc', element_id, '% P Loss', '%', 2, None],
-                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw', 'p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'], 
+                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw', 'p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'],
                             percentage_3_3_func, stat_fields=['max'])
                 else:
                     if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
@@ -1601,13 +1579,13 @@ class PandaPowerModel:
             else:
                 node_result = dict()
                 self.node_results[node] = node_result
-            
+
             if show_impedances:
                 z_max = str(round(res_3ph_max['rk_ohm'][bus],4)) + ' + j' + str(round(res_3ph_max['xk_ohm'][bus],4))
                 z_min = str(round(res_3ph_min['rk_ohm'][bus],4)) + ' + j' + str(round(res_3ph_min['xk_ohm'][bus],4))
                 node_result['zk_ohm_max'] = misc.get_field_dict('str', 'Z12 (sym, max)', 'Ohm', z_max)
                 node_result['zk_ohm_min'] = misc.get_field_dict('str', 'Z12 (sym, min)', 'Ohm', z_min)
-            
+
             node_result['ikss_ka_3ph_max'] = misc.get_field_dict(
                 'float', 'Isc (sym, max)', 'kA', res_3ph_max['ikss_ka'][bus], decimal=2)
             node_result['ikss_ka_3ph_min'] = misc.get_field_dict(
@@ -1636,7 +1614,7 @@ class PandaPowerModel:
                 self.node_results[node] = node_result
             vn_kv = node_result['vn_kv']['value']
             r_grid = self.network_model.gnode_res_mapping[node]
-            
+
             def find_ikss(case='max'):
                 if case == 'max':
                     res = res_1ph_max
@@ -1656,10 +1634,10 @@ class PandaPowerModel:
                 x0 = res['xk0_ohm'][bus]
                 z_eff = ((r1*2 + r0)**2 + (x1*2 + x0)**2)**0.5
                 return c*vn_kv/((3**0.5)*z_eff)*3
-            
+
             ikss_max = find_ikss('max')
             ikss_min = find_ikss('min')
-            
+
             if show_impedances:
                 z_max = str(round(res_1ph_max['rk_ohm'][bus],4)) + ' + j' + str(round(res_1ph_max['xk_ohm'][bus],4))
                 z_min = str(round(res_1ph_min['rk_ohm'][bus],4)) + ' + j' + str(round(res_1ph_min['xk_ohm'][bus],4))

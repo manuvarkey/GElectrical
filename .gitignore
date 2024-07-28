@@ -1,12 +1,14 @@
 
 *.pyc
 *.glade~
-old/*
+.flatpak-builder/*
 reference/*
 .flatpak-builder/*
 build-dir/*
 repo/*
+pvenv/*
 gelectrical.flatpak
 build/*
 dist/*
+
 

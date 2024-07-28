@@ -181,7 +181,7 @@ class GraphView():
         self.scrolled_window = Gtk.ScrolledWindow()
         self.figure = Figure(figsize=(1, 1), layout="constrained")
         self.canvas = FigureCanvas(self.figure)  # a Gtk.DrawingArea
-        self.nav_toolbar = NavigationToolbar(self.canvas, box)
+        self.nav_toolbar = NavigationToolbar(self.canvas)
         self.box.set_size_request(100,300)
         
         # Start packing

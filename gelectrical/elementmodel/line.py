@@ -1161,8 +1161,9 @@ Use this element for overhead lines where parameters of the line are not known b
             x_1 = reactance_ll(r, d_e)
             c_1 = capacitance_ll(r, d_e)
             # Zero sequence
-            r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
-            x_0 = x_0n = reactance_lg(r, d_e)
+            r_0n = x_0n = open_imp_value
+            r_0 = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+            x_0 = reactance_lg(r, d_e)
         # 3ph Lines with neutral
         elif code_laying_type in (3,4):
             if code_laying_type == 3:
@@ -1215,12 +1216,13 @@ Use this element for overhead lines where parameters of the line are not known b
             x_1 = reactance_ll(r, d_e)
             c_1 = capacitance_ll(r, d_e)
             # Zero sequence
+            r_0n = x_0n = open_imp_value
             if cpe == self.armour_list[0]:  # Armour return
-                r_0 = r_0n = r_ph + 3*r_ar
-                x_0 = x_0n = reactance0_ln_ar_3ph(r, d_e, d_en)
+                r_0 = r_ph + 3*r_ar
+                x_0 = reactance0_ln_ar_3ph(r, d_e, d_en)
             elif cpe == self.armour_list[1]:  # Ground return
-                r_0 = r_0n = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
-                x_0 = x_0n = reactance_lg(r, d_e)
+                r_0 = r_ph + 3*omega*mu_0/8*1000  # As per IEC 60909-2 eq.(3)
+                x_0 = reactance_lg(r, d_e)
 
         # Short circuit ratings
         phase_ultimate_temp = self.fields['endtemp_degree']['value']

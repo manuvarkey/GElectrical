@@ -288,24 +288,24 @@ class NetworkModel:
         tranformers_gnodes = set(list(itertools.chain(*tranformers)))
         # Evaluate r_grid
         for gnode in self.global_nodes:
-            # Finad all paths from current node to each source
+            # Find all paths from current node to each source
             r_grids = {}
             for source in self.graph_source_nodes:
                 try:
                     simple_paths = nx.all_simple_paths(self.graph, gnode, source)
+                    for simple_path in simple_paths:
+                        # Iterate over each gnode of path
+                        for path_gnode in simple_path:
+                            # If bus is found update and break
+                            if path_gnode in bus_gnodes:
+                                r_grids[path_gnode] = bus_gnodes[path_gnode]
+                                break
+                            # If transformer is found break
+                            # Current gnode excluded from tranformer list for cases when gnode is upstream node of transformer
+                            if path_gnode in (tranformers_gnodes - set([gnode])):
+                                break
                 except nx.NodeNotFound:
                     continue
-                for simple_path in simple_paths:
-                    # Iterate over each gnode of path
-                    for path_gnode in simple_path:
-                        # If bus is found update and break
-                        if path_gnode in bus_gnodes:
-                            r_grids[path_gnode] = bus_gnodes[path_gnode]
-                            break
-                        # If transformer is found break
-                        # Current gnode excluded from tranformer list for cases when gnode is upstream node of transformer
-                        if path_gnode in (tranformers_gnodes - set([gnode])):
-                            break
             # If r_grids populated, find parallel resistance of all grids
             if r_grids:
                 r_grids_array = np.array(list(r_grids.values()))
@@ -341,11 +341,11 @@ class NetworkModel:
         # Search in a path from gnode1 to gnode2
         try:
             simple_paths = nx.all_simple_paths(graph, gnode1, gnode2)
+            result = set(itertools.chain(*simple_paths))
+            return result
         except nx.NodeNotFound:
             return set()
-        result = set(itertools.chain(*simple_paths))
-        return result
-
+        
     def get_upstream_nodes(self, ekey, source_node=None, ignore_disabled=True):
         # Select graph
         if ignore_disabled:
@@ -392,25 +392,25 @@ class NetworkModel:
         for source in graph_source_nodes:
             try:
                 simple_paths = nx.all_simple_paths(graph, gnodes[0], source)
+                for path in map(nx.utils.pairwise, simple_paths):  # For all elements in path
+                    for e_pair in path:
+                        ekey_check = graph.edges[e_pair[0], e_pair[1]]['key']
+                        element_check = self.base_elements[ekey_check]
+                        # Case 1 - 1 node load elements; break as cannot be upstream
+                        if set(e_pair) & self.graph_sink_nodes:
+                            break
+                        # Case 2 - 1 node supply elements; no need to check if current element
+                        elif set(e_pair) & graph_source_nodes:
+                            if (codes is None) or (element_check.code in codes):
+                                results[ekey_check] = element_check
+                                break
+                        # Case 3 - 2+ node elements; check if same as current element
+                        elif not set(e_pair).issubset(set(gnodes)):
+                            if (codes is None) or (element_check.code in codes):
+                                results[ekey_check] = element_check
+                                break
             except nx.NodeNotFound:
                 continue
-            for path in map(nx.utils.pairwise, simple_paths):  # For all elements in path
-                for e_pair in path:
-                    ekey_check = graph.edges[e_pair[0], e_pair[1]]['key']
-                    element_check = self.base_elements[ekey_check]
-                    # Case 1 - 1 node load elements; break as cannot be upstream
-                    if set(e_pair) & self.graph_sink_nodes:
-                        break
-                    # Case 2 - 1 node supply elements; no need to check if current element
-                    elif set(e_pair) & graph_source_nodes:
-                        if (codes is None) or (element_check.code in codes):
-                            results[ekey_check] = element_check
-                            break
-                    # Case 3 - 2+ node elements; check if same as current element
-                    elif not set(e_pair).issubset(set(gnodes)):
-                        if (codes is None) or (element_check.code in codes):
-                            results[ekey_check] = element_check
-                            break
         return results
 
     def get_downstream_element(self, ekey, codes=None, ignore_disabled=True):
@@ -449,30 +449,30 @@ class NetworkModel:
             for start_gnode in start_gnodes:
                 try:
                     simple_paths = nx.all_simple_paths(graph, start_gnode, self.graph_sink_nodes)
+                    for path in map(nx.utils.pairwise, simple_paths):
+                        path_it1, path_it2 =  itertools.tee(path, 2)
+                        path_nodes = set(itertools.chain(*path_it1))
+                        # If path shares nodes with upstream skip path
+                        if not(path_nodes & upstream_nodes):
+                            for e_pair in path_it2:
+                                ekey_check = graph.edges[e_pair[0], e_pair[1]]['key']
+                                element_check = self.base_elements[ekey_check]
+                                # Case 1 - 1 node source elements; break as cannot be downstream
+                                if set(e_pair) & graph_source_nodes:
+                                    break
+                                # Case 2 - 1 node load elements; no need to check if current element
+                                elif set(e_pair) & self.graph_sink_nodes:
+                                    if (codes is None) or (element_check.code in codes):
+                                        results[ekey_check] = element_check
+                                        break
+                                # Case 3 - 2+ node elements; check if same as current element
+                                elif not set(e_pair).issubset(set(gnodes)):
+                                    # Add element and break path if <codes not specified> or <code matches>
+                                    if (codes is None) or (element_check.code in codes):
+                                        results[ekey_check] = element_check
+                                        break
                 except nx.NodeNotFound:
                     continue
-                for path in map(nx.utils.pairwise, simple_paths):
-                    path_it1, path_it2 =  itertools.tee(path, 2)
-                    path_nodes = set(itertools.chain(*path_it1))
-                    # If path shares nodes with upstream skip path
-                    if not(path_nodes & upstream_nodes):
-                        for e_pair in path_it2:
-                            ekey_check = graph.edges[e_pair[0], e_pair[1]]['key']
-                            element_check = self.base_elements[ekey_check]
-                            # Case 1 - 1 node source elements; break as cannot be downstream
-                            if set(e_pair) & graph_source_nodes:
-                                break
-                            # Case 2 - 1 node load elements; no need to check if current element
-                            elif set(e_pair) & self.graph_sink_nodes:
-                                if (codes is None) or (element_check.code in codes):
-                                    results[ekey_check] = element_check
-                                    break
-                            # Case 3 - 2+ node elements; check if same as current element
-                            elif not set(e_pair).issubset(set(gnodes)):
-                                # Add element and break path if <codes not specified> or <code matches>
-                                if (codes is None) or (element_check.code in codes):
-                                    results[ekey_check] = element_check
-                                    break
         return results
     
     def get_downstream_element_of_node(self, gnode, codes=None, ignore_disabled=True):
