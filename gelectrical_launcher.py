@@ -22,7 +22,7 @@
 #  
 #  
 
-import sys, tempfile, logging
+import sys, os, io, logging, appdirs
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -42,16 +42,15 @@ if sys.stdout is None:
 if sys.stderr is None:
     sys.stderr = NullWriter()
 
-from gelectrical import MainApp
+from gelectrical import MainApp, misc
 
 if __name__ == '__main__':
     # Setup logging
     
     # Setup Logging to temporary file
-    log_file = tempfile.NamedTemporaryFile(mode='w', prefix='electricdesign_', 
-                                               suffix='.log', delete=False)
+    log_file_temp = io.StringIO()
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        stream=log_file,level=logging.INFO)
+                        stream=log_file_temp,level=logging.INFO)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         stream=sys.stdout,level=logging.INFO)
     # Logging to stdout
@@ -69,10 +68,18 @@ if __name__ == '__main__':
     sys.excepthook = handle_exception
     
     # Initialise main window
-    
     log.info('Start Program Execution')
     app = MainApp()
     log.info('Entering Gtk main loop')
     app.run(sys.argv)
     log.info('End Program Execution')
     
+    # Copy temporary logfile to log folder
+    dirs = appdirs.AppDirs(misc.PROGRAM_NAME, misc.PROGRAM_AUTHOR, version=misc.PROGRAM_VER)
+    log_dir = misc.posix_path(dirs.user_data_dir, 'logs')
+    log_file = misc.posix_path(log_dir, misc.PROGRAM_NAME + '.log')
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    with open(log_file, 'w', encoding="utf-8") as fobj:
+        fobj.write(log_file_temp.getvalue())
+        
