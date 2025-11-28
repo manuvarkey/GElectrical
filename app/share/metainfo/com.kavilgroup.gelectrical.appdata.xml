@@ -131,4 +131,9 @@
     <release date="2022-11-21" version="0.2" />
     <release date="2022-11-16" version="0.1" />
   </releases>
+  <keywords>
+    <keyword>electrical network design</keyword>
+    <keyword>electrical distribution analysis</keyword>
+    <keyword>power system simulation</keyword>
+  </keywords>
 </component>
