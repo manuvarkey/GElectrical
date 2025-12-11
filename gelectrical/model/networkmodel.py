@@ -437,7 +437,8 @@ class NetworkModel:
             # If busbar element is selected, do not exclude upstream nodes
             elif element.code in ('element_busbar',):
                 upstream_nodes = self.get_upstream_nodes(ekey, source_node=source, ignore_disabled=ignore_disabled)
-                upstream_nodes.remove(gnodes[0])
+                if upstream_nodes:
+                    upstream_nodes.remove(gnodes[0])
                 start_gnodes = [gnodes[0]]
             # Else remove upstream element node from start paths
             else:
