@@ -398,7 +398,7 @@ class ProjectModel:
     def build_power_model(self, which='all'):
         if self.status['net_model']:
             sim_settings = self.get_project_fields(page='Simulation')
-            f_hz = sim_settings['grid_frequency']
+            f_hz = sim_settings['grid_frequency']['value']
             self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles, f_hz)
             
             if which in ('all', 'lf'):
