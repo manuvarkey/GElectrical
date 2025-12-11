@@ -1098,12 +1098,12 @@ class PandaPowerModel:
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_b_lv_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_c_lv_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_c_lv_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_l_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_l_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_l_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_l_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_l_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_a_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_a_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_b_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_b_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_c_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_c_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
                     elif elementcode == 'trafo3w':
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_hv_mw'))
@@ -1127,20 +1127,20 @@ class PandaPowerModel:
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_a_from_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_a_to_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_a_to_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_a_l_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_a_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_a_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_a_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_b_from_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_b_from_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_b_to_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_b_to_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_b_l_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_b_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_b_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_b_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_c_from_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_c_from_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_c_to_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_c_to_mvar'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'p_c_l_mw'))
-                        log_variables.append(('res_'+elementcode+'_3ph', 'q_c_l_mvar'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'pl_c_mw'))
+                        log_variables.append(('res_'+elementcode+'_3ph', 'ql_c_mvar'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'loading_percent'))
                     # elif elementcode == 'gen':
                     #     log_variables.append(('res_'+elementcode, 'p_mw'))
@@ -1457,7 +1457,7 @@ class PandaPowerModel:
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['avg','max'])
                         combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 5, None],
-                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'], sumfunc, stat_fields=['max'])
+                            ['pl_a_mw', 'pl_b_mw', 'pl_c_mw'], sumfunc, stat_fields=['max'])
                     elif elementcode == 'trafo3w':
                         set_graphdata(element_result, elementcode, [['p_hv_mw', element_id, 'P HV', 'MW', 4, None, 'p_hv_mw'],
                                                                     ['q_hv_mvar', element_id, 'Q HV', 'MVAr', 4, None, 'q_hv_mvar']])
@@ -1496,10 +1496,10 @@ class PandaPowerModel:
                         set_graph_data_stats(element_result, elementcode, [
                             ['loading_percent', element_id, '% Loading', '%', 1, None, 'loading_percent']], fields=['avg','max'])
                         combine_graphdata(element_result, elementcode, ['pl_mw', element_id, 'P Loss', 'MW', 5, None],
-                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw'],
+                            ['pl_a_mw', 'pl_b_mw', 'pl_c_mw'],
                             sumfunc, stat_fields=['max'])
                         combine_graphdata(element_result, elementcode, ['pl_perc', element_id, '% P Loss', '%', 2, None],
-                            ['p_a_l_mw', 'p_b_l_mw', 'p_c_l_mw', 'p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'],
+                            ['pl_a_mw', 'pl_b_mw', 'pl_c_mw', 'p_a_from_mw', 'p_b_from_mw', 'p_c_from_mw'],
                             percentage_3_3_func, stat_fields=['max'])
                 else:
                     if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
