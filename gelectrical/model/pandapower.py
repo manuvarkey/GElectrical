@@ -721,7 +721,7 @@ class PandaPowerModel:
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
                             'float', 'P loss', 'MW',
-                            sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 5))
+                            sum_func(result['pl_a_mw'], result['pl_b_mw'], result['pl_c_mw'], 5))
                     elif elementcode == 'trafo3w':
                         element_result['p_hv_mw'] = misc.get_field_dict(
                             'float', 'P HV', 'MW', R(result['p_hv_mw'], 4))
@@ -757,9 +757,9 @@ class PandaPowerModel:
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
                         element_result['pl_mw_max'] = misc.get_field_dict(
                             'float', 'P loss', 'MW',
-                            sum_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'], 5))
+                            sum_func(result['pl_a_mw'], result['pl_b_mw'], result['pl_c_mw'], 5))
                         element_result['pl_perc_max'] = misc.get_field_dict('float', '% P Loss', '%',
-                            percentage_3_3_func(result['p_a_l_mw'], result['p_b_l_mw'], result['p_c_l_mw'],
+                            percentage_3_3_func(result['pl_a_mw'], result['pl_b_mw'], result['pl_c_mw'],
                                                 result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 2))
                 else:
                     if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
