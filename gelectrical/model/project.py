@@ -1013,7 +1013,7 @@ class ProjectModel:
             fp.write(html_out)
         with open(filename_css, 'w') as fp:
             fp.write(css_out)
-        HTML(string=html_out).write_pdf(filename_pdf, stylesheets=[css_obj])
+        HTML(string=html_out, base_url=foldername).write_pdf(filename_pdf, stylesheets=[css_obj])
         
         if call_at_exit:
             call_at_exit()
