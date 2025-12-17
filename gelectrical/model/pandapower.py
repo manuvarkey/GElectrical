@@ -359,7 +359,7 @@ class PandaPowerModel:
                         model = [['element', elementids]]
                         result_parsed.append([error(message), model])
 
-                elif code == 'impedance_values_close_to_zero':
+                elif code == 'implausible_impedance_values':
                     ret_codes.append(misc.WARNING)
                     for element_result in result:
                         for element_error_code, elementids_power in element_result.items():
@@ -442,6 +442,76 @@ class PandaPowerModel:
                         model = [['element', elementids]]
                         result_parsed.append([warning(message), model])
 
+                elif code == 'overload':
+                    ret_codes.append(misc.WARNING)
+                    if result.get('load'):
+                        message = 'Overload detected: Power flow converges with load scaled down.'
+                        model = [['element', []]]  # Placeholder for elements if applicable
+                        result_parsed.append([warning(message), model])
+                    if result.get('generation'):
+                        message = 'Overload detected: Power flow converges with generation scaled down.'
+                        model = [['element', []]]  # Placeholder for elements if applicable
+                        result_parsed.append([warning(message), model])
+
+                elif code == 'wrong_line_capacitance':
+                    ret_codes.append(misc.WARNING)
+                    message = 'Line capacitance too high: Power flow converges with capacitance scaled down.'
+                    model = [['element', []]]  # Placeholder for elements if applicable
+                    result_parsed.append([warning(message), model])
+
+                elif code == 'wrong_switch_configuration':
+                    ret_codes.append(misc.WARNING)
+                    if result:
+                        message = 'Switch configuration issue: Power flow converges with all switches closed.'
+                        model = [['element', []]]  # Placeholder for elements if applicable
+                        result_parsed.append([warning(message), model])
+
+                elif code == 'test_subnet_from_zone':
+                    ret_codes.append(misc.WARNING)
+                    problematic_zones = ', '.join(result.keys())
+                    message = f'Loadflow problems detected in zones: {problematic_zones}'
+                    model = [['node', list(result.keys())]]  # Assuming zones correspond to nodes
+                    result_parsed.append([warning(message), model])
+
+                elif code == 'test_continuous_bus_indices':
+                    ret_codes.append(misc.WARNING)
+                    message = 'Continuous bus index required for power flow convergence.'
+                    model = [['node', []]]  # Placeholder for nodes if applicable
+                    result_parsed.append([warning(message), model])
+
+                elif code == 'optimistic_powerflow':
+                    ret_codes.append(misc.WARNING)
+                    if result.get('load_sgen_zero'):
+                        message = 'Optimistic power flow: Converges with load and generation set to zero.'
+                        model = [['element', []]]  # Placeholder for elements if applicable
+                        result_parsed.append([warning(message), model])
+                    elif result.get('trafo_pfe_kw_zero'):
+                        message = 'Optimistic power flow: Converges with transformer iron losses set to zero.'
+                        model = [['element', []]]  # Placeholder for elements if applicable
+                        result_parsed.append([warning(message), model])
+                    elif result.get('c_nf_per_km_zero'):
+                        message = 'Optimistic power flow: Converges with line susceptance set to zero.'
+                        model = [['element', []]]  # Placeholder for elements if applicable
+                        result_parsed.append([warning(message), model])
+
+                elif code == 'deviation_from_std_type':
+                    ret_codes.append(misc.WARNING)
+                    for element_type, deviations in result.items():
+                        for element_id, details in deviations.items():
+                            if details.get('std_type_in_lib'):
+                                message = f'{element_type} {element_id}: Parameter {details["param"]} deviates from standard type.'
+                                result_parsed.append([warning(message), []])
+                            else:
+                                message = f'{element_type} {element_id}: Invalid or missing standard type.'
+                                result_parsed.append([warning(message), []])
+
+                elif code == 'numba_comparison':
+                    ret_codes.append(misc.WARNING)
+                    for element_type, deviations in result.items():
+                        for res_type, diff in deviations.items():
+                            message = f'{element_type}.{res_type}: Absolute deviations detected: {diff}'
+                            result_parsed.append([warning(message), []])
+                
                 else:
                     ret_codes.append(misc.WARNING)
                     result_parsed.append(
