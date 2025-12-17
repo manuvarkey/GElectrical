@@ -47,16 +47,19 @@ def get_message_data_struct(network, results_dict_pass, results_dict_fail):
                     ]
             }
     """
-    def get_message(results_dict):
+    def get_message(results_dict, warning=False):
         message_list = []
         for caption, result_eids in results_dict.items():
             ref_eid = ', '.join([network.base_elements[tuple(eid)].fields['ref']['value'] for eid in result_eids])
             message = caption + '\nElements: ' + ref_eid
             element_list = [['element', tuple(result_eids)]]
-            message_list.append((message, element_list))
+            if warning:
+                message_list.append(({'message': message, 'type': 'warning'}, element_list))
+            else:
+                message_list.append((message, element_list))
         return message_list
     message_list_pass = get_message(results_dict_pass)
-    message_list_fail = get_message(results_dict_fail)
+    message_list_fail = get_message(results_dict_fail, warning=True)
     return {'Electrical Rules Check - Failed': message_list_fail,
             'Electrical Rules Check - Passed': message_list_pass}
 
