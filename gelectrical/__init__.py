@@ -674,16 +674,16 @@ class MainWindow():
             log.warning('MainWindow - on_run_rulescheck - Networkmodel not build - aborted')
             return
         if not self.program_state['analysis_run_timeseries']:
-            self.display_status(misc.WARNING, "Time series simulation not run. Cannot run rules check.")
-            log.warning('MainWindow - on_run_rulescheck - Time series simulation not run - aborted')
+            self.display_status(misc.WARNING, "Powerflow not run. Cannot run rules check.")
+            log.warning('MainWindow - on_run_rulescheck - Powerflow not run - aborted')
             return
         if not self.program_state['analysis_run_sc_sym']:
-            self.display_status(misc.WARNING, "Symmetric short circuit simulation not run. Cannot run rules check.")
-            log.warning('MainWindow - on_run_rulescheck - Symmetric short circuit simulation not run - aborted')
+            self.display_status(misc.WARNING, "Symmetric short circuit calculation not run. Cannot run rules check.")
+            log.warning('MainWindow - on_run_rulescheck - Symmetric short circuit calculation not run - aborted')
             return
         if not self.program_state['analysis_run_sc_lg']:
-            self.display_status(misc.WARNING, "SLG short circuit simulation not run. Cannot run rules check.")
-            log.warning('MainWindow - on_run_rulescheck - SLG short circuit simulation not run - aborted')
+            self.display_status(misc.WARNING, "SLG short circuit calculation not run. Cannot run rules check.")
+            log.warning('MainWindow - on_run_rulescheck - SLG short circuit calculation not run - aborted')
             return
         self.project.run_rulescheck()
         self.properties_notebook.set_current_page(2)  # Switch to messages tab

@@ -33,7 +33,7 @@ log = logging.getLogger(__name__)
 
 
 class FieldView:
-    """Class for drawing onto Gtk.DrawingArea using cairo"""
+    """Class for generating field view for editing structured data fields"""
     
     def __init__(self, window, listbox, enable_code, inactivate_code, caption_width=misc.FIELD_CAPTION_WIDTH, show_graphs=True):
         self.window = window
