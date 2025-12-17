@@ -107,7 +107,7 @@ class MessageView:
                         data_widget.set_use_markup(True)
                         data_widget.set_markup(message_processed)
                 else:
-                    message_processed = misc.clean_markup(message_text)
+                    message_processed = message_text
                     data_widget.set_text(message_processed)
                 if self.select_callback:
                     row.set_activatable(True)
