@@ -238,6 +238,71 @@ class MainWindow():
         log.info('MainWindow - on_exit - Exiting')
         return False
 
+    def on_import_pandapower_json(self, button):
+        """Load an external pandapower JSON network for read-only inspection."""
+        open_dialog = Gtk.FileChooserDialog.new(
+            "Import Pandapower JSON network", self.window,
+            Gtk.FileChooserAction.OPEN,
+            "Cancel", Gtk.ResponseType.CANCEL,
+            "Import", Gtk.ResponseType.ACCEPT
+        )
+        open_dialog.set_local_only(True)
+        open_dialog.set_modal(True)
+        json_filter = Gtk.FileFilter.new()
+        json_filter.set_name("Pandapower JSON network (*.json)")
+        json_filter.add_pattern("*.json")
+        open_dialog.add_filter(json_filter)
+
+        response_id = open_dialog.run()
+        filename = open_dialog.get_filename() if response_id == Gtk.ResponseType.ACCEPT else None
+        open_dialog.destroy()
+
+        if not filename:
+            log.info("MainWindow - on_import_pandapower_json - Import cancelled")
+            return
+
+        try:
+            from .model.pandapower_import import load_network_json, get_network_summary
+
+            network = load_network_json(filename)
+            summary = get_network_summary(network)
+            lines = ["Imported file: " + os.path.basename(filename), ""]
+            if summary:
+                lines.extend("{}: {}".format(label, count) for label, count in summary)
+            else:
+                lines.append("The network contains no populated standard element tables.")
+            lines.extend([
+                "",
+                "This is a read-only Pandapower network preview.",
+                "It is not converted into an editable GElectrical schematic or .gepro project."
+            ])
+            dialog = Gtk.MessageDialog(
+                transient_for=self.window,
+                modal=True,
+                destroy_with_parent=True,
+                message_type=Gtk.MessageType.INFO,
+                buttons=Gtk.ButtonsType.CLOSE,
+                text="Pandapower network imported"
+            )
+            dialog.set_title("Pandapower JSON import")
+            dialog.set_secondary_text("\n".join(lines))
+            dialog.run()
+            dialog.destroy()
+            log.info("MainWindow - on_import_pandapower_json - Imported " + filename)
+        except Exception as exc:
+            log.exception("MainWindow - on_import_pandapower_json - Import failed")
+            dialog = Gtk.MessageDialog(
+                transient_for=self.window,
+                modal=True,
+                destroy_with_parent=True,
+                message_type=Gtk.MessageType.ERROR,
+                buttons=Gtk.ButtonsType.CLOSE,
+                text="Could not import Pandapower JSON network"
+            )
+            dialog.set_secondary_text(str(exc))
+            dialog.run()
+            dialog.destroy()
+
     def on_open(self, button):
         """Open project selected by  the user"""
         # Create a filechooserdialog to open:

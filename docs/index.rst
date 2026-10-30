@@ -11,6 +11,7 @@ Welcome to GElectrical's documentation!
    installation.md
    getting_started.md
    features.md
+   pandapower-json-import.md
    how_to.md
    troubleshooting.md
    faq.md
