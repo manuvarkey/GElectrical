@@ -24,16 +24,30 @@ sys.path.insert(0, ROOT)
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+gi.require_version('GdkPixbuf', '2.0')
+from gi.repository import Gtk, Gio, GdkPixbuf
 
 from gelectrical import MainWindow, misc
+from gelectrical.view.analysis import AnalysisSettingsDialog
 
 log = logging.getLogger('smoke_test')
+
+
+def check_environment():
+    """Fail early on GTK runtime gaps that otherwise abort the process."""
+    if Gio.SettingsSchemaSource.get_default() is None or \
+            Gio.SettingsSchemaSource.get_default().lookup('org.gtk.Settings.FileChooser', True) is None:
+        raise RuntimeError('GSettings schemas not compiled (GtkFileChooser would abort)')
+    if 'svg' not in [f.get_name() for f in GdkPixbuf.Pixbuf.get_formats()]:
+        raise RuntimeError('gdk-pixbuf svg loader not registered')
 
 
 def run_project(filename, out_root):
     window = MainWindow()
     try:
+        # Construct (without running) dialogs that use GtkFileChooser
+        sim = window.project.get_project_fields(page='Simulation')
+        AnalysisSettingsDialog(window.window, sim, out_root).dialog.destroy()
         if not window.open_project(filename):
             raise RuntimeError('open_project returned False')
         project = window.project
@@ -69,6 +83,7 @@ def run_project(filename, out_root):
 def main(argv):
     logging.basicConfig(level=logging.WARNING,
                         format='%(levelname)s - %(name)s - %(message)s')
+    check_environment()
     keep = '--keep' in argv
     files = [a for a in argv if not a.startswith('--')]
     if not files:
