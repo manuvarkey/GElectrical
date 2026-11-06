@@ -568,7 +568,7 @@ class NetworkModel:
             SCRIPT(src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis.min.js"),
             SCRIPT(Raw(script))
             )
-        with open(filename, 'w') as fp:
+        with open(filename, 'w', encoding='utf-8') as fp:
             fp.write(page.html)
 
     # Private functions

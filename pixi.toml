@@ -1,0 +1,46 @@
+# Development environment for GElectrical (conda-forge via pixi).
+# conda-forge provides prebuilt GTK3/PyGObject and all scientific deps on
+# Windows, Linux and macOS, avoiding the gvsbuild/MSYS2 build steps.
+#
+#   pixi install        # create .pixi/envs/default
+#   pixi run start      # launch the application
+#   pixi run smoke      # headless import + pandapower sanity check
+
+[workspace]
+name = "gelectrical"
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[dependencies]
+python = "3.12.*"
+# GUI stack
+gtk3 = ">=3.24"
+pygobject = "*"
+pycairo = "*"
+adwaita-icon-theme = "*"
+librsvg = "*"  # gdk-pixbuf SVG loader for the element icons
+# Analysis
+pandapower = ">=3.2"
+numpy = "*"
+numba = "*"
+scipy = "*"
+pandas = "*"
+networkx = "*"
+shapely = "*"
+matplotlib = "*"
+# Reporting / IO
+weasyprint = "*"
+jinja2 = "*"
+mako = "*"
+openpyxl = "*"
+appdirs = "*"
+
+[activation]
+scripts = ["tools/pixi_activate.sh"]
+
+[target.win-64.activation]
+scripts = ["tools/pixi_activate.bat"]
+
+[tasks]
+start = "python gelectrical_launcher.py"
+smoke = "python tools/smoke_test.py"

@@ -223,7 +223,7 @@ class FieldView:
             if response_id == Gtk.ResponseType.ACCEPT:
                 try:
                     filename = open_dialog.get_filename()
-                    with open(filename, 'r') as fp:
+                    with open(filename, 'r', encoding='utf-8') as fp:
                         data_struct = json.load(fp)
                     old_data = copy.deepcopy(self.fields[code])
                     # Rough validation
