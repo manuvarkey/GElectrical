@@ -668,7 +668,12 @@ class PandaPowerModel:
                             # Add phantom power injection element to take up balance power
                             sgen_index = pp.create_sgen(self.power_model, bus_index,
                                 p_mw=p_mw, q_mvar=q_mvar)
-            pp.runpp(self.power_model, run_control=True, calculate_voltage_angles = True)
+            # Pandapower only uses generator slack weights when distributed slack is enabled.
+            # Preserve the existing single external-grid slack behaviour unless a generator
+            # is explicitly configured as an additional slack source.
+            distributed_slack = bool(self.power_model.gen['slack'].any())
+            pp.runpp(self.power_model, run_control=True, calculate_voltage_angles=True,
+                     distributed_slack=distributed_slack)
 
         # Data modification functions
 

@@ -37,6 +37,10 @@ The interface is divided into three sections which are indicated by the numbered
 
 This module allows various analysis functions to be run for simulating the behaviour of the electrical network at various conditions. Results of the analysis will be displayed in the results tab of the right pane for each element. Results may also be exported to a PDF report. The various options available are listed below.
 
+### Generator slack participation
+
+The `Generator` element provides a `Slack ?` option and a `Slack Weight` contribution factor. Enable the option for generators that should participate in active-power balancing. When at least one generator is marked as slack, GElectrical enables Pandapower's distributed-slack calculation for the power-flow run. The contribution of each participating generator is proportional to its positive `Slack Weight`; the external grid also participates according to its Pandapower slack weight. Leave all generator slack options disabled to retain the usual external-grid slack calculation. This setting applies to the balanced power-flow calculation.
+
 ```{list-table}
 :header-rows: 1
 :widths: 10 30 60
