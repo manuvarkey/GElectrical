@@ -522,6 +522,51 @@ class PandaPowerModel:
         log.info('PandaPowerModel - run_diagnostics - diagnostic run')
         return self.diagnostic_results, ret_code
 
+    def add_gen_equivalents_3ph(self):
+        """Replace generators by balanced static generators for asymmetric power flow
+
+        pandapower runpp_3ph does not support 'gen' elements (no res_gen_3ph
+        table is created and gen result extraction fails). Each in service
+        generator is modelled for the 3ph run as a balanced sgen with P and Q
+        taken from a balanced (symmetric) pre-run, so that the voltage set
+        point is held for the balanced operating point. Mapping is stored in
+        self.gen_equivalents_3ph as {gen_index: sgen_index}.
+        """
+        net = self.power_model
+        self.gen_equivalents_3ph = dict()
+        gens = net.gen[net.gen.in_service.astype(bool)]
+        if gens.empty:
+            return
+        try:
+            pp.runpp(net)
+            p_mw = net.res_gen.p_mw
+            q_mvar = net.res_gen.q_mvar
+        except Exception as e:
+            log.warning('PandaPowerModel - add_gen_equivalents_3ph - balanced pre-run failed, ' +
+                        'generators modelled at P set point and unity PF: ' + str(e))
+            p_mw = net.gen.p_mw * net.gen.scaling
+            q_mvar = p_mw * 0
+        for gen_index, values in gens.iterrows():
+            sgen_index = pp.create_sgen(net, bus=values['bus'], p_mw=p_mw[gen_index],
+                                        q_mvar=q_mvar[gen_index], name=values['name'])
+            self.gen_equivalents_3ph[gen_index] = sgen_index
+        net.gen.loc[gens.index, 'in_service'] = False
+        log.info('PandaPowerModel - add_gen_equivalents_3ph - {} generator(s) modelled as balanced sgen'.format(
+            len(gens)))
+
+    def remove_gen_equivalents_3ph(self):
+        """Restore generators replaced by add_gen_equivalents_3ph"""
+        net = self.power_model
+        equivalents = getattr(self, 'gen_equivalents_3ph', dict())
+        if equivalents:
+            sgen_indices = list(equivalents.values())
+            net.sgen.drop(index=sgen_indices, inplace=True)
+            for table in ('res_sgen', 'res_sgen_3ph'):
+                if table in net:
+                    net[table].drop(index=sgen_indices, inplace=True, errors='ignore')
+            net.gen.loc[list(equivalents.keys()), 'in_service'] = True
+        self.gen_equivalents_3ph = dict()
+
     def run_powerflow(self, pf_type, runpp_3ph):
         """Run symmetric power flow"""
 
@@ -606,6 +651,7 @@ class PandaPowerModel:
                                 p_a_mw=p_a_mw, p_b_mw=p_b_mw, p_c_mw=p_c_mw,
                                 q_a_mvar=q_a_mvar, q_b_mvar=q_b_mvar, q_c_mvar=q_c_mvar)
 
+            self.add_gen_equivalents_3ph()
             pp.runpp_3ph(self.power_model, run_control=True)
         else:
             # Add transformer controller for OLTC simulation
@@ -751,17 +797,30 @@ class PandaPowerModel:
                 (elementcode, element_id) = self.power_elements[e_code]
 
                 # Get result table
+                result = None
                 if elementcode != 'switch':  # Remove elements without results
-                    if runpp_3ph:
-                        result = getattr(self.power_model, 'res_' +
-                                        elementcode + '_3ph').loc[element_id]
+                    if runpp_3ph and elementcode == 'gen':
+                        # Generators are solved as balanced sgen equivalents
+                        if element_id in self.gen_equivalents_3ph:
+                            result = self.power_model.res_sgen_3ph.loc[
+                                self.gen_equivalents_3ph[element_id]]
+                    elif runpp_3ph:
+                        # Not every element type has 3ph results in pandapower
+                        res_table = 'res_' + elementcode + '_3ph'
+                        if res_table in self.power_model and element_id in self.power_model[res_table].index:
+                            result = self.power_model[res_table].loc[element_id]
+                        else:
+                            log.warning('PandaPowerModel - run_powerflow - no 3ph results for ' +
+                                        str(elementcode) + ' ' + str(element_id))
                     else:
                         result = getattr(self.power_model, 'res_' +
                                         elementcode).loc[element_id]
 
                 # Populate element results
-                if runpp_3ph:
-                    if elementcode in ['load', 'sgen', 'storage']:
+                if result is None:
+                    pass
+                elif runpp_3ph:
+                    if elementcode in ['load', 'sgen', 'storage', 'gen']:
                         element_result['p_mw'] = misc.get_field_dict(
                             'float', 'P', 'MW', R(result['p_mw'],4))
                         element_result['q_mvar'] = misc.get_field_dict(
@@ -905,6 +964,8 @@ class PandaPowerModel:
                             delv_func(result['vm_from_pu'], result['vm_to_pu'],
                                       result['va_from_degree'], result['va_to_degree'], 2))
 
+        if runpp_3ph:
+            self.remove_gen_equivalents_3ph()
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
     def run_powerflow_timeseries(self, runpp_3ph=False):
@@ -1131,6 +1192,11 @@ class PandaPowerModel:
                                             variable='q_c_mvar', data_source=ds_qc,
                                             profile_name=self.power_model.asymmetric_load.index)
 
+        # Generators are not supported by runpp_3ph; add equivalents after the
+        # sgen controllers are set up so that they keep constant P and Q
+        if runpp_3ph:
+            self.add_gen_equivalents_3ph()
+
         # Output writer
         # Elements
         time_steps = range(n_ts)
@@ -1148,6 +1214,10 @@ class PandaPowerModel:
                     if elementcode in ['load', 'sgen', 'storage']:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'q_mvar'))
+                    elif elementcode == 'gen':
+                        if element_id in self.gen_equivalents_3ph:
+                            log_variables.append(('res_sgen_3ph', 'p_mw'))
+                            log_variables.append(('res_sgen_3ph', 'q_mvar'))
                     elif elementcode in ['ext_grid', 'asymmetric_load', 'asymmetric_sgen']:
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_a_mw'))
                         log_variables.append(('res_'+elementcode+'_3ph', 'p_b_mw'))
@@ -1506,6 +1576,14 @@ class PandaPowerModel:
                                                                     ['q_mvar', element_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
                         combine_graphdata(element_result, elementcode, ['pf', element_id, 'PF', '', 2, None],
                             ['p_mw', 'q_mvar'], pf_1_1_func)
+                    elif elementcode == 'gen':
+                        # Results from the balanced sgen equivalent
+                        if element_id in self.gen_equivalents_3ph:
+                            sgen_id = self.gen_equivalents_3ph[element_id]
+                            set_graphdata(element_result, 'sgen', [['p_mw', sgen_id, 'P', 'MW', 4, None, 'p_mw'],
+                                                                   ['q_mvar', sgen_id, 'Q', 'MVAr', 4, None, 'q_mvar']])
+                            combine_graphdata(element_result, 'sgen', ['pf', sgen_id, 'PF', '', 2, None],
+                                ['p_mw', 'q_mvar'], pf_1_1_func)
                     elif elementcode in ['ext_grid', 'asymmetric_load', 'asymmetric_sgen']:
                         combine_graphdata(element_result, elementcode, ['p_mw', element_id, 'P', 'MW', 4, None],
                             ['p_a_mw', 'p_b_mw', 'p_c_mw'], sumfunc, stat_fields=['avg', 'max'])
@@ -1628,6 +1706,8 @@ class PandaPowerModel:
                         combine_graphdata(element_result, elementcode, ['pl_perc', element_id, '% P Loss', '%', 2, None],
                             ['pl_mw', 'p_from_mw'], percentage_1_1_func, stat_fields=['max'])
 
+        if runpp_3ph:
+            self.remove_gen_equivalents_3ph()
         log.info('PandaPowerModel - run_powerflow - calculation run')
 
     def run_sym_sccalc(self, lv_tol_percent=6, r_fault_ohm=0.0, x_fault_ohm=0.0, show_impedances=False):
