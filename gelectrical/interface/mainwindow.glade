@@ -269,6 +269,21 @@ along with .  If not, see <http://www.gnu.org/licenses/>.
             <property name="position">2</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkButton" id="button_import_pandapower_json">
+            <property name="label" translatable="yes">Import Pandapower JSON...</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <signal name="clicked" handler="on_import_pandapower_json" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">3</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
