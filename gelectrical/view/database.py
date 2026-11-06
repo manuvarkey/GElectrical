@@ -114,7 +114,7 @@ class DatabaseView:
             self.button.props.sensitive = True
             
             # Load Data
-            with open(data_path) as csv_file:
+            with open(data_path, encoding='utf-8') as csv_file:
                 csv_reader = csv.DictReader(csv_file, delimiter=';')
                 for row in csv_reader:
                     item_name = row['item_name']
@@ -184,7 +184,7 @@ class DatabaseView:
                                 try:
                                     dirname = misc.dir_from_path(self.data_path)
                                     valuepath = misc.posix_path(dirname, value)
-                                    with open(valuepath, 'r') as fileobj:
+                                    with open(valuepath, 'r', encoding='utf-8') as fileobj:
                                         data = json.load(fileobj)
                                         validated = data
                                 except:
@@ -196,7 +196,7 @@ class DatabaseView:
                                         (subdir, data_filename, params_filename) = eval(value)
                                         dirname = misc.dir_from_path(self.data_path)
                                         valuepath_params = misc.posix_path(dirname, subdir, params_filename)
-                                        with open(valuepath_params, 'r') as fp:
+                                        with open(valuepath_params, 'r', encoding='utf-8') as fp:
                                             data_struct = json.load(fp)
                                         validated = data_struct
                                         if data_filename:

@@ -482,7 +482,7 @@ class MainWindow():
         fields = program_settings_dialog.run()
         if fields:
             self.program_settings.update(fields)
-            with open(self.settings_filename, 'w') as fp:
+            with open(self.settings_filename, 'w', encoding='utf-8') as fp:
                 json.dump(misc.get_fields_dict_trunc(self.program_settings), fp, indent = 4)
                 self.update_program_settings()
                 self.check_for_bad_font_settings()
@@ -928,13 +928,13 @@ class MainWindow():
         # Update program settings from settings file
         try:
             if os.path.exists(self.settings_filename):
-                with open(self.settings_filename, 'r') as fp:
+                with open(self.settings_filename, 'r', encoding='utf-8') as fp:
                     program_settings = json.load(fp)
                     self.program_settings = misc.update_fields_dict(default_program_settings, program_settings)
                     log.info('Program settings opened at ' + str(self.settings_filename))
             else:
                 self.program_settings = default_program_settings
-                with open(self.settings_filename, 'w') as fp:
+                with open(self.settings_filename, 'w', encoding='utf-8') as fp:
                     json.dump(misc.get_fields_dict_trunc(self.program_settings), fp, indent = 4)
                 log.info('Program settings saved at ' + str(self.settings_filename))
         except:

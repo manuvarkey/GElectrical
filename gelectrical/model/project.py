@@ -1009,9 +1009,9 @@ class ProjectModel:
         filename_pdf = misc.posix_path(foldername, 'report.pdf')
         filename_html = misc.posix_path(foldername, 'report.html')
         filename_css = misc.posix_path(foldername, 'report.css')
-        with open(filename_html, 'w') as fp:
+        with open(filename_html, 'w', encoding='utf-8') as fp:
             fp.write(html_out)
-        with open(filename_css, 'w') as fp:
+        with open(filename_css, 'w', encoding='utf-8') as fp:
             fp.write(css_out)
         HTML(string=html_out, base_url=foldername).write_pdf(filename_pdf, stylesheets=[css_obj])
         
