@@ -1,0 +1,16 @@
+# Prettier formats only the npm workspaces and their tooling.
+*
+!package.json
+!.prettierrc.json
+!tools/
+!tools/*.mjs
+!modern/
+!modern/**
+!packages/
+!packages/**
+**/node_modules/
+**/dist/
+**/storybook-static/
+**/coverage/
+**/*.md
+package-lock.json

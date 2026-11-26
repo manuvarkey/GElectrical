@@ -3,6 +3,7 @@ name: quality
 # Milestone M1: smoke test and regression baseline on the legacy GTK code.
 # The legacy MainWindow needs a display: xvfb-run on Linux; the Windows
 # runner has an interactive desktop session.
+# Milestone M6: npm workspaces (modern/, packages/engineering-ui) checks.
 
 on:
   pull_request:
@@ -67,3 +68,45 @@ jobs:
 
       - name: Smoke test
         run: pixi run smoke
+
+  frontend:
+    name: Frontend (npm workspaces)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium (Storybook story tests)
+        run: npx playwright install --with-deps chromium-headless-shell
+
+      - name: Formatting
+        run: npm run format:check
+
+      - name: Dependency boundary
+        run: npm run check:boundaries
+
+      - name: Licences
+        run: npm run check:licences
+
+      - name: Tool tests
+        run: npm run test:tools
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Vitest (unit, Storybook stories with a11y)
+        run: npm test
+
+      - name: Build EngineeringUI and app
+        run: npm run build
+
+      - name: Build Storybook
+        run: npm run build-storybook

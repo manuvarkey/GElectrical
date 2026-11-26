@@ -1,0 +1,33 @@
+{
+  "name": "gelectrical-workspace",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "modern"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "npm run dev -w gelectrical-modern",
+    "build": "npm run build -w @kavilgroup/engineering-ui && npm run build -w gelectrical-modern",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces",
+    "storybook": "npm run storybook -w @kavilgroup/engineering-ui",
+    "build-storybook": "npm run build-storybook -w @kavilgroup/engineering-ui",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:boundaries": "node tools/check_boundaries.mjs",
+    "check:licences": "node tools/check_licences.mjs",
+    "test:tools": "node --test \"tools/*.test.mjs\"",
+    "check": "npm run format:check && npm run check:boundaries && npm run check:licences && npm run test:tools && npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "prettier": "3.10.1"
+  },
+  "overrides": {
+    "playwright": "1.65.0"
+  }
+}

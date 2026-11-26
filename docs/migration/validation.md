@@ -225,3 +225,98 @@ circuit does not depend on the power-flow mode).
 - `xvfb-run -a pixi run smoke`: 3/3 passed (run before the re-baseline;
   engine code unchanged since).
 - **Not run:** Windows/macOS smoke, hosted CI (no push).
+
+## 2026-11-26 — M6 frontend foundation (branch `feat/m6-frontend-foundation`)
+
+Status: **implemented with mock data; acceptance criteria met locally**
+(owner review pending; hosted CI not run).
+
+- npm workspaces at the root (`modern`, `packages/*`), Node 24.21.0, npm
+  11.19.0. Exact pins (`.npmrc` `save-exact=true`): Vue 3.5.46, Quasar 2.36.0,
+  `@quasar/vite-plugin` 2.0.2, Vite 8.4.0, `@vitejs/plugin-vue` 6.0.11,
+  TypeScript 6.0.3, vue-tsc 3.3.14, Vitest 5.1.2 (`@vitest/browser`,
+  `@vitest/browser-playwright`), Playwright 1.65.0 (root `overrides`),
+  Storybook 10.6.9 (`@storybook/vue3-vite`, `addon-a11y`, `addon-vitest`,
+  `addon-docs`), `@vue/test-utils` 2.6.0, happy-dom 21.0.4, Prettier 3.10.1,
+  `@types/node` 24.19.4. TypeScript 7.0.2 is newer but `vue-tsc` needs the
+  JavaScript compiler API ([ADR 0017](../decisions/0017-frontend-workspace-build.md)).
+- `packages/engineering-ui` (`@kavilgroup/engineering-ui` 0.1.0, MIT, private):
+  tokens and Quasar bridge (light/dark/system via `data-theme` and Quasar
+  `Dark`), `EuiIcon` (64 glyphs including `blank`, 10 electrical), `EuiRibbon`,
+  `EuiDocumentRail`, `EuiWorkspace` (keyboard splitters), `EuiStatusBar`,
+  `EuiNotifications` (+ `createNotificationQueue`), `EuiDialog` (QDialog),
+  `EuiNumberInput` (QInput, unit, display precision, raw editing, host
+  errors), `EuiPropertyInspector` (FieldSchema shape of backend §8: `int`,
+  `float`, `str`, `multiline_str`, `bool`, `graph`/`data`/`font`, `heading`,
+  `selection_list`, `enabled`, `editable`, mixed values, filter).
+- GEstimator code adapted at `e4e4fb295899feda5253ba216613c70c1f256d4e`
+  (AppIcon, theme.css, appearance.ts, RibbonToolbar, DocumentRail,
+  documents.ts helpers, statusNotice.ts, PersistentDialog, ribbon/rail rules of
+  style.css), PrimeVue replaced by Quasar or plain elements; MIT header and
+  provenance line in each file, rows in the package README. The adapted files
+  were unmodified in the GEstimator working tree at that commit.
+- `modern/`: Vite + Vue 3 + strict TypeScript + Quasar via
+  `@quasar/vite-plugin`; shell (ribbon, rail, palette, schematic placeholder,
+  inspector, messages, status bar, notifications, settings dialog) with mock
+  data only; no backend calls.
+- Tooling: Prettier (root config, workspaces only), `vue-tsc`,
+  `tools/check_boundaries.mjs` (+ tests), `tools/check_licences.mjs` (+ tests),
+  CI job `frontend` in `quality.yml`. ESLint (optional in the plan) not added.
+
+### Checks run (local, Linux)
+
+- `npm run check`: Prettier clean; boundary check passed (63 files);
+  licence check passed; tool tests 5/5; `vue-tsc` clean in both workspaces;
+  EngineeringUI Vitest **121 passed** (unit project 60 tests in 12 files;
+  storybook project 61 stories in 10 files, Chromium headless through
+  Playwright); `modern` Vitest 3 passed; library build and app build passed.
+- `npm run build-storybook`: passed (61 stories, 10 docs pages).
+- Accessibility: `parameters.a11y.test = "error"` fails a story on **any**
+  axe violation (stricter than "no serious violations"); all 61 stories pass,
+  including the Dark variants (a play function asserts the dark tokens are
+  applied before axe runs). Issues found and fixed during M6: rail tiles
+  (`label-content-name-mismatch`), notification `role="alert"` on `li`
+  (`list`, `aria-allowed-role`). axe 4.14 on the running shell: 0 violations
+  in light and dark after moving splitters into panel landmarks and adding a
+  header landmark and `h1`.
+- Keyboard (play functions): ribbon tabs (arrows, Home/End, automatic
+  activation), ribbon toolbar (roving focus, disabled commands skipped,
+  Enter), document rail (arrows, Enter, Delete, End, add tile with Space),
+  workspace splitters (arrows, Shift, Home), number input (Enter commits,
+  Escape reverts, expressions passed as text), inspector (Tab order, Enter,
+  Escape, Space on check box, edit button), dialog (focus moves in, Enter
+  applies, Escape cancels). Real keyboard in the in-app Chromium: Escape
+  closes the settings dialog and focus returns to the Settings command.
+- Themes: light and dark checked by hand in the shell (screenshots in the
+  session) and by the Dark stories; `system` follows `prefers-color-scheme`
+  (unit test with a mocked media query).
+- Standalone package: `npm run build -w @kavilgroup/engineering-ui` builds
+  `dist/` (ES modules per subpath, `engineering-ui.css`, declarations under
+  `dist/types`); every `exports` target exists; the output imports Quasar only
+  from `quasar` and only in `controls`, `dialogs`, `inspectors`.
+- Licences (`npm run check:licences`, 356 installed packages): runtime
+  closure (Vue, Quasar and Vue's compiler dependencies) MIT, ISC,
+  BSD-2-Clause, BSD-3-Clause, Apache-2.0; development-only MPL-2.0
+  (axe-core, lightningcss), BlueOak-1.0.0, 0BSD, (MIT OR CC0-1.0); no
+  unknown or GPL/LGPL licences.
+- Storybook MCP for Vue (optional): evaluated from the `@storybook/addon-mcp`
+  10.6.9 package (MIT). It supports `vue3`; documentation tools need the
+  experimental docgen server on `@storybook/vue3-vite`. Not adopted; outcome
+  recorded in [EngineeringUI §7](../architecture/engineering-ui.md#7-storybook).
+  The addon was not run.
+- `npm audit`: 5 moderate findings, all in `js-beautify` → `editorconfig`,
+  `glob`, `minimatch`, pulled in by `@vue/test-utils` 2.6.0 (development
+  only). The suggested fix downgrades `@vue/test-utils` to 2.4.11; not
+  applied.
+
+### Not run / open
+
+- Tauri dev window (plan deliverable): not created; `src-tauri` arrives with
+  the M5 sidecar PoC and the M9 vertical slice. The shell runs in the browser
+  only.
+- Hosted CI (no push); Windows and macOS; WebKit and Firefox story runs.
+- Visual regression screenshots (no tool chosen yet).
+- `selection_images` in the inspector are accepted but not rendered.
+- The Storybook test run needs the Playwright browser once
+  (`npx playwright install chromium-headless-shell`); locally the cached
+  revision for Playwright 1.65.0 was used.

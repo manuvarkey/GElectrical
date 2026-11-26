@@ -1,6 +1,8 @@
 # Frontend architecture
 
-Status: **proposed** (Phase 1). Navigation: [index](../README.md) ·
+Status: **current** for the M6 foundation (npm workspaces, Vite + Vue +
+strict TypeScript + Quasar, mock-data shell in `modern/`); **proposed** for
+everything that needs the backend (sessions, services, Tauri). Navigation: [index](../README.md) ·
 [architecture overview](../../ARCHITECTURE.md) · [EngineeringUI](engineering-ui.md)
 · [UI guidelines](../ui-guidelines.md) · [backend](backend.md).
 
@@ -27,6 +29,10 @@ GEstimator uses PrimeVue; GElectrical uses Quasar as selected for this
 project. Components adapted from GEstimator are ported to Quasar primitives or
 to toolkit-independent EngineeringUI components ([ADR 0002](../decisions/0002-frontend-stack.md)).
 
+Current commands (M6, repository root): `npm ci`, `npm run dev` (shell on
+`http://127.0.0.1:1420` with mock data), `npm run check` (format, boundary,
+licences, type check, Vitest, builds), `npm run storybook`.
+
 ## 2. Directory layout (`modern/src/`)
 
 ```text
@@ -45,6 +51,11 @@ modern/src/
 ├── types/                  # generated DTO types + hand-written view types
 └── assets/                 # app icons, symbol sprites (generated)
 ```
+
+M6 has `main.ts`, `App.vue`, `ribbon.ts`, `components/` (palette, schematic
+placeholder, messages, settings dialog), `composables/useShell.ts` (view
+state and mock commands) and `mock/` (mock documents and a load field schema
+in the backend FieldSchema shape). `services/` arrives with M9.
 
 Rules:
 

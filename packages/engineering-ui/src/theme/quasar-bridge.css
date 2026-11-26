@@ -1,0 +1,177 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * Copyright (c) 2026 Manu Varkey
+ *
+ * Maps EngineeringUI tokens onto Quasar: brand variables, dark mode and
+ * compact desktop density. Quasar's own stylesheet must load first. Keep
+ * overrides narrow: only what Quasar exposes poorly through its variables.
+ */
+:root {
+  --q-primary: var(--eui-accent-fill);
+  --q-secondary: var(--eui-info);
+  --q-accent: var(--eui-accent);
+  --q-positive: var(--eui-success);
+  --q-negative: var(--eui-danger);
+  --q-info: var(--eui-info);
+  --q-warning: var(--eui-warning);
+  --q-dark: var(--eui-panel);
+  --q-dark-page: var(--eui-frame);
+}
+
+body,
+body.body--dark,
+body.body--light {
+  font-family: var(--eui-font-family);
+  font-size: var(--eui-font-size);
+  line-height: var(--eui-line-height);
+  color: var(--eui-text);
+  background: var(--eui-frame);
+}
+
+/* Quasar text inherits the host typography instead of Roboto 14px. */
+.q-field,
+.q-btn,
+.q-item,
+.q-menu,
+.q-dialog,
+.q-card,
+.q-tooltip {
+  font-family: inherit;
+  font-size: var(--eui-font-size);
+  letter-spacing: normal;
+}
+
+/* Fields: token surfaces and borders in both themes. */
+.q-field--outlined .q-field__control {
+  background: var(--eui-field);
+  border-radius: var(--eui-radius);
+}
+.q-field--outlined .q-field__control::before {
+  border-color: var(--eui-border);
+}
+.q-field--outlined.q-field--highlighted .q-field__control::after,
+.q-field--outlined.q-field--focused .q-field__control::after {
+  border-color: var(--eui-focus-ring);
+  border-width: var(--eui-focus-width);
+}
+.q-field__native,
+.q-field__input,
+.q-field__prefix,
+.q-field__suffix,
+.q-field__label,
+.q-field__marginal {
+  color: var(--eui-text);
+}
+.q-field__suffix,
+.q-field__marginal {
+  color: var(--eui-text-muted);
+}
+.q-field--error .q-field__bottom,
+.q-field--error .q-field__native {
+  color: var(--eui-danger);
+}
+.q-field--error.q-field--outlined .q-field__control::after {
+  border-color: var(--eui-danger);
+}
+.q-field--disabled .q-field__control > div {
+  opacity: 1 !important;
+  color: var(--eui-text-disabled);
+}
+.q-field--disabled .q-field__native {
+  color: var(--eui-text-disabled);
+}
+.q-field--readonly .q-field__control::before {
+  border-style: dashed;
+}
+
+/* Compact density: 26 px controls instead of Quasar's 40 px dense. */
+.eui-compact.q-field--dense .q-field__control,
+.eui-compact.q-field--dense .q-field__marginal,
+.eui-compact.q-field--dense .q-field__native {
+  min-height: var(--eui-control-height);
+  height: auto;
+}
+.eui-compact.q-field--dense .q-field__native {
+  padding: 0;
+}
+.eui-compact .q-field__marginal {
+  font-size: var(--eui-font-size-small);
+}
+.eui-compact.q-field--dense.q-field--outlined .q-field__control {
+  padding: 0 var(--eui-space-3);
+}
+.eui-compact.q-field--dense .q-field__bottom {
+  padding: var(--eui-space-1) 0 0;
+  min-height: 0;
+  font-size: var(--eui-font-size-caption);
+  position: static;
+  transform: none;
+}
+.eui-compact.q-field--dense.q-textarea .q-field__native {
+  padding: var(--eui-space-2) 0;
+}
+
+/* Buttons. */
+.q-btn {
+  border-radius: var(--eui-radius);
+  text-transform: none;
+}
+.q-btn.eui-compact {
+  min-height: var(--eui-control-height);
+  padding: 0 var(--eui-space-4);
+}
+.q-btn:focus-visible {
+  outline: var(--eui-focus-width) solid var(--eui-focus-ring);
+  outline-offset: 1px;
+}
+.q-btn .q-focus-helper {
+  display: none;
+}
+
+/* Checkboxes and toggles. */
+.q-checkbox__inner {
+  color: var(--eui-text-muted);
+}
+.q-checkbox__inner--truthy,
+.q-checkbox__inner--indet {
+  color: var(--eui-accent-fill);
+}
+.q-checkbox:focus-visible .q-checkbox__inner {
+  outline: var(--eui-focus-width) solid var(--eui-focus-ring);
+  outline-offset: -4px;
+  border-radius: var(--eui-radius);
+}
+.q-checkbox.disabled {
+  opacity: 1 !important;
+  color: var(--eui-text-disabled);
+}
+
+/* Menus, select popups, dialogs. */
+.q-menu {
+  background: var(--eui-raised);
+  color: var(--eui-text);
+  border: var(--eui-border-width) solid var(--eui-border);
+  box-shadow: var(--eui-shadow);
+}
+.q-item {
+  min-height: var(--eui-row-height);
+  padding: var(--eui-space-1) var(--eui-space-4);
+  color: var(--eui-text);
+}
+.q-item.q-manual-focusable--focused > .q-focus-helper,
+.q-item--active {
+  background: var(--eui-accent-soft);
+  color: var(--eui-text);
+}
+.q-dialog__backdrop {
+  background: var(--eui-backdrop);
+}
+.q-card {
+  background: var(--eui-panel);
+  color: var(--eui-text);
+}
+.q-tooltip {
+  background: var(--eui-text);
+  color: var(--eui-panel);
+  font-size: var(--eui-font-size-small);
+}

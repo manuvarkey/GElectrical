@@ -1,0 +1,107 @@
+{
+  "name": "@kavilgroup/engineering-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reusable Vue 3 components for engineering desktop applications.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css",
+    "*.vue"
+  ],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./theme": {
+      "source": "./src/theme/index.ts",
+      "types": "./dist/types/theme/index.d.ts",
+      "import": "./dist/theme.js"
+    },
+    "./icons": {
+      "source": "./src/icons/index.ts",
+      "types": "./dist/types/icons/index.d.ts",
+      "import": "./dist/icons.js"
+    },
+    "./composables": {
+      "source": "./src/composables/index.ts",
+      "types": "./dist/types/composables/index.d.ts",
+      "import": "./dist/composables.js"
+    },
+    "./controls": {
+      "source": "./src/controls/index.ts",
+      "types": "./dist/types/controls/index.d.ts",
+      "import": "./dist/controls.js"
+    },
+    "./dialogs": {
+      "source": "./src/dialogs/index.ts",
+      "types": "./dist/types/dialogs/index.d.ts",
+      "import": "./dist/dialogs.js"
+    },
+    "./navigation": {
+      "source": "./src/navigation/index.ts",
+      "types": "./dist/types/navigation/index.d.ts",
+      "import": "./dist/navigation.js"
+    },
+    "./workspace": {
+      "source": "./src/workspace/index.ts",
+      "types": "./dist/types/workspace/index.d.ts",
+      "import": "./dist/workspace.js"
+    },
+    "./inspectors": {
+      "source": "./src/inspectors/index.ts",
+      "types": "./dist/types/inspectors/index.d.ts",
+      "import": "./dist/inspectors.js"
+    },
+    "./style.css": {
+      "source": "./src/style.css",
+      "default": "./dist/engineering-ui.css"
+    }
+  },
+  "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.build.json",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:stories": "vitest run --project storybook",
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build -o storybook-static"
+  },
+  "peerDependencies": {
+    "quasar": "^2.36.0",
+    "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "quasar": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@quasar/vite-plugin": "2.0.2",
+    "@storybook/addon-a11y": "10.6.9",
+    "@storybook/addon-docs": "10.6.9",
+    "@storybook/addon-vitest": "10.6.9",
+    "@storybook/vue3-vite": "10.6.9",
+    "@types/node": "24.19.4",
+    "@vitejs/plugin-vue": "6.0.11",
+    "@vitest/browser": "5.1.2",
+    "@vitest/browser-playwright": "5.1.2",
+    "@vue/test-utils": "2.6.0",
+    "happy-dom": "21.0.4",
+    "playwright": "1.65.0",
+    "quasar": "2.36.0",
+    "storybook": "10.6.9",
+    "typescript": "6.0.3",
+    "vite": "8.4.0",
+    "vitest": "5.1.2",
+    "vue": "3.5.46",
+    "vue-tsc": "3.3.14"
+  }
+}

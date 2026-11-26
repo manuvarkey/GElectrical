@@ -28,6 +28,7 @@ evidence, recorded in the same ADR), **Accepted**, **Superseded by NNNN**, **Rej
 | [0014](0014-legacy-gtk-location.md) | Legacy GTK UI moves to `gelectrical/gtk/` and retires at parity | Accepted |
 | [0015](0015-python-and-pandapower-versions.md) | Python 3.14 with Numba; latest pandapower from PyPI through pixi | Accepted |
 | [0016](0016-weasyprint-windows-executable.md) | WeasyPrint executable on Windows; one pinned version everywhere | Accepted |
+| [0017](0017-frontend-workspace-build.md) | Frontend workspace resolution, EngineeringUI build and toolchain pins | Proposed (implemented in M6) |
 
 ## Template
 

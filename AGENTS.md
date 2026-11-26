@@ -7,8 +7,10 @@ network analysis desktop application with pandapower as the solver backend.
 **In progress:** migration to Tauri 2 + Vue 3/TypeScript + Quasar with a
 headless Python backend, an MCP server and the EngineeringUI library. Phase 1
 (planning) is complete and was reviewed by the owner on 2026-11-26 (decisions in
-[risks and decisions](docs/migration/risks-and-decisions.md#2-owner-decisions));
-**no migration code exists yet**.
+[risks and decisions](docs/migration/risks-and-decisions.md#2-owner-decisions)).
+Migration code so far: the M1 regression baseline, the M1b environment and
+the M6 frontend foundation (`modern/` shell with mock data,
+`packages/engineering-ui/`); no backend, services or Tauri yet.
 Do not start a migration milestone unless the user asks for it.
 
 ## Read first
@@ -98,7 +100,19 @@ pixi run python ...   # any ad-hoc script inside the env
   (see the M1b entry in the validation log).
 - Activation (`tools/pixi_activate.*`) registers the librsvg gdk-pixbuf loader
   (the SVG icons fail to load without it).
-- Node.js/npm workspaces and Rust/Tauri arrive with milestones M5/M6; follow
+- Node.js (24 LTS, `.nvmrc`) with npm workspaces `modern` and `packages/*`
+  (M6). Run `npm ci` at the repository root; dependencies are pinned to exact
+  versions (`.npmrc`), so add them with `npm install -w <workspace> <pkg>@<version>`
+  and commit `package-lock.json`. Story tests need the Playwright browser once:
+  `npx playwright install chromium-headless-shell`.
+
+```bash
+npm run dev              # modern/ shell in the browser (mock data), http://127.0.0.1:1420
+npm run storybook        # EngineeringUI Storybook, http://localhost:6006
+npm run check            # format, boundary, licences, type check, Vitest, builds
+```
+
+- Rust/Tauri arrive with milestone M5; follow
   [development guidelines](docs/development-guidelines.md#2-environment) then.
 
 ## Verifying changes (current)
@@ -118,10 +132,16 @@ pixi run python ...   # any ad-hoc script inside the env
    Never regenerate `tests/baseline/` to make a change pass.
 4. If you change calculations, compare results before and after on
    `sample_files/` and `tests/projects/` and say what moved.
-5. Documentation-only changes: check links and `git diff --check`; build Sphinx
+5. Frontend changes (`modern/`, `packages/engineering-ui/`): `npm run check`
+   (Prettier, dependency boundary, licences, `vue-tsc`, Vitest unit and
+   Storybook story tests with axe in light and dark, library and app builds)
+   and `npm run build-storybook`. For visual changes run `npm run dev` or
+   `npm run storybook` and check keyboard operation and both themes.
+6. Documentation-only changes: check links and `git diff --check`; build Sphinx
    only if user-manual pages changed.
 
-Planned test layers (pytest, Vitest, Storybook, Playwright) are in
+Test layers (current: pytest baseline, Vitest, Storybook story tests;
+planned: engine/service pytest, Playwright workflows) are in
 [docs/testing.md](docs/testing.md).
 
 ## Current layout
@@ -145,9 +165,11 @@ gelectrical/templates/       Jinja2 HTML/CSS report templates (WeasyPrint)
 gelectrical/icons/           SVG element icons
 source/                      .ods sources for the database CSVs + artwork
 docs/                        user manual (Sphinx/MyST) + developer docs (see docs/README.md)
-packages/engineering-ui/     planned EngineeringUI package (docs only so far)
+modern/                      Vue 3 + Quasar app shell (M6: mock data, no backend yet)
+packages/engineering-ui/     EngineeringUI (@kavilgroup/engineering-ui, MIT): theme, icons,
+                             shell components, inspector; Storybook and Vitest tests
 sample_files/                sample .gepro projects (used by the smoke test)
-tools/                       smoke test, pixi activation scripts
+tools/                       smoke test, pixi activation scripts, npm boundary/licence checks
 tools/baseline/              regression baseline capture/compare, coverage project generator
 tests/                       test_baseline.py, baseline/ (canonical JSON), projects/ (.gepro)
 ```

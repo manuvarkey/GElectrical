@@ -19,3 +19,11 @@ dist/*
 # pytest
 .pytest_cache/
 __pycache__/
+
+# npm workspaces (M6)
+node_modules/
+modern/dist/
+packages/*/dist/
+packages/*/storybook-static/
+coverage/
+*.tsbuildinfo
