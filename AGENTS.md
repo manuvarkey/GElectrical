@@ -1,13 +1,74 @@
 # AGENTS.md
 
-Guidance for AI coding agents working on GElectrical: a GTK3/PyGObject desktop
-app for LV/MV electrical network analysis, with pandapower as the solver backend.
+Guidance for AI coding agents working on GElectrical: an LV/MV electrical
+network analysis desktop application with pandapower as the solver backend.
+
+**Current implementation:** GTK3/PyGObject application (`gelectrical/`).
+**In progress:** migration to Tauri 2 + Vue 3/TypeScript + Quasar with a
+headless Python backend, an MCP server and the EngineeringUI library. Phase 1
+(planning) is complete and was reviewed by the owner on 2026-11-26 (decisions in
+[risks and decisions](docs/migration/risks-and-decisions.md#2-owner-decisions));
+**no migration code exists yet**.
+Do not start a migration milestone unless the user asks for it.
+
+## Read first
+
+1. [ARCHITECTURE.md](ARCHITECTURE.md): current vs proposed layers and structure.
+2. [docs/README.md](docs/README.md): documentation index and task map.
+3. [docs/development-guidelines.md](docs/development-guidelines.md) and
+   [docs/testing.md](docs/testing.md).
+
+| Task | Also read |
+| --- | --- |
+| Engine: elements, calculations, connectivity, pandapower | [backend](docs/architecture/backend.md), [regression baseline](docs/migration/regression-baseline.md), [audit](docs/migration/existing-application-audit.md) |
+| `.gepro` load/save, stored data | [project format](docs/architecture/project-format.md) |
+| Services, commands, undo, protocol | [backend](docs/architecture/backend.md), [decisions](docs/decisions/README.md) |
+| Vue app | [frontend](docs/architecture/frontend.md), [UI guidelines](docs/ui-guidelines.md) |
+| Reusable components | [EngineeringUI](docs/architecture/engineering-ui.md), [packages/engineering-ui/AGENTS.md](packages/engineering-ui/AGENTS.md) |
+| Schematic editor, symbols | [schematic editor](docs/architecture/schematic-editor.md) |
+| Charts, protection, load profiles | [graphing](docs/architecture/graphing.md) |
+| MCP | [MCP](docs/architecture/mcp.md) |
+| Packaging, release | [packaging](docs/architecture/packaging.md) |
+| Migration milestone work | [implementation plan](docs/migration/implementation-plan.md), [feature inventory](docs/migration/feature-inventory.md), [risks](docs/migration/risks-and-decisions.md) |
+
+## Mandatory rules
+
+1. **Python owns engineering state.** Calculations, validation, connectivity,
+   persistence and undo live in Python. Vue renders and collects input; Rust
+   owns process lifecycle and transport. Never duplicate engineering logic in
+   TypeScript, Rust or MCP tool descriptions.
+2. **One writer.** Desktop and MCP use the same service commands on one owner
+   thread. No second writable project copy, no MCP-only write path.
+3. **Do not change engineering results while refactoring.** Compare before and
+   after (smoke test now; [regression baseline](docs/migration/regression-baseline.md)
+   once M1 exists). Intended changes need an ADR, before/after values and owner
+   approval. Never widen tolerances or regenerate baselines to make a change pass.
+4. **Keep old `.gepro` files loadable.** Element codes and field codes are
+   permanent. Follow the [compatibility policy](docs/architecture/project-format.md#4-compatibility-policy-proposed).
+5. **Headless engine.** New engine code must not import GTK, Tauri, MCP,
+   transport or `modern` code (headless Cairo is allowed).
+6. **No code execution from data.** Do not add `eval`, `exec` or `pickle` on
+   project, database, clipboard or request data; existing uses are scheduled
+   for removal ([ADR 0011](docs/decisions/0011-safe-expressions.md)).
+7. **EngineeringUI boundary.** `packages/engineering-ui/`
+   (`@kavilgroup/engineering-ui`) is **MIT** licensed and never imports
+   application code or backend method names. Only MIT-compatible code enters
+   it; the rest of the repository is GPL-3.0-or-later.
+8. **Mutations are undoable.** Legacy code: `@undoable` generators and
+   `with group(self, "...")`. Modern services: one transaction, one undo entry,
+   one revision, one change event per command.
+9. **Document decisions.** Significant architectural or behavioural decisions
+   get an ADR in [docs/decisions/](docs/decisions/README.md). Mark documentation
+   as *current* or *proposed*.
+10. **Report honestly.** State which checks ran, their results and which were
+    not run; record migration evidence in the
+    [validation log](docs/migration/validation.md).
 
 ## Environment
 
-The dev environment is managed by [pixi](https://pixi.sh) from conda-forge
-(`pixi.toml` + committed `pixi.lock`). conda-forge ships prebuilt GTK3,
-PyGObject, pandapower and weasyprint for Windows, Linux and macOS.
+The Python dev environment is managed by [pixi](https://pixi.sh) from
+conda-forge (`pixi.toml` + committed `pixi.lock`). conda-forge ships prebuilt
+GTK3, PyGObject, pandapower and WeasyPrint for Windows, Linux and macOS.
 
 ```bash
 pixi install          # creates .pixi/envs/default (git-ignored)
@@ -21,15 +82,23 @@ pixi run python ...   # any ad-hoc script inside the env
   `numpy<2.5`, and MSYS2 ships newer versions. Several transitive deps
   (cachebox, brotli, zopfli) don't build under MinGW. Add dependencies with
   `pixi add <pkg>` and commit both `pixi.toml` and `pixi.lock`.
+- Exception: a **pure-Python** package missing or outdated on conda-forge may be
+  added with `pixi add --pypi <pkg>` (locked in `pixi.lock`). Planned use:
+  pandapower 3.5.x and, if needed, WeasyPrint at the version of the Windows
+  executable ([ADR 0015](docs/decisions/0015-python-and-pandapower-versions.md),
+  [ADR 0016](docs/decisions/0016-weasyprint-windows-executable.md)).
+  Compiled packages always come from conda-forge.
+- The environment is Python 3.12 with pandapower 3.2.1 until milestone M1b
+  moves it to Python 3.14 and the latest pandapower.
 - `requirements.txt` / `setup.py` are legacy pins used by packaging
   (Flatpak/Snap/PyInstaller). Keep them in sync when changing deps, but they are
-  not the dev environment.
+  not the dev environment (they currently pin pandapower 2.14.9: defect D11).
 - Activation (`tools/pixi_activate.*`) registers the librsvg gdk-pixbuf loader
   (the SVG icons fail to load without it).
+- Node.js/npm workspaces and Rust/Tauri arrive with milestones M5/M6; follow
+  [development guidelines](docs/development-guidelines.md#2-environment) then.
 
-## Verifying changes
-
-There is no unit test suite. Use these checks:
+## Verifying changes (current)
 
 1. `pixi run smoke`: builds the main window (not shown), opens each sample
    project, runs diagnostics → power flow → symmetric and line-to-ground short
@@ -39,65 +108,64 @@ There is no unit test suite. Use these checks:
 2. For UI changes, run `pixi run start` and exercise the change by hand.
    `pixi run start path/to/file.gepro` opens a project directly.
 3. If you change calculations, compare results before and after on
-   `sample_files/` and say what moved. Results are engineering outputs that users
-   rely on.
+   `sample_files/` and say what moved.
+4. Documentation-only changes: check links and `git diff --check`; build Sphinx
+   only if user-manual pages changed.
 
-## Layout
+Planned test layers (pytest, Vitest, Storybook, Playwright) are in
+[docs/testing.md](docs/testing.md).
+
+## Current layout
 
 ```
 gelectrical_launcher.py      entry point (logging setup, runs MainApp)
 gelectrical/__init__.py      MainApp (Gtk.Application) + MainWindow: UI callbacks,
-                             open/save, on_run_analysis pipeline
-gelectrical/misc.py          constants, default project/program settings, helpers
-                             (abs_path, open_library, undoable/group), file version
+                             open/save, on_run_analysis pipeline, element registry
+gelectrical/misc.py          constants, default settings, field helpers, GTK/Cairo helpers,
+                             undoable/group, file version
 gelectrical/undo.py          vendored undo library (undo.Stack, @undoable generators)
-gelectrical/model/
-  project.py                 ProjectModel: drawings, settings, analysis orchestration,
-                             report/drawing/JSON export
-  drawing.py                 DrawingModel: elements on one schematic page
-  networkmodel.py            schematic → graph of nodes/elements
-  pandapower.py              PandaPowerModel: builds pp nets (powerflow/LF/GF),
-                             runs PF, timeseries, SC; maps results back
-  rulescheck.py              electrical rules check (IEC/local guidelines)
-  protection.py, graph.py    protection curves, load-profile/graph models
-gelectrical/elementmodel/    one module per element family (load, line, switch,
-                             transformer, grid, busbar, ...); ElementModel base in
-                             element.py; each class has a unique `code`
-gelectrical/view/            GTK views/dialogs (drawing canvas, fields, results,
-                             messages, protection, database)
-gelectrical/interface/       Glade .glade/.ui files for windows and dialogs
-gelectrical/database/        CSV/JSON equipment libraries (cables, CBs, fuses, ...)
-gelectrical/templates/       Jinja2 HTML/CSS report templates (rendered by weasyprint)
+gelectrical/model/           project, drawing, networkmodel, pandapower, protection,
+                             rulescheck, graph
+gelectrical/elementmodel/    one module per element family; ElementModel base in element.py;
+                             each class has a unique `code`
+gelectrical/view/            GTK views/dialogs (drawing canvas, fields, results, messages,
+                             protection, database, graphs)
+gelectrical/interface/       Glade .glade/.ui files
+gelectrical/database/        CSV/JSON equipment libraries
+gelectrical/templates/       Jinja2 HTML/CSS report templates (WeasyPrint)
 gelectrical/icons/           SVG element icons
 source/                      .ods sources for the database CSVs + artwork
-docs/                        Sphinx/MyST user docs (Read the Docs)
+docs/                        user manual (Sphinx/MyST) + developer docs (see docs/README.md)
+packages/engineering-ui/     planned EngineeringUI package (docs only so far)
 sample_files/                sample .gepro projects (used by the smoke test)
+tools/                       smoke test, pixi activation scripts
 ```
 
-## Conventions
+The proposed structure is in [ARCHITECTURE.md](ARCHITECTURE.md#proposed-repository-structure).
+
+## Conventions (current code)
 
 - Match the surrounding style: 4-space indents, `log = logging.getLogger(__name__)`
   per module, and log messages formatted as `'Class - method - message'`.
-- State-changing model operations are `@undoable` generators: apply the change,
-  `yield "Description"`, then do the inverse call. Use `with group(self, "...")`
-  to batch them. New mutations must be undoable.
 - Element field definitions live in each element class (`self.fields`), with
   results in `res_fields`. A new element type needs: a class with a unique `code`,
   registration wherever existing elements are enumerated (grep an existing
   `code` such as `element_load` to find every touch point), an icon, and
   pandapower mapping in `model/pandapower.py`.
 - `.gepro` files are zips with `document.json` plus per-drawing JSON, versioned
-  by `misc.PROJECT_FILE_VER`. Keep old project files loadable. Don't change
-  the serialized schema without a migration path.
+  by `misc.PROJECT_FILE_VER`.
 - New data files (database, templates, icons, glade) must also be added to the
   packaging manifests: `pyinstaller_spec.spec`, `MANIFEST.in`, and the
   Flatpak/Snap configs if relevant.
 - Open text files with `encoding='utf-8'`. Windows users don't run with UTF-8 mode.
-- Use pandapower 3.x APIs. A recent commit adapted the diagnostics to the newer
-  pandapower version, so check `model/pandapower.py` for the current usage
+- Use pandapower 3.x APIs. Check `model/pandapower.py` for current usage
   before adding calls.
+- Code adapted from GEstimator keeps its header plus an
+  `Adapted from GEstimator <path> at <commit>` line.
 
 ## Git
 
 - Default branch is `master`. Work on a feature branch and keep commits focused.
-- Don't commit `.pixi/`, generated reports or exported PDFs.
+- Commit, push or open pull requests only when the user asks.
+- Don't commit `.pixi/`, `node_modules/`, build outputs, generated reports or
+  exported PDFs.
