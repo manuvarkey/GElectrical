@@ -17,7 +17,10 @@ release = 'v1.0'
 extensions = ['myst_parser']
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store',
+                    # Developer documentation (not part of the user manual)
+                    'README.md', 'development-guidelines.md', 'ui-guidelines.md',
+                    'testing.md', 'roadmap.md', 'architecture', 'migration', 'decisions']
 
 
 
