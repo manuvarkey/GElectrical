@@ -102,4 +102,7 @@ Navigation: [migration index](README.md) · [testing guide](../testing.md).
   line-number-free tracebacks in `status.json`. Re-captured: only
   `undo.json` (17), `status.json` (27) and `sample__sample/d8.json`
   changed; no numerical artefact changed. Local `xvfb-run -a pixi run -e
-  test test`: 38 passed. Hosted re-run: pending on the next push.
+  test test`: 38 passed.
+- Hosted re-run 45859730391 at `7c10cfb`: Linux smoke + regression baseline
+  **passed** (5 min 14 s; drawing PNG comparison skipped, fonts differ),
+  Windows smoke **passed** (2 min 20 s).
