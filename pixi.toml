@@ -4,7 +4,8 @@
 #
 #   pixi install        # create .pixi/envs/default
 #   pixi run start      # launch the application
-#   pixi run smoke      # headless import + pandapower sanity check
+#   pixi run smoke      # end-to-end check through the GTK window
+#   pixi run headless x.gepro  # open, analyse, export without GTK
 
 [workspace]
 name = "gelectrical"
@@ -71,6 +72,7 @@ scripts = ["tools/pixi_activate.bat"]
 [tasks]
 start = "python gelectrical_launcher.py"
 smoke = "python tools/smoke_test.py"
+headless = "python tools/headless_run.py"
 
 # Test feature (milestone M1): pytest for the regression baseline.
 # Shares the default solve group, so the test environment has exactly the
@@ -80,6 +82,8 @@ pytest = "*"
 
 [feature.test.tasks]
 test = "pytest tests"
+test-engine = "pytest tests/engine tests/test_symbols_extents.py"
+test-headless = "pytest tests/test_headless_baseline.py"
 baseline-capture = "python tools/baseline/capture.py"
 build-test-projects = "python tools/baseline/build_projects.py"
 

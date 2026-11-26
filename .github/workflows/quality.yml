@@ -39,21 +39,27 @@ jobs:
       - name: Smoke test
         run: xvfb-run -a pixi run -e test smoke
 
-      - name: Regression baseline
+      - name: Headless run (no display)
+        run: env -u DISPLAY pixi run -e test headless sample_files/sample.gepro --out ${{ runner.temp }}/headless-run
+
+      - name: Regression baseline (legacy GTK and headless engine), engine tests
         run: xvfb-run -a pixi run -e test test -v -rw
         env:
           GELECTRICAL_BASELINE_CAPTURE: ${{ runner.temp }}/baseline-capture
+          GELECTRICAL_HEADLESS_CAPTURE: ${{ runner.temp }}/headless-capture
 
       - name: Upload capture on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: baseline-capture-linux
-          path: ${{ runner.temp }}/baseline-capture
+          path: |
+            ${{ runner.temp }}/baseline-capture
+            ${{ runner.temp }}/headless-capture
           if-no-files-found: ignore
 
   windows:
-    name: Windows (smoke)
+    name: Windows (smoke, engine tests)
     runs-on: windows-latest
     timeout-minutes: 60
     steps:
@@ -62,12 +68,18 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.1
         with:
           pixi-version: v0.85.0
-          environments: default
+          environments: default test
           locked: true
           cache: true
 
       - name: Smoke test
         run: pixi run smoke
+
+      - name: Engine tests (headless)
+        run: pixi run -e test test-engine
+
+      - name: Headless run
+        run: pixi run -e test headless sample_files/sample.gepro --out ${{ runner.temp }}/headless-run
 
   frontend:
     name: Frontend (npm workspaces)

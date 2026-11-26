@@ -22,22 +22,15 @@
 #  
 # 
 
-import logging, copy, datetime, io, math
-from gi.repository import Gtk, Gdk, GLib
-import cairo
-from jinja2 import Environment, FileSystemLoader
-from weasyprint import HTML, CSS
+import logging, copy, datetime
 
 # local files import
+from .. import undo
 from ..core import constants, style
-from ..core.fields import ReferenceCounter, default_project_settings, get_field_dict, get_fields_dict_trunc, update_fields_dict
-from ..core.paths import abs_path, open_library, posix_path
+from ..core.fields import ReferenceCounter, new_project_settings, get_fields_dict_trunc, update_fields_dict
 from ..core.undoable import group, undoable
-from ..reports.tables import elements_to_table, fields_to_table
+from ..elementmodel import registry
 from .drawing import DrawingModel
-from ..gtk.view.drawing import DrawingView
-from ..gtk.view.graph import GraphViewDialog, GraphImage
-from ..gtk.view.protection import ProtectionViewDialog
 from .networkmodel import NetworkModel
 from .pandapower import PandaPowerModel
 from .rulescheck import electrical_rules_check
@@ -47,36 +40,45 @@ log = logging.getLogger(__name__)
 
 
 class ProjectModel:
-    """Class for modelling a project"""
+    """Project document: drawing sheets, project fields, load profiles and
+    analysis state. Headless (M2 step 6): no views and no dialogs.
+
+    User interfaces observe the model with :meth:`subscribe`. Events
+    (``callback(event, **data)``):
+
+    * ``page_added`` (slno, model), ``page_removed`` (slno), ``page_moved``
+      (from_slno, to_slno), ``page_selected`` (slno, switch_tab),
+      ``page_marked`` (slno), ``pages_cleared``
+    * ``tabs_changed`` (slno: one sheet or None for all)
+    * ``fields_changed`` (fields): project fields replaced
+    * ``diagnostics`` (results, select_callback): diagnostic or rules-check
+      messages
+    * ``refresh`` (redraw): element data changed, redraw the current sheet
+
+    Arguments:
+        stack: undo stack (a new ``undo.Stack`` when not given)
+        program_settings: 'Defaults' page of the program settings, copied into
+            the Information fields of a new project
+        element_models: ``code -> class`` map (the element registry by default)
+        listeners: callbacks subscribed before the first sheet is added
+    """
     
-    def __init__(self, window, program_state):
+    def __init__(self, stack=None, program_settings=None, element_models=None, listeners=None):
         # Data
         self.drawing_models = []
-        program_settings = program_state['program_settings_main']
-        self.fields = default_project_settings
-        self.fields['Information']['drawing_field_dept']['value'] = copy.deepcopy(program_settings['drawing_field_dept']['value'])
-        self.fields['Information']['drawing_field_techref']['value'] =  copy.deepcopy(program_settings['drawing_field_techref']['value'])
-        self.fields['Information']['drawing_field_created']['value'] =  copy.deepcopy(program_settings['drawing_field_created']['value'])
-        self.fields['Information']['drawing_field_approved']['value'] = copy.deepcopy(program_settings['drawing_field_approved']['value'])
-        self.fields['Information']['drawing_field_lang']['value'] = copy.deepcopy(program_settings['drawing_field_lang']['value'])
-        self.fields['Information']['drawing_field_address']['value'] = copy.deepcopy(program_settings['drawing_field_address']['value'])
-        program_state['project_settings_main'] = self.fields['Information']
-        program_state['project_settings'] = self.fields
-        self.loadprofiles = constants.DEFAULT_LOAD_PROFILE
+        self.fields = new_project_settings()  # Own copy of the defaults (D4)
+        if program_settings:
+            for code in ('drawing_field_dept', 'drawing_field_techref', 'drawing_field_created',
+                         'drawing_field_approved', 'drawing_field_lang', 'drawing_field_address'):
+                self.fields['Information'][code]['value'] = copy.deepcopy(program_settings[code]['value'])
+        self.loadprofiles = constants.default_load_profile()  # Own copy (D4)
+        self.element_models = element_models if element_models is not None else registry.get_element_models()
         
         # State variables
-        self.window = window
-        self.program_state = program_state
-        self.drawing_notebook = program_state['drawing_notebook']
-        self.properties_view = program_state['properties_view']
-        self.results_view = program_state['results_view']
-        self.diagnostics_view = program_state['diagnostics_view']
-        self.database_view = program_state['database_view']
+        self.listeners = list(listeners) if listeners else []
         self.program_settings = program_settings
-        self.drawing_views = []
         self.drawing_model = None
-        self.drawing_view = None
-        self.stack = program_state['stack']
+        self.stack = stack if stack is not None else undo.Stack()
         self.page_no = 0
         # Analysis varables
         self.status = {}
@@ -85,9 +87,20 @@ class ProjectModel:
         self.powermodel = None
         # Initialise tab
         self.add_page_vanilla()
-        self.tab_handler_id = self.drawing_notebook.connect("switch-page", self.on_switch_tab)
-        self.drawing_notebook.connect("page_reordered", self.on_page_reordered)
 
+    ## Notifications
+
+    def subscribe(self, callback):
+        """Call ``callback(event, **data)`` on model events"""
+        self.listeners.append(callback)
+
+    def unsubscribe(self, callback):
+        if callback in self.listeners:
+            self.listeners.remove(callback)
+
+    def notify(self, event, **data):
+        for callback in list(self.listeners):
+            callback(event, **data)
 
     ## Functions
     
@@ -108,9 +121,7 @@ class ProjectModel:
     def update_project_fields(self, new_fields):
         old_fields = self.fields
         self.fields = new_fields
-
-        self.program_state['project_settings_main'] = self.fields['Information']
-        self.program_state['project_settings'] = self.fields
+        self.notify('fields_changed', fields=self.fields)
         
         self.update_tabs()
         self.update_title_blocks()
@@ -119,23 +130,9 @@ class ProjectModel:
         # Undo action
         self.update_project_fields(old_fields)
         
-    def edit_loadprofiles(self):
-        xlim = constants.GRAPH_LOAD_TIME_LIMITS
-        ylim = constants.GRAPH_LOAD_CURRENT_LIMITS
-        xlabel = 'Time (Hr)'
-        ylabel = 'Diversity Factor'
-        database_path = open_library('load_profiles.csv')
-        loadprofiles_copy = copy.deepcopy(self.loadprofiles)
-        dialog = GraphViewDialog(self.window, 
-                                'Edit Load Profiles',
-                                loadprofiles_copy, 
-                                xlim, ylim, xlabel, ylabel, 
-                                 database_path=database_path)
-        selected_graph, database_modified_flag = dialog.run()
-        if database_modified_flag:
-            self.modify_loadprofiles(loadprofiles_copy)
-
-    def view_protection_coordination(self):
+    def prepare_protection_coordination(self):
+        """Selected protection/damage elements with up-to-date voltages for
+        the protection coordination view; empty list if none selected"""
         selected_elements = self.get_selected(codes=constants.PROTECTION_ELEMENT_CODES + constants.DAMAGE_ELEMENT_CODES + ('element_display_node',))
         if selected_elements:
             # Populate voltage levels for breakers
@@ -143,10 +140,7 @@ class ProjectModel:
                 self.setup_base_model(add_node_elements=False)  # Do not generate node elements
                 self.build_power_model(which='powerflow')  # Build element voltages
                 self.update_results(update_node_elements=False)  # Update element voltages. Do not overwrite node results.
-            dialog = ProtectionViewDialog(self.window, self.program_state, selected_elements)
-            dialog.run()
-        else:
-            return (constants.WARNING, 'No protection elements selected.')
+        return selected_elements
         
     @undoable
     def modify_loadprofiles(self, loadprofiles):
@@ -158,9 +152,9 @@ class ProjectModel:
         self.loadprofiles = loadprofiles_old
     
     def append_page(self, copy_selected_sheet=False):
-        model = DrawingModel(self, self.program_state)
+        model = DrawingModel(self)
         slno = self.get_page_nos()
-        cur_slno = self.drawing_notebook.get_current_page()
+        cur_slno = self.page_no
         # Except first page copy fields from selected page
         if slno > 0:
             # Copy model from first page or selected page
@@ -187,7 +181,7 @@ class ProjectModel:
         if model:
             self.drawing_model = model
         else:
-            self.drawing_model = DrawingModel(self, self.program_state)
+            self.drawing_model = DrawingModel(self)
             sheet_name = "Sheet " + str(self.get_page_nos() + 1)
             self.drawing_model.set_sheet_name(sheet_name)
             self.drawing_model.fields['date_of_issue']['value'] = datetime.datetime.today().strftime('%Y-%m-%d')
@@ -195,26 +189,13 @@ class ProjectModel:
         if slno:
             # Setup model
             self.drawing_models.insert(slno, self.drawing_model)
-            # Setup drawing view
-            page = Gtk.Box()
-            self.drawing_notebook.insert_page(page, None, slno) 
-            self.drawing_view = DrawingView(self.window, page, self.drawing_model, self.program_state, self.program_settings, self.properties_view, self.results_view, self.database_view)
-            self.drawing_views.insert(slno, self.drawing_view)
-            self.drawing_notebook.show_all()
-            self.set_page(slno)  # Switch to added page
             add_slno = slno
         else:
             # Setup model
             self.drawing_models.append(self.drawing_model)
-            # Setup drawing view
-            page = Gtk.Box()
-            self.drawing_notebook.append_page(page, None)
-            self.drawing_view = DrawingView(self.window, page, self.drawing_model, self.program_state, self.program_settings, self.properties_view, self.results_view, self.database_view)
-            self.drawing_views.append(self.drawing_view)
-            self.drawing_notebook.show_all()
-            self.set_page(self.get_page_nos() -1)  # Switch to added page
             add_slno = self.get_page_nos() -1
-        self.drawing_notebook.set_tab_reorderable(page, True)
+        self.notify('page_added', slno=add_slno, model=self.drawing_model)
+        self.set_page(add_slno)  # Switch to added page
         return add_slno
         
     @undoable
@@ -222,9 +203,7 @@ class ProjectModel:
         delete_slno = None
         if self.get_page_nos() > 1 and slno < self.get_page_nos():
             del_model = self.drawing_models.pop(slno)
-            self.drawing_views.pop(slno)
-            page = self.drawing_notebook.get_nth_page(slno)
-            self.drawing_notebook.detach_tab(page)
+            self.notify('page_removed', slno=slno)
             delete_slno = slno
             if slno != 0:
                 self.set_page(slno-1)
@@ -240,9 +219,8 @@ class ProjectModel:
     def reorder_tab(self, prev_pagenum, pagenum):
         if prev_pagenum != pagenum:
             model = self.drawing_models.pop(prev_pagenum)
-            view = self.drawing_views.pop(prev_pagenum)
             self.drawing_models.insert(pagenum, model)
-            self.drawing_views.insert(pagenum, view)
+            self.notify('page_moved', from_slno=prev_pagenum, to_slno=pagenum)
             self.set_page(pagenum)
             self.update_tabs()
             self.reg_refs_sheets()
@@ -255,61 +233,40 @@ class ProjectModel:
             
     def clear_all(self):
         # Delete all pages except first
-        self.drawing_notebook.disconnect(self.tab_handler_id)
         for slno in range(0,self.get_page_nos()):
             if self.get_page_nos() > 1:
                 self.drawing_models.pop(0)
-                self.drawing_views.pop(0)
-                page = self.drawing_notebook.get_nth_page(0)
-                self.drawing_notebook.detach_tab(page)
+                self.notify('page_removed', slno=0)
         # Clear first page model
-        blank_model = DrawingModel(self, self.program_state).get_model()
+        blank_model = DrawingModel(self).get_model()
         self.drawing_models[0].set_model(blank_model)
         self.clear_status()
         self.clear_results()
-        self.tab_handler_id = self.drawing_notebook.connect("switch-page", self.on_switch_tab)
         log.info('ProjectModel - clear_all - cleared all models')
         
     def get_page_nos(self):
         return len(self.drawing_models)
         
     def set_page(self, slno, switch_tab=True):
+        """Select the current sheet"""
         if slno < self.get_page_nos():
             self.drawing_model = self.drawing_models[slno]
-            self.drawing_view = self.drawing_views[slno]
-            if switch_tab:
-                self.drawing_notebook.set_current_page(slno)
-            self.drawing_view.select_page()
+            self.notify('page_selected', slno=slno, switch_tab=switch_tab)
             self.update_tabs(slno)
             self.page_no = slno
                 
     def mark_page(self, slno):
-        page = self.drawing_notebook.get_nth_page(slno)
-        sheet_name = self.drawing_models[slno].fields['name']['value']
-        label = self.drawing_notebook.get_tab_label(page).get_children()[0]
-        label.set_markup('<span foreground="red"><b>{}</b></span>'.format(sheet_name))
-        label.set_use_markup(True)
+        """Highlight a sheet (selection of diagnostic messages)"""
+        self.notify('page_marked', slno=slno)
     
     def update_tabs(self, slno=None):
-    
-        def set_label(page, sheet_name):                
-            label_hbox = Gtk.Box()
-            page_label = Gtk.Label(sheet_name)
-            label_hbox.pack_start(page_label, True, True, 0)
-            self.drawing_notebook.set_tab_label(page, label_hbox)
-            label_hbox.show_all()
-            
+        """Update sheet numbers from the sheet order"""
         if slno is not None:
-            page = self.drawing_notebook.get_nth_page(slno)
-            sheet_name = self.drawing_models[slno].fields['name']['value']
             self.drawing_models[slno].fields['sheet_no']['value'] = str(slno + 1)
-            set_label(page, sheet_name)
         else:
-            for slno in range(0, self.get_page_nos()):
-                page = self.drawing_notebook.get_nth_page(slno)
-                sheet_name = self.drawing_models[slno].fields['name']['value']
-                self.drawing_models[slno].fields['sheet_no']['value'] = str(slno + 1)
-                set_label(page, sheet_name)
+            for slno_ in range(0, self.get_page_nos()):
+                self.drawing_models[slno_].fields['sheet_no']['value'] = str(slno_ + 1)
+        self.notify('tabs_changed', slno=slno)
                 
     def update_title_blocks(self):
         for drawing_model in self.drawing_models:
@@ -336,7 +293,7 @@ class ProjectModel:
                         element = self.drawing_models[k1][k2]
                         element.set_selection(select=True, color=style.COLOR_SELECTED_WARNING)
                         self.mark_page(k1)
-            self.drawing_view.refresh(redraw=True)
+            self.notify('refresh', redraw=True)
         log.info('ProjectModel - select_powermodel - select')
 
     def de_select_all(self):
@@ -377,7 +334,7 @@ class ProjectModel:
     
     def setup_base_model(self, build_ana_model=True, add_node_elements=True):
         self.clear_status()
-        self.networkmodel = NetworkModel(self.program_state)
+        self.networkmodel = NetworkModel(self)
         # Setup base elements
         self.networkmodel.setup_base_elements()
         if build_ana_model:
@@ -422,7 +379,7 @@ class ProjectModel:
         if self.status['power_model']:
             log.info('ProjectModel - run_diagnostics - running diagnostic...')
             diagnostic_results, ret_code = self.powermodel.run_diagnostics()
-            self.diagnostics_view.update(diagnostic_results, self.select_networkmodel)
+            self.notify('diagnostics', results=diagnostic_results, select_callback=self.select_networkmodel)
             self.status['power_analysis'] = True
             log.info('ProjectModel - run_diagnostics - diagnostic run')
             return ret_code
@@ -490,7 +447,7 @@ class ProjectModel:
         sim_settings = settings['Simulation']
         rules_settings = settings['Rules Check']
         diagnostic_results = electrical_rules_check(self.networkmodel, sim_settings, rules_settings)
-        self.diagnostics_view.update(diagnostic_results, self.select_networkmodel)
+        self.notify('diagnostics', results=diagnostic_results, select_callback=self.select_networkmodel)
         log.info('ProjectModel - run_rulescheck - rulescheck run')
         
     def update_results(self, update_node_elements=True):
@@ -506,7 +463,7 @@ class ProjectModel:
                         node_element.res_fields = copy.deepcopy(self.powermodel.node_results[gnode])
             self.status['power_results'] = True
             log.info('ProjectModel - update_results - results updated')
-            self.drawing_view.refresh()
+            self.notify('refresh', redraw=False)
         else:
             log.info('ProjectModel - update_results - no results to update')
 
@@ -531,7 +488,7 @@ class ProjectModel:
         prefix_codes = dict()  # Prefix codes for elements for assembly references
         changed = []  # Undo tracking of changed elements
         base_ref = dict()  # Base references dictionary
-        for code, model in self.program_state['element_models'].items():
+        for code, model in self.element_models.items():
             if code not in constants.NON_ELEMENT_CODES:
                 base_ref[code] = model(project_settings=self.get_project_fields(full=True)).fields['ref']['value'].strip('?')
         base_ref['element_assembly'] = 'A'
@@ -666,7 +623,7 @@ class ProjectModel:
                     refs[prefix_code_ref] += 1
                     base_elements[key].set_text_field_value('ref', new_ref)
                     changed.append([key, ref])
-        self.drawing_view.refresh()
+        self.notify('refresh', redraw=False)
         yield "Renumber Elements - " + mode
         # Undo action
         for key, ref in changed:
@@ -757,298 +714,28 @@ class ProjectModel:
     ## Export/Import functions
     
     def export_html_report(self, filename, call_at_exit=None):
-        self.powermodel.export_html_report(filename)
-        if call_at_exit:
-            call_at_exit()
+        from ..reports import export
+        export.export_html_report(self, filename, call_at_exit)
 
     def export_element_graph(self, filename, call_at_exit=None):
-        self.networkmodel.export_element_graph_html(filename)
-        if call_at_exit:
-            call_at_exit()
+        from ..reports import export
+        export.export_element_graph(self, filename, call_at_exit)
         
     def export_json(self, filename, call_at_exit=None):
-        self.powermodel.export_json(filename)
-        if call_at_exit:
-            call_at_exit()
+        from ..reports import export
+        export.export_json(self, filename, call_at_exit)
         
     def export_pdf_report(self, foldername, settings, call_at_exit=None):
-        template_path = abs_path("templates")
-        env = Environment(loader=FileSystemLoader(template_path))
-        
-        # General variables
-        project_settings = self.get_project_fields()
-        report_settings = self.get_project_fields(page='Reports')
-        export_graphs_flag = report_settings['export_graphs']['value']
-        export_elements_flag = report_settings['export_elements']['value']
-        export_boq_flag = report_settings['export_boq']['value']
-        export_loadprofiles_flag = report_settings['export_loadprofiles']['value']
-        export_ana_flag = report_settings['export_analysis']['value']
-        gen_variables = {'program_version'        : 'v' + constants.PROGRAM_VER,
-                         'project_name'           : project_settings['project_name']['value'],
-                         'drawing_field_approved' : project_settings['drawing_field_approved']['value'],
-                         'drawing_field_dept'     : project_settings['drawing_field_dept']['value'],
-                         'drawing_field_address'  : project_settings['drawing_field_address']['value'].replace('\n','</br>'),
-                         'doc_title': project_settings['project_name']['value'],
-                         'doc_author': project_settings['drawing_field_approved']['value'],
-                         'doc_subject': "Project Report",
-                         'doc_lang': project_settings['drawing_field_lang']['value'],
-                         'doc_creator':constants.PROGRAM_NAME + ' v' + constants.PROGRAM_VER,
-                         'doc_create_date': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
-                         'doc_mod_date': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()}
-        
-        # Elements
-        element_captions = dict()
-        element_refs = dict()
-        element_tables = dict()
-        element_lines = []
-        element_loads = []
-        element_switches = []
-        element_nodes = dict()
-        loadprofile_captions_used = set()
-        self.networkmodel.setup_base_elements()
-        base_elements = self.networkmodel.base_elements
-        # First pass add all required elements
-        for key, model in base_elements.items():
-            if 'ref' in model.fields and model.code not in constants.NON_ELEMENT_CODES:
-                element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
-                element_refs[key] = model.fields['ref']['value']
-                if export_elements_flag:
-                    element_tables[key] = fields_to_table(model.fields, insert_graph=export_graphs_flag)
-            # Lines
-            if model.code in constants.LINE_ELEMENT_CODES:
-                element_lines.append(model)
-            # Loads
-            if model.code in constants.LOAD_ELEMENT_CODES:
-                element_loads.append(model)
-            # Switches
-            if model.code in constants.SWITCH_ELEMENT_CODES:
-                element_switches.append(model)
-            # Nodes
-            if model.code in constants.DISPLAY_ELEMENT_CODES:
-                element_nodes[int(model.fields['ref']['value'])] = model
-            # Loads
-            if model.code in constants.LOADPROFILE_CODES and model.fields['load_profile']['value'] in self.loadprofiles:
-                loadprofile_captions_used.add(model.fields['load_profile']['value'])
-
-        # Second pass for adding assmebly details
-        for key, model in base_elements.items():
-            if model.code == 'element_assembly':
-                assembly_fields = copy.deepcopy(model.fields)
-                children_codes = model.children_codes
-                children_list = []
-                for child_code in children_codes:
-                    if child_code in element_refs:
-                        child_ref = element_refs[child_code]
-                        children_list.append(child_ref)
-                children_str = ''
-                for s in children_list:
-                    children_str = children_str + ', ' + s
-                children_str = children_str[2:]
-                assembly_fields['children'] = get_field_dict('str', 'Sub-elements', '', children_str, status_inactivate=False)
-                # Add element
-                element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
-                element_refs[key] = model.fields['ref']['value']
-                if export_elements_flag:
-                    element_tables[key] = fields_to_table(assembly_fields, insert_graph=export_graphs_flag)
-        # Sort by reference
-        element_captions = dict(sorted(element_captions.items(), key=lambda item:item[1]))
-        if export_elements_flag:
-            element_tables = {key:element_tables[key] for key in element_captions}
-                                 
-        # BOQ
-        boq_tables = dict()
-        boq_captions = dict()
-        E = constants.ELEMENT_FIELD
-        R = constants.ELEMENT_RESULT
-        P = constants.ELEMENT_PLACEHOLDER
-        if export_boq_flag:
-            # Lines
-            if element_lines:
-                col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent_max', 'pl_mw_max', 'pl_perc_max']
-                col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', 'P loss', '% P loss']
-                code_sources = [E,E,E,E,E,E,E,E,E,R,R,R]
-                table = elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines',
-                                            show_element_class=True, sum_cols=[10])
-                boq_tables['boq_lines'] = table
-                boq_captions['boq_lines'] = 'Lines'
-            # Loads
-            if element_loads:
-
-                def modifyfunc_load(table):
-                    table['Rated power'][0] = 'kVA'
-                    table['Sa'][0] = 'kVA'
-                    table['Sb'][0] = 'kVA'
-                    table['Sc'][0] = 'kVA'
-                    for slno, element in enumerate(element_loads):
-                        scaling = element.fields['scaling']['value']
-                        if element.code in ('element_load','element_async_motor_3ph'):
-                            s_kva = round(element.fields['sn_kva']['value']*scaling, 4)
-                            pf = str(round(element.fields['cos_phi']['value'], 2)) + (' lag' if element.fields['mode']['value'] else ' lead')
-                        else:
-                            fields = element.get_power_model('')[0][2]
-                            p_a_kw = round(fields['p_a_mw']*1000*scaling, 4)
-                            p_b_kw = round(fields['p_b_mw']*1000*scaling, 4)
-                            p_c_kw = round(fields['p_c_mw']*1000*scaling, 4)
-                            q_a_kvar = round(fields['q_a_mvar']*1000*scaling, 4)
-                            q_b_kvar = round(fields['q_b_mvar']*1000*scaling, 4)
-                            q_c_kvar = round(fields['q_c_mvar']*1000*scaling, 4)
-                            p_kw = p_a_kw + p_b_kw + p_c_kw
-                            q_kvar = q_a_kvar + q_b_kvar + q_c_kvar
-                            table['Sa'][slno+1] = str(p_a_kw) + '+j' + str(q_a_kvar)
-                            table['Sb'][slno+1] = str(p_b_kw) + '+j' + str(q_b_kvar)
-                            table['Sc'][slno+1] = str(p_c_kw) + '+j' + str(q_c_kvar)
-                            s_kva = round(math.sqrt(p_kw**2 + q_kvar**2), 4)
-                            pf = str(round((p_kw/s_kva),2)) + (' lag' if q_kvar > 0 else ' lead')
-                        table['Rated power'][slno+1] = str(s_kva)
-                        table['PF'][slno+1] = pf
-                        
-                col_codes = ['ref', 'name', 'sn_kva', 'cos_phi', 'sa', 'sb', 'sc', 'in_service', 'load_profile']
-                col_captions = ['Reference', 'Name', 'Rated power', 'PF', 'Sa', 'Sb', 'Sc', 'In Service ?', 'Load Profile']
-                code_sources = [E,E,P,P,P,P,P,E,E]
-                table = elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads',
-                                            show_element_class=True, modifyfunc=modifyfunc_load, sum_cols=[2])
-                boq_tables['element_loads'] = table
-                boq_captions['element_loads'] = 'Loads'
-            # Switches
-            if element_switches:
-
-                def modifyfunc_switch(table):
-                    for slno, element in enumerate(element_switches):
-                        if table['Line protection curve'][slno+1] == 'None':
-                            table['Line protection curve'][slno+1] = ''
-                        if table['Ground protection curve'][slno+1] == 'None':
-                            table['Ground protection curve'][slno+1] = ''
-
-                col_codes = ['ref', 'name', 'type', 'subtype', 'poles', 'Un', 'In', 
-                            'prot_curve_type', 'prot_0_curve_type', 'closed']
-                col_captions = ['Reference', 'Name', 'Type', 'Sub type', 'Poles', 'Un', 'In',
-                                'Line protection curve', 'Ground protection curve', 'Closed']
-                code_sources = [E,E,E,E,E,E,E,E,E,E]
-                table = elements_to_table(element_switches, col_codes, col_captions, code_sources, 'boq_switches',
-                                            show_element_class=False, modifyfunc=modifyfunc_switch)
-                boq_tables['element_switches'] = table
-                boq_captions['element_switches'] = 'Switches'
-            # Nodes
-            if element_nodes:
-                nodes_sorted_by_name = [element_nodes[x] for x in sorted(element_nodes.keys())]
-                col_codes = ['ref', 'vn_kv', 'delv_perc_max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ipss_ka_3ph_max', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
-                col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (pk, max)', 'Isc (L-G, max)', 'Isc (L-G, min)']
-                code_sources = [E,R,R,R,R,R,R,R]
-                table = elements_to_table(nodes_sorted_by_name, col_codes, col_captions, code_sources, 'boq_nodes',
-                                            show_slno=False, show_element_class=False)
-                boq_tables['element_nodes'] = table
-                boq_captions['element_nodes'] = 'Nodes'
-            
-        # Load profiles
-        loadprofile_captions = dict()
-        loadprofile_images = dict()
-        if export_loadprofiles_flag:
-            loadprofile_captions = {key:self.loadprofiles[key][0] for key in loadprofile_captions_used}
-            # Sort
-            loadprofile_captions = dict(sorted(loadprofile_captions.items(), key=lambda item:item[1]))
-            # Add images
-            xlim = constants.GRAPH_LOAD_TIME_LIMITS
-            ylim = constants.GRAPH_LOAD_CURRENT_LIMITS
-            xlabel = 'Time (Hr)'
-            ylabel = 'Diversity Factor'
-            params = {}
-            for loadprofile_caption in loadprofile_captions:
-                title, graph_model = self.loadprofiles[loadprofile_caption]
-                graph_image = GraphImage(xlim, ylim, '', xlabel, ylabel, graph_params=params)
-                graph_image.add_plots(graph_model)
-                emb_image = graph_image.get_embedded_html_image(figsize=(500, 175))
-                loadprofile_images[loadprofile_caption] = emb_image
-            
-        # Analysis options
-        if (settings['powerflow'] or settings['sc_sym'] or settings['sc_gf']) and export_ana_flag:
-            analysis_flag = True
-        else: 
-            analysis_flag = False
-        ana_opt_table = fields_to_table(self.get_project_fields(page='Simulation'))
-        
-        # Analysis results
-        ana_res_captions = dict()
-        ana_res_tables = dict()
-        if analysis_flag: 
-            base_elements = self.networkmodel.base_elements
-            # First pass add all required elements
-            for key, model in base_elements.items():
-                if 'ref' in model.fields and (model.code not in constants.REFERENCE_CODES) and (model.code != 'element_assembly'):
-                    if model.res_fields:
-                        table = fields_to_table(model.res_fields, insert_graph=export_graphs_flag)
-                        ana_res_captions[str(key)+'_res'] = model.fields['ref']['value'] + ' - ' + model.name
-                        ana_res_tables[str(key)+'_res'] = table
-            # Sort by reference
-            ana_res_captions = dict(sorted(ana_res_captions.items(), key=lambda item:item[1]))
-            ana_res_tables = {key:ana_res_tables[key] for key in ana_res_captions}
-        
-        # Load HTML file    
-        template = env.get_template("report.html")
-        template_vars = {'gen_variables': gen_variables,
-                         'element_captions': element_captions,
-                         'element_tables': element_tables,
-                         'boq_tables': boq_tables,
-                         'boq_captions': boq_captions,
-                         'loadprofile_captions': loadprofile_captions,
-                         'loadprofile_images': loadprofile_images,
-                         'analysis_flag': analysis_flag,
-                         'export_elements_flag': export_elements_flag,
-                         'export_boq_flag': export_boq_flag,
-                         'export_loadprofiles_flag': export_loadprofiles_flag,
-                         'ana_opt_table': ana_opt_table,
-                         'ana_res_tables': ana_res_tables,
-                         'ana_res_captions': ana_res_captions
-                        }
-        html_out = template.render(template_vars)
-        
-        # Load CSS file
-        template_css = env.get_template("report.css")
-        template_vars_css = {'report_font': style.REPORT_FONT_FACE,
-                             'report_font_size': style.REPORT_FONT_SIZE}
-        css_out = template_css.render(template_vars_css)
-        css_obj = io.BytesIO(bytes(css_out, 'utf-8'))
-        
-        # Render HTML, PDF
-        filename_pdf = posix_path(foldername, 'report.pdf')
-        filename_html = posix_path(foldername, 'report.html')
-        filename_css = posix_path(foldername, 'report.css')
-        with open(filename_html, 'w', encoding='utf-8') as fp:
-            fp.write(html_out)
-        with open(filename_css, 'w', encoding='utf-8') as fp:
-            fp.write(css_out)
-        HTML(string=html_out, base_url=foldername).write_pdf(filename_pdf, stylesheets=[css_obj])
-        
-        if call_at_exit:
-            call_at_exit()
+        from ..reports import export
+        export.export_pdf_report(self, foldername, settings, call_at_exit)
         
     def export_drawing(self, filename, call_at_exit=None):
-        surface = cairo.PDFSurface(filename, 0, 0)
-        proj_fields = self.get_project_fields()
-        surface.set_metadata(cairo.PDFMetadata.TITLE, proj_fields['project_name']['value'])
-        surface.set_metadata(cairo.PDFMetadata.AUTHOR, proj_fields['drawing_field_approved']['value'])
-        surface.set_metadata(cairo.PDFMetadata.SUBJECT, 'Electrical Schematic Drawing')
-        surface.set_metadata(cairo.PDFMetadata.CREATOR, constants.PROGRAM_NAME + ' v' + constants.PROGRAM_VER)
-        surface.set_metadata(cairo.PDFMetadata.CREATE_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
-        surface.set_metadata(cairo.PDFMetadata.MOD_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
-        context = cairo.Context(surface)
-        # If dark mode, load correct values while drawing
-        if self.program_state['dark_mode']:
-            style.reset_dark_mode_drawing_values()
-        for drawing_model in self.drawing_models:
-            surface.set_size(drawing_model.fields['page_width']['value'], drawing_model.fields['page_height']['value'])
-            drawing_model.export_drawing(context)
-            surface.show_page()
-        # If dark mode, restore original values
-        if self.program_state['dark_mode']:
-            style.set_dark_mode_drawing_values()  
-        surface.finish()
-        if call_at_exit:
-            call_at_exit()
+        from ..reports import export
+        export.export_drawing(self, filename, call_at_exit)
         
     def print_drawing(self, context, page_nr):
-        if page_nr < len(self.drawing_models):
-            drawing_model = self.drawing_models[page_nr]
-            drawing_model.export_drawing(context)
+        from ..reports import export
+        export.print_drawing(self, context, page_nr)
         
     def get_model(self):
         """Get storage model"""
@@ -1066,13 +753,11 @@ class ProjectModel:
     def set_model(self, document, pages):
         """Set storage model"""
         self.clear_all()
-        self.drawing_notebook.disconnect(self.tab_handler_id)
         if ('proj_drawing_names' in document and 
             'proj_fields' in document and 
             'proj_loadprofiles.json' in pages):
             self.fields = update_fields_dict(self.fields, document['proj_fields'])
-            self.program_state['project_settings_main'] = self.fields['Information']
-            self.program_state['project_settings'] = self.fields
+            self.notify('fields_changed', fields=self.fields)
             self.loadprofiles = pages['proj_loadprofiles.json']
             slno = 0
             for page_name, page in pages.items():
@@ -1086,19 +771,3 @@ class ProjectModel:
         # Switch to first page
         self.update_tabs()
         self.set_page(0)
-        self.tab_handler_id = self.drawing_notebook.connect("switch-page", self.on_switch_tab)
-        
-    ## Callbacks
-    
-    def on_switch_tab(self, notebook, page, pagenum):
-        """Refresh display on switching between views"""
-        log.info('ProjectModel - on_switch_tab called - ' + str(pagenum))
-        self.drawing_view.save_scroll_position()
-        self.set_page(pagenum, switch_tab=False)
-        GLib.idle_add(self.drawing_view.restore_scroll_position)
-        self.program_state['zoom_display_label'].set_label(str(int(self.drawing_view.scale*100)) + '%')
-
-    def on_page_reordered(self, notebook, page, pagenum):
-        prev_pagenum = self.page_no
-        self.reorder_tab(prev_pagenum, pagenum)
-        log.info('ProjectModel - on_page_reordered called - from {} to {}'.format(prev_pagenum, pagenum))

@@ -51,10 +51,11 @@ class Tag(object):
 class NetworkModel:
     """Class for modelling a Network"""
 
-    def __init__(self, program_state):
+    def __init__(self, project):
+        """``project``: the ProjectModel (sheets and element registry)"""
         # Data
-        self.program_state = program_state
-        self.drawing_models = self.program_state['project'].drawing_models
+        self.project = project
+        self.drawing_models = project.drawing_models
 
         # Generated
         self.base_elements = dict()  # Addressing by (page, slno)
@@ -207,7 +208,7 @@ class NetworkModel:
                                 port = eport
                                 break
                         if port:
-                            DisplayElementNode = self.program_state['element_models']['element_display_node']
+                            DisplayElementNode = self.project.element_models['element_display_node']
                             node_element = DisplayElementNode(port[1:], ref)
                             self.node_elements[(k1, gnode)] = node_element
                             if gnode not in self.node_elements_bygnode:

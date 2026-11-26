@@ -23,3 +23,6 @@
 
 """Reports and exports: report HTML/PDF, drawing PDF, report tables,
 graphs (Matplotlib without GUI backend) and spreadsheets. No GTK imports."""
+
+from .export import (export_html_report, export_element_graph, export_json, export_pdf_report,
+                     export_drawing, print_drawing)

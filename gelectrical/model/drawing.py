@@ -44,18 +44,19 @@ log = logging.getLogger(__name__)
 class DrawingModel:
     """Class for modelling a drawing"""
     
-    def __init__(self, parent, program_state):
+    def __init__(self, parent):
+        """``parent``: the ProjectModel (element registry, undo stack,
+        project fields, load profiles, sheet order)"""
         
         # State variables
         self.parent = parent
-        self.program_state = program_state
         self.grid_width = constants.GRID_WIDTH
-        self.element_models = self.program_state['element_models']
+        self.element_models = parent.element_models
         self.floating_model = None
         self.wire_points = []
         self.selected_ports = []
         self.selected_port_color = style.COLOR_SELECTED
-        self.stack = program_state['stack']
+        self.stack = parent.stack
         self.assembly_dict = dict()
         self.element_gid_mapping = dict()  # Element slno -> gid mapping
         self.element_gid_mapping_inv = dict()  # Element gid -> slno mapping
@@ -122,7 +123,7 @@ class DrawingModel:
                     elif code == 'element_wire':
                         element = Wire()
                     else:
-                        element = self.program_state['element_models'][code](project_settings=self.program_state['project_settings'])
+                        element = self.element_models[code](project_settings=self.parent.fields)
                         if code in constants.LOADPROFILE_CODES:
                             element.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     element.set_model(base_model, self.get_gid())
@@ -280,7 +281,7 @@ class DrawingModel:
         elif code == 'element_wire':
             element_copy = Wire()
         else:
-            element_copy = self.element_models[code](project_settings=self.program_state['project_settings'])
+            element_copy = self.element_models[code](project_settings=self.parent.fields)
         element_copy.set_model(element_model, self.get_gid())
         return element_copy
     
@@ -403,7 +404,7 @@ class DrawingModel:
             if grid_constraint:  # Modify x,y to correspond to grid
                 x,y = self.get_grid_point(x,y)
             model = self.element_models[code]
-            element = model((x, y), project_settings=self.program_state['project_settings'])
+            element = model((x, y), project_settings=self.parent.fields)
             if select:
                 element.set_selection(True)
             self.insert_element_at_index(element)
@@ -455,13 +456,13 @@ class DrawingModel:
         title_fields['sheet_no'] = self.fields['sheet_no']
         title_fields['rev'] = self.fields['rev']
         title_fields['date_of_issue'] = self.fields['date_of_issue']
-        title_fields['project_name'] = self.program_state['project_settings_main']['project_name']
-        title_fields['drawing_field_dept'] = self.program_state['project_settings_main']['drawing_field_dept']
-        title_fields['drawing_field_techref'] = self.program_state['project_settings_main']['drawing_field_techref']
-        title_fields['drawing_field_created'] = self.program_state['project_settings_main']['drawing_field_created']
-        title_fields['drawing_field_approved'] = self.program_state['project_settings_main']['drawing_field_approved']
-        title_fields['drawing_field_lang'] = self.program_state['project_settings_main']['drawing_field_lang']
-        title_fields['drawing_field_address'] = self.program_state['project_settings_main']['drawing_field_address']
+        title_fields['project_name'] = self.parent.fields['Information']['project_name']
+        title_fields['drawing_field_dept'] = self.parent.fields['Information']['drawing_field_dept']
+        title_fields['drawing_field_techref'] = self.parent.fields['Information']['drawing_field_techref']
+        title_fields['drawing_field_created'] = self.parent.fields['Information']['drawing_field_created']
+        title_fields['drawing_field_approved'] = self.parent.fields['Information']['drawing_field_approved']
+        title_fields['drawing_field_lang'] = self.parent.fields['Information']['drawing_field_lang']
+        title_fields['drawing_field_address'] = self.parent.fields['Information']['drawing_field_address']
         self.title_block.set_fields(title_fields)
     
     def add_assembly_from_selection(self):
@@ -522,7 +523,7 @@ class DrawingModel:
         """Add a floating model"""
         if code is not None:
             model = self.element_models[code]
-            element = model(project_settings=self.program_state['project_settings'])
+            element = model(project_settings=self.parent.fields)
             element.set_gid(self.get_gid())
             self.floating_model = ElementGroup()
             self.floating_model.add_elements([element])

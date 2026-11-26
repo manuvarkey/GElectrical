@@ -106,16 +106,20 @@ def _diagnostics_listener(store):
     return listener
 
 
-def run_analysis(project, settings=None, progress: Optional[Callable] = None):
+def run_analysis(project, settings=None, progress: Optional[Callable] = None, result=None):
     """Run the analysis chain on ``project``; return an AnalysisResult.
 
     Raises AnalysisError when the diagnostics report critical errors (after
-    recording them in the result, attribute ``result``)."""
+    recording them in the result, attribute ``result``). Pass ``result`` (a
+    new AnalysisResult) to read the steps completed before an exception."""
     if settings is None:
         settings = AnalysisSettings.from_project(project)
     if settings.pf_method not in POWERFLOW_METHODS:
         raise ValueError('Unknown power flow method: %r' % settings.pf_method)
-    result = AnalysisResult(settings=settings)
+    if result is None:
+        result = AnalysisResult(settings=settings)
+    else:
+        result.settings = settings
 
     def report(fraction, message):
         if progress:

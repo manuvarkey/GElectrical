@@ -55,8 +55,26 @@ def png_difference(actual, expected):
     return float(differing.mean())
 
 
-def compare_project(actual_dir, expected_dir, compare_drawings=True):
-    """Return (failures, notes) for one project folder."""
+# Headless engine captures (M2): warnings emitted by PyGObject/GTK itself
+# cannot occur without GTK and are not expected in their status files.
+GTK_ONLY_WARNINGS = ('PyGTKDeprecationWarning',)
+
+
+def _without_gtk_warnings(data):
+    if isinstance(data, dict) and isinstance(data.get('warnings'), list):
+        data = dict(data)
+        data['warnings'] = [w for w in data['warnings']
+                            if not str(w).startswith(GTK_ONLY_WARNINGS)]
+    return data
+
+
+def compare_project(actual_dir, expected_dir, compare_drawings=True, headless=False):
+    """Return (failures, notes) for one project folder.
+
+    ``headless`` (capture with the headless engine): GTK-only warnings are
+    removed from the expected status files. Tolerances are unchanged.
+    With ``compare_drawings`` False the raster difference is reported as a
+    note, not checked."""
     failures, notes = [], []
     actual_files, expected_files = list_files(actual_dir), list_files(expected_dir)
     for missing in sorted(expected_files - actual_files):
@@ -67,7 +85,10 @@ def compare_project(actual_dir, expected_dir, compare_drawings=True):
         a, b = os.path.join(actual_dir, rel), os.path.join(expected_dir, rel)
         name = os.path.basename(rel)
         if name.endswith('.json'):
-            diffs = canonical.compare(canonical.read_json(a), canonical.read_json(b), name)
+            expected = canonical.read_json(b)
+            if headless and name == 'status.json':
+                expected = _without_gtk_warnings(expected)
+            diffs = canonical.compare(canonical.read_json(a), expected, name)
             failures.extend('%s: %s' % (rel, d) for d in diffs)
         elif name.endswith('.txt'):
             with open(a, encoding='utf-8') as fa, open(b, encoding='utf-8') as fb:
@@ -78,7 +99,8 @@ def compare_project(actual_dir, expected_dir, compare_drawings=True):
                 failures.append('%s: text differs\n%s' % (rel, '\n'.join(diff[:40])))
         elif name.endswith('.png'):
             if not compare_drawings:
-                notes.append('%s: skipped (font resolution differs from baseline)' % rel)
+                notes.append('%s: not checked (%.4f %% pixels differ)'
+                             % (rel, png_difference(a, b) * 100))
                 continue
             fraction = png_difference(a, b)
             if fraction > canonical.DRAWING_PIXEL_FRACTION:

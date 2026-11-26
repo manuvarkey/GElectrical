@@ -40,8 +40,9 @@ from ..core import style, paths
 from ..symbols.text import set_text_backend
 from .pango_text import PangoTextBackend
 from ..model import drawing
+from .. import analysis, persistence
 from ..elementmodel import registry
-from ..model.project import ProjectModel
+from .project import GtkProjectModel
 from .view.drawing import DrawingSelectionDialog
 from .view.field import FieldView, FieldViewDialog
 from .view.message import MessageView
@@ -178,38 +179,35 @@ class MainWindow():
         self.filename = filename
         self.program_state['filename'] = self.filename
         
-        with ZipFile(self.filename, 'r') as projzip:
-            try:
-                with projzip.open('document.json') as document_file:
-                    document = json.load(document_file)  # load data structure
-                if document['_file_version'] == misc.PROJECT_FILE_VER:
-                    files = dict()
-                    for file_name in document['_files']:
-                        with projzip.open(file_name) as file_file:
-                            files[file_name] = json.load(file_file)  # load data structure
-                    self.project.set_model(document, files)
-
-                    self.display_status(misc.INFO, "Project successfully opened")
-                    log.info('MainWindow - open_project - Project successfully opened - ' +self.filename)
-                    # Setup window name
-                    self.set_title(self.filename)
-                    # Clear undo/redo stack
-                    self.stack.clear()
-                    # Set flags
-                    self.project_active = True
-                    # Save point in stack for checking change state
-                    self.stack.savepoint()
-                    # Refresh all displays
-                    self.update()
-                    return True
-                else:
-                    self.display_status(misc.ERROR, "Project could not be opened: Wrong file type selected")
-                    log.warning('MainWindow - open_project - Project could not be opened: Wrong file type selected - ' +self.filename)
-                    return False
-            except:
+        try:
+            document, pages = persistence.read_gepro(self.filename)
+        except persistence.ProjectFileError as e:
+            if 'Wrong file type' in str(e):
+                self.display_status(misc.ERROR, "Project could not be opened: Wrong file type selected")
+                log.warning('MainWindow - open_project - Project could not be opened: Wrong file type selected - ' +self.filename)
+            else:
                 log.exception("Error parsing project file - " + self.filename)
                 self.display_status(misc.ERROR, "Project could not be opened: Error opening file")
-                return False
+            return False
+        try:
+            self.project.set_model(document, pages)
+        except:
+            log.exception("Error parsing project file - " + self.filename)
+            self.display_status(misc.ERROR, "Project could not be opened: Error opening file")
+            return False
+        self.display_status(misc.INFO, "Project successfully opened")
+        log.info('MainWindow - open_project - Project successfully opened - ' +self.filename)
+        # Setup window name
+        self.set_title(self.filename)
+        # Clear undo/redo stack
+        self.stack.clear()
+        # Set flags
+        self.project_active = True
+        # Save point in stack for checking change state
+        self.stack.savepoint()
+        # Refresh all displays
+        self.update()
+        return True
                     
     ## Main Window callbacks
 
@@ -291,22 +289,8 @@ class MainWindow():
         if self.project_active is False:
             self.on_saveas(button)
         else:
-            # Parse required data objects
-            document = dict()
-            document_pages = []
-            document['_file_version'] = misc.PROJECT_FILE_VER
-            document['_files'] = []
-            
-            [proj_settings, proj_pages] = self.project.get_model()
-            document.update(proj_settings)
-            document_pages.extend(proj_pages)
-            
             # Write project file
-            with ZipFile(self.filename, 'w') as projzip:
-                for page_name, page in document_pages:
-                    projzip.writestr(page_name, json.dumps(page, indent=2))
-                    document['_files'].append(page_name)
-                projzip.writestr('document.json', json.dumps(document, indent=2))
+            persistence.save_project(self.project, self.filename)
             self.display_status(misc.INFO, "Project successfully saved")
             log.info('MainWindow - on_save -  Project successfully saved')
             self.set_title(self.filename)
@@ -557,97 +541,76 @@ class MainWindow():
     def on_run_analysis(self, widget):
 
         def exec_func(progress, settings):
-            progress.add_message('Building Base Model...')
-            progress.set_fraction(0)
-            self.project.setup_base_model()
             
-            progress.add_message('Building Power Model...')
-            progress.set_fraction(0.1)
-            self.project.build_power_model()
-            self.program_state['analysis_build_networkmodel'] = True
+            def report(fraction, message):
+                progress.add_message(message)
+                progress.set_fraction(fraction)
             
-            if settings['diagnostics']:
-                progress.add_message('Running Diagnostics...')
-                progress.set_fraction(0.2)
-                ret_code = self.project.run_diagnostics()
-                self.properties_notebook.set_current_page(2)  # Switch to messages tab
-            else:
-                ret_code = misc.OK
-            
-            if ret_code != misc.ERROR:
-                
-                if settings['powerflow']:
-                    if settings['pf_method'] in ('Power flow with diversity', 'Power flow'):
-                        progress.add_message('Running Power Flow...')
-                        progress.set_fraction(0.3)
-                        self.project.run_powerflow(settings['pf_method'])
-                        self.program_state['analysis_run_timeseries'] = True
-                    elif settings['pf_method'] == 'Time series':
-                        progress.add_message('Running Time Series Power Flow...')
-                        progress.set_fraction(0.3)
-                        self.project.run_powerflow_timeseries()
-                        self.program_state['analysis_run_timeseries'] = True
-                
-                if settings['sc_sym']:
-                    progress.add_message('Running Symmetric Short Circuit Calculation...')
-                    progress.set_fraction(0.4)
-                    self.project.run_sym_sccalc()
-                    self.program_state['analysis_run_sc_sym'] = True
-                    
-                if settings['sc_gf']:
-                    progress.add_message('Running Line to Ground Short Circuit Calculation...')
-                    progress.set_fraction(0.5)
-                    self.project.run_linetoground_sccalc()
-                    self.program_state['analysis_run_sc_lg'] = True
-                
-                progress.add_message('Updating Results...')
-                progress.set_fraction(0.6)
-                self.project.update_results()
-                
-                if settings['folder'] and settings['export']:
-                    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-                        
-                        def call_at_exit():
-                            progress.add_message('Exported Pandapower HTML Report.')
-                            progress.set_fraction(progress.get_fraction() + 0.05)
-                        filename = misc.posix_path(settings['folder'], 'network.html')
-                        call_1 = executor.submit(self.project.export_html_report, filename, call_at_exit)
-
-                        def call_at_exit():
-                            progress.add_message('Exported Element graph.')
-                            progress.set_fraction(progress.get_fraction() + 0.05)
-                        filename = misc.posix_path(settings['folder'], 'graph.html')
-                        call_2 = executor.submit(self.project.export_element_graph, filename, call_at_exit)
-                        
-                        def call_at_exit():
-                            progress.add_message('Exported pandapower network to JSON.')
-                            progress.set_fraction(progress.get_fraction() + 0.05)
-                        filename = misc.posix_path(settings['folder'], 'network.json')
-                        call_3 = executor.submit(self.project.export_json, filename, call_at_exit)
-                        
-                        def call_at_exit():
-                            progress.add_message('Exported HTML, PDF reports.')
-                            progress.set_fraction(progress.get_fraction() + 0.2)
-                        call_4 = executor.submit(self.project.export_pdf_report, settings['folder'], settings, call_at_exit)
-                        
-                        def call_at_exit():
-                            progress.add_message('Exported drawing.')
-                            progress.set_fraction(progress.get_fraction() + 0.05)
-                        filename_drg = misc.posix_path(settings['folder'], 'drawing.pdf')
-                        call_5 = executor.submit(self.project.export_drawing, filename_drg, call_at_exit)
-
-                        # Print results
-                        call_1.result()
-                        call_2.result()
-                        call_3.result()
-                        call_4.result()
-                        call_5.result()
-                
-                progress.set_fraction(1)
-                progress.add_message('<b>Analysis run Successfully</b>')
-                progress.pulse(end=True)
-            else:
+            ana_settings = analysis.AnalysisSettings(diagnostics=settings['diagnostics'],
+                                                     powerflow=settings['powerflow'],
+                                                     pf_method=settings['pf_method'],
+                                                     sc_sym=settings['sc_sym'],
+                                                     sc_gf=settings['sc_gf'])
+            result = analysis.AnalysisResult(settings=ana_settings)
+            try:
+                analysis.run_analysis(self.project, ana_settings, progress=report, result=result)
+            except analysis.AnalysisError:
                 raise RuntimeError("Diagnostics run returned critical errors. Please see <i>Messages</i> pane.")
+            finally:
+                # Steps completed before any error enable the rules check as before
+                if result.build_networkmodel:
+                    self.program_state['analysis_build_networkmodel'] = True
+                if result.run_powerflow:
+                    self.program_state['analysis_run_timeseries'] = True
+                if result.run_sc_sym:
+                    self.program_state['analysis_run_sc_sym'] = True
+                if result.run_sc_lg:
+                    self.program_state['analysis_run_sc_lg'] = True
+                if settings['diagnostics'] and result.diagnostics_ret_code is not None:
+                    self.properties_notebook.set_current_page(2)  # Switch to messages tab
+
+            if settings['folder'] and settings['export']:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+                        
+                    def call_at_exit():
+                        progress.add_message('Exported Pandapower HTML Report.')
+                        progress.set_fraction(progress.get_fraction() + 0.05)
+                    filename = misc.posix_path(settings['folder'], 'network.html')
+                    call_1 = executor.submit(self.project.export_html_report, filename, call_at_exit)
+
+                    def call_at_exit():
+                        progress.add_message('Exported Element graph.')
+                        progress.set_fraction(progress.get_fraction() + 0.05)
+                    filename = misc.posix_path(settings['folder'], 'graph.html')
+                    call_2 = executor.submit(self.project.export_element_graph, filename, call_at_exit)
+                        
+                    def call_at_exit():
+                        progress.add_message('Exported pandapower network to JSON.')
+                        progress.set_fraction(progress.get_fraction() + 0.05)
+                    filename = misc.posix_path(settings['folder'], 'network.json')
+                    call_3 = executor.submit(self.project.export_json, filename, call_at_exit)
+                        
+                    def call_at_exit():
+                        progress.add_message('Exported HTML, PDF reports.')
+                        progress.set_fraction(progress.get_fraction() + 0.2)
+                    call_4 = executor.submit(self.project.export_pdf_report, settings['folder'], settings, call_at_exit)
+                        
+                    def call_at_exit():
+                        progress.add_message('Exported drawing.')
+                        progress.set_fraction(progress.get_fraction() + 0.05)
+                    filename_drg = misc.posix_path(settings['folder'], 'drawing.pdf')
+                    call_5 = executor.submit(self.project.export_drawing, filename_drg, call_at_exit)
+
+                    # Print results
+                    call_1.result()
+                    call_2.result()
+                    call_3.result()
+                    call_4.result()
+                    call_5.result()
+                
+            progress.set_fraction(1)
+            progress.add_message('<b>Analysis run Successfully</b>')
+            progress.pulse(end=True)
         
         if self.filename:
             ana_folder_path = misc.dir_from_path(self.filename)
@@ -1034,7 +997,7 @@ class MainWindow():
         # Setup ProjectView
         self.program_state['project_settings_main'] = None  # Updated inside ProjectModel constructor
         self.program_state['project_settings'] = None  # Updated inside ProjectModel constructor
-        self.project = ProjectModel(self.window, self.program_state)
+        self.project = GtkProjectModel(self.window, self.program_state)
         self.program_state['project'] = self.project
         self.program_state['analysis_build_networkmodel'] = False
         self.program_state['analysis_run_timeseries'] = False
