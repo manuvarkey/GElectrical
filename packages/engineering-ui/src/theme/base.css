@@ -1,0 +1,43 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * Copyright (c) 2026 Manu Varkey
+ *
+ * Base rules shared by EngineeringUI components.
+ */
+.eui-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.eui-icon {
+  flex-shrink: 0;
+  color: inherit;
+}
+button:disabled .eui-icon,
+[aria-disabled="true"] .eui-icon {
+  --eui-icon-accent: currentColor;
+}
+
+.eui-plain-button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.eui-plain-button:disabled {
+  cursor: default;
+}
+.eui-plain-button:focus-visible {
+  outline: var(--eui-focus-width) solid var(--eui-focus-ring);
+  outline-offset: 1px;
+}

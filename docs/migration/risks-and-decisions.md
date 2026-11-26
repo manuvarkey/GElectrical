@@ -80,6 +80,8 @@ dependencies (`npm ls --all --json` and `pixi list` in CI with a licence check).
 | Vue 3, Vite, Quasar 2 | MIT | Yes |
 | TypeScript | Apache-2.0 | Yes |
 | Storybook and addons | MIT | Yes |
+| axe-core (Storybook a11y addon, development only) | MPL-2.0 | Yes (not distributed) |
+| lightningcss (Vite CSS, development only) | MPL-2.0 | Yes (not distributed) |
 | Tabulator | MIT | Yes |
 | Apache ECharts | Apache-2.0 | Yes (GPL-3.0, not GPL-2.0-only) |
 | maxGraph | Apache-2.0 | Yes |

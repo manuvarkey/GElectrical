@@ -1,0 +1,164 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * Copyright (c) 2026 Manu Varkey
+ * Adapted from GEstimator modern/src/theme.css at e4e4fb295899feda5253ba216613c70c1f256d4e
+ *
+ * Semantic EngineeringUI tokens. Open Planner Studio / OpenAEC tokens are a
+ * visual reference only. Components use these custom properties and never
+ * literal colours or sizes. Light is the default; `data-theme="dark"` on the
+ * root element switches to dark (see useTheme()).
+ */
+:root {
+  /* Typography: platform fonts unless the host overrides them. */
+  --eui-font-family: system-ui, sans-serif;
+  --eui-font-size: 13px;
+  --eui-font-size-small: 0.9em;
+  --eui-font-size-caption: 0.75em;
+  --eui-font-size-heading: 1.1em;
+  --eui-table-font-family: var(--eui-font-family);
+  --eui-table-font-size: var(--eui-font-size);
+  --eui-mono-font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", monospace;
+  --eui-line-height: 1.35;
+
+  /* Spacing, sizes and radii: compact desktop density. */
+  --eui-space-1: 2px;
+  --eui-space-2: 4px;
+  --eui-space-3: 6px;
+  --eui-space-4: 8px;
+  --eui-space-5: 12px;
+  --eui-space-6: 16px;
+  --eui-control-height: 26px;
+  --eui-row-height: 24px;
+  --eui-icon-size: 18px;
+  --eui-icon-size-large: 24px;
+  --eui-radius: 4px;
+  --eui-radius-large: 6px;
+  --eui-border-width: 1px;
+  --eui-focus-width: 2px;
+  --eui-rail-width: 48px;
+  --eui-statusbar-height: 24px;
+  --eui-splitter-size: 5px;
+
+  /* Surfaces. */
+  --eui-frame: #f4f4f5;
+  --eui-panel: #ffffff;
+  --eui-raised: #ffffff;
+  --eui-field: #ffffff;
+  --eui-workspace: #ffffff;
+  --eui-hover: #f0f0f2;
+
+  /* Text and lines. */
+  --eui-text: #2a2a31;
+  --eui-text-muted: #5f5f65;
+  --eui-text-hint: #66666c;
+  --eui-text-disabled: #8a8a90;
+  --eui-on-accent: #1c1917;
+  --eui-on-strong: #ffffff;
+  --eui-border: #c9c9cf;
+  --eui-border-soft: #e4e4e7;
+
+  /* Accent: warm amber for selection and focus emphasis. */
+  --eui-accent: #92400e;
+  --eui-accent-fill: #d97706;
+  --eui-accent-soft: #fbf1e6;
+  --eui-icon: #5f5f65;
+  --eui-icon-accent: #b45309;
+  --eui-selection: #fde7c8;
+  --eui-focus-ring: #b45309;
+
+  /* Semantic states (always shown with a text label too). */
+  --eui-success: #166534;
+  --eui-success-soft: #e8f5ec;
+  --eui-warning: #854d0e;
+  --eui-warning-soft: #fdf4dc;
+  --eui-danger: #b91c1c;
+  --eui-danger-soft: #fdecec;
+  --eui-info: #1d4ed8;
+  --eui-info-soft: #e8effd;
+
+  /* Schematic colours (screen); PDF output uses print colours. */
+  --eui-schematic-background: #ffffff;
+  --eui-schematic-normal: #1f2937;
+  --eui-schematic-inactive: #9ca3af;
+  --eui-schematic-selected: #d97706;
+  --eui-schematic-warning: #dc2626;
+  --eui-schematic-grid: #e5e7eb;
+  --eui-schematic-overlay: #2563eb;
+
+  /* Chart palette. */
+  --eui-chart-1: #2563eb;
+  --eui-chart-2: #d97706;
+  --eui-chart-3: #16a34a;
+  --eui-chart-4: #7c3aed;
+  --eui-chart-5: #db2777;
+  --eui-chart-6: #0891b2;
+
+  /* Document tile colours (white text meets WCAG AA on each). */
+  --eui-doc-1: #b45309;
+  --eui-doc-2: #1d4ed8;
+  --eui-doc-3: #15803d;
+  --eui-doc-4: #6d28d9;
+  --eui-doc-5: #be185d;
+  --eui-doc-6: #0e7490;
+  --eui-doc-7: #a16207;
+  --eui-doc-8: #0f766e;
+
+  --eui-shadow: 0 8px 32px #27364b33;
+  --eui-backdrop: #18181b66;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --eui-frame: #2a2a32;
+  --eui-panel: #33333c;
+  --eui-raised: #3b3b45;
+  --eui-field: #2c2c34;
+  --eui-workspace: #26262d;
+  --eui-hover: #41414b;
+
+  --eui-text: #edebe8;
+  --eui-text-muted: #bebdbd;
+  --eui-text-hint: #a7a7a8;
+  --eui-text-disabled: #85858c;
+  --eui-on-accent: #1c1917;
+  --eui-border: #5a5a64;
+  --eui-border-soft: #3d3d46;
+
+  --eui-accent: #fbbf24;
+  --eui-accent-fill: #d97706;
+  --eui-accent-soft: #513f32;
+  --eui-icon: #bebdbd;
+  --eui-icon-accent: #f59e0b;
+  --eui-selection: #5b4630;
+  --eui-focus-ring: #fbbf24;
+
+  --eui-success: #4ade80;
+  --eui-success-soft: #1f3a2a;
+  --eui-warning: #facc15;
+  --eui-warning-soft: #3d3420;
+  --eui-danger: #fca5a5;
+  --eui-danger-soft: #45282b;
+  --eui-info: #93c5fd;
+  --eui-info-soft: #253248;
+
+  --eui-schematic-background: #1f1f25;
+  --eui-schematic-normal: #e5e7eb;
+  --eui-schematic-inactive: #6b7280;
+  --eui-schematic-selected: #fbbf24;
+  --eui-schematic-warning: #f87171;
+  --eui-schematic-grid: #34343c;
+  --eui-schematic-overlay: #60a5fa;
+
+  --eui-chart-1: #60a5fa;
+  --eui-chart-2: #fbbf24;
+  --eui-chart-3: #4ade80;
+  --eui-chart-4: #a78bfa;
+  --eui-chart-5: #f472b6;
+  --eui-chart-6: #22d3ee;
+
+  --eui-shadow: 0 16px 70px #00000088;
+  --eui-backdrop: #00000080;
+
+  color-scheme: dark;
+}

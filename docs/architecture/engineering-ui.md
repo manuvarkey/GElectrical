@@ -1,6 +1,9 @@
 # EngineeringUI
 
-Status: **proposed** (Phase 1). Package rules for contributors are in
+Status: **current** for the M6 foundation (theme, icons, navigation,
+workspace, `EuiDialog`, `EuiNumberInput`, `EuiPropertyInspector`, Storybook);
+**proposed** for the rest (data grid, charts, drawing, further controls).
+Package rules for contributors are in
 [packages/engineering-ui/AGENTS.md](../../packages/engineering-ui/AGENTS.md).
 Navigation: [index](../README.md) · [frontend](frontend.md) ·
 [UI guidelines](../ui-guidelines.md) · [ADR 0012](../decisions/0012-engineering-ui-package.md).
@@ -60,14 +63,17 @@ Subpath exports keep heavy dependencies optional:
 | Import path | Peer dependencies |
 | --- | --- |
 | `@kavilgroup/engineering-ui` | `vue` |
-| `@kavilgroup/engineering-ui/theme`, `@kavilgroup/engineering-ui/icons` | `vue` |
-| `@kavilgroup/engineering-ui/controls`, `/dialogs`, `/navigation`, `/workspace`, `/inspectors` | `vue`, `quasar` |
+| `@kavilgroup/engineering-ui/theme`, `@kavilgroup/engineering-ui/icons`, `/composables` | `vue` |
+| `@kavilgroup/engineering-ui/navigation`, `/workspace` | `vue` (toolkit-independent since M6) |
+| `@kavilgroup/engineering-ui/controls`, `/dialogs`, `/inspectors` | `vue`, `quasar` |
 | `@kavilgroup/engineering-ui/datagrid` | `vue`, `tabulator-tables` |
 | `@kavilgroup/engineering-ui/charts` | `vue`, `echarts` |
 | `@kavilgroup/engineering-ui/drawing` | `vue`; `@maxgraph/core` only in its maxGraph adapter subpath |
 
 Peer dependencies are declared as optional where a subpath does not need them.
-A host that never imports `charts` never loads ECharts.
+A host that never imports `charts` never loads ECharts. The global stylesheet
+is `@kavilgroup/engineering-ui/style.css`; exports carry a `source` condition
+for development inside the workspace ([ADR 0017](../decisions/0017-frontend-workspace-build.md)).
 
 ## 3. Component API conventions
 
@@ -145,6 +151,15 @@ Its tokens and two-tone icon grammar inform the theme; no code or B2 artwork
 - Storybook MCP integration for AI-assisted component discovery is evaluated as
   an optional development aid only (milestone M6); it must not become a build
   or runtime dependency.
+- *M6 outcome (current):* `@storybook/addon-mcp` 10.6.9 (MIT) lists `vue3` as a
+  supported framework and needs `@storybook/addon-vitest`, which is installed.
+  Its story-writing, preview and test tools work with any framework; its
+  component-documentation tools need a components manifest, which
+  `@storybook/vue3-vite` produces only with the experimental
+  `experimentalDocgenServer` feature (default from Storybook 11). Not adopted:
+  it would add an HTTP endpoint to the Storybook dev server for a benefit that
+  the stories and type declarations already give. Revisit after Storybook 11.
+  The evaluation read the package metadata and code; the addon was not run.
 
 ## 8. Extraction strategy
 

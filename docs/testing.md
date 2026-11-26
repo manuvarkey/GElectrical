@@ -5,7 +5,7 @@ Navigation: [documentation index](README.md) · [regression baseline](migration/
 
 Status: section 1 is **current**; sections 2–6 are **proposed** and are created
 by the milestones noted (the regression baseline layer and `quality.yml` exist
-since M1).
+since M1; the frontend Vitest and Storybook layers since M6).
 
 ## 1. Current checks
 
@@ -13,7 +13,12 @@ since M1).
 | --- | --- | --- |
 | Smoke test | `pixi run smoke` (`--keep` to inspect outputs; pass `.gepro` paths to limit) | Opens each sample, runs diagnostics, PF, both SC, rules check, exports JSON/report/drawing. Needs a display (`xvfb-run` on Linux) |
 | Regression baseline | `xvfb-run -a pixi run -e test test` | Captures every sample and coverage project with the legacy code and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)); about 4 minutes |
-| CI | `.github/workflows/quality.yml` | Linux: smoke + baseline under `xvfb-run`; Windows: smoke |
+| Frontend (all) | `npm run check` | Prettier, dependency boundary, licences, tool tests, `vue-tsc`, Vitest, library and app builds |
+| EngineeringUI tests | `npm test -w @kavilgroup/engineering-ui` | Vitest projects `unit` (happy-dom) and `storybook` (every story in Chromium via Playwright: play functions plus axe; any violation fails). Needs `npx playwright install chromium-headless-shell` once |
+| App shell tests | `npm test -w gelectrical-modern` | Vitest component tests with mock data |
+| Dependency boundary | `npm run check:boundaries` | EngineeringUI imports nothing outside its package, no app code or Tauri; root/theme/icons/composables never reach Quasar |
+| Storybook build | `npm run build-storybook` | Static Storybook in `packages/engineering-ui/storybook-static/` |
+| CI | `.github/workflows/quality.yml` | Linux: smoke + baseline under `xvfb-run`; Windows: smoke; Linux: frontend job (all npm checks + Storybook build) |
 | Manual UI | `pixi run start [file.gepro]` | Exercise the change by hand |
 | Calculation changes | Compare before/after on `sample_files/` | State what moved and why |
 

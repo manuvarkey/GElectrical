@@ -24,8 +24,12 @@ how to follow them.
   conda-forge (pandapower, [ADR 0015](decisions/0015-python-and-pandapower-versions.md)).
   Target Python 3.14 from M1b. Keep legacy pins (`requirements.txt`,
   `setup.py`) in sync while they exist.
-- JavaScript (from M6): Node.js LTS with npm; `npm ci` at the repository root
-  installs all workspaces. Commit `package-lock.json`.
+- JavaScript (current since M6): Node.js 24 LTS (`.nvmrc`) with npm; `npm ci`
+  at the repository root installs all workspaces (`modern`, `packages/*`).
+  Dependencies are pinned to exact versions (`.npmrc` `save-exact=true`);
+  only peer dependencies use ranges. New dependencies must have a licence that
+  `npm run check:licences` accepts (MIT-compatible for EngineeringUI). Commit
+  `package-lock.json`. `npm run check` runs all frontend checks.
 - Rust (from M5): stable toolchain via rustup; commit `Cargo.lock`.
 
 ## 3. Keep changes in their layer
