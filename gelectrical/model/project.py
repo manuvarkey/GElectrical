@@ -32,9 +32,9 @@ from weasyprint import HTML, CSS
 from .. import misc
 from ..misc import undoable, group
 from .drawing import DrawingModel
-from ..view.drawing import DrawingView
-from ..view.graph import GraphViewDialog, GraphImage
-from ..view.protection import ProtectionViewDialog
+from ..gtk.view.drawing import DrawingView
+from ..gtk.view.graph import GraphViewDialog, GraphImage
+from ..gtk.view.protection import ProtectionViewDialog
 from .networkmodel import NetworkModel
 from .pandapower import PandaPowerModel
 from .rulescheck import electrical_rules_check

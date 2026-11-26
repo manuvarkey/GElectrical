@@ -3,9 +3,9 @@
 block_cipher = None
 
 added_files = [
-         ( 'gelectrical/interface/*.glade', 'gelectrical/interface' ),
-		 ( 'gelectrical/interface/*.ui', 'gelectrical/interface' ),
-         ( 'gelectrical/interface/*.png', 'gelectrical/interface' ),
+         ( 'gelectrical/gtk/interface/*.glade', 'gelectrical/gtk/interface' ),
+		 ( 'gelectrical/gtk/interface/*.ui', 'gelectrical/gtk/interface' ),
+         ( 'gelectrical/gtk/interface/*.png', 'gelectrical/gtk/interface' ),
          ( 'gelectrical/database/*.csv', 'gelectrical/database' ),
          ( 'gelectrical/database/acb_legrand/*.json', 'gelectrical/database/acb_legrand' ),
          ( 'gelectrical/database/acb_lnt/*.json', 'gelectrical/database/acb_lnt' ),

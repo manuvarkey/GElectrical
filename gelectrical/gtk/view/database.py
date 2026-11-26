@@ -27,8 +27,8 @@ from gi.repository import Gtk, Gdk, GLib
 import numpy as np
 
 # local files import
-from .. import misc
-from ..misc import undoable, group
+from ... import misc
+from ...misc import undoable, group
 
 # Get logger object
 log = logging.getLogger(__name__)

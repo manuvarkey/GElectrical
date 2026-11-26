@@ -378,7 +378,7 @@ class SpreadsheetDialog:
 
         # Setup dialog window
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(abs_path("interface","spreadsheetdialog.glade"))
+        self.builder.add_from_file(abs_path("gtk", "interface","spreadsheetdialog.glade"))
         self.window = self.builder.get_object("dialog")
         self.window.set_transient_for(self.parent)
         self.window.set_default_size(1100,600)
@@ -1523,7 +1523,7 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                 graph_fields = ''
                 # Add graphimage
                 if insert_graph:
-                    from .view.graph import GraphImage
+                    from .gtk.view.graph import GraphImage
                     xlim, ylim, xlabel, ylabel, graph_params = field['graph_options']
                     title = field['value']['graph_model'][0]
                     graph_models = field['value']['graph_model'][1]
@@ -1554,7 +1554,7 @@ def fields_to_table(fields, insert_image=True, insert_graph=True):
                 else:
                     title = field['value'][0]
                     if insert_graph:
-                        from .view.graph import GraphImage
+                        from .gtk.view.graph import GraphImage
                         xlim, ylim, xlabel, ylabel, graph_params = field['graph_options']
                         graph_models = field['value'][1]
                         graph_image = GraphImage(xlim, ylim, title, xlabel, ylabel, graph_params)

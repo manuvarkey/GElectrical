@@ -26,7 +26,7 @@ import pickle, codecs, os.path, copy, logging
 from gi.repository import Gtk, Gdk, GLib, Pango
 
 # local files import
-from .. import misc
+from ... import misc
 
 # Setup logger object
 log = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ class AnalysisSettingsDialog:
     def __init__(self, parent, ana_settings, library_dir=None):
 
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(misc.abs_path("interface", "analysissettings.glade"))
+        self.builder.add_from_file(misc.abs_path("gtk", "interface", "analysissettings.glade"))
         self.dialog = self.builder.get_object("settings_dialog")
         self.dialog.set_transient_for(parent)
         self.dialog.set_modal(True)

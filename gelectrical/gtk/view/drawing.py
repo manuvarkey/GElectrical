@@ -27,8 +27,8 @@ from gi.repository import Gtk, Gdk, GLib
 import cairo
 
 # local files import
-from .. import misc
-from ..misc import undoable, group
+from ... import misc
+from ...misc import undoable, group
 from .graph import GraphView
 
 # Get logger object
@@ -594,7 +594,7 @@ class DrawingSelectionDialog:
         
         # Setup GUI objects
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(misc.abs_path("interface", "drawingselectiondialog.glade"))
+        self.builder.add_from_file(misc.abs_path("gtk", "interface", "drawingselectiondialog.glade"))
         self.dialog = self.builder.get_object("selection_dialog")
         self.dialog.set_resizable(True)
         self.dialog.set_default_size(int(misc.WINDOW_WIDTH*0.9),int(misc.WINDOW_HEIGHT*0.9))

@@ -28,8 +28,8 @@ from gi.repository import Gtk, Gdk, GLib
 import cairo
 
 # local files import
-from .. import misc
-from ..model.graph import GraphModel
+from ... import misc
+from ...model.graph import GraphModel
 from .database import DatabaseView
 
 from matplotlib.backends.backend_gtk3agg import FigureCanvas
@@ -349,7 +349,7 @@ class GraphViewDialog():
         
         # Setup widgets
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(misc.abs_path("interface", "loadprofileeditor.glade"))
+        self.builder.add_from_file(misc.abs_path("gtk", "interface", "loadprofileeditor.glade"))
         self.builder.connect_signals(self)
         self.dialog_window = self.builder.get_object("dialog_window")
         self.dialog_window.set_title(window_caption)
