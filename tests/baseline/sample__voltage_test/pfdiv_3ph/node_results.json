@@ -320,7 +320,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.12971294643972223
+   "value": 0.1297129464397222
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -336,7 +336,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.4456023725060739
+   "value": 0.4456023725060738
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -368,7 +368,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.642780456996192
+   "value": 0.6427804569961919
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -772,7 +772,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.7944575411970451
+   "value": 0.7944575411970453
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -788,7 +788,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.5632331639550583
+   "value": 2.563233163955059
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -804,7 +804,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 1.5620052612823006
+   "value": 1.562005261282301
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -820,7 +820,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 3.69882727614845
+   "value": 3.6988272761484513
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -998,7 +998,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.12971294643972223
+   "value": 0.1297129464397222
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1014,7 +1014,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.4456023725060739
+   "value": 0.4456023725060738
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1046,7 +1046,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.642780456996192
+   "value": 0.6427804569961919
   },
   "unbalance_perc": {
    "alter_structure": false,

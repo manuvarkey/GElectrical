@@ -112,7 +112,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 7.8729582162221705
+   "value": 7.872958216222168
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -144,7 +144,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 7.872958216222171
+   "value": 7.87295821622217
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -292,7 +292,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 7.8729582162221705
+   "value": 7.872958216222168
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -324,7 +324,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 7.872958216222171
+   "value": 7.87295821622217
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -456,7 +456,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.146455035806671
+   "value": 15.14645503580668
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -472,7 +472,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.502353210639836
+   "value": 13.10539564820571
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -488,7 +488,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 14.479327279063058
+   "value": 14.47932727906307
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -504,7 +504,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.780463108745927
+   "value": 12.41169728563158
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -520,7 +520,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 30.594387207540485
+   "value": 30.594387207540496
   },
   "vn_kv": {
    "alter_structure": false,
@@ -636,7 +636,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.146455035806671
+   "value": 15.14645503580668
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -652,7 +652,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.502353210639836
+   "value": 13.10539564820571
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -668,7 +668,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 14.479327279063058
+   "value": 14.47932727906307
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -684,7 +684,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.780463108745927
+   "value": 12.41169728563158
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -700,7 +700,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 30.594387207540485
+   "value": 30.594387207540496
   },
   "vn_kv": {
    "alter_structure": false,
@@ -816,7 +816,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 7.710096256355371
+   "value": 7.7100962563553725
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -832,7 +832,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.710448211617541
+   "value": 6.612396665616204
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -848,7 +848,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 11.925904179897296
+   "value": 11.9259041798973
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -864,7 +864,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 10.296699867545254
+   "value": 10.058841441098624
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -996,7 +996,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.146455035806671
+   "value": 15.14645503580668
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1012,7 +1012,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.502353210639836
+   "value": 13.10539564820571
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1028,7 +1028,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 14.479327279063058
+   "value": 14.47932727906307
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1044,7 +1044,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.780463108745927
+   "value": 12.41169728563158
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1060,7 +1060,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 30.594387207540485
+   "value": 30.594387207540496
   },
   "vn_kv": {
    "alter_structure": false,
@@ -1176,7 +1176,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 11.674618062826259
+   "value": 11.674618062826266
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1192,7 +1192,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 10.061757319985958
+   "value": 9.845254646031313
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1208,7 +1208,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 11.256387545496873
+   "value": 11.256387545496876
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1224,7 +1224,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 9.610458262146642
+   "value": 9.404624250614646
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1240,7 +1240,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 21.11724612552218
+   "value": 21.117246125522186
   },
   "vn_kv": {
    "alter_structure": false,
@@ -1356,7 +1356,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.146455035806671
+   "value": 15.14645503580668
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1372,7 +1372,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.502353210639836
+   "value": 13.10539564820571
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1388,7 +1388,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 14.479327279063058
+   "value": 14.47932727906307
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1404,7 +1404,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.780463108745927
+   "value": 12.41169728563158
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1420,7 +1420,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 30.594387207540485
+   "value": 30.594387207540496
   },
   "vn_kv": {
    "alter_structure": false,
@@ -1536,7 +1536,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.193758669028509
+   "value": 2.1937586690285094
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1552,7 +1552,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 1.3093020277724396
+   "value": 1.3079197960534845
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1568,7 +1568,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.047696024513854
+   "value": 4.047696024513856
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1584,7 +1584,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.4960078010209488
+   "value": 2.4890336805155515
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1600,7 +1600,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 5.841191575824899
+   "value": 5.841191575824902
   },
   "vn_kv": {
    "alter_structure": false,
@@ -1716,7 +1716,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.146455035806671
+   "value": 15.14645503580668
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1732,7 +1732,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.502353210639836
+   "value": 13.10539564820571
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1748,7 +1748,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 14.479327279063058
+   "value": 14.47932727906307
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1764,7 +1764,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.780463108745927
+   "value": 12.41169728563158
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1780,7 +1780,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 30.594387207540485
+   "value": 30.594387207540496
   },
   "vn_kv": {
    "alter_structure": false,
@@ -1896,7 +1896,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 5.69647368886948
+   "value": 5.696473688869482
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1912,7 +1912,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 3.6261295578366193
+   "value": 3.6110600887900066
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1928,7 +1928,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 8.682707460976134
+   "value": 8.682707460976138
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1944,7 +1944,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.078862869768963
+   "value": 6.018409855699605
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1960,7 +1960,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.889086820812556
+   "value": 12.889086820812562
   },
   "vn_kv": {
    "alter_structure": false,
@@ -2076,7 +2076,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.146455035806671
+   "value": 15.14645503580668
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -2092,7 +2092,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.502353210639836
+   "value": 13.10539564820571
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -2108,7 +2108,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 14.479327279063058
+   "value": 14.47932727906307
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -2124,7 +2124,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.780463108745927
+   "value": 12.41169728563158
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -2140,7 +2140,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 30.594387207540485
+   "value": 30.594387207540496
   },
   "vn_kv": {
    "alter_structure": false,
@@ -2272,7 +2272,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 1.5603152843968042
+   "value": 1.5582600084514668
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -2288,7 +2288,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.70125592708853
+   "value": 4.701255927088533
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -2304,7 +2304,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.939864930592479
+   "value": 2.9296009877663045
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -2320,7 +2320,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.789029389218558
+   "value": 6.789029389218563
   },
   "vn_kv": {
    "alter_structure": false,
@@ -2436,7 +2436,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.146455035806671
+   "value": 15.14645503580668
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -2452,7 +2452,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.502353210639836
+   "value": 13.10539564820571
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -2468,7 +2468,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 14.479327279063058
+   "value": 14.47932727906307
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -2484,7 +2484,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 12.780463108745927
+   "value": 12.41169728563158
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -2500,7 +2500,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 30.594387207540485
+   "value": 30.594387207540496
   },
   "vn_kv": {
    "alter_structure": false,
@@ -2616,7 +2616,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 1.0821289987102014
+   "value": 1.0821289987102016
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -2632,7 +2632,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.6622353595734343
+   "value": 0.6615822160039003
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -2664,7 +2664,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.7802288459695942
+   "value": 0.7795069772988453
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,

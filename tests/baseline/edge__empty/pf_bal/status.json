@@ -25,7 +25,25 @@
  "warnings": [
   "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations",
   "RuntimeWarning: invalid value encountered in scalar divide",
-  "pandapower.diagnostic: Overload check failed: max() iterable argument is empty",
-  "pandapower.diagnostic: Switch check failed: max() iterable argument is empty"
+  "pandapower.diagnostic.diagnostic_helpers: \n\n--------------- END OF PANDAPOWER DIAGNOSTIC ---------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \n\n---------------- PANDAPOWER DIAGNOSTIC TOOL ----------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \n------------------------------------------------------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: Check for convergence error failed due to the following error:",
+  "pandapower.diagnostic.diagnostic_helpers: Check for overload failed due to the following error:",
+  "pandapower.diagnostic.diagnostic_helpers: Check for subnets error failed due to the following error:",
+  "pandapower.diagnostic.diagnostic_helpers: Checking if there is at least one external grid...\n",
+  "pandapower.diagnostic.diagnostic_helpers: Continuous bus index calculation failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: Continuous bus index failed due to the following error:",
+  "pandapower.diagnostic.diagnostic_helpers: Line capacitance check failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: Line reactance check failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: Line resistance check failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: No ext_grid found. There has to be at least one ext_grid!",
+  "pandapower.diagnostic.diagnostic_helpers: Optimistic calculation on failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: Overload check failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: Switch check failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: numba_comparison failed due to the following error:",
+  "pandapower.diagnostic.diagnostic_helpers: rundcpp failed: max() iterable argument is empty",
+  "pandapower.diagnostic.diagnostic_helpers: voltage_depend_loads check failed: max() iterable argument is empty"
  ]
 }

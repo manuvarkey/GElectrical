@@ -707,7 +707,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.529896820380738
+   "value": 4.530852488748483
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -723,7 +723,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 5.028358639605924
+   "value": 5.028358639605926
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -739,7 +739,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.263334549161686
+   "value": 4.039922350265576
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -755,7 +755,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 7.2950475927793805
+   "value": 7.295047592779385
   },
   "vn_kv": {
    "alter_structure": false,
@@ -835,7 +835,7 @@
    "status_inactivate": true,
    "type": "str",
    "unit": "Ohm",
-   "value": "0.0503 + j0.0178"
+   "value": "0.0503 + j0.0177"
   },
   "zk_ohm_max": {
    "alter_structure": false,
@@ -867,7 +867,7 @@
    "status_inactivate": true,
    "type": "str",
    "unit": "Ohm",
-   "value": "0.0503 + j0.0178"
+   "value": "0.0503 + j0.0177"
   }
  },
  "0,3": {

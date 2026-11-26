@@ -1,5 +1,5 @@
 {
- "completed": false,
+ "completed": true,
  "diagnostics_ret_code": -2,
  "file_settings_mode": false,
  "pf_method": "Power flow with diversity",
@@ -18,23 +18,35 @@
    "step": "run_diagnostics"
   },
   {
-   "error": "KeyError: 'res_gen_3ph'",
-   "ok": false,
+   "ok": true,
    "step": "run_powerflow"
+  },
+  {
+   "ok": true,
+   "step": "run_sym_sccalc"
+  },
+  {
+   "ok": true,
+   "step": "run_linetoground_sccalc"
+  },
+  {
+   "ok": true,
+   "step": "update_results"
+  },
+  {
+   "ok": true,
+   "step": "run_rulescheck"
   }
  ],
- "traceback": [
-  "<ROOT>/gelectrical/model/project.py:run_powerflow",
-  "<ROOT>/gelectrical/model/pandapower.py:run_powerflow",
-  "pandapower/pf/runpp_3ph.py:runpp_3ph",
-  "pandapower/results.py:_extract_results_3ph",
-  "pandapower/results_gen.py:_get_gen_results_3ph",
-  "pandapower/results_gen.py:_get_pp_gen_results_3ph",
-  "pandapower/results_gen.py:_get_p_q_gen_results_3ph",
-  "KeyError: 'res_gen_3ph'"
- ],
  "warnings": [
-  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
-  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+  "MatrixRankWarning: Matrix is exactly singular",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations",
+  "RuntimeWarning: invalid value encountered in divide",
+  "pandapower.diagnostic.diagnostic_helpers: \n\n--------------- END OF PANDAPOWER DIAGNOSTIC ---------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \n\n---------------- PANDAPOWER DIAGNOSTIC TOOL ----------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \n------------------------------------------------------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \nSUMMARY: 1 bus(ses) with multiple gens and/or ext_grids found.",
+  "pandapower.diagnostic.diagnostic_helpers: Checking for multiple gens and/or external grids per bus...\n",
+  "pandapower.diagnostic.diagnostic_helpers: Generator(s) [0] and external grid(s) [0] are connected to bus 0. Only one generator OR one external grid per bus is allowed."
  ]
 }

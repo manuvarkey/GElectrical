@@ -1,4 +1,5 @@
 {
+ "baseline_reason": "M1b: Python 3.14 / pandapower 3.5.6 / WeasyPrint 70.0; differences approved by owner 2026-11-26, see docs/migration/validation.md (2026-11-26 M1b entry)",
  "dark_mode": false,
  "drawing_dpi": 150,
  "fonts": {
@@ -22,14 +23,14 @@
   "matplotlib": "3.11.2",
   "networkx": "3.7",
   "numba": "0.68.1",
-  "numpy": "2.2.6",
-  "pandapower": "3.2.1",
+  "numpy": "2.4.6",
+  "pandapower": "3.5.6",
   "pandas": "2.3.3",
-  "scipy": "1.13.1",
+  "scipy": "1.18.1",
   "shapely": "2.2.0",
-  "weasyprint": "69.0"
+  "weasyprint": "70.0"
  },
- "pixi_lock_sha256": "ec800970db191d4800b3637150bf2d8c9bf04c3a1ce7e7d6152d7ae3661902a5",
+ "pixi_lock_sha256": "a8c1eda3dd45d1c4b2133fc339b09355792f0eae2a05f8f532411687df916939",
  "platform": "Linux-7.0.0-44-generic-x86_64-with-glibc2.43",
  "program_version": "1",
  "project_file_version": "GELECTRICAL_FILE_REFERENCE_VER_0",
@@ -53,7 +54,7 @@
   "sample__voltage_test"
  ],
  "pygobject": "3.58.1",
- "python": "3.12.16",
+ "python": "3.14.10",
  "registered_element_codes": [
   "element_asymmetric_load",
   "element_async_motor_1ph",

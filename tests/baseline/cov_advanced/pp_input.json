@@ -16,6 +16,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0017999999999999995,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.003,
      "type": "wye"
     },
@@ -31,6 +34,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.001,
      "type": "wye"
     }
@@ -360,7 +366,7 @@
      "name": "Z3",
      "p_mw": 0.005,
      "q_mvar": 0.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 0.415
     },
@@ -373,7 +379,7 @@
      "name": "C4",
      "p_mw": 0.0,
      "q_mvar": -0.005,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 0.415
     }
@@ -532,6 +538,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0017999999999999995,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.003,
      "type": "wye"
     },
@@ -547,6 +556,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.001,
      "type": "wye"
     }
@@ -876,7 +888,7 @@
      "name": "Z3",
      "p_mw": 0.005,
      "q_mvar": 0.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 0.415
     },
@@ -889,7 +901,7 @@
      "name": "C4",
      "p_mw": 0.0,
      "q_mvar": -0.005,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 0.415
     }
@@ -1048,6 +1060,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0017999999999999995,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.003,
      "type": "wye"
     },
@@ -1063,6 +1078,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.001,
      "type": "wye"
     }
@@ -1385,7 +1403,7 @@
      "name": "Z3",
      "p_mw": 0.005,
      "q_mvar": 0.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 0.415
     },
@@ -1398,7 +1416,7 @@
      "name": "C4",
      "p_mw": 0.0,
      "q_mvar": -0.005,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 0.415
     }

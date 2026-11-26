@@ -1184,7 +1184,7 @@ Nodes
 | 0.415
 | 0.02
 | 5.02
-| 4.25
+| 4.03
 | 7.28
 | 5.02
 | 4.51
@@ -1192,7 +1192,7 @@ Nodes
 | 0.415
 | 0.02
 | 0.43
-| 0.24
+| 0.23
 | 0.62
 | 0.22
 | 0.13
@@ -1200,7 +1200,7 @@ Nodes
 | 0.415
 | 3.25
 | 1.85
-| 1.18
+| 1.12
 | 2.67
 | 1.13
 | 0.72
@@ -1208,7 +1208,7 @@ Nodes
 | 0.415
 | 0.02
 | 5.03
-| 4.26
+| 4.04
 | 7.3
 | 5.04
 | 4.53
@@ -1216,7 +1216,7 @@ Nodes
 | 0.415
 | 0.02
 | 5.03
-| 4.26
+| 4.04
 | 7.3
 | 5.04
 | 4.53
@@ -1370,7 +1370,7 @@ Analysis results
 | Ohm
 | 5
 | Z12 (sym, min)
-| 0.0505 + j0.0178
+| 0.0505 + j0.0177
 | Ohm
 | 6
 | Isc (sym, max)
@@ -1378,7 +1378,7 @@ Analysis results
 | kA
 | 7
 | Isc (sym, min)
-| 4.25
+| 4.03
 | kA
 | 8
 | Isc (pk, max)
@@ -1390,7 +1390,7 @@ Analysis results
 | Ohm
 | 10
 | Z12 (L-G, min)
-| 0.0505 + j0.0178
+| 0.0505 + j0.0177
 | Ohm
 | 11
 | Z0 (L-G, max)
@@ -1431,7 +1431,7 @@ Analysis results
 | Ohm
 | 5
 | Z12 (sym, min)
-| 0.9269 + j0.0803
+| 0.9269 + j0.0802
 | Ohm
 | 6
 | Isc (sym, max)
@@ -1439,7 +1439,7 @@ Analysis results
 | kA
 | 7
 | Isc (sym, min)
-| 0.24
+| 0.23
 | kA
 | 8
 | Isc (pk, max)
@@ -1451,7 +1451,7 @@ Analysis results
 | Ohm
 | 10
 | Z12 (L-G, min)
-| 0.9269 + j0.0803
+| 0.9269 + j0.0802
 | Ohm
 | 11
 | Z0 (L-G, max)
@@ -1492,7 +1492,7 @@ Analysis results
 | Ohm
 | 5
 | Z12 (sym, min)
-| 0.1906 + j0.0278
+| 0.1906 + j0.0277
 | Ohm
 | 6
 | Isc (sym, max)
@@ -1500,7 +1500,7 @@ Analysis results
 | kA
 | 7
 | Isc (sym, min)
-| 1.18
+| 1.12
 | kA
 | 8
 | Isc (pk, max)
@@ -1512,7 +1512,7 @@ Analysis results
 | Ohm
 | 10
 | Z12 (L-G, min)
-| 0.1906 + j0.0278
+| 0.1906 + j0.0277
 | Ohm
 | 11
 | Z0 (L-G, max)
@@ -1553,7 +1553,7 @@ Analysis results
 | Ohm
 | 5
 | Z12 (sym, min)
-| 0.0503 + j0.0178
+| 0.0503 + j0.0177
 | Ohm
 | 6
 | Isc (sym, max)
@@ -1561,7 +1561,7 @@ Analysis results
 | kA
 | 7
 | Isc (sym, min)
-| 4.26
+| 4.04
 | kA
 | 8
 | Isc (pk, max)
@@ -1573,7 +1573,7 @@ Analysis results
 | Ohm
 | 10
 | Z12 (L-G, min)
-| 0.0503 + j0.0178
+| 0.0503 + j0.0177
 | Ohm
 | 11
 | Z0 (L-G, max)
@@ -1614,7 +1614,7 @@ Analysis results
 | Ohm
 | 5
 | Z12 (sym, min)
-| 0.0503 + j0.0178
+| 0.0503 + j0.0177
 | Ohm
 | 6
 | Isc (sym, max)
@@ -1622,7 +1622,7 @@ Analysis results
 | kA
 | 7
 | Isc (sym, min)
-| 4.26
+| 4.04
 | kA
 | 8
 | Isc (pk, max)
@@ -1634,7 +1634,7 @@ Analysis results
 | Ohm
 | 10
 | Z12 (L-G, min)
-| 0.0503 + j0.0178
+| 0.0503 + j0.0177
 | Ohm
 | 11
 | Z0 (L-G, max)
@@ -1675,7 +1675,7 @@ B1 - Bus Bar
 | Ohm
 | 5
 | Z12 (sym, min)
-| 0.0503 + j0.0178
+| 0.0503 + j0.0177
 | Ohm
 | 6
 | Isc (sym, max)
@@ -1683,7 +1683,7 @@ B1 - Bus Bar
 | kA
 | 7
 | Isc (sym, min)
-| 4.26
+| 4.04
 | kA
 | 8
 | Isc (pk, max)
@@ -1695,7 +1695,7 @@ B1 - Bus Bar
 | Ohm
 | 10
 | Z12 (L-G, min)
-| 0.0503 + j0.0178
+| 0.0503 + j0.0177
 | Ohm
 | 11
 | Z0 (L-G, max)
@@ -1771,7 +1771,7 @@ W1 - LV Cable (IEC)
 | MW
 | 2
 | Q
-| 0.0
+| -0.0
 | MW
 | 3
 | PF
@@ -1808,7 +1808,7 @@ W2 - LV Cable (IEC)
 | MW
 | 2
 | Q
-| 0.0
+| -0.0
 | MW
 | 3
 | PF

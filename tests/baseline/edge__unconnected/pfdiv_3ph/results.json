@@ -178,7 +178,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.956027339634049
+   "value": 6.956027339634046
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -210,7 +210,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.956027339634051
+   "value": 6.956027339634047
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,

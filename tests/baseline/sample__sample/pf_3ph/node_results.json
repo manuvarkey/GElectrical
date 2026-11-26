@@ -14,7 +14,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.07783179147241981
+   "value": 0.0778317914724056
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -46,7 +46,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.07207074557217652
+   "value": 0.07207074557216231
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -62,7 +62,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.07783179147241981
+   "value": 0.0778317914724056
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -94,7 +94,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.8489061561450373
+   "value": 2.848906156145037
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -126,7 +126,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 3.555863842596282
+   "value": 3.555863842596281
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -158,7 +158,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.016224268474572912
+   "value": 0.016224268474572923
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -240,7 +240,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.0968560771503917
+   "value": 1.0968560771501927
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -256,7 +256,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.682404416604129
+   "value": 0.6824044166039442
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -272,7 +272,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.6754899841421036
+   "value": 0.6754899841419046
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -288,7 +288,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.0968560771503917
+   "value": 1.0968560771501927
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -304,7 +304,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 20.00096663761838
+   "value": 20.000966637618394
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -320,7 +320,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 16.813776435489576
+   "value": 16.391025927776802
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -336,7 +336,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 19.584797521714115
+   "value": 19.58479752171414
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -352,7 +352,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.873277516309313
+   "value": 15.49636961584025
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -368,7 +368,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 42.93398861524244
+   "value": 42.933988615242484
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -384,7 +384,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.19807540763291986
+   "value": 0.19807540763291967
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -466,7 +466,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.07783179147241981
+   "value": 0.0778317914724056
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -498,7 +498,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.07207074557217652
+   "value": 0.07207074557216231
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -514,7 +514,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.07783179147241981
+   "value": 0.0778317914724056
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -546,7 +546,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.8489061561450373
+   "value": 2.848906156145037
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -578,7 +578,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 3.555863842596282
+   "value": 3.555863842596281
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -610,7 +610,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.016224268474572912
+   "value": 0.016224268474572923
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -692,7 +692,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -708,7 +708,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7395154072508348
+   "value": 0.7395154072506074
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -724,7 +724,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7082184925857717
+   "value": 0.708218492585516
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -740,7 +740,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -756,7 +756,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 16.983150809511073
+   "value": 16.983150809511084
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -772,7 +772,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.864329220149664
+   "value": 13.587471045400516
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -788,7 +788,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 18.87495678179212
+   "value": 18.874956781792136
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -804,7 +804,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.1661484601151
+   "value": 14.825465247210243
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -820,7 +820,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 38.52130279080547
+   "value": 38.52130279080549
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -836,7 +836,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20549122654578814
+   "value": 0.20549122654578791
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -918,7 +918,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 4.03747100824296
+   "value": 4.037471008242761
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -934,7 +934,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 3.523518397122899
+   "value": 3.5235183971227286
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -950,7 +950,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 3.4396639643968427
+   "value": 3.439663964396672
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -966,7 +966,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 4.03747100824296
+   "value": 4.037471008242761
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -982,7 +982,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.6434531742305319
+   "value": 0.6434531742305308
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -998,7 +998,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.30689070004111213
+   "value": 0.3068567363814763
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1014,7 +1014,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.409636453783924
+   "value": 4.409636453783921
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1030,7 +1030,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.2673525730136292
+   "value": 2.264122082376047
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1046,7 +1046,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.3725246245533915
+   "value": 6.372524624553388
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -1062,7 +1062,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.21312004815545446
+   "value": 0.21312004815545382
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -1144,7 +1144,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 4.502224814322702
+   "value": 4.50222481432256
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -1160,7 +1160,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 3.986272143786934
+   "value": 3.9862721437867776
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -1176,7 +1176,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 3.8936039919421717
+   "value": 3.8936039919420153
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -1192,7 +1192,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 4.502224814322702
+   "value": 4.50222481432256
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -1208,7 +1208,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.5529911617401401
+   "value": 0.5529911617401392
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1224,7 +1224,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.26347227786321403
+   "value": 0.26344753011306066
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1240,7 +1240,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 3.86359058262914
+   "value": 3.8635905826291377
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1256,7 +1256,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 1.966348081040731
+   "value": 1.964016696089648
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1272,7 +1272,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 5.579698303773259
+   "value": 5.579698303773255
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -1288,7 +1288,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.21445237142421475
+   "value": 0.21445237142421425
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -1370,7 +1370,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -1386,7 +1386,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7395154072508348
+   "value": 0.7395154072506074
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -1402,7 +1402,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7082184925857717
+   "value": 0.708218492585516
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -1418,7 +1418,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -1434,7 +1434,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 16.983150809511073
+   "value": 16.983150809511084
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1450,7 +1450,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.864329220149664
+   "value": 13.587471045400516
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1466,7 +1466,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 18.87495678179212
+   "value": 18.874956781792136
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1482,7 +1482,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.1661484601151
+   "value": 14.825465247210243
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1498,7 +1498,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 38.52130279080547
+   "value": 38.52130279080549
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -1514,7 +1514,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20549122654578814
+   "value": 0.20549122654578791
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -1596,7 +1596,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -1612,7 +1612,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7395154072508348
+   "value": 0.7395154072506074
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -1628,7 +1628,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7082184925857717
+   "value": 0.708218492585516
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -1644,7 +1644,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -1660,7 +1660,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 16.983150809511073
+   "value": 16.983150809511084
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1676,7 +1676,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.864329220149664
+   "value": 13.587471045400516
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1692,7 +1692,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 18.87495678179212
+   "value": 18.874956781792136
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1708,7 +1708,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.1661484601151
+   "value": 14.825465247210243
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1724,7 +1724,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 38.52130279080547
+   "value": 38.52130279080549
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -1740,7 +1740,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20549122654578814
+   "value": 0.20549122654578791
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -1822,7 +1822,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -1838,7 +1838,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7395154072508348
+   "value": 0.7395154072506074
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -1854,7 +1854,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7082184925857717
+   "value": 0.708218492585516
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -1870,7 +1870,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -1886,7 +1886,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 16.983150809511073
+   "value": 16.983150809511084
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1902,7 +1902,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.864329220149664
+   "value": 13.587471045400516
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1918,7 +1918,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 18.87495678179212
+   "value": 18.874956781792136
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1934,7 +1934,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.1661484601151
+   "value": 14.825465247210243
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1950,7 +1950,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 38.52130279080547
+   "value": 38.52130279080549
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -1966,7 +1966,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20549122654578814
+   "value": 0.20549122654578791
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -2048,7 +2048,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -2064,7 +2064,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7395154072508348
+   "value": 0.7395154072506074
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -2080,7 +2080,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.7082184925857717
+   "value": 0.708218492585516
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -2096,7 +2096,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.240573723582557
+   "value": 1.2405737235823437
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -2112,7 +2112,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 16.983150809511073
+   "value": 16.983150809511084
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -2128,7 +2128,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.864329220149664
+   "value": 13.587471045400516
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -2144,7 +2144,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 18.87495678179212
+   "value": 18.874956781792136
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -2160,7 +2160,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.1661484601151
+   "value": 14.825465247210243
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -2176,7 +2176,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 38.52130279080547
+   "value": 38.52130279080549
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -2192,7 +2192,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20549122654578814
+   "value": 0.20549122654578791
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -2418,7 +2418,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.005618339945271352
+   "value": 0.005618339945271354
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -2500,7 +2500,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.4575522603473274
+   "value": 1.4575522603471427
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -2516,7 +2516,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.9554517614347304
+   "value": 0.9554517614345457
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -2532,7 +2532,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.9205179883562096
+   "value": 0.9205179883560106
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -2548,7 +2548,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.4575522603473274
+   "value": 1.4575522603471427
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -2564,7 +2564,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.6434531742305313
+   "value": 0.6434531742305314
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -2580,7 +2580,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.30689070004111196
+   "value": 0.3068567363814759
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -2596,7 +2596,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.467652703467426
+   "value": 4.467652703467425
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -2612,7 +2612,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.26735257301363
+   "value": 2.2641220823760473
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -2628,7 +2628,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.454571991693824
+   "value": 6.454571991693823
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -2644,7 +2644,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20598590516408694
+   "value": 0.20598590516408688
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -2726,7 +2726,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.4575522603473274
+   "value": 1.4575522603471427
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -2742,7 +2742,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.9554517614347304
+   "value": 0.9554517614345457
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -2758,7 +2758,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.9205179883561954
+   "value": 0.9205179883560106
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -2774,7 +2774,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.4575522603473274
+   "value": 1.4575522603471427
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -2790,7 +2790,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.6434531742305313
+   "value": 0.6434531742305314
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -2806,7 +2806,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.30689070004111196
+   "value": 0.3068567363814759
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -2822,7 +2822,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.467652703467426
+   "value": 4.467652703467425
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -2838,7 +2838,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.26735257301363
+   "value": 2.2641220823760473
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -2854,7 +2854,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.454571991693824
+   "value": 6.454571991693823
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -2870,7 +2870,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20598590516408694
+   "value": 0.20598590516408688
   },
   "vm_a_pu": {
    "alter_structure": false,
@@ -2952,7 +2952,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.4575522603473274
+   "value": 1.4575522603471427
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -2968,7 +2968,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.9554517614347304
+   "value": 0.9554517614345457
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -2984,7 +2984,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.9205179883561954
+   "value": 0.9205179883560106
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -3000,7 +3000,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.4575522603473274
+   "value": 1.4575522603471427
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -3016,7 +3016,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.6434531742305313
+   "value": 0.6434531742305314
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -3032,7 +3032,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.30689070004111196
+   "value": 0.3068567363814759
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -3048,7 +3048,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.467652703467426
+   "value": 4.467652703467425
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -3064,7 +3064,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.26735257301363
+   "value": 2.2641220823760473
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -3080,7 +3080,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 6.454571991693824
+   "value": 6.454571991693823
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -3096,7 +3096,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.20598590516408694
+   "value": 0.20598590516408688
   },
   "vm_a_pu": {
    "alter_structure": false,

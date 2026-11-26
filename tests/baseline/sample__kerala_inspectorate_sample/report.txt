@@ -981,23 +981,23 @@ Nodes
 | 0.433
 | -0.0
 | 10.97
-| 9.9
+| 9.61
 | 23.16
 | 11.16
-| 10.08
+| 9.78
 | 4
 | 0.433
 | -0.0
 | 10.75
-| 9.66
+| 9.39
 | 22.24
 | 9.44
-| 7.84
+| 7.67
 | 5
 | 0.433
 | -0.0
 | 6.52
-| 4.9
+| 4.84
 | 10.17
 | 1.14
 | 0.68
@@ -1162,7 +1162,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 9.9
+| 9.61
 | kA
 | 6
 | Isc (pk, max)
@@ -1174,7 +1174,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 10.08
+| 9.78
 | kA
 4 - Network Node
 | Sl.No.
@@ -1199,7 +1199,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 9.66
+| 9.39
 | kA
 | 6
 | Isc (pk, max)
@@ -1211,7 +1211,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 7.84
+| 7.67
 | kA
 5 - Network Node
 | Sl.No.
@@ -1236,7 +1236,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 4.9
+| 4.84
 | kA
 | 6
 | Isc (pk, max)
@@ -1310,7 +1310,7 @@ B2 - Bus Bar
 | kA
 | 5
 | Isc (sym, min)
-| 9.9
+| 9.61
 | kA
 | 6
 | Isc (pk, max)
@@ -1322,7 +1322,7 @@ B2 - Bus Bar
 | kA
 | 8
 | Isc (L-G, min)
-| 10.08
+| 9.78
 | kA
 B3 - Bus Bar
 | Sl.No.
@@ -1347,7 +1347,7 @@ B3 - Bus Bar
 | kA
 | 5
 | Isc (sym, min)
-| 9.66
+| 9.39
 | kA
 | 6
 | Isc (pk, max)
@@ -1359,7 +1359,7 @@ B3 - Bus Bar
 | kA
 | 8
 | Isc (L-G, min)
-| 7.84
+| 7.67
 | kA
 B4 - Bus Bar
 | Sl.No.
@@ -1384,7 +1384,7 @@ B4 - Bus Bar
 | kA
 | 5
 | Isc (sym, min)
-| 4.9
+| 4.84
 | kA
 | 6
 | Isc (pk, max)
