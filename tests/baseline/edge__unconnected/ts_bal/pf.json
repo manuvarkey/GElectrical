@@ -1,0 +1,115 @@
+{
+ "converged": true,
+ "inputs_after_run": {
+  "load": {
+   "0": {
+    "__element": "0,3",
+    "bus": "N[(0, 2):1|(0, 3):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X1",
+    "p_mw": 0.004,
+    "q_mvar": 0.0030000000000000005,
+    "scaling": 1.0,
+    "sn_mva": 0.005,
+    "type": "wye"
+   },
+   "1": {
+    "__element": "0,5",
+    "bus": "N[(0, 5):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X2",
+    "p_mw": 0.0024000000000000002,
+    "q_mvar": 0.0018,
+    "scaling": 1.0,
+    "sn_mva": 0.003,
+    "type": "wye"
+   }
+  }
+ },
+ "results": {
+  "res_bus": {
+   "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]": {
+    "p_mw": -0.004002612322417778,
+    "q_mvar": -0.003000290580914103,
+    "va_degree": 0.0,
+    "vm_pu": 1.0
+   },
+   "N[(0, 2):1|(0, 3):0]": {
+    "p_mw": 0.004,
+    "q_mvar": 0.0030000000000000005,
+    "va_degree": 0.015290231905484803,
+    "vm_pu": 0.9995473280834986
+   },
+   "N[(0, 4):1]": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0,
+    "va_degree": 0.0,
+    "vm_pu": 1.0
+   },
+   "N[(0, 5):0]": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0,
+    "va_degree": "NaN",
+    "vm_pu": "NaN"
+   }
+  },
+  "res_ext_grid": {
+   "0": {
+    "p_mw": 0.004002612322417778,
+    "q_mvar": 0.003000290580914103
+   }
+  },
+  "res_line": {
+   "0": {
+    "i_from_ka": 0.00695917756278408,
+    "i_ka": 0.00695917756278408,
+    "i_to_ka": 0.006959177562784079,
+    "loading_percent": 9.533119949019289,
+    "p_from_mw": 0.0040026123217487,
+    "p_to_mw": -0.003999999999330922,
+    "pl_mw": 2.6123224177781665e-06,
+    "q_from_mvar": 0.003000290580494891,
+    "q_to_mvar": -0.0029999999995807885,
+    "ql_mvar": 2.905809141024243e-07,
+    "va_from_degree": 0.0,
+    "va_to_degree": 0.015290231905484803,
+    "vm_from_pu": 1.0,
+    "vm_to_pu": 0.9995473280834986
+   },
+   "1": {
+    "i_from_ka": 0.0,
+    "i_ka": 0.0,
+    "i_to_ka": 0.0,
+    "loading_percent": 0.0,
+    "p_from_mw": 0.0,
+    "p_to_mw": 0.0,
+    "pl_mw": 0.0,
+    "q_from_mvar": 0.0,
+    "q_to_mvar": 0.0,
+    "ql_mvar": 0.0,
+    "va_from_degree": 0.0,
+    "va_to_degree": 0.0,
+    "vm_from_pu": 1.0,
+    "vm_to_pu": 1.0
+   }
+  },
+  "res_load": {
+   "0": {
+    "p_mw": 0.004,
+    "q_mvar": 0.0030000000000000005
+   },
+   "1": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0
+   }
+  }
+ }
+}

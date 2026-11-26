@@ -1,0 +1,31 @@
+{
+ "completed": false,
+ "diagnostics_ret_code": -2,
+ "file_settings_mode": false,
+ "pf_method": "Time series",
+ "power_flow_3ph": true,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  },
+  {
+   "error": "KeyError: 'res_gen_3ph'",
+   "ok": false,
+   "step": "run_powerflow_timeseries"
+  }
+ ],
+ "traceback": "Traceback (most recent call last):\n  File \"<ROOT>/tools/baseline/capture.py\", line 659, in step\n    value = func()\n            ^^^^^^\n  File \"<ROOT>/gelectrical/model/project.py\", line 448, in run_powerflow_timeseries\n    self.powermodel.run_powerflow_timeseries(runpp_3ph=True)\n  File \"<ROOT>/gelectrical/model/pandapower.py\", line 1277, in run_powerflow_timeseries\n    timeseries.run_timeseries(self.power_model, time_steps=time_steps, run=pp.runpp_3ph)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/timeseries/run_time_series.py\", line 364, in run_timeseries\n    run_loop(net, ts_variables, **kwargs)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/timeseries/run_time_series.py\", line 331, in run_loop\n    run_time_step(net, time_step, ts_variables, run_control_fct, output_writer_fct, **kwargs)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/timeseries/run_time_series.py\", line 130, in run_time_step\n    run_control_fct(net, ctrl_variables=ts_variables, **kwargs)\nKeyError: 'res_gen_3ph'\n",
+ "warnings": [
+  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+ ]
+}

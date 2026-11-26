@@ -1,0 +1,17 @@
+{
+ "groundfault": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {}
+ },
+ "linefault": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {}
+ },
+ "powerflow": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {}
+ }
+}

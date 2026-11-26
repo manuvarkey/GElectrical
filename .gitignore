@@ -15,3 +15,7 @@ dist/*
 
 # pixi environments
 .pixi/
+
+# pytest
+.pytest_cache/
+__pycache__/

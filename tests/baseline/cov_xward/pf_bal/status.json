@@ -1,0 +1,42 @@
+{
+ "completed": false,
+ "diagnostics_ret_code": -2,
+ "drawings": [
+  "drawing_0.png"
+ ],
+ "file_settings_mode": true,
+ "pf_method": "Power flow",
+ "power_flow_3ph": false,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  },
+  {
+   "ok": true,
+   "step": "run_powerflow"
+  },
+  {
+   "ok": true,
+   "step": "run_sym_sccalc"
+  },
+  {
+   "error": "FloatingPointError: divide by zero encountered in divide",
+   "ok": false,
+   "step": "run_linetoground_sccalc"
+  }
+ ],
+ "traceback": "Traceback (most recent call last):\n  File \"<ROOT>/tools/baseline/capture.py\", line 659, in step\n    value = func()\n            ^^^^^^\n  File \"<ROOT>/gelectrical/model/project.py\", line 474, in run_linetoground_sccalc\n    self.powermodel.run_linetoground_sccalc(lv_tol_percent=sim_settings['lv_tol_percent']['value'],\n  File \"<ROOT>/gelectrical/model/pandapower.py\", line 1670, in run_linetoground_sccalc\n    sc.calc_sc(self.power_model_gf, fault='1ph', case='max', lv_tol_percent=lv_tol_percent,\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/shortcircuit/calc_sc.py\", line 158, in calc_sc\n    _calc_sc_1ph(net, bus)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/shortcircuit/calc_sc.py\", line 237, in _calc_sc_1ph\n    _calc_ybus(ppci_0)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/shortcircuit/impedance.py\", line 44, in _calc_ybus\n    Ybus, Yf, Yt = makeYbus(ppci[\"baseMVA\"], ppci[\"bus\"], ppci[\"branch\"])\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFloatingPointError: divide by zero encountered in divide\n",
+ "warnings": [
+  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+ ]
+}

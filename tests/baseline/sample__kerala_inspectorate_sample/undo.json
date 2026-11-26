@@ -1,0 +1,1838 @@
+{
+ "actions": [
+  {
+   "label": "modify_ref_field",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ]
+     ]
+    ],
+    "stored_sha256": "1bc070452c44a0fc"
+   },
+   "redocount": 1,
+   "redotext": null,
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "insert_load",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "e26b8040ffe93362"
+   },
+   "redocount": 2,
+   "redotext": null,
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '11'"
+  },
+  {
+   "label": "delete_element_0",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "b5a6be91582b9808"
+   },
+   "redocount": 3,
+   "redotext": null,
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "renumber_all",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ]
+     ]
+    ],
+    "stored_sha256": "61c718f40fe0ccab"
+   },
+   "redocount": 4,
+   "redotext": null,
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "setup_base_model",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ]
+     ]
+    ],
+    "stored_sha256": "61c718f40fe0ccab"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "redo": [
+  {
+   "label": "Redo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "b5a6be91582b9808"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '11'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Redo Add draw element at '11'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "190784ec28348dd7"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '11'"
+  },
+  {
+   "label": "Redo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "610c169f0e9b1a50"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Redo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ]
+    ],
+    "stored_sha256": "5da965159a69c957"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Redo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ]
+    ],
+    "stored_sha256": "5da965159a69c957"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Redo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ]
+     ]
+    ],
+    "stored_sha256": "5da965159a69c957"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "undo": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ]
+     ]
+    ],
+    "stored_sha256": "61c718f40fe0ccab"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ]
+     ]
+    ],
+    "stored_sha256": "61c718f40fe0ccab"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "b5a6be91582b9808"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_display_text",
+       null
+      ]
+     ]
+    ],
+    "stored_sha256": "32afcd5f5cf9039b"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '11'"
+  },
+  {
+   "label": "Undo Add draw element at '11'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "b5a6be91582b9808"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '11'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "35d33608e0e482bb"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_again": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ]
+    ],
+    "stored_sha256": "5da965159a69c957"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ]
+    ],
+    "stored_sha256": "5da965159a69c957"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ]
+     ]
+    ],
+    "stored_sha256": "143acd1f4fca7a10"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ]
+     ]
+    ],
+    "stored_sha256": "037462614afe64eb"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '11'"
+  },
+  {
+   "label": "Undo Add draw element at '11'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ]
+     ]
+    ],
+    "stored_sha256": "143acd1f4fca7a10"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '11'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_line_custom",
+       "W1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_busbar",
+       "B4"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ]
+     ]
+    ],
+    "stored_sha256": "143acd1f4fca7a10"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_all_differences": [
+  {
+   "loaded": "element_grid",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/code",
+   "stored": "element_display_text"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/background",
+   "stored": {
+    "type": "bool",
+    "value": true
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/border",
+   "stored": {
+    "type": "bool",
+    "value": false
+   }
+  },
+  {
+   "loaded": {
+    "type": "bool",
+    "value": true
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "EXTERNAL GRID"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/name",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "G1"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 350.0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 350.0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/text",
+   "stored": {
+    "type": "multiline_str",
+    "value": "Notes:\nThis illustrated example is taken from a section of \nKerala Electrical Inspectorate Diary - 2015 \ndescribing fauklt level analysis as per IEC 60909.."
+   }
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 11.0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": 2,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/ports/0/0",
+   "stored": 0
+  },
+  {
+   "loaded": 6,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/ports/0/1",
+   "stored": 0
+  },
+  {
+   "loaded": 176.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/x",
+   "stored": 80.0
+  },
+  {
+   "loaded": 80.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/y",
+   "stored": 608.0
+  },
+  {
+   "loaded": "element_line_custom",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/code",
+   "stored": "element_grid"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 100
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/armour_cross_section",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "Steel"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/armour_material",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/c0g_nf_per_km",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/c0n_nf_per_km",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 10.598
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/c_nf_per_km",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 95.0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/conductor_cross_section",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "Aluminium"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/conductor_material",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "Neutral"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/cpe",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/cpe_sc_current_rating",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "data",
+    "value": {
+     "data": {
+      "curve_l": [],
+      "curve_u": [
+       [
+        "point",
+        522.0,
+        3600
+       ],
+       [
+        "point",
+        3604.3640770599186,
+        10
+       ],
+       [
+        "point",
+        113980.0,
+        0.01
+       ]
+      ]
+     },
+     "graph_model": [
+      "W1 - Damage curve",
+      [
+       {
+        "mode": 1,
+        "title": "W1 - Damage",
+        "xval": [
+         522.0,
+         3604.3640770599186,
+         113980.0
+        ],
+        "yval": [
+         3600.0,
+         10.0,
+         0.01
+        ]
+       },
+       {
+        "mode": 1,
+        "title": "",
+        "xval": [],
+        "yval": []
+       }
+      ]
+     ],
+     "parameters": {},
+     "type": "damage"
+    }
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/dcurve",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "ACSR Mink (95)"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/designation",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/df",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.8
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/dims_d",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1.2
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/dims_d1",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1.2
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/dims_d2",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1.2
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/dims_d3",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 12.6
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/dims_dia",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 250
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/endtemp_degree",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/g_us_per_km",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "heading",
+    "value": ""
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/head_geom",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "heading",
+    "value": ""
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/head_par",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "PVC"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/insulation_material",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "OH Line - \n3 phase with earth return\nGeneral geometry"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/laying_type",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1.0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/length_km",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.36
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/max_i_ka",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/name/value",
+   "stored": "EXTERNAL GRID"
+  },
+  {
+   "loaded": {
+    "type": "int",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/parallel",
+   "stored": "<missing>"
+  }
+ ],
+ "undo_all_restores_initial": false
+}

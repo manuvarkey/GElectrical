@@ -1,0 +1,50 @@
+{
+ "completed": true,
+ "diagnostics_ret_code": -2,
+ "drawings": [
+  "drawing_0.png"
+ ],
+ "file_settings_mode": true,
+ "pf_method": "Power flow",
+ "power_flow_3ph": false,
+ "report_pdf": true,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  },
+  {
+   "ok": true,
+   "step": "run_powerflow"
+  },
+  {
+   "ok": true,
+   "step": "run_sym_sccalc"
+  },
+  {
+   "ok": true,
+   "step": "run_linetoground_sccalc"
+  },
+  {
+   "ok": true,
+   "step": "update_results"
+  },
+  {
+   "ok": true,
+   "step": "run_rulescheck"
+  }
+ ],
+ "warnings": [
+  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
+  "FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+ ]
+}

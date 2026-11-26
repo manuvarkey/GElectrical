@@ -1,0 +1,272 @@
+{
+ "converged": true,
+ "inputs_after_run": {
+  "load": {
+   "0": {
+    "__element": "0,4",
+    "bus": "N[(0, 3):1|(0, 4):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X1",
+    "p_mw": 0.0,
+    "q_mvar": 0.0,
+    "scaling": 1.0,
+    "sn_mva": 0.0,
+    "type": "wye"
+   },
+   "1": {
+    "__element": "0,6",
+    "bus": "N[(0, 5):1|(0, 6):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X2",
+    "p_mw": 0.08000000000000002,
+    "q_mvar": 0.05999999999999999,
+    "scaling": 0.0,
+    "sn_mva": 0.1,
+    "type": "wye"
+   },
+   "2": {
+    "__element": "0,8",
+    "bus": "N[(0, 7):1|(0, 8):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X3",
+    "p_mw": 0.06,
+    "q_mvar": 0.0,
+    "scaling": 1.0,
+    "sn_mva": 0.06,
+    "type": "wye"
+   },
+   "3": {
+    "__element": "0,10",
+    "bus": "N[(0, 10):0|(0, 9):1]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X4",
+    "p_mw": 1e-05,
+    "q_mvar": 9.9498743710662e-05,
+    "scaling": 1.0,
+    "sn_mva": 0.0001,
+    "type": "wye"
+   }
+  },
+  "sgen": {
+   "0": {
+    "__element": null,
+    "bus": "N[(0, 1):1|(0, 2):0|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+    "controllable": false,
+    "current_source": true,
+    "curve_style": "NaN",
+    "id_q_capability_characteristic": "NaN",
+    "in_service": true,
+    "max_q_mvar": "NaN",
+    "min_q_mvar": "NaN",
+    "name": null,
+    "p_mw": 0.07000500000000001,
+    "q_mvar": 0.030049749371855325,
+    "reactive_capability_curve": false,
+    "scaling": 1.0,
+    "sn_mva": "NaN",
+    "type": "wye"
+   }
+  },
+  "trafo": {
+   "0": {
+    "__element": "0,1",
+    "df": 1.0,
+    "hv_bus": "N[(0, 0):0|(0, 1):0]",
+    "i0_percent": 0.1,
+    "id_characteristic_table": "NaN",
+    "in_service": true,
+    "lv_bus": "N[(0, 1):1|(0, 2):0|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+    "mag0_percent": 10.0,
+    "mag0_rx": 0.0,
+    "name": "T1",
+    "oltc": false,
+    "parallel": 1,
+    "pfe_kw": 30.0,
+    "shift_degree": 30.0,
+    "si0_hv_partial": 0.1,
+    "sn_mva": 2.5,
+    "std_type": null,
+    "tap_changer_type": "NaN",
+    "tap_dependency_table": false,
+    "tap_max": 4.0,
+    "tap_min": -2.0,
+    "tap_neutral": 0.0,
+    "tap_pos": 4.0,
+    "tap_side": "hv",
+    "tap_step_degree": "NaN",
+    "tap_step_percent": 2.5,
+    "vector_group": "Dyn",
+    "vk0_percent": 4.5,
+    "vk_percent": 6.25,
+    "vkr0_percent": 0.5,
+    "vkr_percent": 0.5,
+    "vn_hv_kv": 11.0,
+    "vn_lv_kv": 0.415,
+    "xn_ohm": 0.0
+   }
+  }
+ },
+ "results": {
+  "res_bus": {
+   "N[(0, 0):0|(0, 1):0]": {
+    "p_mw": -0.02203210338392958,
+    "q_mvar": 0.02969851961353032,
+    "va_degree": 0.0,
+    "vm_pu": 1.0
+   },
+   "N[(0, 1):1|(0, 2):0|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]": {
+    "p_mw": -0.07000500000000001,
+    "q_mvar": -0.030049749371855325,
+    "va_degree": -30.013426980673657,
+    "vm_pu": 1.000726170723184
+   },
+   "N[(0, 10):0|(0, 9):1]": {
+    "p_mw": 9.999999999999593e-06,
+    "q_mvar": 9.949874371066245e-05,
+    "va_degree": -30.013426980673657,
+    "vm_pu": 1.000726170723184
+   },
+   "N[(0, 3):1|(0, 4):0]": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0,
+    "va_degree": -30.013426980673657,
+    "vm_pu": 1.000726170723184
+   },
+   "N[(0, 5):1|(0, 6):0]": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0,
+    "va_degree": -30.013426980673657,
+    "vm_pu": 1.000726170723184
+   },
+   "N[(0, 7):1|(0, 8):0]": {
+    "p_mw": 0.06,
+    "q_mvar": 0.0,
+    "va_degree": -30.219403963634722,
+    "vm_pu": 0.9683774657219213
+   }
+  },
+  "res_ext_grid": {
+   "0": {
+    "p_mw": 0.02203210338392958,
+    "q_mvar": -0.02969851961353032
+   }
+  },
+  "res_line": {
+   "0": {
+    "i_from_ka": 0.0,
+    "i_ka": 0.0,
+    "i_to_ka": 0.0,
+    "loading_percent": 0.0,
+    "p_from_mw": 0.0,
+    "p_to_mw": 0.0,
+    "pl_mw": 0.0,
+    "q_from_mvar": 0.0,
+    "q_to_mvar": 0.0,
+    "ql_mvar": 0.0,
+    "va_from_degree": -30.013426980673657,
+    "va_to_degree": -30.013426980673657,
+    "vm_from_pu": 1.000726170723184,
+    "vm_to_pu": 1.000726170723184
+   },
+   "1": {
+    "i_from_ka": 0.0,
+    "i_ka": 0.0,
+    "i_to_ka": 0.0,
+    "loading_percent": 0.0,
+    "p_from_mw": 0.0,
+    "p_to_mw": 0.0,
+    "pl_mw": 0.0,
+    "q_from_mvar": 0.0,
+    "q_to_mvar": 0.0,
+    "ql_mvar": 0.0,
+    "va_from_degree": -30.013426980673657,
+    "va_to_degree": -30.013426980673657,
+    "vm_from_pu": 1.000726170723184,
+    "vm_to_pu": 1.000726170723184
+   },
+   "2": {
+    "i_from_ka": 0.0861981314383433,
+    "i_ka": 0.0861981314383433,
+    "i_to_ka": 0.0861981314383433,
+    "loading_percent": 118.0796321073196,
+    "p_from_mw": 0.062003902785345705,
+    "p_to_mw": -0.059999999997570025,
+    "pl_mw": 0.00200390278777568,
+    "q_from_mvar": 0.00022290353565991225,
+    "q_to_mvar": 2.4394722353271447e-13,
+    "ql_mvar": 0.00022290353590385947,
+    "va_from_degree": -30.013426980673657,
+    "va_to_degree": -30.219403963634722,
+    "vm_from_pu": 1.000726170723184,
+    "vm_to_pu": 0.9683774657219213
+   }
+  },
+  "res_load": {
+   "0": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0
+   },
+   "1": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0
+   },
+   "2": {
+    "p_mw": 0.06,
+    "q_mvar": 0.0
+   },
+   "3": {
+    "p_mw": 1e-05,
+    "q_mvar": 9.9498743710662e-05
+   }
+  },
+  "res_sgen": {
+   "0": {
+    "p_mw": 0.07000500000000001,
+    "q_mvar": 0.030049749371855325
+   }
+  },
+  "res_switch": {
+   "0": {
+    "i_ka": "NaN",
+    "loading_percent": "NaN",
+    "p_from_mw": "NaN",
+    "p_to_mw": "NaN",
+    "q_from_mvar": "NaN",
+    "q_to_mvar": "NaN"
+   }
+  },
+  "res_trafo": {
+   "0": {
+    "i_hv_ka": 0.0019408722916544167,
+    "i_lv_ka": 0.04279394373452347,
+    "loading_percent": 1.4791433448651594,
+    "p_hv_mw": 0.022032103381275814,
+    "p_lv_mw": 0.00799109721487809,
+    "pl_mw": 0.030023200596153904,
+    "q_hv_mvar": -0.029698519613923224,
+    "q_lv_mvar": 0.029727347092633707,
+    "ql_mvar": 2.882747871048308e-05,
+    "va_hv_degree": 0.0,
+    "va_lv_degree": -30.013426980673657,
+    "vm_hv_pu": 1.0,
+    "vm_lv_pu": 1.000726170723184
+   }
+  }
+ }
+}

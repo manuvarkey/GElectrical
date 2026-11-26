@@ -4,13 +4,16 @@ Navigation: [documentation index](README.md) · [regression baseline](migration/
 · [validation log](migration/validation.md).
 
 Status: section 1 is **current**; sections 2–6 are **proposed** and are created
-by the milestones noted.
+by the milestones noted (the regression baseline layer and `quality.yml` exist
+since M1).
 
 ## 1. Current checks
 
 | Check | Command | Notes |
 | --- | --- | --- |
 | Smoke test | `pixi run smoke` (`--keep` to inspect outputs; pass `.gepro` paths to limit) | Opens each sample, runs diagnostics, PF, both SC, rules check, exports JSON/report/drawing. Needs a display (`xvfb-run` on Linux) |
+| Regression baseline | `xvfb-run -a pixi run -e test test` | Captures every sample and coverage project with the legacy code and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)); about 4 minutes |
+| CI | `.github/workflows/quality.yml` | Linux: smoke + baseline under `xvfb-run`; Windows: smoke |
 | Manual UI | `pixi run start [file.gepro]` | Exercise the change by hand |
 | Calculation changes | Compare before/after on `sample_files/` | State what moved and why |
 

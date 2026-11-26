@@ -1,0 +1,2167 @@
+{
+ "actions": [
+  {
+   "label": "modify_ref_field",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ]
+     ]
+    ],
+    "stored_sha256": "f766e53362fd4cf3"
+   },
+   "redocount": 1,
+   "redotext": null,
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "insert_load",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "ab1ae23d73195630"
+   },
+   "redocount": 2,
+   "redotext": null,
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '15'"
+  },
+  {
+   "label": "delete_element_0",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "4ba9541980797fd5"
+   },
+   "redocount": 3,
+   "redotext": null,
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "renumber_all",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "43e163ee8566f763"
+   },
+   "redocount": 4,
+   "redotext": null,
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "setup_base_model",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ],
+      [
+       "element_display_node",
+       "8"
+      ],
+      [
+       "element_display_node",
+       "9"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "7"
+      ]
+     ]
+    ],
+    "stored_sha256": "43e163ee8566f763"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "redo": [
+  {
+   "label": "Redo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "4ba9541980797fd5"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '15'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Redo Add draw element at '15'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "3bd40013887c7635"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '15'"
+  },
+  {
+   "label": "Redo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "d46d985b00061616"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Redo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "9e5c4a87dd6d0adf"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Redo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "9e5c4a87dd6d0adf"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Redo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ],
+      [
+       "element_display_node",
+       "8"
+      ],
+      [
+       "element_display_node",
+       "9"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "7"
+      ]
+     ]
+    ],
+    "stored_sha256": "9e5c4a87dd6d0adf"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "undo": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "43e163ee8566f763"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "43e163ee8566f763"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "4ba9541980797fd5"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ]
+     ]
+    ],
+    "stored_sha256": "d49103b88f825b66"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '15'"
+  },
+  {
+   "label": "Undo Add draw element at '15'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "4ba9541980797fd5"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '15'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_switch",
+       "Q0"
+      ],
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "4ba9541980797fd5"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_again": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "9e5c4a87dd6d0adf"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C1"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "9e5c4a87dd6d0adf"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "bd58383571d85089"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q0"
+      ]
+     ]
+    ],
+    "stored_sha256": "b6f9b9219f9503b7"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '15'"
+  },
+  {
+   "label": "Undo Add draw element at '15'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "bd58383571d85089"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '15'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer3w",
+       "T1"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_switch",
+       "Q1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_switch",
+       "Q2"
+      ],
+      [
+       "element_shunt_cap",
+       "C2"
+      ],
+      [
+       "element_switch",
+       "Q3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_shunt",
+       "Z4"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "bd58383571d85089"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_all_differences": [
+  {
+   "loaded": "element_switch",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/code",
+   "stored": "element_grid"
+  },
+  {
+   "loaded": {
+    "type": "bool",
+    "value": true
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/closed",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
+   "stored": {
+    "type": "bool",
+    "value": true
+   }
+  },
+  {
+   "loaded": "",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/name/value",
+   "stored": "EXTERNAL GRID"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
+   "stored": {
+    "type": "float",
+    "value": 0.1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "Q0",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref/value",
+   "stored": "G1"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
+   "stored": {
+    "type": "float",
+    "value": 0.1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
+   "stored": {
+    "type": "float",
+    "value": 3000
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
+   "stored": {
+    "type": "float",
+    "value": 2000
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
+   "stored": {
+    "type": "float",
+    "value": 110
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<structure 204bd15df8afcae7>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/ports",
+   "stored": "<structure bb65e5c9951e2138>"
+  },
+  {
+   "loaded": 512,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/x",
+   "stored": 504
+  },
+  {
+   "loaded": 96,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/y",
+   "stored": 48
+  },
+  {
+   "loaded": "element_transformer3w",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/code",
+   "stored": "element_switch"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/closed",
+   "stored": {
+    "type": "bool",
+    "value": true
+   }
+  },
+  {
+   "loaded": {
+    "type": "heading",
+    "value": ""
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/head_param",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/i0_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 30
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/pfe_kw",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "T1",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/ref/value",
+   "stored": "Q0"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 30
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/shift_lv_degree",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 30
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/shift_mv_degree",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 40
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/sn_hv_mva",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 20
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/sn_lv_mva",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 20
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/sn_mv_mva",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "D"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/sym_hv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "Yn"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/sym_lv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "Yn"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/sym_mv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 10
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vk_hv_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 12
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vk_lv_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 11
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vk_mv_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.3
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vkr_hv_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.32
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vkr_lv_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.31
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vkr_mv_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 110
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vn_hv_kv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 10
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vn_lv_kv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 20
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vn_mv_kv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<structure 7417685b5a27a6b9>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/ports",
+   "stored": "<structure 204bd15df8afcae7>"
+  },
+  {
+   "loaded": 488,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/x",
+   "stored": 512
+  },
+  {
+   "loaded": 144,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/y",
+   "stored": 96
+  },
+  {
+   "loaded": "element_wire",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/code",
+   "stored": "element_transformer3w"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/head_param",
+   "stored": {
+    "type": "heading",
+    "value": ""
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/i0_percent",
+   "stored": {
+    "type": "float",
+    "value": 0.1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/name",
+   "stored": {
+    "type": "str",
+    "value": ""
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/pfe_kw",
+   "stored": {
+    "type": "float",
+    "value": 30
+   }
+  }
+ ],
+ "undo_all_restores_initial": false
+}

@@ -1,0 +1,109 @@
+{
+ "converged": true,
+ "inputs_after_run": {
+  "load": {
+   "0": {
+    "__element": "0,5",
+    "bus": "N[(0, 4):1|(0, 5):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X2",
+    "p_mw": 0.0064,
+    "q_mvar": 0.0048,
+    "scaling": 1.0,
+    "sn_mva": 0.008,
+    "type": "wye"
+   }
+  },
+  "sgen": {
+   "0": {
+    "__element": null,
+    "bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+    "controllable": false,
+    "current_source": true,
+    "curve_style": "NaN",
+    "id_q_capability_characteristic": "NaN",
+    "in_service": true,
+    "max_q_mvar": "NaN",
+    "min_q_mvar": "NaN",
+    "name": null,
+    "p_mw": 0.0,
+    "q_mvar": 0.0,
+    "reactive_capability_curve": false,
+    "scaling": 1.0,
+    "sn_mva": "NaN",
+    "type": "wye"
+   }
+  }
+ },
+ "results": {
+  "res_bus": {
+   "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]": {
+    "p_mw": -0.0114,
+    "q_mvar": -0.0058,
+    "va_degree": 0.0,
+    "vm_pu": 1.0
+   },
+   "N[(0, 2):1|(0, 3):0]": {
+    "p_mw": 0.005,
+    "q_mvar": 0.001,
+    "va_degree": 0.0,
+    "vm_pu": 1.0
+   },
+   "N[(0, 4):1|(0, 5):0]": {
+    "p_mw": 0.0063999999999999994,
+    "q_mvar": 0.0048,
+    "va_degree": 0.0,
+    "vm_pu": 1.0
+   }
+  },
+  "res_ext_grid": {
+   "0": {
+    "p_mw": 0.0114,
+    "q_mvar": 0.0058
+   }
+  },
+  "res_load": {
+   "0": {
+    "p_mw": 0.0064,
+    "q_mvar": 0.0048
+   }
+  },
+  "res_sgen": {
+   "0": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0
+   }
+  },
+  "res_switch": {
+   "0": {
+    "i_ka": "NaN",
+    "loading_percent": "NaN",
+    "p_from_mw": "NaN",
+    "p_to_mw": "NaN",
+    "q_from_mvar": "NaN",
+    "q_to_mvar": "NaN"
+   },
+   "1": {
+    "i_ka": "NaN",
+    "loading_percent": "NaN",
+    "p_from_mw": "NaN",
+    "p_to_mw": "NaN",
+    "q_from_mvar": "NaN",
+    "q_to_mvar": "NaN"
+   }
+  },
+  "res_xward": {
+   "0": {
+    "p_mw": 0.005,
+    "q_mvar": 0.001,
+    "va_internal_degree": 0.0,
+    "vm_internal_pu": 1.0,
+    "vm_pu": 1.0
+   }
+  }
+ }
+}

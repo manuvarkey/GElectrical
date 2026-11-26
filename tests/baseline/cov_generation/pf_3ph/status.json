@@ -1,0 +1,31 @@
+{
+ "completed": false,
+ "diagnostics_ret_code": -2,
+ "file_settings_mode": false,
+ "pf_method": "Power flow",
+ "power_flow_3ph": true,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  },
+  {
+   "error": "KeyError: 'res_gen_3ph'",
+   "ok": false,
+   "step": "run_powerflow"
+  }
+ ],
+ "traceback": "Traceback (most recent call last):\n  File \"<ROOT>/tools/baseline/capture.py\", line 659, in step\n    value = func()\n            ^^^^^^\n  File \"<ROOT>/tools/baseline/capture.py\", line 691, in <lambda>\n    ok = step('run_powerflow', lambda: project.run_powerflow(pf_method))[0]\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<ROOT>/gelectrical/model/project.py\", line 434, in run_powerflow\n    self.powermodel.run_powerflow(pf_type, runpp_3ph=True)\n  File \"<ROOT>/gelectrical/model/pandapower.py\", line 609, in run_powerflow\n    pp.runpp_3ph(self.power_model, run_control=True)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/pf/runpp_3ph.py\", line 576, in runpp_3ph\n    _extract_results_3ph(net, ppc0, ppc1, ppc2)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/results.py\", line 98, in _extract_results_3ph\n    _get_gen_results_3ph(net, ppc0, ppc1, ppc2, bus_lookup_aranged, bus_pq)\nKeyError: 'res_gen_3ph'\n",
+ "warnings": [
+  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+ ]
+}

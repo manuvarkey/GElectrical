@@ -1,0 +1,86 @@
+{
+ "Electrical Model": [
+  [
+   "Disconnected Nodes \nNodes: 8",
+   [
+    [
+     "node",
+     [
+      8
+     ]
+    ]
+   ]
+  ],
+  [
+   "Disconnected Nodes \nNodes: 9, 10",
+   [
+    [
+     "node",
+     [
+      9,
+      10
+     ]
+    ]
+   ]
+  ],
+  [
+   "Disconnected element \nElements: W14",
+   [
+    [
+     "element",
+     [
+      [
+       1,
+       10
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   "Disconnected element \nElements: X13",
+   [
+    [
+     "element",
+     [
+      [
+       1,
+       8
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   "Disconnected element \nElements: X14",
+   [
+    [
+     "element",
+     [
+      [
+       1,
+       11
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W21",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       2,
+       1
+      ]
+     ]
+    ]
+   ]
+  ]
+ ]
+}

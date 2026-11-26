@@ -1,0 +1,20 @@
+{
+ "All": {
+  "after": {},
+  "before": {},
+  "undo_restores": true,
+  "undo_text": "Undo Renumber Elements - All"
+ },
+ "New elements only": {
+  "after": {},
+  "before": {},
+  "undo_restores": true,
+  "undo_text": "Undo Renumber Elements - New elements only"
+ },
+ "Selected elements only": {
+  "after": {},
+  "before": {},
+  "undo_restores": true,
+  "undo_text": "Undo Renumber Elements - Selected elements only"
+ }
+}

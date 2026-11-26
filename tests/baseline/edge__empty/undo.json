@@ -1,0 +1,293 @@
+{
+ "actions": [
+  {
+   "error": "RuntimeError: no element with a ref field",
+   "label": "modify_ref_field",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 0,
+   "redotext": null,
+   "undocount": 0,
+   "undotext": null
+  },
+  {
+   "label": "insert_load",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "ee46d84d2da65def"
+   },
+   "redocount": 1,
+   "redotext": null,
+   "undocount": 1,
+   "undotext": "Undo Add draw element at '0'"
+  },
+  {
+   "label": "delete_element_0",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 2,
+   "redotext": null,
+   "undocount": 2,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "renumber_all",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 3,
+   "redotext": null,
+   "undocount": 3,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "setup_base_model",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 5,
+   "redotext": null,
+   "undocount": 5,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "redo": [
+  {
+   "label": "Redo Add draw element at '0'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "ee46d84d2da65def"
+   },
+   "redocount": 1,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 1,
+   "undotext": "Undo Add draw element at '0'"
+  },
+  {
+   "label": "Redo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 2,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 2,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Redo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 3,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 3,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Redo Clear analysis results",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 4,
+   "redotext": "Redo Add node elements",
+   "undocount": 4,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Redo Add node elements",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 5,
+   "redotext": null,
+   "undocount": 5,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "undo": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 4,
+   "redotext": "Redo Add node elements",
+   "undocount": 4,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 3,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 3,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 2,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 2,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "ee46d84d2da65def"
+   },
+   "redocount": 1,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 1,
+   "undotext": "Undo Add draw element at '0'"
+  },
+  {
+   "label": "Undo Add draw element at '0'",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 0,
+   "redotext": "Redo Add draw element at '0'",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_again": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 4,
+   "redotext": "Redo Add node elements",
+   "undocount": 4,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 3,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 3,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 2,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 2,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "ee46d84d2da65def"
+   },
+   "redocount": 1,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 1,
+   "undotext": "Undo Add draw element at '0'"
+  },
+  {
+   "label": "Undo Add draw element at '0'",
+   "model": {
+    "sheets": [
+     []
+    ],
+    "stored_sha256": "9ec7a6b5ce6e8272"
+   },
+   "redocount": 0,
+   "redotext": "Redo Add draw element at '0'",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_all_differences": [],
+ "undo_all_restores_initial": true
+}

@@ -1,0 +1,61 @@
+{
+ "added": [
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/head_geom",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/head_param",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/head_tap",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/dfs",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_cpe",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_inst",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_line",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/perc_3rd_harm",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/working_temp_degree",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/dfs",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/head_cpe",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/head_inst",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/head_line",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/perc_3rd_harm",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/8/fields/working_temp_degree",
+  "/proj_fields/Reports",
+  "/proj_fields/Simulation/show_impedances",
+  "/proj_fields/Simulation/sub_head_power_flow",
+  "/proj_fields/Simulation/sub_head_sc",
+  "/proj_fields/Simulation/sub_head_sim_param"
+ ],
+ "changed": [
+  {
+   "loaded": 10000,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/r0n_ohm_per_km/value",
+   "stored": 0.458
+  },
+  {
+   "loaded": 10000,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/x0n_ohm_per_km/value",
+   "stored": 1.6
+  },
+  {
+   "loaded": "xIn",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/dcurve/value/parameters/i_100ms/1",
+   "stored": "s"
+  },
+  {
+   "loaded": "xIn",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/dcurve/value/parameters/i_10ms/1",
+   "stored": "s"
+  }
+ ],
+ "counts": {
+  "added": 26,
+  "changed": 4,
+  "removed": 2
+ },
+ "removed": [
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/user_df",
+  "/proj_fields/Simulation/export_graphs"
+ ]
+}

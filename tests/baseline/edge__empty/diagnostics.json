@@ -1,0 +1,11 @@
+{
+ "Electrical Model": [
+  [
+   {
+    "message": "No power source found in the model.",
+    "type": "error"
+   },
+   []
+  ]
+ ]
+}

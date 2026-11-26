@@ -74,6 +74,7 @@ GTK3, PyGObject, pandapower and WeasyPrint for Windows, Linux and macOS.
 pixi install          # creates .pixi/envs/default (git-ignored)
 pixi run start        # launch the GUI
 pixi run smoke        # end-to-end check on sample_files/**/*.gepro
+pixi run -e test test # regression baseline (pytest; needs a display / xvfb-run)
 pixi run python ...   # any ad-hoc script inside the env
 ```
 
@@ -100,16 +101,22 @@ pixi run python ...   # any ad-hoc script inside the env
 
 ## Verifying changes (current)
 
-1. `pixi run smoke`: builds the main window (not shown), opens each sample
+1. `pixi run smoke`: builds the main window (mapped but never run), opens each sample
    project, runs diagnostics → power flow → symmetric and line-to-ground short
    circuit → rules check, then exports JSON, the HTML/PDF report and the drawing PDF.
    Use `--keep` to inspect outputs, or pass specific `.gepro` paths. It needs a
    desktop session/display (on Linux CI, use `xvfb-run`).
 2. For UI changes, run `pixi run start` and exercise the change by hand.
    `pixi run start path/to/file.gepro` opens a project directly.
-3. If you change calculations, compare results before and after on
-   `sample_files/` and say what moved.
-4. Documentation-only changes: check links and `git diff --check`; build Sphinx
+3. `xvfb-run -a pixi run -e test test`: regression baseline (M1). Captures
+   every project in `sample_files/` and `tests/projects/` with the legacy code
+   and compares with `tests/baseline/` using the documented tolerances. Any
+   engine change must keep it green; intended result changes follow
+   [regression baseline §6](docs/migration/regression-baseline.md#6-intentional-changes).
+   Never regenerate `tests/baseline/` to make a change pass.
+4. If you change calculations, compare results before and after on
+   `sample_files/` and `tests/projects/` and say what moved.
+5. Documentation-only changes: check links and `git diff --check`; build Sphinx
    only if user-manual pages changed.
 
 Planned test layers (pytest, Vitest, Storybook, Playwright) are in
@@ -139,6 +146,8 @@ docs/                        user manual (Sphinx/MyST) + developer docs (see doc
 packages/engineering-ui/     planned EngineeringUI package (docs only so far)
 sample_files/                sample .gepro projects (used by the smoke test)
 tools/                       smoke test, pixi activation scripts
+tools/baseline/              regression baseline capture/compare, coverage project generator
+tests/                       test_baseline.py, baseline/ (canonical JSON), projects/ (.gepro)
 ```
 
 The proposed structure is in [ARCHITECTURE.md](ARCHITECTURE.md#proposed-repository-structure).

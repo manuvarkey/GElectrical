@@ -1,0 +1,91 @@
+{
+ "dark_mode": false,
+ "drawing_dpi": 150,
+ "fonts": {
+  "GRAPH_FONT_FACE": {
+   "face": "monospace",
+   "match": "NotoSansMono-Regular.ttf: \"Noto Sans Mono\" \"Regular\""
+  },
+  "REPORT_FONT_FACE": {
+   "face": "monospace",
+   "match": "NotoSansMono-Regular.ttf: \"Noto Sans Mono\" \"Regular\""
+  },
+  "SCHEM_FONT_FACE": {
+   "face": "osifont",
+   "match": "osifont.ttf: \"osifont\" \"Medium\""
+  }
+ },
+ "gtk": "3.24.52",
+ "machine": "x86_64",
+ "packages": {
+  "cairo": "1.29.2",
+  "matplotlib": "3.11.2",
+  "networkx": "3.7",
+  "numba": "0.68.1",
+  "numpy": "2.2.6",
+  "pandapower": "3.2.1",
+  "pandas": "2.3.3",
+  "scipy": "1.13.1",
+  "shapely": "2.2.0",
+  "weasyprint": "69.0"
+ },
+ "pixi_lock_sha256": "ec800970db191d4800b3637150bf2d8c9bf04c3a1ce7e7d6152d7ae3661902a5",
+ "platform": "Linux-7.0.0-44-generic-x86_64-with-glibc2.43",
+ "program_version": "1",
+ "project_file_version": "GELECTRICAL_FILE_REFERENCE_VER_0",
+ "projects": [
+  "cov_advanced",
+  "cov_generation",
+  "cov_impedance",
+  "cov_multisheet",
+  "cov_radial_lv",
+  "cov_static_generation",
+  "cov_trafo3w",
+  "cov_xward",
+  "edge__empty",
+  "edge__islanded",
+  "edge__many_sheets",
+  "edge__missing_loadprofile",
+  "edge__unconnected",
+  "edge__unusual_values",
+  "sample__kerala_inspectorate_sample",
+  "sample__sample",
+  "sample__voltage_test"
+ ],
+ "pygobject": "3.58.1",
+ "python": "3.12.16",
+ "registered_element_codes": [
+  "element_asymmetric_load",
+  "element_async_motor_1ph",
+  "element_async_motor_3ph",
+  "element_busbar",
+  "element_circuitbreaker",
+  "element_co_switch",
+  "element_contactor",
+  "element_display_node",
+  "element_display_text",
+  "element_fuse",
+  "element_generator",
+  "element_grid",
+  "element_impedance",
+  "element_inductance",
+  "element_line",
+  "element_line_bus",
+  "element_line_cable",
+  "element_line_custom",
+  "element_load",
+  "element_reference",
+  "element_reference_box",
+  "element_shunt",
+  "element_shunt_cap",
+  "element_single_phase_load",
+  "element_single_phase_staticgenerator",
+  "element_staticgenerator",
+  "element_switch",
+  "element_transformer",
+  "element_transformer3w",
+  "element_ward",
+  "element_xward"
+ ],
+ "system": "Linux"
+}

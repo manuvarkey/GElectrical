@@ -1,0 +1,173 @@
+{
+ "Electrical Rules Check - Failed": [
+  [
+   {
+    "message": "Automatic disconnection time of line < X s\nElements: W1, W3, W2",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       8
+      ],
+      [
+       0,
+       6
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "CPE conductor sized for fault current\nElements: W1, W3, W2",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       8
+      ],
+      [
+       0,
+       6
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Line protection by upstream breaker\nElements: W1, W3, W2",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       8
+      ],
+      [
+       0,
+       6
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Transformer inrush current coordination with upstream breaker\nElements: T1",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       4
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Transformer protection by upstream breaker\nElements: T1",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       4
+      ]
+     ]
+    ]
+   ]
+  ]
+ ],
+ "Electrical Rules Check - Passed": [
+  [
+   "Line loading % < 100%\nElements: W1, W3, W2",
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       8
+      ],
+      [
+       0,
+       6
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   "Line loss % < X %\nElements: W1, W3, W2",
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       8
+      ],
+      [
+       0,
+       6
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   "Transformer loading % < 100%\nElements: T1",
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       4
+      ]
+     ]
+    ]
+   ]
+  ]
+ ]
+}

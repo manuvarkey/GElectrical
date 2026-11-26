@@ -1,0 +1,2021 @@
+{
+ "actions": [
+  {
+   "label": "modify_ref_field",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_busbar",
+       "UNDO-TEST"
+      ],
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ]
+     ]
+    ],
+    "stored_sha256": "eeb53831e892ba5d"
+   },
+   "redocount": 1,
+   "redotext": null,
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'Bus Bar' element"
+  },
+  {
+   "label": "insert_load",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_busbar",
+       "UNDO-TEST"
+      ],
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "2f60263a0d697bf5"
+   },
+   "redocount": 2,
+   "redotext": null,
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '13'"
+  },
+  {
+   "label": "delete_element_0",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "a3c5774103b76ebb"
+   },
+   "redocount": 3,
+   "redotext": null,
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "renumber_all",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "3c8d55e5169af24e"
+   },
+   "redocount": 4,
+   "redotext": null,
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "setup_base_model",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "7"
+      ],
+      [
+       "element_display_node",
+       "8"
+      ],
+      [
+       "element_display_node",
+       "9"
+      ],
+      [
+       "element_display_node",
+       "10"
+      ],
+      [
+       "element_display_node",
+       "11"
+      ],
+      [
+       "element_display_node",
+       "12"
+      ],
+      [
+       "element_display_node",
+       "13"
+      ]
+     ]
+    ],
+    "stored_sha256": "3c8d55e5169af24e"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "redo": [
+  {
+   "label": "Redo Modify 'ref' field  of 'Bus Bar' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "a3c5774103b76ebb"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '13'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'Bus Bar' element"
+  },
+  {
+   "label": "Redo Add draw element at '13'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "39c41a78b4ce487b"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '13'"
+  },
+  {
+   "label": "Redo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "a75af205f25c5b2b"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Redo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G1"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "e625636d7a2104a7"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Redo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G1"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "e625636d7a2104a7"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Redo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G1"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "7"
+      ],
+      [
+       "element_display_node",
+       "8"
+      ],
+      [
+       "element_display_node",
+       "9"
+      ],
+      [
+       "element_display_node",
+       "10"
+      ],
+      [
+       "element_display_node",
+       "11"
+      ],
+      [
+       "element_display_node",
+       "12"
+      ],
+      [
+       "element_display_node",
+       "13"
+      ]
+     ]
+    ],
+    "stored_sha256": "e625636d7a2104a7"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "undo": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "3c8d55e5169af24e"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "3c8d55e5169af24e"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "a3c5774103b76ebb"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_busbar",
+       "UNDO-TEST"
+      ]
+     ]
+    ],
+    "stored_sha256": "2388a2dffcec4256"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '13'"
+  },
+  {
+   "label": "Undo Add draw element at '13'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "a3c5774103b76ebb"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '13'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'Bus Bar' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'Bus Bar' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "G1"
+      ],
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ]
+    ],
+    "stored_sha256": "a3c5774103b76ebb"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'Bus Bar' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_again": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G1"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "e625636d7a2104a7"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G1"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_load",
+       "X4"
+      ]
+     ]
+    ],
+    "stored_sha256": "e625636d7a2104a7"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "196e03e2240d189a"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_grid",
+       "G1"
+      ]
+     ]
+    ],
+    "stored_sha256": "8fc036e79280188c"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '13'"
+  },
+  {
+   "label": "Undo Add draw element at '13'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "196e03e2240d189a"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '13'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'Bus Bar' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'Bus Bar' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_staticgenerator",
+       "G2"
+      ],
+      [
+       "element_single_phase_staticgenerator",
+       "G3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_single_phase_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_async_motor_3ph",
+       "M3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ]
+    ],
+    "stored_sha256": "196e03e2240d189a"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'Bus Bar' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_all_differences": [
+  {
+   "loaded": "element_grid",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/code",
+   "stored": "element_busbar"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/DF",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/In",
+   "stored": {
+    "type": "int",
+    "value": 400
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/Isc",
+   "stored": {
+    "type": "float",
+    "value": 25
+   }
+  },
+  {
+   "loaded": {
+    "type": "bool",
+    "value": true
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_btm",
+   "stored": {
+    "type": "int",
+    "value": 3
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_top",
+   "stored": {
+    "type": "int",
+    "value": 3
+   }
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "EXTERNAL GRID"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/name",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r_grid",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "G1",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref/value",
+   "stored": "B1"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 20
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 10
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.415
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/width",
+   "stored": {
+    "type": "int",
+    "value": 16
+   }
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<structure bb65e5c9951e2138>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/ports",
+   "stored": "<structure 1e204332e31b1f58>"
+  },
+  {
+   "loaded": 224,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/x",
+   "stored": 232
+  },
+  {
+   "loaded": 152,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/y",
+   "stored": 200
+  },
+  {
+   "loaded": "element_staticgenerator",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/code",
+   "stored": "element_grid"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/k",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "graph",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/load_profile",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "S.GENERATOR",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/name/value",
+   "stored": "EXTERNAL GRID"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.015
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/p_mw",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.002
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/q_mvar",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/r0x0_max",
+   "stored": {
+    "type": "float",
+    "value": 0.1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/r0x0_min",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "G2",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/ref/value",
+   "stored": "G1"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/rx_max",
+   "stored": {
+    "type": "float",
+    "value": 0.1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/rx_min",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/s_sc_max_mva",
+   "stored": {
+    "type": "float",
+    "value": 20
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/s_sc_min_mva",
+   "stored": {
+    "type": "float",
+    "value": 10
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/va_degree",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vm_pu",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vn_kv",
+   "stored": {
+    "type": "float",
+    "value": 0.415
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/x0x_max",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/x0x_min",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": 352,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/x",
+   "stored": 224
+  },
+  {
+   "loaded": "element_single_phase_staticgenerator",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/code",
+   "stored": "element_staticgenerator"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 4
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/p_kw",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/p_mw",
+   "stored": {
+    "type": "float",
+    "value": 0.015
+   }
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "B"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/phase",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/q_kvar",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/q_mvar",
+   "stored": {
+    "type": "float",
+    "value": 0.002
+   }
+  }
+ ],
+ "undo_all_restores_initial": false
+}

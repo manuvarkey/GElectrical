@@ -1,0 +1,123 @@
+{
+ "converged": true,
+ "inputs_after_run": {
+  "load": {
+   "0": {
+    "__element": "0,3",
+    "bus": "N[(0, 2):1|(0, 3):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X1",
+    "p_mw": 0.008,
+    "q_mvar": 0.006000000000000001,
+    "scaling": 1.0,
+    "sn_mva": 0.01,
+    "type": "wye"
+   },
+   "1": {
+    "__element": "0,5",
+    "bus": "N[(0, 4):1|(0, 5):0]",
+    "const_i_p_percent": 0.0,
+    "const_i_q_percent": 0.0,
+    "const_z_p_percent": 0.0,
+    "const_z_q_percent": 0.0,
+    "in_service": true,
+    "name": "X2",
+    "p_mw": 0.0064,
+    "q_mvar": 0.0048,
+    "scaling": 1.0,
+    "sn_mva": 0.008,
+    "type": "wye"
+   }
+  },
+  "sgen": {
+   "0": {
+    "__element": null,
+    "bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+    "controllable": false,
+    "current_source": true,
+    "curve_style": "NaN",
+    "id_q_capability_characteristic": "NaN",
+    "in_service": true,
+    "max_q_mvar": "NaN",
+    "min_q_mvar": "NaN",
+    "name": null,
+    "p_mw": 0.0,
+    "q_mvar": 0.0,
+    "reactive_capability_curve": false,
+    "scaling": 1.0,
+    "sn_mva": "NaN",
+    "type": "wye"
+   }
+  }
+ },
+ "results": {
+  "res_bus": {
+   "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]": {
+    "p_mw": -0.014399999999999998,
+    "q_mvar": -0.011487022152027616,
+    "va_degree": 0.0,
+    "vm_pu": 1.0
+   },
+   "N[(0, 2):1|(0, 3):0]": {
+    "p_mw": 0.008,
+    "q_mvar": 0.006000000000000001,
+    "va_degree": -0.9281708870514906,
+    "vm_pu": 0.9877195916320797
+   },
+   "N[(0, 4):1|(0, 5):0]": {
+    "p_mw": 0.0063999999999999994,
+    "q_mvar": 0.0048,
+    "va_degree": -2.6634815734329407,
+    "vm_pu": 0.9640673596870281
+   }
+  },
+  "res_ext_grid": {
+   "0": {
+    "p_mw": 0.014399999999999998,
+    "q_mvar": 0.011487022152027616
+   }
+  },
+  "res_impedance": {
+   "0": {
+    "i_from_ka": 0.01408502453239786,
+    "i_to_ka": 0.01408502453239786,
+    "p_from_mw": 0.007999999999999986,
+    "p_to_mw": -0.007999999999999986,
+    "pl_mw": 0.0,
+    "q_from_mvar": 0.006205004153079174,
+    "q_to_mvar": -0.005999999999999715,
+    "ql_mvar": 0.00020500415307945965
+   },
+   "1": {
+    "i_from_ka": 0.011544466920408811,
+    "i_to_ka": 0.011544466920408808,
+    "p_from_mw": 0.0063999999999362666,
+    "p_to_mw": -0.006399999999936267,
+    "pl_mw": -8.673617379884035e-19,
+    "q_from_mvar": 0.005282017998479993,
+    "q_to_mvar": -0.0047999999995318385,
+    "ql_mvar": 0.0004820179989481546
+   }
+  },
+  "res_load": {
+   "0": {
+    "p_mw": 0.008,
+    "q_mvar": 0.006000000000000001
+   },
+   "1": {
+    "p_mw": 0.0064,
+    "q_mvar": 0.0048
+   }
+  },
+  "res_sgen": {
+   "0": {
+    "p_mw": 0.0,
+    "q_mvar": 0.0
+   }
+  }
+ }
+}

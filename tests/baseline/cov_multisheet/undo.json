@@ -1,0 +1,4787 @@
+{
+ "actions": [
+  {
+   "label": "modify_ref_field",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "a9defd177b3c0ee0"
+   },
+   "redocount": 1,
+   "redotext": null,
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "insert_load",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "4720f4db9aacaa29"
+   },
+   "redocount": 2,
+   "redotext": null,
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '14'"
+  },
+  {
+   "label": "delete_element_0",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "654d8437dadb66cf"
+   },
+   "redocount": 3,
+   "redotext": null,
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "renumber_all",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_single_phase_load",
+       "X6"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q7"
+      ],
+      [
+       "element_load",
+       "X7"
+      ]
+     ]
+    ],
+    "stored_sha256": "c97dbeea24cc2066"
+   },
+   "redocount": 4,
+   "redotext": null,
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "setup_base_model",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ],
+      [
+       "element_display_node",
+       "14"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "15"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "16"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ],
+      [
+       "element_display_node",
+       "15"
+      ],
+      [
+       "element_display_node",
+       "17"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "7"
+      ],
+      [
+       "element_display_node",
+       "8"
+      ],
+      [
+       "element_display_node",
+       "9"
+      ],
+      [
+       "element_display_node",
+       "10"
+      ],
+      [
+       "element_display_node",
+       "11"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_single_phase_load",
+       "X6"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q7"
+      ],
+      [
+       "element_load",
+       "X7"
+      ],
+      [
+       "element_display_node",
+       "16"
+      ],
+      [
+       "element_display_node",
+       "18"
+      ],
+      [
+       "element_display_node",
+       "12"
+      ],
+      [
+       "element_display_node",
+       "13"
+      ]
+     ]
+    ],
+    "stored_sha256": "c97dbeea24cc2066"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "redo": [
+  {
+   "label": "Redo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "654d8437dadb66cf"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '14'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Redo Add draw element at '14'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "64aeb907e93ca381"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '14'"
+  },
+  {
+   "label": "Redo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "8c1b9c1a98d0c8de"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Redo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X6"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q5"
+      ],
+      [
+       "element_single_phase_load",
+       "X7"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_load",
+       "X8"
+      ]
+     ]
+    ],
+    "stored_sha256": "17d106b832adea82"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Redo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X6"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q5"
+      ],
+      [
+       "element_single_phase_load",
+       "X7"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_load",
+       "X8"
+      ]
+     ]
+    ],
+    "stored_sha256": "17d106b832adea82"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Redo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_display_node",
+       "1"
+      ],
+      [
+       "element_display_node",
+       "2"
+      ],
+      [
+       "element_display_node",
+       "14"
+      ],
+      [
+       "element_display_node",
+       "3"
+      ],
+      [
+       "element_display_node",
+       "15"
+      ],
+      [
+       "element_display_node",
+       "4"
+      ],
+      [
+       "element_display_node",
+       "16"
+      ],
+      [
+       "element_display_node",
+       "5"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X6"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ],
+      [
+       "element_display_node",
+       "15"
+      ],
+      [
+       "element_display_node",
+       "17"
+      ],
+      [
+       "element_display_node",
+       "6"
+      ],
+      [
+       "element_display_node",
+       "7"
+      ],
+      [
+       "element_display_node",
+       "8"
+      ],
+      [
+       "element_display_node",
+       "9"
+      ],
+      [
+       "element_display_node",
+       "10"
+      ],
+      [
+       "element_display_node",
+       "11"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q5"
+      ],
+      [
+       "element_single_phase_load",
+       "X7"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_load",
+       "X8"
+      ],
+      [
+       "element_display_node",
+       "16"
+      ],
+      [
+       "element_display_node",
+       "18"
+      ],
+      [
+       "element_display_node",
+       "12"
+      ],
+      [
+       "element_display_node",
+       "13"
+      ]
+     ]
+    ],
+    "stored_sha256": "17d106b832adea82"
+   },
+   "redocount": 6,
+   "redotext": null,
+   "undocount": 6,
+   "undotext": "Undo Add node elements"
+  }
+ ],
+ "undo": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_single_phase_load",
+       "X6"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q7"
+      ],
+      [
+       "element_load",
+       "X7"
+      ]
+     ]
+    ],
+    "stored_sha256": "c97dbeea24cc2066"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_switch",
+       "Q5"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_single_phase_load",
+       "X6"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q7"
+      ],
+      [
+       "element_load",
+       "X7"
+      ]
+     ]
+    ],
+    "stored_sha256": "c97dbeea24cc2066"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "654d8437dadb66cf"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ],
+      [
+       "element_grid",
+       "UNDO-TEST"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "8174dcc74e36aa6c"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '14'"
+  },
+  {
+   "label": "Undo Add draw element at '14'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "654d8437dadb66cf"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '14'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ],
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X?"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "654d8437dadb66cf"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_again": [
+  {
+   "label": "Undo Add node elements",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X6"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q5"
+      ],
+      [
+       "element_single_phase_load",
+       "X7"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_load",
+       "X8"
+      ]
+     ]
+    ],
+    "stored_sha256": "17d106b832adea82"
+   },
+   "redocount": 5,
+   "redotext": "Redo Add node elements",
+   "undocount": 5,
+   "undotext": "Undo Clear analysis results"
+  },
+  {
+   "label": "Undo Clear analysis results",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "A1-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A1-W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A1"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X3"
+      ],
+      [
+       "element_load",
+       "X3"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "A2-Q1"
+      ],
+      [
+       "element_line_cable",
+       "A2-W1"
+      ],
+      [
+       "element_load",
+       "X4"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q3"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_load",
+       "X5"
+      ],
+      [
+       "element_switch",
+       "Q4"
+      ],
+      [
+       "element_line_cable",
+       "W3"
+      ],
+      [
+       "element_load",
+       "X6"
+      ],
+      [
+       "element_assembly",
+       "A2"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W4"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q5"
+      ],
+      [
+       "element_single_phase_load",
+       "X7"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q6"
+      ],
+      [
+       "element_load",
+       "X8"
+      ]
+     ]
+    ],
+    "stored_sha256": "17d106b832adea82"
+   },
+   "redocount": 4,
+   "redotext": "Redo Clear analysis results",
+   "undocount": 4,
+   "undotext": "Undo Renumber Elements - All"
+  },
+  {
+   "label": "Undo Renumber Elements - All",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "42fa48d3bb3480ad"
+   },
+   "redocount": 3,
+   "redotext": "Redo Renumber Elements - All",
+   "undocount": 3,
+   "undotext": "Undo Delete draw elements at '[0]'"
+  },
+  {
+   "label": "Undo Delete draw elements at '[0]'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q0"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "c4a3f76826c9138f"
+   },
+   "redocount": 2,
+   "redotext": "Redo Delete draw elements at '[0]'",
+   "undocount": 2,
+   "undotext": "Undo Add draw element at '14'"
+  },
+  {
+   "label": "Undo Add draw element at '14'",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "42fa48d3bb3480ad"
+   },
+   "redocount": 1,
+   "redotext": "Redo Add draw element at '14'",
+   "undocount": 1,
+   "undotext": "Undo Modify 'ref' field  of 'External Grid' element"
+  },
+  {
+   "label": "Undo Modify 'ref' field  of 'External Grid' element",
+   "model": {
+    "sheets": [
+     [
+      [
+       "element_transformer",
+       "T1"
+      ],
+      [
+       "element_busbar",
+       "B1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q1"
+      ],
+      [
+       "element_line_cable",
+       "W1"
+      ],
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q2"
+      ],
+      [
+       "element_line_cable",
+       "W2"
+      ],
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_wire",
+       null
+      ],
+      [
+       "element_load",
+       "X1"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ],
+      [
+       "element_display_text",
+       null
+      ],
+      [
+       "element_load",
+       "X2"
+      ],
+      [
+       "element_load",
+       "X2"
+      ]
+     ],
+     [
+      [
+       "element_reference",
+       "CR1"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q11"
+      ],
+      [
+       "element_busbar",
+       "B2"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q12"
+      ],
+      [
+       "element_line_cable",
+       "W12"
+      ],
+      [
+       "element_load",
+       "X12"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q13"
+      ],
+      [
+       "element_line_cable",
+       "W13"
+      ],
+      [
+       "element_load",
+       "X13"
+      ],
+      [
+       "element_switch",
+       "Q14"
+      ],
+      [
+       "element_line_cable",
+       "W14"
+      ],
+      [
+       "element_load",
+       "X14"
+      ],
+      [
+       "element_assembly",
+       "A?"
+      ]
+     ],
+     [
+      [
+       "element_reference_box",
+       "CR2"
+      ],
+      [
+       "element_line_cable",
+       "W21"
+      ],
+      [
+       "element_busbar",
+       "B3"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q22"
+      ],
+      [
+       "element_single_phase_load",
+       "X22"
+      ],
+      [
+       "element_circuitbreaker",
+       "Q23"
+      ],
+      [
+       "element_load",
+       "X23"
+      ]
+     ]
+    ],
+    "stored_sha256": "42fa48d3bb3480ad"
+   },
+   "redocount": 0,
+   "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
+   "undocount": 0,
+   "undotext": null
+  }
+ ],
+ "undo_all_differences": [
+  {
+   "loaded": "element_circuitbreaker",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/code",
+   "stored": "element_grid"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 63
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/I0",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 63
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/In",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 10
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/Isc",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.415
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/Un",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "bool",
+    "value": true
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/closed",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "bool",
+    "value": false
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/custom",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "bool",
+    "value": false
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/drawout",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
+   "stored": {
+    "type": "bool",
+    "value": true
+   }
+  },
+  {
+   "loaded": "",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/name/value",
+   "stored": "EXTERNAL GRID"
+  },
+  {
+   "loaded": {
+    "type": "data",
+    "value": null
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/pcurve_g",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "data",
+    "value": {
+     "data": {
+      "curve_l": [
+       [
+        "point",
+        "1.13*f.In",
+        "1e5"
+       ],
+       [
+        "IEC",
+        1,
+        "1.13*f.In",
+        "1.14*f.In",
+        "5*f.In",
+        0,
+        50,
+        4,
+        0,
+        2
+       ],
+       [
+        "point",
+        "5*f.In",
+        0.001
+       ],
+       [
+        "point",
+        "1000*f.Isc",
+        0.001
+       ]
+      ],
+      "curve_u": [
+       [
+        "point",
+        "1.45*f.In",
+        "1e5"
+       ],
+       [
+        "IEC",
+        1,
+        "1.45*f.In",
+        "1.46*f.In",
+        "10*f.In",
+        0,
+        50,
+        "125 if f.In <= 32  else 250",
+        0,
+        2
+       ],
+       [
+        "point",
+        "10*f.In",
+        "d.t_m_max"
+       ],
+       [
+        "point",
+        "1000*f.Isc",
+        "d.t_m_max"
+       ]
+      ]
+     },
+     "graph_model": [
+      "Q0 - L",
+      [
+       {
+        "mode": 2,
+        "title": "Q0 - L",
+        "xval": [
+         10000.0,
+         630.0,
+         630.0,
+         605.7403806116586,
+         582.4149344500904,
+         559.9876889963682,
+         538.4240569373072,
+         517.6907828248853,
+         497.7558917896723,
+         478.58864022916134,
+         460.1594683949656,
+         442.4399548057543,
+         425.40277241562325,
+         409.0216464703086,
+         393.27131398624124,
+         378.12748478995695,
+         363.5668040577744,
+         349.5668162979688,
+         336.1059307199009,
+         323.16338793668024,
+         310.7192279500282,
+         298.7542593679539,
+         287.2500298077752,
+         276.1887974388448,
+         265.5535036210827,
+         255.32774659713348,
+         245.4957561975631,
+         236.04236952009336,
+         226.9530075453639,
+         218.2136526531577,
+         209.81082700441905,
+         201.7315717557201,
+         193.9634270741238,
+         186.49441292162152,
+         179.31301057950927,
+         172.4081448842132,
+         165.76916714716393,
+         159.3858387323821,
+         153.2483152664471,
+         147.347131456497,
+         141.67318649284854,
+         136.21773001372154,
+         130.97234861042514,
+         125.92895285219339,
+         121.0797648106591,
+         116.41730606472818,
+         111.93438616735301,
+         107.6240915564203,
+         103.47977489265082,
+         99.4950448080684,
+         95.66375604922763,
+         91.98,
+         91.35,
+         71.19,
+         71.82,
+         74.01994724971732,
+         76.28728196673536,
+         78.62406832361549,
+         81.03243372141728,
+         83.51457072647624,
+         86.07273906650732,
+         88.70926768785237,
+         91.42655687574332,
+         94.2270804395127,
+         97.11338796473963,
+         100.08810713438271,
+         103.15394612101173,
+         106.31369605231787,
+         109.57023355214491,
+         112.92652335935645,
+         116.38562102692194,
+         119.95067570368074,
+         123.62493300131447,
+         127.41173794913858,
+         131.31453803940465,
+         135.33688636588317,
+         139.4824448585863,
+         143.75498761757396,
+         148.15840434888037,
+         152.6967039056866,
+         157.37401793796488,
+         162.1946046539157,
+         167.16285269662478,
+         172.28328513946593,
+         177.56056360388854,
+         182.99949250334035,
+         188.6050234171859,
+         194.382259598605,
+         200.33646062057363,
+         206.4730471641594,
+         212.7976059534875,
+         219.3158948418726,
+         226.0338480537449,
+         232.95758158714582,
+         240.09339878170798,
+         247.44779605718975,
+         255.02746882779158,
+         262.839317597634,
+         270.8904542429485,
+         279.18820848670305,
+         287.7401345715516,
+         296.55401813718754,
+         305.6378833083591,
+         315.0,
+         315.0,
+         10000.0,
+         10000.0
+        ],
+        "yval": [
+         0.01,
+         0.01,
+         5.369136086212619,
+         5.818019651220901,
+         6.305358496833923,
+         6.8346092566159555,
+         7.40956780627054,
+         8.034407567756334,
+         8.71372300659197,
+         9.45257917457021,
+         10.256568315783912,
+         11.131874756768319,
+         12.085349551193508,
+         13.124596658147636,
+         14.258072816511064,
+         15.495203756929403,
+         16.846519994625247,
+         18.323816206655714,
+         19.94033916404948,
+         21.711010426713173,
+         23.652691603884623,
+         25.784502053690005,
+         28.12820160512786,
+         30.70865446134416,
+         33.55439520295499,
+         36.69832420685584,
+         40.17856847958816,
+         44.03955582085104,
+         48.33336677711672,
+         53.12145210444038,
+         58.47683660446967,
+         64.48697812831567,
+         71.25752097019921,
+         78.91728817432522,
+         87.62501775941134,
+         97.57859763958622,
+         109.02795193019772,
+         122.2933818769233,
+         137.7922595931837,
+         156.0788771410192,
+         177.9056915411532,
+         204.3206853677079,
+         236.82839712565286,
+         277.66913988107683,
+         330.33171355403306,
+         400.5642992341245,
+         498.5574020862154,
+         644.2639434746487,
+         882.7730010276732,
+         1342.0934166393374,
+         2585.99676886425,
+         18062.714776632263,
+         100000.0,
+         100000.0,
+         225.0044052863429,
+         49.33138052067899,
+         26.96709680563267,
+         18.20198831347634,
+         13.53059257796239,
+         10.632197387329683,
+         8.661423504122356,
+         7.236616430748835,
+         6.160225268905432,
+         5.3197373075821,
+         4.6463653852896085,
+         4.095686679430906,
+         3.637732127203505,
+         3.2515494738887263,
+         2.9220488375665687,
+         2.63808595629653,
+         2.391251337005388,
+         2.17507954901695,
+         1.9845178807913944,
+         1.815560251167537,
+         1.6649893681636543,
+         1.5301915474775654,
+         1.409021374343348,
+         1.2997012290255565,
+         1.2007456294492345,
+         1.1109035222292654,
+         1.0291137433501825,
+         0.9544702705276916,
+         0.8861948444604059,
+         0.823615197879174,
+         0.7661475964046526,
+         0.7132827265576931,
+         0.6645742052564557,
+         0.6196291595165324,
+         0.5781004536860727,
+         0.5396802373647599,
+         0.5040945592110674,
+         0.4710988465079545,
+         0.44047409217459965,
+         0.41202362315061297,
+         0.3855703491168541,
+         0.3609544100972784,
+         0.33803115689960933,
+         0.3166694105615766,
+         0.296749956697356,
+         0.2781642384335262,
+         0.26081321790292233,
+         0.24460638134861482,
+         0.2294608670264494,
+         0.21530069847532576,
+         0.001,
+         0.001,
+         0.01
+        ]
+       }
+      ]
+     ],
+     "parameters": {
+      "t_m_max": [
+       "Instantaneous trip time (max)",
+       "s",
+       0.01,
+       null
+      ]
+     },
+     "type": "protection"
+    }
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/pcurve_l",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "TPN"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/poles",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "None"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/prot_0_curve_type",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "C Curve"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/prot_curve_type",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
+   "stored": {
+    "type": "float",
+    "value": 0.2
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "Q0",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref/value",
+   "stored": "G1"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
+   "stored": {
+    "type": "float",
+    "value": 0.1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
+   "stored": {
+    "type": "float",
+    "value": 200
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
+   "stored": {
+    "type": "float",
+    "value": 100
+   }
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "MCB"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/subtype",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "str",
+    "value": "LV breakers"
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/type",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
+   "stored": {
+    "type": "float",
+    "value": 0
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
+   "stored": {
+    "type": "float",
+    "value": 11
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
+   "stored": {
+    "type": "float",
+    "value": 1.2
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
+   "stored": {
+    "type": "float",
+    "value": 1
+   }
+  },
+  {
+   "loaded": "<structure 204bd15df8afcae7>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/ports",
+   "stored": "<structure bb65e5c9951e2138>"
+  },
+  {
+   "loaded": 392,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/x",
+   "stored": 384
+  },
+  {
+   "loaded": 96,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/y",
+   "stored": 48
+  },
+  {
+   "loaded": "element_transformer",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/code",
+   "stored": "element_circuitbreaker"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/I0",
+   "stored": {
+    "type": "float",
+    "value": 63
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/In",
+   "stored": {
+    "type": "float",
+    "value": 63
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/Isc",
+   "stored": {
+    "type": "float",
+    "value": 10
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/Un",
+   "stored": {
+    "type": "float",
+    "value": 0.415
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/closed",
+   "stored": {
+    "type": "bool",
+    "value": true
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/custom",
+   "stored": {
+    "type": "bool",
+    "value": false
+   }
+  },
+  {
+   "loaded": {
+    "type": "data",
+    "value": {
+     "data": {
+      "curve_l": [
+       [
+        "point",
+        "d.i_100ms*347.81156960405133",
+        0.1
+       ],
+       [
+        "point",
+        "d.i_10ms*347.81156960405133",
+        0.01
+       ]
+      ],
+      "curve_u": [
+       [
+        "point",
+        "d.i_e*347.81156960405133",
+        3600
+       ],
+       [
+        "point",
+        7729.1459912011405,
+        "d.t_sc"
+       ]
+      ]
+     },
+     "graph_model": [
+      "T1",
+      [
+       {
+        "mode": 1,
+        "title": "T1 - Damage",
+        "xval": [
+         695.6231392081027,
+         7729.1459912011405
+        ],
+        "yval": [
+         3600.0,
+         2.0
+        ]
+       },
+       {
+        "mode": 1,
+        "title": "T1 - Starting",
+        "xval": [
+         4173.738835248616,
+         8695.289240101283
+        ],
+        "yval": [
+         0.1,
+         0.01
+        ]
+       }
+      ]
+     ],
+     "parameters": {
+      "i_100ms": [
+       "Inrush current @ 0.1 s",
+       "xIn",
+       12,
+       null
+      ],
+      "i_10ms": [
+       "Inrush current @ 0.01 s",
+       "xIn",
+       25,
+       null
+      ],
+      "i_e": [
+       "Short time emergency load",
+       "xIn",
+       2,
+       null
+      ],
+      "t_sc": [
+       "Short circuit withstand time",
+       "s",
+       2,
+       null
+      ]
+     },
+     "type": "damage"
+    }
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/dcurve",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/drawout",
+   "stored": {
+    "type": "bool",
+    "value": false
+   }
+  },
+  {
+   "loaded": {
+    "type": "heading",
+    "value": ""
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/head_param",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "heading",
+    "value": ""
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/head_tap",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0.1
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/i0_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 10
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/mag0_percent",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 0
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/mag0_rx",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": {
+    "type": "bool",
+    "value": false
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/oltc",
+   "stored": "<missing>"
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/pcurve_g",
+   "stored": {
+    "type": "data",
+    "value": null
+   }
+  },
+  {
+   "loaded": "<missing>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/pcurve_l",
+   "stored": {
+    "type": "data",
+    "value": {
+     "data": {
+      "curve_l": [
+       [
+        "point",
+        "1.13*f.In",
+        "1e5"
+       ],
+       [
+        "IEC",
+        1,
+        "1.13*f.In",
+        "1.14*f.In",
+        "5*f.In",
+        0,
+        50,
+        4,
+        0,
+        2
+       ],
+       [
+        "point",
+        "5*f.In",
+        0.001
+       ],
+       [
+        "point",
+        "1000*f.Isc",
+        0.001
+       ]
+      ],
+      "curve_u": [
+       [
+        "point",
+        "1.45*f.In",
+        "1e5"
+       ],
+       [
+        "IEC",
+        1,
+        "1.45*f.In",
+        "1.46*f.In",
+        "10*f.In",
+        0,
+        50,
+        "125 if f.In <= 32  else 250",
+        0,
+        2
+       ],
+       [
+        "point",
+        "10*f.In",
+        "d.t_m_max"
+       ],
+       [
+        "point",
+        "1000*f.Isc",
+        "d.t_m_max"
+       ]
+      ]
+     },
+     "graph_model": [
+      "Q0 - L",
+      [
+       {
+        "mode": 2,
+        "title": "Q0 - L",
+        "xval": [
+         10000.0,
+         630.0,
+         630.0,
+         605.7403806116586,
+         582.4149344500904,
+         559.9876889963682,
+         538.4240569373072,
+         517.6907828248853,
+         497.7558917896723,
+         478.58864022916134,
+         460.1594683949656,
+         442.4399548057543,
+         425.40277241562325,
+         409.0216464703086,
+         393.27131398624124,
+         378.12748478995695,
+         363.5668040577744,
+         349.5668162979688,
+         336.1059307199009,
+         323.16338793668024,
+         310.7192279500282,
+         298.7542593679539,
+         287.2500298077752,
+         276.1887974388448,
+         265.5535036210827,
+         255.32774659713348,
+         245.4957561975631,
+         236.04236952009336,
+         226.9530075453639,
+         218.2136526531577,
+         209.81082700441905,
+         201.7315717557201,
+         193.9634270741238,
+         186.49441292162152,
+         179.31301057950927,
+         172.4081448842132,
+         165.76916714716393,
+         159.3858387323821,
+         153.2483152664471,
+         147.347131456497,
+         141.67318649284854,
+         136.21773001372154,
+         130.97234861042514,
+         125.92895285219339,
+         121.0797648106591,
+         116.41730606472818,
+         111.93438616735301,
+         107.6240915564203,
+         103.47977489265082,
+         99.4950448080684,
+         95.66375604922763,
+         91.98,
+         91.35,
+         71.19,
+         71.82,
+         74.01994724971732,
+         76.28728196673536,
+         78.62406832361549,
+         81.03243372141728,
+         83.51457072647624,
+         86.07273906650732,
+         88.70926768785237,
+         91.42655687574332,
+         94.2270804395127,
+         97.11338796473963,
+         100.08810713438271,
+         103.15394612101173,
+         106.31369605231787,
+         109.57023355214491,
+         112.92652335935645,
+         116.38562102692194,
+         119.95067570368074,
+         123.62493300131447,
+         127.41173794913858,
+         131.31453803940465,
+         135.33688636588317,
+         139.4824448585863,
+         143.75498761757396,
+         148.15840434888037,
+         152.6967039056866,
+         157.37401793796488,
+         162.1946046539157,
+         167.16285269662478,
+         172.28328513946593,
+         177.56056360388854,
+         182.99949250334035,
+         188.6050234171859,
+         194.382259598605,
+         200.33646062057363,
+         206.4730471641594,
+         212.7976059534875,
+         219.3158948418726,
+         226.0338480537449,
+         232.95758158714582,
+         240.09339878170798,
+         247.44779605718975,
+         255.02746882779158,
+         262.839317597634,
+         270.8904542429485,
+         279.18820848670305,
+         287.7401345715516,
+         296.55401813718754,
+         305.6378833083591,
+         315.0,
+         315.0,
+         10000.0,
+         10000.0
+        ],
+        "yval": [
+         0.01,
+         0.01,
+         5.369136086212619,
+         5.818019651220901,
+         6.305358496833923,
+         6.8346092566159555,
+         7.40956780627054,
+         8.034407567756334,
+         8.71372300659197,
+         9.45257917457021,
+         10.256568315783912,
+         11.131874756768319,
+         12.085349551193508,
+         13.124596658147636,
+         14.258072816511064,
+         15.495203756929403,
+         16.846519994625247,
+         18.323816206655714,
+         19.94033916404948,
+         21.711010426713173,
+         23.652691603884623,
+         25.784502053690005,
+         28.12820160512786,
+         30.70865446134416,
+         33.55439520295499,
+         36.69832420685584,
+         40.17856847958816,
+         44.03955582085104,
+         48.33336677711672,
+         53.12145210444038,
+         58.47683660446967,
+         64.48697812831567,
+         71.25752097019921,
+         78.91728817432522,
+         87.62501775941134,
+         97.57859763958622,
+         109.02795193019772,
+         122.2933818769233,
+         137.7922595931837,
+         156.0788771410192,
+         177.9056915411532,
+         204.3206853677079,
+         236.82839712565286,
+         277.66913988107683,
+         330.33171355403306,
+         400.5642992341245,
+         498.5574020862154,
+         644.2639434746487,
+         882.7730010276732,
+         1342.0934166393374,
+         2585.99676886425,
+         18062.714776632263,
+         100000.0,
+         100000.0,
+         225.0044052863429,
+         49.33138052067899,
+         26.96709680563267,
+         18.20198831347634,
+         13.53059257796239,
+         10.632197387329683,
+         8.661423504122356,
+         7.236616430748835,
+         6.160225268905432,
+         5.3197373075821,
+         4.6463653852896085,
+         4.095686679430906,
+         3.637732127203505,
+         3.2515494738887263,
+         2.9220488375665687,
+         2.63808595629653,
+         2.391251337005388,
+         2.17507954901695,
+         1.9845178807913944,
+         1.815560251167537,
+         1.6649893681636543,
+         1.5301915474775654,
+         1.409021374343348,
+         1.2997012290255565,
+         1.2007456294492345,
+         1.1109035222292654,
+         1.0291137433501825,
+         0.9544702705276916,
+         0.8861948444604059,
+         0.823615197879174,
+         0.7661475964046526,
+         0.7132827265576931,
+         0.6645742052564557,
+         0.6196291595165324,
+         0.5781004536860727,
+         0.5396802373647599,
+         0.5040945592110674,
+         0.4710988465079545,
+         0.44047409217459965,
+         0.41202362315061297,
+         0.3855703491168541,
+         0.3609544100972784,
+         0.33803115689960933,
+         0.3166694105615766,
+         0.296749956697356,
+         0.2781642384335262,
+         0.26081321790292233,
+         0.24460638134861482,
+         0.2294608670264494,
+         0.21530069847532576,
+         0.001,
+         0.001,
+         0.01
+        ]
+       }
+      ]
+     ],
+     "parameters": {
+      "t_m_max": [
+       "Instantaneous trip time (max)",
+       "s",
+       0.01,
+       null
+      ]
+     },
+     "type": "protection"
+    }
+   }
+  },
+  {
+   "loaded": {
+    "type": "float",
+    "value": 30
+   },
+   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/pfe_kw",
+   "stored": "<missing>"
+  }
+ ],
+ "undo_all_restores_initial": false
+}

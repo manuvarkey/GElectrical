@@ -1,0 +1,76 @@
+{
+ "Electrical Model": [
+  [
+   "Disconnected Nodes \nNodes: 4, 2",
+   [
+    [
+     "node",
+     [
+      4,
+      2
+     ]
+    ]
+   ]
+  ],
+  [
+   "Disconnected element \nElements: W2",
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       5
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   "Disconnected element \nElements: X2, X3",
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       6
+      ],
+      [
+       0,
+       7
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   "Invalid values found in model \nNodes: 4",
+   [
+    [
+     "node",
+     [
+      4
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Different voltage levels connected \nElements: W2",
+    "type": "error"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       5
+      ]
+     ]
+    ]
+   ]
+  ]
+ ]
+}

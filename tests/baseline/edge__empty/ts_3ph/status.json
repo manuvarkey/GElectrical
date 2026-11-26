@@ -1,0 +1,28 @@
+{
+ "completed": false,
+ "diagnostics_ret_code": -1,
+ "file_settings_mode": false,
+ "pf_method": "Time series",
+ "power_flow_3ph": true,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  }
+ ],
+ "stopped": "Diagnostics returned critical errors",
+ "warnings": [
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations",
+  "RuntimeWarning: invalid value encountered in scalar divide",
+  "pandapower.diagnostic: Overload check failed: max() iterable argument is empty",
+  "pandapower.diagnostic: Switch check failed: max() iterable argument is empty"
+ ]
+}

@@ -1,7 +1,8 @@
 # Existing application audit
 
 Status: **current implementation**, audited against `master` at commit `8b630f6`
-(2026-11-26). Navigation: [migration index](README.md) ·
+(2026-11-26). Runtime claims were checked in milestone M1 (see
+[section 16](#16-runtime-verification-m1)). Navigation: [migration index](README.md) ·
 [feature inventory](feature-inventory.md) · [risks and decisions](risks-and-decisions.md)
 · [documentation index](../README.md).
 
@@ -111,9 +112,16 @@ Registered element codes (from `MainWindow.__init__`):
 | Sources | `element_grid`, `element_generator`, `element_staticgenerator`, `element_single_phase_staticgenerator` |
 | Transformers | `element_transformer`, `element_transformer3w` |
 | Components | `element_busbar`, `element_line`, `element_line_cable`, `element_line_custom`, `element_line_bus`, `element_impedance`, `element_inductance` |
-| Loads | `element_load`, `element_asymmetric_load`, `element_single_phase_load`, `element_async_motor_3ph`, `element_async_motor_1ph`, `element_async_motor` (generator-based), `element_shunt`, `element_shunt_cap`, `element_ward`, `element_xward` |
+| Loads | `element_load`, `element_asymmetric_load`, `element_single_phase_load`, `element_async_motor_3ph`, `element_async_motor_1ph`, `element_shunt`, `element_shunt_cap`, `element_ward`, `element_xward` |
 | Miscellaneous | `element_reference`, `element_reference_box`, `element_display_text` |
 | Non-palette | `element_wire`, `element_assembly`, `element_display_node` (analysis overlay), `element_template` (border and title block share this code) |
+
+The registry holds 32 codes (checked at runtime in M1; recorded in
+`tests/baseline/environment.json`). `element_async_motor`
+(`generator.Motor`, generator-based motor) is defined but its registration
+is commented out in `MainWindow.__init__`, so files containing it cannot be
+loaded. `element_wire`, `element_assembly` and `element_template` are not in
+the registry; `DrawingModel.set_model` creates wires and assemblies directly.
 
 `misc.ADVANCED_ELEMENTS` hides six codes unless *advanced mode* is enabled.
 Element-code groupings used by analysis and rules (`LINE_ELEMENT_CODES`,
@@ -263,15 +271,18 @@ of them may change behaviour and needs an explicit decision and verification.
 | D4 | Project defaults alias module globals (`default_project_settings`, `DEFAULT_LOAD_PROFILE`) | `model/project.py` | Edits leak into later "new project" instances in the same process; blocks multi-session backends |
 | D5 | Element identity is the list index `(page, index)`; assemblies store child indices | `model/drawing.py`, `elementassembly.py` | Fragile across deletes/reorders; unsuitable for MCP references and frontend diffing |
 | D6 | Non-atomic save (ZIP written over the target) | `__init__.py:on_save` | A crash during save can corrupt the project |
-| D7 | Analysis mutates the drawing (display nodes) inside the undo stack | `model/project.py:setup_base_model` | Undo history and dirty state change when only analysing |
-| D8 | Field-load order can reset values: loading a field that changes a dependent selection list may coerce an already loaded value | `set_model` + `set_field_selection_list` | Possible silent value change on load; must be measured by round-trip tests |
+| D7 | Analysis mutates the drawing (display nodes) inside the undo stack | `model/project.py:setup_base_model` | Undo history and dirty state change when only analysing. **Confirmed in M1:** `setup_base_model` adds two undo entries ("Clear analysis results", "Add node elements"; `undo.json`) |
+| D8 | Values change silently on load: `set_model` replays every field through `set_text_field_value`, whose side effects (selection lists, recalculation, curve re-evaluation from the database) can overwrite stored values | `set_model` + `set_text_field_value` + `set_field_selection_list` | **Confirmed in M1:** `sample.gepro` 97 changed values, `kerala_inspectorate_sample.gepro` 4, `voltage_test.gepro` 0 (e.g. `r0n_ohm_per_km` 0.458 → 10000, `r_ohm_per_km` 0.431 → 0.448, protection curve expressions replaced). Files saved by the current code: 0 changes; save → load is idempotent for all 17 baseline projects. Details: `tests/baseline/*/d8.json` |
 | D9 | Worker threads update GTK widgets and models during analysis | `run_command`, `ProjectModel.update_results` | Thread-safety risk; analysis cannot be isolated |
 | D10 | Report HTML not autoescaped; WeasyPrint resolves URLs in content | `export_pdf_report` | User text can inject markup or reference local files in reports |
 | D11 | `requirements.txt` pins pandapower 2.14.9 while `pixi.toml` requires `>=3.2` | packaging | Legacy packaging builds a different solver version |
 | D12 | Source headers state GPL-2.0-or-later; `LICENSE` is GPLv3 text | all modules | Licence statement inconsistent; see [ADR 0013](../decisions/0013-licensing.md) |
 | D13 | Duplicate `code` for `Template` and `TitleBlock` (`element_template`) | `elementmodel/template.py` | Breaks the "unique code" invariant if templates become registry entries |
 | D14 | Element registry built inside the GTK window | `__init__.py` | No headless registry; must be duplicated by any other front end |
-| D15 | Mutable default argument `alter_values_dict={}` shared between fields | `misc.get_field_dict` | Latent shared-state bug |
+| D15 | Mutable default argument `alter_values_dict={}` shared between fields | `misc.get_field_dict` | Latent shared-state bug (also `modified={}` in `misc.set_field_selection_list`) |
+| D16 | `insert_element_at_index(element, 0)` appends instead of inserting (`if index:` treats 0 as false). Undoing the deletion of element 0 moves it to the end of the sheet | `model/drawing.py` | Undo changes element identity `(page, index)`; found by M1 `undo.json`: undo-all does not restore the initial model in every non-empty baseline project (16 of 17) |
+| D17 | Legacy pandapower inputs fail in some calculations with pandapower 3.2.1: impedance line-to-ground SC (`KeyError: 'gf0_pu'`), extended ward zero sequence (`FloatingPointError`), `trafo3w` line-to-ground SC (no vector group), 3-phase PF with a synchronous generator (`KeyError: 'res_gen_3ph'`) | `model/pandapower.py`, element `get_power_model` | Analysis aborts for networks containing these elements; recorded per mode in `tests/baseline/*/<mode>/status.json` |
+| D18 | Report export raises `KeyError` when a `load_profile` value is not a key of the project load profiles (static generators default to `0`; missing profiles) | `misc.fields_to_table` via `export_pdf_report` | No report for any project with a static generator; time series itself falls back to the first profile |
 
 ## 13. GTK, Cairo and Matplotlib dependency map
 
@@ -295,11 +306,13 @@ Matplotlib GTK backend at module level, so report generation also requires GTK.
 
 - **Development:** pixi (`pixi.toml`, `pixi.lock`), Python 3.12, conda-forge
   GTK/PyGObject/pandapower/WeasyPrint; tasks `start` and `smoke`.
-- **Tests:** `tools/smoke_test.py` builds an unshown `MainWindow`, opens each
+- **Tests:** `tools/smoke_test.py` builds a `MainWindow` (its `__init__` calls
+  `show_all()`, so the window is mapped; it is never run in a main loop), opens each
   sample project and runs diagnostics, power flow, both short-circuit
   calculations, rules check and exports. It checks that outputs exist, not
-  their values. It needs a display (`xvfb-run` on Linux CI). No CI workflow is
-  committed.
+  their values. It needs a display (`xvfb-run` on Linux CI). Since M1 the
+  regression baseline (`tests/test_baseline.py`) checks values and
+  `.github/workflows/quality.yml` runs both.
 - **Sample projects:** `sample_files/sample.gepro` (2 sheets),
   `short_circuit_calculation_kerala_insp/kerala_inspectorate_sample.gepro` and
   `cable_voltage_drop_test/voltage_test.gepro` (with a notebook and reference
@@ -327,3 +340,25 @@ Matplotlib GTK backend at module level, so report generation also requires GTK.
 9. Report graphs depend on Matplotlib through a GTK module.
 10. Packaging must ship the scientific stack (NumPy, SciPy, pandas, Numba,
     llvmlite, Shapely, NetworkX, pandapower) and WeasyPrint's native libraries.
+
+## 16. Runtime verification (M1)
+
+Checked on 2026-11-26 with the pixi environment (Python 3.12.16,
+pandapower 3.2.1, Linux, `xvfb-run`), branch `feat/m1-regression-baseline`.
+
+| Claim | Result |
+| --- | --- |
+| Importing any `gelectrical` submodule imports GTK | Confirmed: `import gelectrical.model.protection` loads `gi.repository.Gtk` |
+| Element registry contents (section 3) | Corrected: 32 codes; `element_async_motor` is not registered |
+| Analysis mutates drawing and undo stack (D7) | Confirmed (two undo entries per `setup_base_model`) |
+| Field-load order can change values (D8) | Confirmed for older files; see D8 |
+| Time series uses 24 hourly steps | Confirmed (24 pandapower time steps per run) |
+| Display nodes are excluded from saving | Confirmed: save → load reproduces the loaded model exactly |
+| Smoke test window is not shown | Corrected: `MainWindow.__init__` calls `show_all()` |
+| Element ports/extents depend on rendering | Confirmed and extended: bus bar ports (`n_top`/`n_btm`) are only recomputed when the element is drawn; an undrawn element keeps the ports it had |
+| Capture determinism | Two captures (`PYTHONHASHSEED` 0 and 1) are byte-identical, including drawings |
+
+Not checked at runtime: thread-safety (D9), report URL resolution (D10),
+packaging (D11), 60 Hz behaviour. `PandaPowerModel.build_power_model` creates
+networks with `pp.create_empty_network()` without `f_hz` (code reading; every
+baseline project is 50 Hz, so the effect of 60 Hz projects is unmeasured).
