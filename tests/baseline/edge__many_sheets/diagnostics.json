@@ -1,0 +1,106 @@
+{
+ "Electrical Model": [
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W1",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       3
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W2",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       1,
+       1
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W3",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       2,
+       1
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W4",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       3,
+       1
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W5",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       4,
+       1
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W6",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       5,
+       1
+      ]
+     ]
+    ]
+   ]
+  ]
+ ]
+}

@@ -1,0 +1,812 @@
+{
+ "groundfault": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {
+   "bus": {
+    "0": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 0):0|(0, 1):0]",
+     "type": "n",
+     "vn_kv": 110.0,
+     "zone": null
+    },
+    "1": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 1):1|(0, 2):0]",
+     "type": "n",
+     "vn_kv": 110.0,
+     "zone": null
+    },
+    "2": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B1",
+     "node_key": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "type": "b",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "3": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B2",
+     "node_key": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "type": "b",
+     "vn_kv": 10.0,
+     "zone": null
+    },
+    "4": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 7):1|(0, 8):0]",
+     "type": "n",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "5": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 10):0|(0, 9):1]",
+     "type": "n",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "6": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 11):1|(0, 12):0]",
+     "type": "n",
+     "vn_kv": 10.0,
+     "zone": null
+    },
+    "7": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 13):1|(0, 14):0]",
+     "type": "n",
+     "vn_kv": 10.0,
+     "zone": null
+    }
+   },
+   "ext_grid": {
+    "0": {
+     "__element": "0,0",
+     "bus": "N[(0, 0):0|(0, 1):0]",
+     "controllable": false,
+     "in_service": true,
+     "name": "G1",
+     "r0x0_max": 0.1,
+     "r0x0_min": 0.0,
+     "rx_max": 0.1,
+     "rx_min": 0.0,
+     "s_sc_max_mva": 3000.0,
+     "s_sc_min_mva": 2000.0,
+     "slack_weight": 1.0,
+     "va_degree": 0.0,
+     "vm_pu": 1.0,
+     "x0x_max": 1.0,
+     "x0x_min": 1.0
+    }
+   },
+   "load": {
+    "0": {
+     "__element": "0,8",
+     "bus": "N[(0, 7):1|(0, 8):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X1",
+     "p_mw": 3.6,
+     "q_mvar": 1.743559577416269,
+     "scaling": 1.0,
+     "sn_mva": 4.0,
+     "type": "wye"
+    },
+    "1": {
+     "__element": "0,12",
+     "bus": "N[(0, 11):1|(0, 12):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X3",
+     "p_mw": 2.55,
+     "q_mvar": 1.580348062927911,
+     "scaling": 1.0,
+     "sn_mva": 3.0,
+     "type": "wye"
+    }
+   },
+   "shunt": {
+    "0": {
+     "__element": "0,10",
+     "bus": "N[(0, 10):0|(0, 9):1]",
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "max_step": 1,
+     "name": "C2",
+     "p_mw": 0.0,
+     "q_mvar": -1.0,
+     "step": 1,
+     "step_dependency_table": false,
+     "vn_kv": 20.0
+    },
+    "1": {
+     "__element": "0,14",
+     "bus": "N[(0, 13):1|(0, 14):0]",
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "max_step": 1,
+     "name": "Z4",
+     "p_mw": 0.05,
+     "q_mvar": 0.0,
+     "step": 1,
+     "step_dependency_table": false,
+     "vn_kv": 10.0
+    }
+   },
+   "switch": {
+    "0": {
+     "__element": "0,1",
+     "bus": "N[(0, 0):0|(0, 1):0]",
+     "closed": true,
+     "element": "N[(0, 1):1|(0, 2):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q0",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "1": {
+     "__element": "0,7",
+     "bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "closed": true,
+     "element": "N[(0, 7):1|(0, 8):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q1",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "2": {
+     "__element": "0,9",
+     "bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "closed": true,
+     "element": "N[(0, 10):0|(0, 9):1]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q2",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "3": {
+     "__element": "0,11",
+     "bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "closed": true,
+     "element": "N[(0, 11):1|(0, 12):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q3",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "4": {
+     "__element": "0,13",
+     "bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "closed": true,
+     "element": "N[(0, 13):1|(0, 14):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q4",
+     "type": null,
+     "z_ohm": 0.0
+    }
+   },
+   "trafo3w": {
+    "0": {
+     "__element": "0,2",
+     "hv_bus": "N[(0, 1):1|(0, 2):0]",
+     "i0_percent": 0.1,
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "lv_bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "mv_bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "name": "T1",
+     "pfe_kw": 30.0,
+     "shift_lv_degree": 30.0,
+     "shift_mv_degree": 30.0,
+     "sn_hv_mva": 40.0,
+     "sn_lv_mva": 20.0,
+     "sn_mv_mva": 20.0,
+     "std_type": null,
+     "tap_at_star_point": false,
+     "tap_changer_type": "nan",
+     "tap_dependency_table": false,
+     "tap_max": "NaN",
+     "tap_min": "NaN",
+     "tap_neutral": "NaN",
+     "tap_pos": "NaN",
+     "tap_side": null,
+     "tap_step_degree": "NaN",
+     "tap_step_percent": "NaN",
+     "vector_group": null,
+     "vk0_hv_percent": "NaN",
+     "vk0_lv_percent": "NaN",
+     "vk0_mv_percent": "NaN",
+     "vk_hv_percent": 10.0,
+     "vk_lv_percent": 12.0,
+     "vk_mv_percent": 11.0,
+     "vkr0_hv_percent": "NaN",
+     "vkr0_lv_percent": "NaN",
+     "vkr0_mv_percent": "NaN",
+     "vkr_hv_percent": 0.3,
+     "vkr_lv_percent": 0.32,
+     "vkr_mv_percent": 0.31,
+     "vn_hv_kv": 110.0,
+     "vn_lv_kv": 10.0,
+     "vn_mv_kv": 20.0
+    }
+   }
+  }
+ },
+ "linefault": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {
+   "bus": {
+    "0": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 0):0|(0, 1):0]",
+     "type": "n",
+     "vn_kv": 110.0,
+     "zone": null
+    },
+    "1": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 1):1|(0, 2):0]",
+     "type": "n",
+     "vn_kv": 110.0,
+     "zone": null
+    },
+    "2": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B1",
+     "node_key": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "type": "b",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "3": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B2",
+     "node_key": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "type": "b",
+     "vn_kv": 10.0,
+     "zone": null
+    },
+    "4": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 7):1|(0, 8):0]",
+     "type": "n",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "5": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 10):0|(0, 9):1]",
+     "type": "n",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "6": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 11):1|(0, 12):0]",
+     "type": "n",
+     "vn_kv": 10.0,
+     "zone": null
+    },
+    "7": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 13):1|(0, 14):0]",
+     "type": "n",
+     "vn_kv": 10.0,
+     "zone": null
+    }
+   },
+   "ext_grid": {
+    "0": {
+     "__element": "0,0",
+     "bus": "N[(0, 0):0|(0, 1):0]",
+     "controllable": false,
+     "in_service": true,
+     "name": "G1",
+     "r0x0_max": 0.1,
+     "r0x0_min": 0.0,
+     "rx_max": 0.1,
+     "rx_min": 0.0,
+     "s_sc_max_mva": 3000.0,
+     "s_sc_min_mva": 2000.0,
+     "slack_weight": 1.0,
+     "va_degree": 0.0,
+     "vm_pu": 1.0,
+     "x0x_max": 1.0,
+     "x0x_min": 1.0
+    }
+   },
+   "load": {
+    "0": {
+     "__element": "0,8",
+     "bus": "N[(0, 7):1|(0, 8):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X1",
+     "p_mw": 3.6,
+     "q_mvar": 1.743559577416269,
+     "scaling": 1.0,
+     "sn_mva": 4.0,
+     "type": "wye"
+    },
+    "1": {
+     "__element": "0,12",
+     "bus": "N[(0, 11):1|(0, 12):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X3",
+     "p_mw": 2.55,
+     "q_mvar": 1.580348062927911,
+     "scaling": 1.0,
+     "sn_mva": 3.0,
+     "type": "wye"
+    }
+   },
+   "shunt": {
+    "0": {
+     "__element": "0,10",
+     "bus": "N[(0, 10):0|(0, 9):1]",
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "max_step": 1,
+     "name": "C2",
+     "p_mw": 0.0,
+     "q_mvar": -1.0,
+     "step": 1,
+     "step_dependency_table": false,
+     "vn_kv": 20.0
+    },
+    "1": {
+     "__element": "0,14",
+     "bus": "N[(0, 13):1|(0, 14):0]",
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "max_step": 1,
+     "name": "Z4",
+     "p_mw": 0.05,
+     "q_mvar": 0.0,
+     "step": 1,
+     "step_dependency_table": false,
+     "vn_kv": 10.0
+    }
+   },
+   "switch": {
+    "0": {
+     "__element": "0,1",
+     "bus": "N[(0, 0):0|(0, 1):0]",
+     "closed": true,
+     "element": "N[(0, 1):1|(0, 2):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q0",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "1": {
+     "__element": "0,7",
+     "bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "closed": true,
+     "element": "N[(0, 7):1|(0, 8):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q1",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "2": {
+     "__element": "0,9",
+     "bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "closed": true,
+     "element": "N[(0, 10):0|(0, 9):1]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q2",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "3": {
+     "__element": "0,11",
+     "bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "closed": true,
+     "element": "N[(0, 11):1|(0, 12):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q3",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "4": {
+     "__element": "0,13",
+     "bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "closed": true,
+     "element": "N[(0, 13):1|(0, 14):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q4",
+     "type": null,
+     "z_ohm": 0.0
+    }
+   },
+   "trafo3w": {
+    "0": {
+     "__element": "0,2",
+     "hv_bus": "N[(0, 1):1|(0, 2):0]",
+     "i0_percent": 0.1,
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "lv_bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "mv_bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "name": "T1",
+     "pfe_kw": 30.0,
+     "shift_lv_degree": 30.0,
+     "shift_mv_degree": 30.0,
+     "sn_hv_mva": 40.0,
+     "sn_lv_mva": 20.0,
+     "sn_mv_mva": 20.0,
+     "std_type": null,
+     "tap_at_star_point": false,
+     "tap_changer_type": "nan",
+     "tap_dependency_table": false,
+     "tap_max": "NaN",
+     "tap_min": "NaN",
+     "tap_neutral": "NaN",
+     "tap_pos": "NaN",
+     "tap_side": null,
+     "tap_step_degree": "NaN",
+     "tap_step_percent": "NaN",
+     "vector_group": null,
+     "vk0_hv_percent": "NaN",
+     "vk0_lv_percent": "NaN",
+     "vk0_mv_percent": "NaN",
+     "vk_hv_percent": 10.0,
+     "vk_lv_percent": 12.0,
+     "vk_mv_percent": 11.0,
+     "vkr0_hv_percent": "NaN",
+     "vkr0_lv_percent": "NaN",
+     "vkr0_mv_percent": "NaN",
+     "vkr_hv_percent": 0.3,
+     "vkr_lv_percent": 0.32,
+     "vkr_mv_percent": 0.31,
+     "vn_hv_kv": 110.0,
+     "vn_lv_kv": 10.0,
+     "vn_mv_kv": 20.0
+    }
+   }
+  }
+ },
+ "powerflow": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {
+   "bus": {
+    "0": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 0):0|(0, 1):0]",
+     "type": "n",
+     "vn_kv": 110.0,
+     "zone": null
+    },
+    "1": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 1):1|(0, 2):0]",
+     "type": "n",
+     "vn_kv": 110.0,
+     "zone": null
+    },
+    "2": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B1",
+     "node_key": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "type": "b",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "3": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B2",
+     "node_key": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "type": "b",
+     "vn_kv": 10.0,
+     "zone": null
+    },
+    "4": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 7):1|(0, 8):0]",
+     "type": "n",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "5": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 10):0|(0, 9):1]",
+     "type": "n",
+     "vn_kv": 20.0,
+     "zone": null
+    },
+    "6": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 11):1|(0, 12):0]",
+     "type": "n",
+     "vn_kv": 10.0,
+     "zone": null
+    },
+    "7": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 13):1|(0, 14):0]",
+     "type": "n",
+     "vn_kv": 10.0,
+     "zone": null
+    }
+   },
+   "ext_grid": {
+    "0": {
+     "__element": "0,0",
+     "bus": "N[(0, 0):0|(0, 1):0]",
+     "controllable": false,
+     "in_service": true,
+     "name": "G1",
+     "r0x0_max": 0.1,
+     "r0x0_min": 0.0,
+     "rx_max": 0.1,
+     "rx_min": 0.0,
+     "s_sc_max_mva": 3000.0,
+     "s_sc_min_mva": 2000.0,
+     "slack_weight": 1.0,
+     "va_degree": 0.0,
+     "vm_pu": 1.0,
+     "x0x_max": 1.0,
+     "x0x_min": 1.0
+    }
+   },
+   "load": {
+    "0": {
+     "__element": "0,8",
+     "bus": "N[(0, 7):1|(0, 8):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X1",
+     "p_mw": 3.6,
+     "q_mvar": 1.743559577416269,
+     "scaling": 1.0,
+     "sn_mva": 4.0,
+     "type": "wye"
+    },
+    "1": {
+     "__element": "0,12",
+     "bus": "N[(0, 11):1|(0, 12):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X3",
+     "p_mw": 2.55,
+     "q_mvar": 1.580348062927911,
+     "scaling": 1.0,
+     "sn_mva": 3.0,
+     "type": "wye"
+    }
+   },
+   "shunt": {
+    "0": {
+     "__element": "0,10",
+     "bus": "N[(0, 10):0|(0, 9):1]",
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "max_step": 1,
+     "name": "C2",
+     "p_mw": 0.0,
+     "q_mvar": -1.0,
+     "step": 1,
+     "step_dependency_table": false,
+     "vn_kv": 20.0
+    },
+    "1": {
+     "__element": "0,14",
+     "bus": "N[(0, 13):1|(0, 14):0]",
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "max_step": 1,
+     "name": "Z4",
+     "p_mw": 0.05,
+     "q_mvar": 0.0,
+     "step": 1,
+     "step_dependency_table": false,
+     "vn_kv": 10.0
+    }
+   },
+   "switch": {
+    "0": {
+     "__element": "0,1",
+     "bus": "N[(0, 0):0|(0, 1):0]",
+     "closed": true,
+     "element": "N[(0, 1):1|(0, 2):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q0",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "1": {
+     "__element": "0,7",
+     "bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "closed": true,
+     "element": "N[(0, 7):1|(0, 8):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q1",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "2": {
+     "__element": "0,9",
+     "bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "closed": true,
+     "element": "N[(0, 10):0|(0, 9):1]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q2",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "3": {
+     "__element": "0,11",
+     "bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "closed": true,
+     "element": "N[(0, 11):1|(0, 12):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q3",
+     "type": null,
+     "z_ohm": 0.0
+    },
+    "4": {
+     "__element": "0,13",
+     "bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "closed": true,
+     "element": "N[(0, 13):1|(0, 14):0]",
+     "et": "b",
+     "in_ka": "NaN",
+     "name": "Q4",
+     "type": null,
+     "z_ohm": 0.0
+    }
+   },
+   "trafo3w": {
+    "0": {
+     "__element": "0,2",
+     "hv_bus": "N[(0, 1):1|(0, 2):0]",
+     "i0_percent": 0.1,
+     "id_characteristic_table": "NaN",
+     "in_service": true,
+     "lv_bus": "N[(0, 11):0|(0, 13):0|(0, 2):2|(0, 4):0|(0, 6):0]",
+     "mv_bus": "N[(0, 2):1|(0, 3):0|(0, 5):0|(0, 7):0|(0, 9):0]",
+     "name": "T1",
+     "pfe_kw": 30.0,
+     "shift_lv_degree": 30.0,
+     "shift_mv_degree": 30.0,
+     "sn_hv_mva": 40.0,
+     "sn_lv_mva": 20.0,
+     "sn_mv_mva": 20.0,
+     "std_type": null,
+     "tap_at_star_point": false,
+     "tap_changer_type": "nan",
+     "tap_dependency_table": false,
+     "tap_max": "NaN",
+     "tap_min": "NaN",
+     "tap_neutral": "NaN",
+     "tap_pos": "NaN",
+     "tap_side": null,
+     "tap_step_degree": "NaN",
+     "tap_step_percent": "NaN",
+     "vector_group": null,
+     "vk0_hv_percent": "NaN",
+     "vk0_lv_percent": "NaN",
+     "vk0_mv_percent": "NaN",
+     "vk_hv_percent": 10.0,
+     "vk_lv_percent": 12.0,
+     "vk_mv_percent": 11.0,
+     "vkr0_hv_percent": "NaN",
+     "vkr0_lv_percent": "NaN",
+     "vkr0_mv_percent": "NaN",
+     "vkr_hv_percent": 0.3,
+     "vkr_lv_percent": 0.32,
+     "vkr_mv_percent": 0.31,
+     "vn_hv_kv": 110.0,
+     "vn_lv_kv": 10.0,
+     "vn_mv_kv": 20.0
+    }
+   }
+  }
+ }
+}

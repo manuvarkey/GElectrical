@@ -1,0 +1,69 @@
+name: quality
+
+# Milestone M1: smoke test and regression baseline on the legacy GTK code.
+# The legacy MainWindow needs a display: xvfb-run on Linux; the Windows
+# runner has an interactive desktop session.
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux (smoke + regression baseline)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: v0.85.0
+          environments: test
+          locked: true
+          cache: true
+
+      - name: Smoke test
+        run: xvfb-run -a pixi run -e test smoke
+
+      - name: Regression baseline
+        run: xvfb-run -a pixi run -e test test -v -rw
+        env:
+          GELECTRICAL_BASELINE_CAPTURE: ${{ runner.temp }}/baseline-capture
+
+      - name: Upload capture on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: baseline-capture-linux
+          path: ${{ runner.temp }}/baseline-capture
+          if-no-files-found: ignore
+
+  windows:
+    name: Windows (smoke)
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: v0.85.0
+          environments: default
+          locked: true
+          cache: true
+
+      - name: Smoke test
+        run: pixi run smoke

@@ -1,0 +1,48 @@
+{
+ "completed": false,
+ "diagnostics_ret_code": -2,
+ "file_settings_mode": false,
+ "pf_method": "Power flow with diversity",
+ "power_flow_3ph": false,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  },
+  {
+   "ok": true,
+   "step": "run_powerflow"
+  },
+  {
+   "ok": true,
+   "step": "run_sym_sccalc"
+  },
+  {
+   "error": "AttributeError: 'NoneType' object has no attribute 'lower'",
+   "ok": false,
+   "step": "run_linetoground_sccalc"
+  }
+ ],
+ "traceback": [
+  "<ROOT>/gelectrical/model/project.py:run_linetoground_sccalc",
+  "<ROOT>/gelectrical/model/pandapower.py:run_linetoground_sccalc",
+  "pandapower/shortcircuit/calc_sc.py:calc_sc",
+  "pandapower/shortcircuit/calc_sc.py:_calc_sc_1ph",
+  "pandapower/pd2ppc_zero.py:_pd2ppc_zero",
+  "pandapower/pd2ppc_zero.py:_build_branch_ppc_zero",
+  "pandapower/pd2ppc_zero.py:_add_trafo3w_sc_impedance_zero",
+  "AttributeError: 'NoneType' object has no attribute 'lower'"
+ ],
+ "warnings": [
+  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+ ]
+}

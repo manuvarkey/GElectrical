@@ -1,0 +1,29 @@
+{
+ "Electrical Model": [
+  [
+   "Disconnected Nodes \nNodes: 3",
+   [
+    [
+     "node",
+     [
+      3
+     ]
+    ]
+   ]
+  ],
+  [
+   "Disconnected element \nElements: X2",
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       5
+      ]
+     ]
+    ]
+   ]
+  ]
+ ]
+}

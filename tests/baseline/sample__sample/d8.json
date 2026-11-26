@@ -1,0 +1,711 @@
+{
+ "added": [
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/head_param",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/head_tap",
+  "/pages/proj_drawing_page_0.json/1/elements/3/fields/head_geom",
+  "/pages/proj_drawing_page_0.json/1/elements/3/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/3/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/alpha_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/c_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/curve_l",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/head_m",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/head_t",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/i_r",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/ir_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/k_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/t_m",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/t_r",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_im_m",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_im_p",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_tm_m",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_tm_p",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_tmf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_tmf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_tr_m",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_tr_p",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_trf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_trf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tr_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/5/fields/r_grid",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/dfs",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_cpe",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_inst",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_line",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/perc_3rd_harm",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/6/fields/working_temp_degree",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/dfs",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/head_cpe",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/head_inst",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/head_line",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/perc_3rd_harm",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/working_temp_degree",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/dfs",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/head_cpe",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/head_inst",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/head_line",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/perc_3rd_harm",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/13/fields/working_temp_degree",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/alpha_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/c_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/curve_l",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/head_m",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/head_t",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/i_r",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/ir_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/k_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/t_m",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/t_r",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_im_m",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_im_p",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_tm_m",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_tm_p",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_tmf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_tmf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_tr_m",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_tr_p",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_trf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_trf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tr_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/alpha_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/c_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/curve_l",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/head_m",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/head_t",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/i_r",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/ir_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/k_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/t_m",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/t_r",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_im_m",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_im_p",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_tm_m",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_tm_p",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_tmf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_tmf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_tr_m",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_tr_p",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_trf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_trf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tr_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/alpha_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/c_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/curve_l",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/head_m",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/head_t",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/i_r",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/ir_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/k_iec",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/t_m",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/t_r",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_im_m",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_im_p",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_tm_m",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_tm_p",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_tmf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_tmf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_tr_m",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_tr_p",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_trf_m",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_trf_p",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tr_i2t",
+  "/pages/proj_drawing_page_0.json/1/elements/19/fields/head_addnlpar",
+  "/pages/proj_drawing_page_0.json/1/elements/19/fields/head_par",
+  "/pages/proj_drawing_page_0.json/1/elements/19/fields/symbol",
+  "/pages/proj_drawing_page_0.json/1/elements/19/fields/working_temp_degree",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/data/curve_l1",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/data/curve_l2",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/data/curve_u1",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/data/curve_u2",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/data/select_expr_list",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/head_i",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/head_t",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/i_i",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/i_i_on",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/i_r",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/t_i_m",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/t_i_p",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/t_min",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/tol_ii_m",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/tol_ii_p",
+  "/pages/proj_drawing_page_1.json/1/elements/5/fields/Isc",
+  "/pages/proj_drawing_page_1.json/1/elements/5/fields/custom",
+  "/pages/proj_drawing_page_1.json/1/elements/5/fields/pcurve_g",
+  "/pages/proj_drawing_page_1.json/1/elements/5/fields/pcurve_l",
+  "/pages/proj_drawing_page_1.json/1/elements/5/fields/prot_curve_type",
+  "/pages/proj_drawing_page_1.json/1/elements/5/fields/trip_unit",
+  "/proj_fields/Reports",
+  "/proj_fields/Simulation/show_impedances",
+  "/proj_fields/Simulation/sub_head_power_flow",
+  "/proj_fields/Simulation/sub_head_sc",
+  "/proj_fields/Simulation/sub_head_sim_param"
+ ],
+ "changed": [
+  {
+   "loaded": "xIn",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/dcurve/value/parameters/i_100ms/1",
+   "stored": "s"
+  },
+  {
+   "loaded": "xIn",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/dcurve/value/parameters/i_10ms/1",
+   "stored": "s"
+  },
+  {
+   "loaded": 0.596,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/3/fields/r0g_ohm_per_km/value",
+   "stored": 0.579
+  },
+  {
+   "loaded": 10000,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/3/fields/r0n_ohm_per_km/value",
+   "stored": 0.579
+  },
+  {
+   "loaded": 0.448,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/3/fields/r_ohm_per_km/value",
+   "stored": 0.431
+  },
+  {
+   "loaded": 10000,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/3/fields/x0n_ohm_per_km/value",
+   "stored": 1.653
+  },
+  {
+   "loaded": "d.i_nf*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_l/0/1",
+   "stored": "d.i_nf*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_l/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_l/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_l/2/1",
+   "stored": "(d.i_m*(100-d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_l/2/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_l/3/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "d.i_f*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_u/0/1",
+   "stored": "d.i_f*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_u/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_u/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_u/2/1",
+   "stored": "(d.i_m*(100+d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_u/2/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_u/3/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/graph_model/1/0/xval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/graph_model/1/0/yval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/i_f",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/i_m",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/i_nf",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "Thermal Magnetic",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/prot_curve_type/value",
+   "stored": "EM Trip"
+  },
+  {
+   "loaded": 6.986,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/6/fields/r0g_ohm_per_km/value",
+   "stored": 6.973
+  },
+  {
+   "loaded": 1.969,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/6/fields/r0n_ohm_per_km/value",
+   "stored": 0.846
+  },
+  {
+   "loaded": 0.32,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/6/fields/r_ohm_per_km/value",
+   "stored": 0.308
+  },
+  {
+   "loaded": 6.986,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/10/fields/r0g_ohm_per_km/value",
+   "stored": 6.973
+  },
+  {
+   "loaded": 1.969,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/10/fields/r0n_ohm_per_km/value",
+   "stored": 0.846
+  },
+  {
+   "loaded": 0.32,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/10/fields/r_ohm_per_km/value",
+   "stored": 0.308
+  },
+  {
+   "loaded": 6.986,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/13/fields/r0g_ohm_per_km/value",
+   "stored": 6.973
+  },
+  {
+   "loaded": 1.969,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/13/fields/r0n_ohm_per_km/value",
+   "stored": 0.846
+  },
+  {
+   "loaded": 0.32,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/13/fields/r_ohm_per_km/value",
+   "stored": 0.308
+  },
+  {
+   "loaded": "d.i_nf*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_l/0/1",
+   "stored": "d.i_nf*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_l/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_l/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_l/2/1",
+   "stored": "(d.i_m*(100-d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_l/2/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_l/3/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "d.i_f*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_u/0/1",
+   "stored": "d.i_f*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_u/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_u/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_u/2/1",
+   "stored": "(d.i_m*(100+d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_u/2/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_u/3/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/graph_model/1/0/xval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/graph_model/1/0/yval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/i_f",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/i_m",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/i_nf",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "Thermal Magnetic",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/prot_curve_type/value",
+   "stored": "EM Trip"
+  },
+  {
+   "loaded": "d.i_nf*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_l/0/1",
+   "stored": "d.i_nf*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_l/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_l/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_l/2/1",
+   "stored": "(d.i_m*(100-d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_l/2/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_l/3/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "d.i_f*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_u/0/1",
+   "stored": "d.i_f*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_u/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_u/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_u/2/1",
+   "stored": "(d.i_m*(100+d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_u/2/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_u/3/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/graph_model/1/0/xval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/graph_model/1/0/yval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/i_f",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/i_m",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/i_nf",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "Thermal Magnetic",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/prot_curve_type/value",
+   "stored": "EM Trip"
+  },
+  {
+   "loaded": "d.i_nf*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_l/0/1",
+   "stored": "d.i_nf*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_l/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_l/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_l/2/1",
+   "stored": "(d.i_m*(100-d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_l/2/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "max(0.00001, min(d.t_m*(100-d.tol_tm_m)/100, d.t_m-d.tol_tmf_m))",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_l/3/2",
+   "stored": "d.t_ins_min"
+  },
+  {
+   "loaded": "d.i_f*d.i_r*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_u/0/1",
+   "stored": "d.i_f*f.In*f.In_set"
+  },
+  {
+   "loaded": 100000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_u/0/2",
+   "stored": "d.t_conv*3600"
+  },
+  {
+   "loaded": "<list 2 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_u/1",
+   "stored": "<list 10 items>"
+  },
+  {
+   "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_u/2/1",
+   "stored": "(d.i_m*(100+d.tol_i)/100)*f.In"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_u/2/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "max(d.t_m*(100+d.tol_tm_p)/100, d.t_m+d.tol_tmf_p)",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_u/3/2",
+   "stored": "d.t_ins_max"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/graph_model/1/0/xval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 207 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/graph_model/1/0/yval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/i_f",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/i_m",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "<list 5 items>",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/i_nf",
+   "stored": "<list 4 items>"
+  },
+  {
+   "loaded": "Thermal Magnetic",
+   "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/prot_curve_type/value",
+   "stored": "EM Trip"
+  },
+  {
+   "loaded": 30000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/19/fields/dcurve/value/data/curve_u/2/1",
+   "stored": 66000.0
+  },
+  {
+   "loaded": 1,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/19/fields/dcurve/value/data/curve_u/2/2",
+   "stored": 0.2066115702479339
+  },
+  {
+   "loaded": 30000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/19/fields/dcurve/value/data/curve_u/3/1",
+   "stored": 66000.0
+  },
+  {
+   "loaded": 30000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/19/fields/dcurve/value/graph_model/1/0/xval/2",
+   "stored": 66000.0
+  },
+  {
+   "loaded": 30000.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/19/fields/dcurve/value/graph_model/1/0/xval/3",
+   "stored": 66000.0
+  },
+  {
+   "loaded": 1.0,
+   "path": "/pages/proj_drawing_page_0.json/1/elements/19/fields/dcurve/value/graph_model/1/0/yval/2",
+   "stored": 0.2066115702479339
+  },
+  {
+   "loaded": "1",
+   "path": "/pages/proj_drawing_page_0.json/1/fields/sheet_no/value",
+   "stored": "1/1"
+  },
+  {
+   "loaded": "<list 203 items>",
+   "path": "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/graph_model/1/0/xval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "<list 203 items>",
+   "path": "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/graph_model/1/0/yval",
+   "stored": "<list 107 items>"
+  },
+  {
+   "loaded": "Class 10A",
+   "path": "/pages/proj_drawing_page_1.json/1/elements/3/fields/prot_curve_type/value",
+   "stored": "EM Trip"
+  }
+ ],
+ "counts": {
+  "added": 144,
+  "changed": 97,
+  "removed": 69
+ },
+ "removed": [
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/I0_set",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/In_set",
+  "/pages/proj_drawing_page_0.json/1/elements/3/fields/user_df",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/I0_set",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/In_set",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/alpha",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/c",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/k",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/t_conv",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/t_delay",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/t_ins_max",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/t_ins_min",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tms",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_i",
+  "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/tol_t",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/I0_set",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/In_set",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/alpha",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/c",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/k",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/t_conv",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/t_delay",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/t_ins_max",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/t_ins_min",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tms",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_i",
+  "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/tol_t",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/I0_set",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/In_set",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/alpha",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/c",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/k",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/t_conv",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/t_delay",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/t_ins_max",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/t_ins_min",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tms",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_i",
+  "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/tol_t",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/I0_set",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/In_set",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/alpha",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/c",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/k",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/t_conv",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/t_delay",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/t_ins_max",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/t_ins_min",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tms",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_i",
+  "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/tol_t",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/I0_set",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/In_set",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/data/curve_l",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/data/curve_u",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/alpha",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/c",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/i_f",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/i_m",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/i_nf",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/k",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/t_conv",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/t_delay",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/t_ins_max",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/t_ins_min",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/tms",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/tol_i",
+  "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/parameters/tol_t",
+  "/proj_fields/Simulation/export_graphs"
+ ]
+}

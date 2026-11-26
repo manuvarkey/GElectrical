@@ -1,0 +1,36 @@
+{
+ "completed": false,
+ "diagnostics_ret_code": -2,
+ "file_settings_mode": false,
+ "pf_method": "Power flow with diversity",
+ "power_flow_3ph": true,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  },
+  {
+   "error": "LoadflowNotConverged: Power Flow nr did not converge after 30 iterations!",
+   "ok": false,
+   "step": "run_powerflow"
+  }
+ ],
+ "traceback": [
+  "<ROOT>/gelectrical/model/project.py:run_powerflow",
+  "<ROOT>/gelectrical/model/pandapower.py:run_powerflow",
+  "pandapower/pf/runpp_3ph.py:runpp_3ph",
+  "LoadflowNotConverged: Power Flow nr did not converge after 30 iterations!"
+ ],
+ "warnings": [
+  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+ ]
+}

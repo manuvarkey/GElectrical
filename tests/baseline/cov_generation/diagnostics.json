@@ -1,0 +1,49 @@
+{
+ "Electrical Model": [
+  [
+   {
+    "message": "Multiple voltage sources connected to bus \nElements: G1, G2, G3, G4, Q1, Q2, Q3, Q4",
+    "type": "warning"
+   },
+   [
+    [
+     "elements",
+     [
+      [
+       0,
+       1
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       3
+      ],
+      [
+       0,
+       4
+      ],
+      [
+       0,
+       5
+      ],
+      [
+       0,
+       8
+      ],
+      [
+       0,
+       11
+      ],
+      [
+       0,
+       14
+      ]
+     ]
+    ]
+   ]
+  ]
+ ]
+}

@@ -1,6 +1,7 @@
 # Regression baseline
 
-Status: **proposed** (to be implemented in milestone M1, before any refactor).
+Status: sections 1–6 define the baseline; section 7 is **current** (implemented
+in milestone M1 on 2026-11-26, Python 3.12.16, pandapower 3.2.1).
 Navigation: [migration index](README.md) · [testing guide](../testing.md) ·
 [implementation plan](implementation-plan.md#m1--regression-baseline-and-test-scaffold).
 
@@ -99,3 +100,111 @@ changing display-node handling) requires:
 2. A before/after table of affected values on the sample and coverage projects.
 3. Owner approval.
 4. A baseline update in the same pull request, referencing the ADR.
+
+## 7. Implementation (current, M1)
+
+| Item | Location |
+| --- | --- |
+| Capture harness | `tools/baseline/capture.py` (one subprocess per project), `tools/baseline/legacy.py` (drives `MainWindow`) |
+| Canonical form and tolerances | `tools/baseline/canonical.py` (section 3 table as constants) |
+| Comparison | `tools/baseline/compare.py` (CLI and test helper) |
+| Coverage project generator | `tools/baseline/build_projects.py` |
+| Coverage and edge projects | `tests/projects/*.gepro`, `tests/projects/edge/*.gepro` |
+| Baseline | `tests/baseline/<project>/`, `tests/baseline/environment.json` |
+| Test | `tests/test_baseline.py` |
+| CI | `.github/workflows/quality.yml` |
+
+Commands:
+
+```bash
+xvfb-run -a pixi run -e test test                    # capture afresh and compare
+xvfb-run -a pixi run -e test baseline-capture --out /tmp/cap
+pixi run -e test python tools/baseline/compare.py /tmp/cap tests/baseline
+xvfb-run -a pixi run -e test build-test-projects     # regenerate tests/projects
+```
+
+`baseline-capture` without `--out` overwrites `tests/baseline/`. Do this only
+for an approved re-baseline (section 6), never to make a change pass.
+
+### 7.1 What a capture does
+
+For each project, in fresh `MainWindow` instances with isolated XDG
+directories, `GTK_THEME=Adwaita:light` and `LC_ALL=C.UTF-8`:
+
+1. Open; write `model.json`, `curves.json` and `d8.json` (file values compared
+   with values after load). Save with `MainWindow.on_save`, reopen in a new
+   window and write `roundtrip.json` (`{"equal_to_model": true}` when the
+   canonical model is unchanged, otherwise the full model).
+2. Run six analysis modes, each in a new window: `pf_bal`, `pf_3ph`
+   (*Power flow*), `pfdiv_bal`, `pfdiv_3ph` (*Power flow with diversity*),
+   `ts_bal`, `ts_3ph` (*Time series*), each followed by symmetric and
+   line-to-ground short circuit, `update_results` and the rules check. The
+   chain stops at the first exception, as the GUI worker does; the exception is
+   recorded in `<mode>/status.json` together with pandapower warnings.
+   `topology.json`, `pp_input.json` and `diagnostics.json` come from `pf_bal`.
+3. In the mode that matches the project's saved settings: export the report
+   (`report.txt`) and rasterize every sheet (`drawing_<n>.png`).
+4. `renumber.json`: each renumber mode, then undo.
+5. `undo.json`: modify a field, insert a load, delete element 0, renumber all,
+   run `setup_base_model`; then undo all, redo all, undo all.
+
+### 7.2 Deviations from sections 2 and 4
+
+- `pp_<mode>.json` is one `pp_input.json` with `powerflow`, `linefault` and
+  `groundfault` nets. Bus references are canonical node keys; each row carries
+  the source element (`__element`).
+- `timeseries.json` is not separate: time-series aggregates are the
+  `res_fields` in `ts_*/results.json` and `ts_*/node_results.json`.
+- `sc.json` holds the pandapower `res_*_sc` tables left by the legacy calls
+  (the `min` case, which runs last); the `max` values are in the result
+  fields.
+- `report.txt` is extracted from the generated `report.html` (the WeasyPrint
+  input), not from the PDF: the environment has no PDF text extractor. The PDF
+  is still generated (`status.json` → `report_pdf`).
+- Drawings are rendered with the same `DrawingModel.export_drawing` code onto
+  a Cairo image surface at 150 DPI. PNG comparison is skipped (with a warning)
+  when the resolved fonts in `environment.json` differ from the baseline.
+- Undo snapshots store element codes/references and the number of storage
+  model differences against the initial model (floats compared with the
+  field tolerance) instead of full models; `undo.json` contains no floats.
+  `status.json` tracebacks list `file:function` frames without line numbers.
+  Both keep these artefacts independent of last-bit float results and of
+  unrelated code moves (the first CI run showed ~1e-14 differences in curve
+  points between machines, inside tolerance everywhere else).
+- Node keys are `N[...]` (sorted local node ids, e.g. `(0, 3):1`); virtual
+  source/sink nodes are `T[<element>]`.
+- The legacy analysis runs on the model as loaded, without drawing the sheets
+  first. Ports that are only updated when an element is drawn (for example
+  bus bar port counts) therefore come from the file.
+
+### 7.3 Coverage
+
+All 32 registered element codes appear in at least one project
+(`element_display_node` through analysis). `element_async_motor`
+(`generator.Motor`) is defined but not registered, so it cannot be loaded and
+is not covered. Projects: 3 samples, 8 coverage projects (`cov_*`), 6 edge
+projects (`edge/*`).
+
+Analysis outcomes recorded in the baseline (legacy behaviour, not harness
+errors):
+
+| Project | Outcome |
+| --- | --- |
+| `cov_impedance` | Line-to-ground SC fails: `KeyError: 'gf0_pu'` (zero-sequence impedance columns expected by pandapower 3.2.1) |
+| `cov_xward` | Line-to-ground SC fails: `FloatingPointError` in `makeYbus` (zero sequence) |
+| `cov_trafo3w` | Line-to-ground SC fails: `AttributeError` (no vector group for `trafo3w`); 3-phase PF not implemented for `trafo3w` in pandapower |
+| `cov_generation` | 3-phase PF fails with a synchronous generator: `KeyError: 'res_gen_3ph'` |
+| `cov_radial_lv`, `cov_advanced` | 3-phase PF does not converge |
+| `edge/empty`, `edge/islanded` | Diagnostics return critical errors; analysis stops |
+| `cov_generation`, `cov_static_generation`, `edge/missing_loadprofile` | Report export fails (`KeyError`) because a load profile value is not a key of the project load profiles (static generators default to `0`) |
+
+Every analysis mode completes in at least one project.
+
+### 7.4 Known gaps
+
+Not covered by the M1 baseline: the protection coordination dialog and
+settings spreadsheet export, database application to elements, clipboard
+copy/paste, printing, pandapower HTML/JSON and element-graph exports, link
+references dialog, 60 Hz projects, OLTC tap control (`oltc=True`), page
+add/remove/reorder undo, and the legacy UI itself. The Windows CI job runs
+only the smoke test.

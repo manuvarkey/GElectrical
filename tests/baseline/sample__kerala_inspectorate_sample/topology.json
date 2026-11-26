@@ -1,0 +1,303 @@
+{
+ "edges": [
+  [
+   "N[(0, 1):0|(0, 2):0]",
+   "N[(0, 2):1|(0, 3):0|(0, 4):0]",
+   "0,2",
+   "element_line_custom",
+   "W1"
+  ],
+  [
+   "N[(0, 1):0|(0, 2):0]",
+   "T[0,1]",
+   "0,1",
+   "element_grid",
+   "G1"
+  ],
+  [
+   "N[(0, 2):1|(0, 3):0|(0, 4):0]",
+   "N[(0, 4):1|(0, 5):0|(0, 6):0]",
+   "0,4",
+   "element_transformer",
+   "T1"
+  ],
+  [
+   "N[(0, 4):1|(0, 5):0|(0, 6):0]",
+   "N[(0, 6):1|(0, 7):0|(0, 8):0]",
+   "0,6",
+   "element_line_cable",
+   "W2"
+  ],
+  [
+   "N[(0, 6):1|(0, 7):0|(0, 8):0]",
+   "N[(0, 8):1|(0, 9):0]",
+   "0,8",
+   "element_line_cable",
+   "W3"
+  ]
+ ],
+ "edges_with_status": [
+  [
+   "N[(0, 1):0|(0, 2):0]",
+   "N[(0, 2):1|(0, 3):0|(0, 4):0]",
+   "0,2",
+   "element_line_custom",
+   "W1"
+  ],
+  [
+   "N[(0, 1):0|(0, 2):0]",
+   "T[0,1]",
+   "0,1",
+   "element_grid",
+   "G1"
+  ],
+  [
+   "N[(0, 2):1|(0, 3):0|(0, 4):0]",
+   "N[(0, 4):1|(0, 5):0|(0, 6):0]",
+   "0,4",
+   "element_transformer",
+   "T1"
+  ],
+  [
+   "N[(0, 4):1|(0, 5):0|(0, 6):0]",
+   "N[(0, 6):1|(0, 7):0|(0, 8):0]",
+   "0,6",
+   "element_line_cable",
+   "W2"
+  ],
+  [
+   "N[(0, 6):1|(0, 7):0|(0, 8):0]",
+   "N[(0, 8):1|(0, 9):0]",
+   "0,8",
+   "element_line_cable",
+   "W3"
+  ]
+ ],
+ "elements": {
+  "0,1": {
+   "code": "element_grid",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 1):0|(0, 2):0]"
+   ],
+   "node_keys": [
+    "N[(0, 1):0|(0, 2):0]"
+   ],
+   "upstream_elements": [],
+   "upstream_node": [
+    "0:N[(0, 1):0|(0, 2):0]"
+   ]
+  },
+  "0,2": {
+   "code": "element_line_custom",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 2):1|(0, 3):0|(0, 4):0]"
+   ],
+   "node_keys": [
+    "N[(0, 1):0|(0, 2):0]",
+    "N[(0, 2):1|(0, 3):0|(0, 4):0]"
+   ],
+   "upstream_elements": [
+    "0,1"
+   ],
+   "upstream_node": [
+    "0:N[(0, 1):0|(0, 2):0]"
+   ]
+  },
+  "0,3": {
+   "code": "element_busbar",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 2):1|(0, 3):0|(0, 4):0]"
+   ],
+   "node_keys": [
+    "N[(0, 2):1|(0, 3):0|(0, 4):0]"
+   ],
+   "upstream_elements": [
+    "0,2"
+   ],
+   "upstream_node": [
+    "0:N[(0, 2):1|(0, 3):0|(0, 4):0]"
+   ]
+  },
+  "0,4": {
+   "code": "element_transformer",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 4):1|(0, 5):0|(0, 6):0]"
+   ],
+   "node_keys": [
+    "N[(0, 2):1|(0, 3):0|(0, 4):0]",
+    "N[(0, 4):1|(0, 5):0|(0, 6):0]"
+   ],
+   "upstream_elements": [
+    "0,2"
+   ],
+   "upstream_node": [
+    "0:N[(0, 2):1|(0, 3):0|(0, 4):0]"
+   ]
+  },
+  "0,5": {
+   "code": "element_busbar",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 4):1|(0, 5):0|(0, 6):0]"
+   ],
+   "node_keys": [
+    "N[(0, 4):1|(0, 5):0|(0, 6):0]"
+   ],
+   "upstream_elements": [
+    "0,4"
+   ],
+   "upstream_node": [
+    "0:N[(0, 4):1|(0, 5):0|(0, 6):0]"
+   ]
+  },
+  "0,6": {
+   "code": "element_line_cable",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 6):1|(0, 7):0|(0, 8):0]"
+   ],
+   "node_keys": [
+    "N[(0, 4):1|(0, 5):0|(0, 6):0]",
+    "N[(0, 6):1|(0, 7):0|(0, 8):0]"
+   ],
+   "upstream_elements": [
+    "0,4"
+   ],
+   "upstream_node": [
+    "0:N[(0, 4):1|(0, 5):0|(0, 6):0]"
+   ]
+  },
+  "0,7": {
+   "code": "element_busbar",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 6):1|(0, 7):0|(0, 8):0]"
+   ],
+   "node_keys": [
+    "N[(0, 6):1|(0, 7):0|(0, 8):0]"
+   ],
+   "upstream_elements": [
+    "0,6"
+   ],
+   "upstream_node": [
+    "0:N[(0, 6):1|(0, 7):0|(0, 8):0]"
+   ]
+  },
+  "0,8": {
+   "code": "element_line_cable",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 8):1|(0, 9):0]"
+   ],
+   "node_keys": [
+    "N[(0, 6):1|(0, 7):0|(0, 8):0]",
+    "N[(0, 8):1|(0, 9):0]"
+   ],
+   "upstream_elements": [
+    "0,6"
+   ],
+   "upstream_node": [
+    "0:N[(0, 6):1|(0, 7):0|(0, 8):0]"
+   ]
+  },
+  "0,9": {
+   "code": "element_busbar",
+   "downstream_elements": [],
+   "downstream_node": [
+    "0:N[(0, 8):1|(0, 9):0]"
+   ],
+   "node_keys": [
+    "N[(0, 8):1|(0, 9):0]"
+   ],
+   "upstream_elements": [
+    "0,8"
+   ],
+   "upstream_node": [
+    "0:N[(0, 8):1|(0, 9):0]"
+   ]
+  }
+ },
+ "nodes": [
+  {
+   "df": 1,
+   "elements": [
+    "0,1",
+    "0,2"
+   ],
+   "key": "N[(0, 1):0|(0, 2):0]",
+   "ports": [
+    "(0, 192, 128)"
+   ],
+   "r_grid": 0
+  },
+  {
+   "df": 1,
+   "elements": [
+    "0,2",
+    "0,3",
+    "0,4"
+   ],
+   "key": "N[(0, 2):1|(0, 3):0|(0, 4):0]",
+   "ports": [
+    "(0, 192, 192)",
+    "(0, 192, 224)"
+   ],
+   "r_grid": 0
+  },
+  {
+   "df": 1,
+   "elements": [
+    "0,4",
+    "0,5",
+    "0,6"
+   ],
+   "key": "N[(0, 4):1|(0, 5):0|(0, 6):0]",
+   "ports": [
+    "(0, 192, 304)",
+    "(0, 192, 336)"
+   ],
+   "r_grid": 0
+  },
+  {
+   "df": 1,
+   "elements": [
+    "0,6",
+    "0,7",
+    "0,8"
+   ],
+   "key": "N[(0, 6):1|(0, 7):0|(0, 8):0]",
+   "ports": [
+    "(0, 192, 400)",
+    "(0, 192, 432)",
+    "(0, 288, 432)",
+    "(0, 96, 432)"
+   ],
+   "r_grid": 0
+  },
+  {
+   "df": 1,
+   "elements": [
+    "0,8",
+    "0,9"
+   ],
+   "key": "N[(0, 8):1|(0, 9):0]",
+   "ports": [
+    "(0, 288, 496)",
+    "(0, 288, 528)"
+   ],
+   "r_grid": 0
+  }
+ ],
+ "sink_terminals": [],
+ "source_terminals": [
+  "T[0,1]"
+ ],
+ "source_terminals_with_status": [
+  "T[0,1]"
+ ],
+ "virtual_node_count": 0
+}

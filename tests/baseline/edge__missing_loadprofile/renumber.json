@@ -1,0 +1,56 @@
+{
+ "All": {
+  "after": {
+   "0,0": "G1",
+   "0,1": "B1",
+   "0,2": "W1",
+   "0,3": "X2",
+   "0,4": "X1"
+  },
+  "before": {
+   "0,0": "G1",
+   "0,1": "B1",
+   "0,2": "W1",
+   "0,3": "X1",
+   "0,4": "X2"
+  },
+  "undo_restores": true,
+  "undo_text": "Undo Renumber Elements - All"
+ },
+ "New elements only": {
+  "after": {
+   "0,0": "G1",
+   "0,1": "B1",
+   "0,2": "W1",
+   "0,3": "X1",
+   "0,4": "X2"
+  },
+  "before": {
+   "0,0": "G1",
+   "0,1": "B1",
+   "0,2": "W1",
+   "0,3": "X1",
+   "0,4": "X2"
+  },
+  "undo_restores": true,
+  "undo_text": "Undo Renumber Elements - New elements only"
+ },
+ "Selected elements only": {
+  "after": {
+   "0,0": "G1",
+   "0,1": "B2",
+   "0,2": "W1",
+   "0,3": "X3",
+   "0,4": "X2"
+  },
+  "before": {
+   "0,0": "G1",
+   "0,1": "B1",
+   "0,2": "W1",
+   "0,3": "X1",
+   "0,4": "X2"
+  },
+  "undo_restores": true,
+  "undo_text": "Undo Renumber Elements - Selected elements only"
+ }
+}

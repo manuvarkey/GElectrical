@@ -44,3 +44,18 @@ scripts = ["tools/pixi_activate.bat"]
 [tasks]
 start = "python gelectrical_launcher.py"
 smoke = "python tools/smoke_test.py"
+
+# Test feature (milestone M1): pytest for the regression baseline.
+# Shares the default solve group, so the test environment has exactly the
+# same package versions as the default environment.
+[feature.test.dependencies]
+pytest = "*"
+
+[feature.test.tasks]
+test = "pytest tests"
+baseline-capture = "python tools/baseline/capture.py"
+build-test-projects = "python tools/baseline/build_projects.py"
+
+[environments]
+default = { solve-group = "default" }
+test = { features = ["test"], solve-group = "default" }

@@ -1,0 +1,21 @@
+{
+ "Electrical Model": [
+  [
+   {
+    "message": "Line impedance values close to zero \nElements: W2",
+    "type": "warning"
+   },
+   [
+    [
+     "element",
+     [
+      [
+       0,
+       6
+      ]
+     ]
+    ]
+   ]
+  ]
+ ]
+}

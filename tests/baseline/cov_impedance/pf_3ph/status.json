@@ -1,0 +1,43 @@
+{
+ "completed": false,
+ "diagnostics_ret_code": -2,
+ "file_settings_mode": false,
+ "pf_method": "Power flow",
+ "power_flow_3ph": true,
+ "steps": [
+  {
+   "ok": true,
+   "step": "setup_base_model"
+  },
+  {
+   "ok": true,
+   "step": "build_power_model"
+  },
+  {
+   "ok": true,
+   "step": "run_diagnostics"
+  },
+  {
+   "error": "KeyError: 'gf0_pu'",
+   "ok": false,
+   "step": "run_powerflow"
+  }
+ ],
+ "traceback": [
+  "<ROOT>/gelectrical/model/project.py:run_powerflow",
+  "<ROOT>/gelectrical/model/pandapower.py:run_powerflow",
+  "pandapower/pf/runpp_3ph.py:runpp_3ph",
+  "pandapower/pd2ppc.py:_pd2ppc_recycle",
+  "pandapower/pd2ppc.py:_pd2ppc",
+  "pandapower/pd2ppc_zero.py:_build_branch_ppc_zero",
+  "pandapower/pd2ppc_zero.py:_add_impedance_sc_impedance_zero",
+  "pandapower/build_branch.py:_calc_impedance_parameters_from_dataframe",
+  "pandas/core/frame.py:__getitem__",
+  "pandas/core/indexes/base.py:get_loc",
+  "KeyError: 'gf0_pu'"
+ ],
+ "warnings": [
+  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+ ]
+}

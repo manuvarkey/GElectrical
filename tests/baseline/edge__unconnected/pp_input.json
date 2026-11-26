@@ -1,0 +1,452 @@
+{
+ "groundfault": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {
+   "bus": {
+    "0": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B1",
+     "node_key": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "type": "b",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "1": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 2):1|(0, 3):0]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "2": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 4):1]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "3": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 5):0]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    }
+   },
+   "ext_grid": {
+    "0": {
+     "__element": "0,0",
+     "bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "controllable": false,
+     "in_service": true,
+     "name": "G1",
+     "r0x0_max": 0.1,
+     "r0x0_min": 0.0,
+     "rx_max": 0.1,
+     "rx_min": 0.0,
+     "s_sc_max_mva": 10.0,
+     "s_sc_min_mva": 5.0,
+     "slack_weight": 1.0,
+     "va_degree": 0.0,
+     "vm_pu": 1.0,
+     "x0x_max": 1.0,
+     "x0x_min": 1.0
+    }
+   },
+   "line": {
+    "0": {
+     "__element": "0,2",
+     "c0_nf_per_km": 0.0,
+     "c_nf_per_km": 0.0,
+     "df": 1.0,
+     "endtemp_degree": 160.0,
+     "from_bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "g0_us_per_km": 0.0,
+     "g_us_per_km": 0.0,
+     "geo": null,
+     "in_service": true,
+     "length_km": 0.02,
+     "max_i_ka": 0.073,
+     "name": "W1",
+     "parallel": 1,
+     "r0_ohm_per_km": 3.595,
+     "r_ohm_per_km": 0.899,
+     "std_type": null,
+     "temperature_degree_celsius": 70.0,
+     "to_bus": "N[(0, 2):1|(0, 3):0]",
+     "type": "cs",
+     "x0_ohm_per_km": 0.4,
+     "x_ohm_per_km": 0.1
+    },
+    "1": {
+     "__element": "0,4",
+     "c0_nf_per_km": 0.0,
+     "c_nf_per_km": 0.0,
+     "df": 1.0,
+     "endtemp_degree": 160.0,
+     "from_bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "g0_us_per_km": 0.0,
+     "g_us_per_km": 0.0,
+     "geo": null,
+     "in_service": true,
+     "length_km": 0.02,
+     "max_i_ka": 0.073,
+     "name": "W2",
+     "parallel": 1,
+     "r0_ohm_per_km": 3.595,
+     "r_ohm_per_km": 0.899,
+     "std_type": null,
+     "temperature_degree_celsius": 70.0,
+     "to_bus": "N[(0, 4):1]",
+     "type": "cs",
+     "x0_ohm_per_km": 0.4,
+     "x_ohm_per_km": 0.1
+    }
+   },
+   "load": {
+    "0": {
+     "__element": "0,3",
+     "bus": "N[(0, 2):1|(0, 3):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X1",
+     "p_mw": 0.004,
+     "q_mvar": 0.0030000000000000005,
+     "scaling": 1.0,
+     "sn_mva": 0.005,
+     "type": "wye"
+    },
+    "1": {
+     "__element": "0,5",
+     "bus": "N[(0, 5):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X2",
+     "p_mw": 0.0024000000000000002,
+     "q_mvar": 0.0018,
+     "scaling": 1.0,
+     "sn_mva": 0.003,
+     "type": "wye"
+    }
+   }
+  }
+ },
+ "linefault": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {
+   "bus": {
+    "0": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B1",
+     "node_key": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "type": "b",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "1": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 2):1|(0, 3):0]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "2": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 4):1]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "3": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 5):0]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    }
+   },
+   "ext_grid": {
+    "0": {
+     "__element": "0,0",
+     "bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "controllable": false,
+     "in_service": true,
+     "name": "G1",
+     "r0x0_max": 0.1,
+     "r0x0_min": 0.0,
+     "rx_max": 0.1,
+     "rx_min": 0.0,
+     "s_sc_max_mva": 10.0,
+     "s_sc_min_mva": 5.0,
+     "slack_weight": 1.0,
+     "va_degree": 0.0,
+     "vm_pu": 1.0,
+     "x0x_max": 1.0,
+     "x0x_min": 1.0
+    }
+   },
+   "line": {
+    "0": {
+     "__element": "0,2",
+     "c0_nf_per_km": 0.0,
+     "c_nf_per_km": 0.0,
+     "df": 1.0,
+     "endtemp_degree": 160.0,
+     "from_bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "g0_us_per_km": 0.0,
+     "g_us_per_km": 0.0,
+     "geo": null,
+     "in_service": true,
+     "length_km": 0.02,
+     "max_i_ka": 0.073,
+     "name": "W1",
+     "parallel": 1,
+     "r0_ohm_per_km": 3.595,
+     "r_ohm_per_km": 0.899,
+     "std_type": null,
+     "temperature_degree_celsius": 70.0,
+     "to_bus": "N[(0, 2):1|(0, 3):0]",
+     "type": "cs",
+     "x0_ohm_per_km": 0.4,
+     "x_ohm_per_km": 0.1
+    },
+    "1": {
+     "__element": "0,4",
+     "c0_nf_per_km": 0.0,
+     "c_nf_per_km": 0.0,
+     "df": 1.0,
+     "endtemp_degree": 160.0,
+     "from_bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "g0_us_per_km": 0.0,
+     "g_us_per_km": 0.0,
+     "geo": null,
+     "in_service": true,
+     "length_km": 0.02,
+     "max_i_ka": 0.073,
+     "name": "W2",
+     "parallel": 1,
+     "r0_ohm_per_km": 3.595,
+     "r_ohm_per_km": 0.899,
+     "std_type": null,
+     "temperature_degree_celsius": 70.0,
+     "to_bus": "N[(0, 4):1]",
+     "type": "cs",
+     "x0_ohm_per_km": 0.4,
+     "x_ohm_per_km": 0.1
+    }
+   },
+   "load": {
+    "0": {
+     "__element": "0,3",
+     "bus": "N[(0, 2):1|(0, 3):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X1",
+     "p_mw": 0.004,
+     "q_mvar": 0.0030000000000000005,
+     "scaling": 1.0,
+     "sn_mva": 0.005,
+     "type": "wye"
+    },
+    "1": {
+     "__element": "0,5",
+     "bus": "N[(0, 5):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X2",
+     "p_mw": 0.0024000000000000002,
+     "q_mvar": 0.0018,
+     "scaling": 1.0,
+     "sn_mva": 0.003,
+     "type": "wye"
+    }
+   }
+  }
+ },
+ "powerflow": {
+  "f_hz": 50.0,
+  "sn_mva": 1,
+  "tables": {
+   "bus": {
+    "0": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "B1",
+     "node_key": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "type": "b",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "1": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 2):1|(0, 3):0]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "2": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 4):1]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    },
+    "3": {
+     "__element": null,
+     "geo": null,
+     "in_service": true,
+     "name": "<gnode>",
+     "node_key": "N[(0, 5):0]",
+     "type": "n",
+     "vn_kv": 0.415,
+     "zone": null
+    }
+   },
+   "ext_grid": {
+    "0": {
+     "__element": "0,0",
+     "bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "controllable": false,
+     "in_service": true,
+     "name": "G1",
+     "r0x0_max": 0.1,
+     "r0x0_min": 0.0,
+     "rx_max": 0.1,
+     "rx_min": 0.0,
+     "s_sc_max_mva": 10.0,
+     "s_sc_min_mva": 5.0,
+     "slack_weight": 1.0,
+     "va_degree": 0.0,
+     "vm_pu": 1.0,
+     "x0x_max": 1.0,
+     "x0x_min": 1.0
+    }
+   },
+   "line": {
+    "0": {
+     "__element": "0,2",
+     "c0_nf_per_km": 0.0,
+     "c_nf_per_km": 0.0,
+     "df": 1.0,
+     "endtemp_degree": 160.0,
+     "from_bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "g0_us_per_km": 0.0,
+     "g_us_per_km": 0.0,
+     "geo": null,
+     "in_service": true,
+     "length_km": 0.02,
+     "max_i_ka": 0.073,
+     "name": "W1",
+     "parallel": 1,
+     "r0_ohm_per_km": 3.595,
+     "r_ohm_per_km": 0.899,
+     "std_type": null,
+     "temperature_degree_celsius": 70.0,
+     "to_bus": "N[(0, 2):1|(0, 3):0]",
+     "type": "cs",
+     "x0_ohm_per_km": 0.4,
+     "x_ohm_per_km": 0.1
+    },
+    "1": {
+     "__element": "0,4",
+     "c0_nf_per_km": 0.0,
+     "c_nf_per_km": 0.0,
+     "df": 1.0,
+     "endtemp_degree": 160.0,
+     "from_bus": "N[(0, 0):0|(0, 1):0|(0, 2):0|(0, 4):0]",
+     "g0_us_per_km": 0.0,
+     "g_us_per_km": 0.0,
+     "geo": null,
+     "in_service": true,
+     "length_km": 0.02,
+     "max_i_ka": 0.073,
+     "name": "W2",
+     "parallel": 1,
+     "r0_ohm_per_km": 3.595,
+     "r_ohm_per_km": 0.899,
+     "std_type": null,
+     "temperature_degree_celsius": 70.0,
+     "to_bus": "N[(0, 4):1]",
+     "type": "cs",
+     "x0_ohm_per_km": 0.4,
+     "x_ohm_per_km": 0.1
+    }
+   },
+   "load": {
+    "0": {
+     "__element": "0,3",
+     "bus": "N[(0, 2):1|(0, 3):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X1",
+     "p_mw": 0.004,
+     "q_mvar": 0.0030000000000000005,
+     "scaling": 1.0,
+     "sn_mva": 0.005,
+     "type": "wye"
+    },
+    "1": {
+     "__element": "0,5",
+     "bus": "N[(0, 5):0]",
+     "const_i_p_percent": 0.0,
+     "const_i_q_percent": 0.0,
+     "const_z_p_percent": 0.0,
+     "const_z_q_percent": 0.0,
+     "in_service": true,
+     "name": "X2",
+     "p_mw": 0.0024000000000000002,
+     "q_mvar": 0.0018,
+     "scaling": 1.0,
+     "sn_mva": 0.003,
+     "type": "wye"
+    }
+   }
+  }
+ }
+}

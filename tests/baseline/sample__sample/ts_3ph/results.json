@@ -1,0 +1,4596 @@
+{
+ "0,0": {
+  "code": "element_transformer",
+  "loading_percent": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     9.629999999999999,
+     27.27,
+     0.1
+    ],
+    "Time (Hr)",
+    "% Loading (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[11.1 | μ: 18.4 | 25.8]",
+    [
+     {
+      "mode": 1,
+      "title": "% Loading",
+      "xval": "range(0, 24)",
+      "yval": [
+       11.9,
+       11.4,
+       11.2,
+       11.1,
+       11.1,
+       11.9,
+       13.4,
+       14.9,
+       23.4,
+       23.4,
+       23.3,
+       23.5,
+       21.6,
+       23.0,
+       22.9,
+       23.2,
+       24.9,
+       25.8,
+       22.4,
+       21.5,
+       19.3,
+       18.7,
+       15.2,
+       13.5
+      ]
+     }
+    ]
+   ]
+  },
+  "loading_percent_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading (max)",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 25.8
+  },
+  "p_a_hv_mw,p_b_hv_mw,p_c_hv_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.00969,
+     0.04013,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0133 | μ: 0.0217 | 0.0305]\nPb: [0.0112 | μ: 0.018 | 0.0263]\nPc: [0.0167 | μ: 0.0275 | 0.038]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0137,
+       0.0135,
+       0.0134,
+       0.0133,
+       0.0135,
+       0.014,
+       0.015,
+       0.0159,
+       0.03,
+       0.0298,
+       0.0294,
+       0.0295,
+       0.0266,
+       0.0293,
+       0.0292,
+       0.0294,
+       0.0305,
+       0.0291,
+       0.0234,
+       0.0228,
+       0.0198,
+       0.0193,
+       0.0155,
+       0.0146
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0112,
+       0.0112,
+       0.0112,
+       0.0112,
+       0.0113,
+       0.0115,
+       0.012,
+       0.0122,
+       0.0263,
+       0.026,
+       0.0256,
+       0.0256,
+       0.0227,
+       0.0256,
+       0.0256,
+       0.0256,
+       0.026,
+       0.0234,
+       0.0178,
+       0.0175,
+       0.0147,
+       0.0145,
+       0.0115,
+       0.0113
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0177,
+       0.0171,
+       0.0168,
+       0.0167,
+       0.0168,
+       0.0177,
+       0.0198,
+       0.0216,
+       0.0359,
+       0.0357,
+       0.0356,
+       0.0357,
+       0.0327,
+       0.0352,
+       0.035,
+       0.0354,
+       0.0376,
+       0.038,
+       0.0323,
+       0.031,
+       0.0276,
+       0.0268,
+       0.0218,
+       0.0197
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.03591,
+     0.09939
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0412 | μ: 0.0672 | 0.0941]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0426,
+       0.0418,
+       0.0414,
+       0.0412,
+       0.0416,
+       0.0432,
+       0.0468,
+       0.0496,
+       0.0923,
+       0.0915,
+       0.0906,
+       0.0908,
+       0.0819,
+       0.09,
+       0.0898,
+       0.0904,
+       0.0941,
+       0.0905,
+       0.0734,
+       0.0714,
+       0.0621,
+       0.0607,
+       0.0489,
+       0.0456
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0941
+  },
+  "pf_hv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.663,
+     0.747
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.67 | μ: 0.71 | 0.74]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.67,
+       0.67,
+       0.67,
+       0.67,
+       0.67,
+       0.67,
+       0.68,
+       0.69,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.73,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.73,
+       0.72,
+       0.71,
+       0.71,
+       0.69,
+       0.68
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_hv_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.67
+  },
+  "pl_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.000737,
+     0.000893
+    ],
+    "Time (Hr)",
+    "P Loss (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.00075 | μ: 0.00081 | 0.00088]",
+    [
+     {
+      "mode": 1,
+      "title": "P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.00075,
+       0.00075,
+       0.00075,
+       0.00075,
+       0.00075,
+       0.00075,
+       0.00076,
+       0.00076,
+       0.00087,
+       0.00087,
+       0.00087,
+       0.00087,
+       0.00084,
+       0.00086,
+       0.00086,
+       0.00087,
+       0.00088,
+       0.00087,
+       0.00083,
+       0.00082,
+       0.0008,
+       0.00079,
+       0.00076,
+       0.00076
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.00088
+  }
+ },
+ "0,1": {
+  "code": "element_fuse",
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 11.0
+  }
+ },
+ "0,10": {
+  "code": "element_line_cable",
+  "loading_percent": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     14.18,
+     39.62,
+     0.1
+    ],
+    "Time (Hr)",
+    "% Loading (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[16.3 | μ: 25.8 | 37.5]",
+    [
+     {
+      "mode": 1,
+      "title": "% Loading",
+      "xval": "range(0, 24)",
+      "yval": [
+       16.3,
+       16.3,
+       16.3,
+       16.3,
+       16.3,
+       16.3,
+       16.3,
+       16.3,
+       37.4,
+       37.4,
+       37.4,
+       37.4,
+       33.1,
+       37.4,
+       37.4,
+       37.4,
+       37.5,
+       33.2,
+       24.7,
+       24.7,
+       20.5,
+       20.5,
+       16.3,
+       16.3
+      ]
+     }
+    ]
+   ]
+  },
+  "loading_percent_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading (max)",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 37.5
+  },
+  "p_a_from_mw,p_b_from_mw,p_c_from_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.00938,
+     0.026420000000000003,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0108 | μ: 0.0172 | 0.025]\nPb: [0.0108 | μ: 0.0171 | 0.0249]\nPc: [0.0108 | μ: 0.0171 | 0.0249]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.025,
+       0.025,
+       0.025,
+       0.025,
+       0.0221,
+       0.025,
+       0.025,
+       0.025,
+       0.025,
+       0.0221,
+       0.0164,
+       0.0164,
+       0.0136,
+       0.0136,
+       0.0108,
+       0.0108
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0221,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0221,
+       0.0164,
+       0.0164,
+       0.0136,
+       0.0136,
+       0.0108,
+       0.0108
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0108,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0221,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0249,
+       0.0221,
+       0.0164,
+       0.0164,
+       0.0136,
+       0.0136,
+       0.0108,
+       0.0108
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.02827,
+     0.07903
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0325 | μ: 0.0515 | 0.0748]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0325,
+       0.0325,
+       0.0325,
+       0.0325,
+       0.0325,
+       0.0325,
+       0.0325,
+       0.0325,
+       0.0748,
+       0.0748,
+       0.0748,
+       0.0748,
+       0.0662,
+       0.0748,
+       0.0748,
+       0.0748,
+       0.0748,
+       0.0662,
+       0.0492,
+       0.0492,
+       0.0408,
+       0.0408,
+       0.0325,
+       0.0325
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0748
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.799,
+     0.811
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.8 | μ: 0.8 | 0.81]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.8
+  },
+  "pl_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.000263,
+     0.002627
+    ],
+    "Time (Hr)",
+    "P Loss (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.00046 | μ: 0.00131 | 0.00243]",
+    [
+     {
+      "mode": 1,
+      "title": "P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.00046,
+       0.00046,
+       0.00046,
+       0.00046,
+       0.00046,
+       0.00046,
+       0.00046,
+       0.00046,
+       0.00243,
+       0.00243,
+       0.00243,
+       0.00243,
+       0.0019,
+       0.00243,
+       0.00243,
+       0.00243,
+       0.00243,
+       0.00191,
+       0.00106,
+       0.00106,
+       0.00073,
+       0.00073,
+       0.00046,
+       0.00046
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.00243
+  },
+  "pl_perc": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     1.2369999999999999,
+     3.433
+    ],
+    "Time (Hr)",
+    "% P Loss (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[1.42 | μ: 2.24 | 3.25]",
+    [
+     {
+      "mode": 1,
+      "title": "% P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       1.42,
+       1.42,
+       1.42,
+       1.42,
+       1.42,
+       1.42,
+       1.42,
+       1.42,
+       3.25,
+       3.25,
+       3.25,
+       3.25,
+       2.88,
+       3.25,
+       3.25,
+       3.25,
+       3.25,
+       2.88,
+       2.14,
+       2.14,
+       1.78,
+       1.78,
+       1.42,
+       1.42
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_perc_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 3.25
+  },
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,12": {
+  "code": "element_load",
+  "p_mw,q_mvar": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P, Q",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.021,
+     0.076,
+     0.1
+    ],
+    "Time (Hr)",
+    "P, Q (MW, MVAr)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MVAr",
+   "value": [
+    "P: [0.032 | μ: 0.05 | 0.072]\nQ: [0.024 | μ: 0.0375 | 0.054]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.032,
+       0.032,
+       0.032,
+       0.032,
+       0.032,
+       0.032,
+       0.032,
+       0.032,
+       0.072,
+       0.072,
+       0.072,
+       0.072,
+       0.064,
+       0.072,
+       0.072,
+       0.072,
+       0.072,
+       0.064,
+       0.048,
+       0.048,
+       0.04,
+       0.04,
+       0.032,
+       0.032
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Q",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.024,
+       0.024,
+       0.024,
+       0.024,
+       0.024,
+       0.024,
+       0.024,
+       0.024,
+       0.054,
+       0.054,
+       0.054,
+       0.054,
+       0.048,
+       0.054,
+       0.054,
+       0.054,
+       0.054,
+       0.048,
+       0.036,
+       0.036,
+       0.03,
+       0.03,
+       0.024,
+       0.024
+      ]
+     }
+    ]
+   ]
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.8,
+     0.8
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.8 | μ: 0.8 | 0.8]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8
+      ]
+     }
+    ]
+   ]
+  }
+ },
+ "0,13": {
+  "code": "element_line_cable",
+  "loading_percent": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     17.14,
+     47.86,
+     0.1
+    ],
+    "Time (Hr)",
+    "% Loading (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[19.7 | μ: 31.2 | 45.3]",
+    [
+     {
+      "mode": 1,
+      "title": "% Loading",
+      "xval": "range(0, 24)",
+      "yval": [
+       19.7,
+       19.7,
+       19.7,
+       19.7,
+       19.7,
+       19.7,
+       19.7,
+       19.7,
+       45.2,
+       45.2,
+       45.2,
+       45.2,
+       40.0,
+       45.2,
+       45.2,
+       45.2,
+       45.3,
+       40.1,
+       29.8,
+       29.8,
+       24.8,
+       24.7,
+       19.7,
+       19.7
+      ]
+     }
+    ]
+   ]
+  },
+  "loading_percent_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading (max)",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 45.3
+  },
+  "p_a_from_mw,p_b_from_mw,p_c_from_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.00936,
+     0.02544,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0107 | μ: 0.0167 | 0.0241]\nPb: [0.0107 | μ: 0.0167 | 0.0241]\nPc: [0.0107 | μ: 0.0167 | 0.0241]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0214,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0214,
+       0.0161,
+       0.0161,
+       0.0134,
+       0.0134,
+       0.0107,
+       0.0107
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0214,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0214,
+       0.0161,
+       0.0161,
+       0.0134,
+       0.0134,
+       0.0107,
+       0.0107
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0107,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0214,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0241,
+       0.0214,
+       0.0161,
+       0.0161,
+       0.0134,
+       0.0134,
+       0.0107,
+       0.0107
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.028069999999999994,
+     0.07643000000000001
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0321 | μ: 0.0502 | 0.0724]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0321,
+       0.0321,
+       0.0321,
+       0.0321,
+       0.0321,
+       0.0321,
+       0.0321,
+       0.0321,
+       0.0724,
+       0.0724,
+       0.0724,
+       0.0724,
+       0.0643,
+       0.0724,
+       0.0724,
+       0.0724,
+       0.0724,
+       0.0643,
+       0.0482,
+       0.0482,
+       0.0401,
+       0.0401,
+       0.0321,
+       0.0321
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0724
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.8,
+     0.8
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.8 | μ: 0.8 | 0.8]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.8
+  },
+  "pl_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     4.7000000000000004e-05,
+     0.000443
+    ],
+    "Time (Hr)",
+    "P Loss (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[8e-05 | μ: 0.00022 | 0.00041]",
+    [
+     {
+      "mode": 1,
+      "title": "P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       8e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       0.00041,
+       0.00041,
+       0.00041,
+       0.00041,
+       0.00032,
+       0.00041,
+       0.00041,
+       0.00041,
+       0.00041,
+       0.00032,
+       0.00018,
+       0.00018,
+       0.00012,
+       0.00012,
+       8e-05,
+       8e-05
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.00041
+  },
+  "pl_perc": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.208,
+     0.5920000000000001
+    ],
+    "Time (Hr)",
+    "% P Loss (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[0.24 | μ: 0.38 | 0.56]",
+    [
+     {
+      "mode": 1,
+      "title": "% P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.24,
+       0.24,
+       0.24,
+       0.24,
+       0.24,
+       0.24,
+       0.24,
+       0.24,
+       0.56,
+       0.56,
+       0.56,
+       0.56,
+       0.49,
+       0.56,
+       0.56,
+       0.56,
+       0.56,
+       0.49,
+       0.37,
+       0.37,
+       0.3,
+       0.3,
+       0.24,
+       0.24
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_perc_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 0.56
+  },
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,15": {
+  "code": "element_single_phase_load",
+  "p_a_mw,p_b_mw,p_c_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.0,
+     0.021240000000000002,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0076 | μ: 0.0132 | 0.02]\nPb: [0.0 | μ: 0.0 | 0.0]\nPc: [0.0 | μ: 0.0 | 0.0]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.009,
+       0.0082,
+       0.0078,
+       0.0076,
+       0.0076,
+       0.0086,
+       0.0108,
+       0.013,
+       0.0132,
+       0.0134,
+       0.0138,
+       0.014,
+       0.0138,
+       0.0132,
+       0.013,
+       0.0136,
+       0.016,
+       0.02,
+       0.02,
+       0.0186,
+       0.0178,
+       0.017,
+       0.0142,
+       0.0116
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    ]
+   ]
+  },
+  "p_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.006359999999999999,
+     0.021240000000000002
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0076 | μ: 0.0132 | 0.02]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.009,
+       0.0082,
+       0.0078,
+       0.0076,
+       0.0076,
+       0.0086,
+       0.0108,
+       0.013,
+       0.0132,
+       0.0134,
+       0.0138,
+       0.014,
+       0.0138,
+       0.0132,
+       0.013,
+       0.0136,
+       0.016,
+       0.02,
+       0.02,
+       0.0186,
+       0.0178,
+       0.017,
+       0.0142,
+       0.0116
+      ]
+     }
+    ]
+   ]
+  },
+  "p_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.02
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.8,
+     0.8
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.8 | μ: 0.8 | 0.8]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.8
+  }
+ },
+ "0,16": {
+  "code": "element_circuitbreaker",
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,17": {
+  "code": "element_circuitbreaker",
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,18": {
+  "code": "element_circuitbreaker",
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,19": {
+  "code": "element_line_bus",
+  "loading_percent": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     8.409999999999998,
+     23.89,
+     0.1
+    ],
+    "Time (Hr)",
+    "% Loading (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[9.7 | μ: 16.2 | 22.6]",
+    [
+     {
+      "mode": 1,
+      "title": "% Loading",
+      "xval": "range(0, 24)",
+      "yval": [
+       10.4,
+       10.0,
+       9.8,
+       9.7,
+       9.8,
+       10.4,
+       11.8,
+       13.0,
+       20.5,
+       20.5,
+       20.5,
+       20.6,
+       19.0,
+       20.1,
+       20.0,
+       20.4,
+       21.9,
+       22.6,
+       19.7,
+       18.8,
+       16.9,
+       16.4,
+       13.3,
+       11.9
+      ]
+     }
+    ]
+   ]
+  },
+  "loading_percent_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading (max)",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 22.6
+  },
+  "p_a_from_mw,p_b_from_mw,p_c_from_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.009489999999999998,
+     0.04577,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0186 | μ: 0.0309 | 0.0433]\nPb: [0.011 | μ: 0.0177 | 0.0261]\nPc: [0.011 | μ: 0.0177 | 0.0261]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.02,
+       0.0192,
+       0.0188,
+       0.0186,
+       0.0187,
+       0.0199,
+       0.0225,
+       0.025,
+       0.0393,
+       0.0392,
+       0.0391,
+       0.0393,
+       0.0363,
+       0.0385,
+       0.0383,
+       0.0389,
+       0.0418,
+       0.0433,
+       0.0376,
+       0.036,
+       0.0323,
+       0.0313,
+       0.0255,
+       0.0227
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.011,
+       0.011,
+       0.011,
+       0.011,
+       0.0111,
+       0.0113,
+       0.0117,
+       0.0119,
+       0.0261,
+       0.0257,
+       0.0253,
+       0.0253,
+       0.0224,
+       0.0253,
+       0.0253,
+       0.0253,
+       0.0257,
+       0.0232,
+       0.0175,
+       0.0173,
+       0.0145,
+       0.0143,
+       0.0113,
+       0.0111
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.011,
+       0.011,
+       0.011,
+       0.011,
+       0.0111,
+       0.0113,
+       0.0117,
+       0.012,
+       0.0261,
+       0.0257,
+       0.0253,
+       0.0253,
+       0.0224,
+       0.0253,
+       0.0253,
+       0.0253,
+       0.0257,
+       0.0232,
+       0.0175,
+       0.0173,
+       0.0145,
+       0.0143,
+       0.0113,
+       0.0111
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.03523,
+     0.09847
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0405 | μ: 0.0664 | 0.0932]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0419,
+       0.0411,
+       0.0407,
+       0.0405,
+       0.0408,
+       0.0425,
+       0.046,
+       0.0489,
+       0.0914,
+       0.0906,
+       0.0897,
+       0.0899,
+       0.0811,
+       0.0891,
+       0.0889,
+       0.0895,
+       0.0932,
+       0.0896,
+       0.0726,
+       0.0705,
+       0.0613,
+       0.0599,
+       0.0481,
+       0.0448
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0932
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.799,
+     0.811
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.8 | μ: 0.81 | 0.81]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.8,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.81,
+       0.8,
+       0.8,
+       0.8
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.8
+  },
+  "pl_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     1.3000000000000001e-05,
+     9.7e-05
+    ],
+    "Time (Hr)",
+    "P Loss (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[2e-05 | μ: 5e-05 | 9e-05]",
+    [
+     {
+      "mode": 1,
+      "title": "P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       2e-05,
+       2e-05,
+       2e-05,
+       2e-05,
+       2e-05,
+       2e-05,
+       2e-05,
+       3e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       7e-05,
+       8e-05,
+       8e-05,
+       8e-05,
+       9e-05,
+       9e-05,
+       7e-05,
+       6e-05,
+       5e-05,
+       5e-05,
+       3e-05,
+       2e-05
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 9e-05
+  },
+  "pl_perc": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.034,
+     0.10600000000000001
+    ],
+    "Time (Hr)",
+    "% P Loss (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[0.04 | μ: 0.07 | 0.1]",
+    [
+     {
+      "mode": 1,
+      "title": "% P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.05,
+       0.04,
+       0.04,
+       0.04,
+       0.04,
+       0.05,
+       0.05,
+       0.06,
+       0.09,
+       0.09,
+       0.09,
+       0.09,
+       0.08,
+       0.09,
+       0.09,
+       0.09,
+       0.1,
+       0.1,
+       0.09,
+       0.09,
+       0.08,
+       0.08,
+       0.06,
+       0.05
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_perc_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 0.1
+  },
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,2": {
+  "code": "element_grid",
+  "p_a_mw,p_b_mw,p_c_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.00969,
+     0.04013,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0134 | μ: 0.0217 | 0.0305]\nPb: [0.0112 | μ: 0.018 | 0.0263]\nPc: [0.0167 | μ: 0.0275 | 0.038]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0137,
+       0.0135,
+       0.0134,
+       0.0134,
+       0.0135,
+       0.014,
+       0.015,
+       0.0159,
+       0.0301,
+       0.0298,
+       0.0295,
+       0.0295,
+       0.0266,
+       0.0293,
+       0.0292,
+       0.0294,
+       0.0305,
+       0.0291,
+       0.0234,
+       0.0228,
+       0.0198,
+       0.0193,
+       0.0155,
+       0.0146
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0112,
+       0.0112,
+       0.0112,
+       0.0112,
+       0.0113,
+       0.0115,
+       0.012,
+       0.0122,
+       0.0263,
+       0.026,
+       0.0256,
+       0.0256,
+       0.0227,
+       0.0256,
+       0.0256,
+       0.0256,
+       0.026,
+       0.0235,
+       0.0178,
+       0.0176,
+       0.0148,
+       0.0145,
+       0.0115,
+       0.0113
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0177,
+       0.0171,
+       0.0168,
+       0.0167,
+       0.0168,
+       0.0177,
+       0.0198,
+       0.0216,
+       0.036,
+       0.0358,
+       0.0356,
+       0.0358,
+       0.0327,
+       0.0352,
+       0.035,
+       0.0355,
+       0.0377,
+       0.038,
+       0.0323,
+       0.031,
+       0.0276,
+       0.0268,
+       0.0218,
+       0.0197
+      ]
+     }
+    ]
+   ]
+  },
+  "p_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.0359,
+     0.0995
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0412 | μ: 0.0672 | 0.0942]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0427,
+       0.0418,
+       0.0414,
+       0.0412,
+       0.0416,
+       0.0432,
+       0.0468,
+       0.0497,
+       0.0924,
+       0.0916,
+       0.0906,
+       0.0908,
+       0.082,
+       0.09,
+       0.0898,
+       0.0904,
+       0.0942,
+       0.0906,
+       0.0735,
+       0.0714,
+       0.0622,
+       0.0607,
+       0.0489,
+       0.0456
+      ]
+     }
+    ]
+   ]
+  },
+  "p_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0942
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.663,
+     0.747
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.67 | μ: 0.71 | 0.74]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.68,
+       0.67,
+       0.67,
+       0.67,
+       0.67,
+       0.68,
+       0.69,
+       0.69,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.73,
+       0.73,
+       0.71,
+       0.71,
+       0.69,
+       0.68
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.67
+  }
+ },
+ "0,3": {
+  "code": "element_line_custom",
+  "loading_percent": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     1.08,
+     2.52,
+     0.1
+    ],
+    "Time (Hr)",
+    "% Loading (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[1.2 | μ: 1.8 | 2.4]",
+    [
+     {
+      "mode": 1,
+      "title": "% Loading",
+      "xval": "range(0, 24)",
+      "yval": [
+       1.2,
+       1.2,
+       1.2,
+       1.2,
+       1.2,
+       1.3,
+       1.4,
+       1.5,
+       2.4,
+       2.3,
+       2.3,
+       2.3,
+       2.1,
+       2.3,
+       2.3,
+       2.3,
+       2.4,
+       2.4,
+       2.1,
+       2.0,
+       1.8,
+       1.8,
+       1.5,
+       1.4
+      ]
+     }
+    ]
+   ]
+  },
+  "loading_percent_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading (max)",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 2.4
+  },
+  "p_a_from_mw,p_b_from_mw,p_c_from_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.00969,
+     0.04013,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0134 | μ: 0.0217 | 0.0305]\nPb: [0.0112 | μ: 0.018 | 0.0263]\nPc: [0.0167 | μ: 0.0275 | 0.038]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0137,
+       0.0135,
+       0.0134,
+       0.0134,
+       0.0135,
+       0.014,
+       0.015,
+       0.0159,
+       0.0301,
+       0.0298,
+       0.0295,
+       0.0295,
+       0.0266,
+       0.0293,
+       0.0292,
+       0.0294,
+       0.0305,
+       0.0291,
+       0.0234,
+       0.0228,
+       0.0198,
+       0.0193,
+       0.0155,
+       0.0146
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0112,
+       0.0112,
+       0.0112,
+       0.0112,
+       0.0113,
+       0.0115,
+       0.012,
+       0.0122,
+       0.0263,
+       0.026,
+       0.0256,
+       0.0256,
+       0.0227,
+       0.0256,
+       0.0256,
+       0.0256,
+       0.026,
+       0.0235,
+       0.0178,
+       0.0176,
+       0.0148,
+       0.0145,
+       0.0115,
+       0.0113
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0177,
+       0.0171,
+       0.0168,
+       0.0167,
+       0.0168,
+       0.0177,
+       0.0198,
+       0.0216,
+       0.036,
+       0.0358,
+       0.0356,
+       0.0358,
+       0.0327,
+       0.0352,
+       0.035,
+       0.0355,
+       0.0377,
+       0.038,
+       0.0323,
+       0.031,
+       0.0276,
+       0.0268,
+       0.0218,
+       0.0197
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.0359,
+     0.0995
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0412 | μ: 0.0672 | 0.0942]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0427,
+       0.0418,
+       0.0414,
+       0.0412,
+       0.0416,
+       0.0432,
+       0.0468,
+       0.0497,
+       0.0924,
+       0.0916,
+       0.0906,
+       0.0908,
+       0.082,
+       0.09,
+       0.0898,
+       0.0904,
+       0.0942,
+       0.0906,
+       0.0735,
+       0.0714,
+       0.0622,
+       0.0607,
+       0.0489,
+       0.0456
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0942
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.663,
+     0.747
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.67 | μ: 0.71 | 0.74]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.68,
+       0.67,
+       0.67,
+       0.67,
+       0.67,
+       0.68,
+       0.69,
+       0.69,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.74,
+       0.73,
+       0.73,
+       0.71,
+       0.71,
+       0.69,
+       0.68
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.67
+  },
+  "pl_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     5e-06,
+     6.500000000000001e-05
+    ],
+    "Time (Hr)",
+    "P Loss (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[1e-05 | μ: 4e-05 | 6e-05]",
+    [
+     {
+      "mode": 1,
+      "title": "P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       2e-05,
+       1e-05,
+       1e-05,
+       1e-05,
+       1e-05,
+       2e-05,
+       2e-05,
+       2e-05,
+       6e-05,
+       6e-05,
+       6e-05,
+       6e-05,
+       5e-05,
+       6e-05,
+       6e-05,
+       6e-05,
+       6e-05,
+       6e-05,
+       4e-05,
+       4e-05,
+       3e-05,
+       3e-05,
+       2e-05,
+       2e-05
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 6e-05
+  },
+  "pl_perc": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.027,
+     0.063
+    ],
+    "Time (Hr)",
+    "% P Loss (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[0.03 | μ: 0.05 | 0.06]",
+    [
+     {
+      "mode": 1,
+      "title": "% P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.04,
+       0.04,
+       0.04,
+       0.03,
+       0.03,
+       0.04,
+       0.04,
+       0.04,
+       0.06,
+       0.06,
+       0.06,
+       0.06,
+       0.06,
+       0.06,
+       0.06,
+       0.06,
+       0.06,
+       0.06,
+       0.05,
+       0.05,
+       0.05,
+       0.05,
+       0.04,
+       0.04
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_perc_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 0.06
+  },
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 11.0
+  }
+ },
+ "0,4": {
+  "code": "element_circuitbreaker",
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,5": {
+  "code": "element_busbar",
+  "delv_perc": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "ΔV",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.441,
+     1.149
+    ],
+    "Time (Hr)",
+    "ΔV (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[0.5 | μ: 0.79 | 1.09]",
+    [
+     {
+      "mode": 1,
+      "title": "ΔV",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.53,
+       0.51,
+       0.5,
+       0.5,
+       0.5,
+       0.53,
+       0.59,
+       0.65,
+       0.98,
+       0.98,
+       0.98,
+       0.98,
+       0.91,
+       0.96,
+       0.96,
+       0.97,
+       1.04,
+       1.09,
+       0.96,
+       0.92,
+       0.83,
+       0.81,
+       0.67,
+       0.6
+      ]
+     }
+    ]
+   ]
+  },
+  "delv_perc_a,delv_perc_b,delv_perc_c": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "ΔVa, ΔVb, ΔVc",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.267,
+     1.149,
+     0.1
+    ],
+    "Time (Hr)",
+    "ΔVa, ΔVb, ΔVc (%, %, %)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%, %, %",
+   "value": [
+    "ΔVa: [0.5 | μ: 0.79 | 1.09]\nΔVb: [0.31 | μ: 0.46 | 0.65]\nΔVc: [0.3 | μ: 0.44 | 0.63]",
+    [
+     {
+      "mode": 1,
+      "title": "ΔVa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.53,
+       0.51,
+       0.5,
+       0.5,
+       0.5,
+       0.53,
+       0.59,
+       0.65,
+       0.98,
+       0.98,
+       0.98,
+       0.98,
+       0.91,
+       0.96,
+       0.96,
+       0.97,
+       1.04,
+       1.09,
+       0.96,
+       0.92,
+       0.83,
+       0.81,
+       0.67,
+       0.6
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "ΔVb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.31,
+       0.31,
+       0.31,
+       0.31,
+       0.31,
+       0.32,
+       0.33,
+       0.33,
+       0.65,
+       0.64,
+       0.64,
+       0.64,
+       0.57,
+       0.64,
+       0.64,
+       0.64,
+       0.64,
+       0.59,
+       0.46,
+       0.45,
+       0.39,
+       0.39,
+       0.32,
+       0.31
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "ΔVc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.3,
+       0.3,
+       0.3,
+       0.3,
+       0.3,
+       0.3,
+       0.31,
+       0.31,
+       0.63,
+       0.62,
+       0.61,
+       0.61,
+       0.55,
+       0.62,
+       0.62,
+       0.61,
+       0.62,
+       0.56,
+       0.43,
+       0.43,
+       0.36,
+       0.36,
+       0.3,
+       0.3
+      ]
+     }
+    ]
+   ]
+  },
+  "delv_perc_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "ΔV (max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 1.09
+  },
+  "ikss_ka_1ph_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Isc (L-G, max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kA",
+   "value": 16.983150809511073
+  },
+  "ikss_ka_1ph_min": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Isc (L-G, min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kA",
+   "value": 13.864329220149664
+  },
+  "ikss_ka_3ph_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Isc (sym, max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kA",
+   "value": 18.87495678179212
+  },
+  "ikss_ka_3ph_min": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Isc (sym, min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kA",
+   "value": 15.1661484601151
+  },
+  "ipss_ka_3ph_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Isc (pk, max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kA",
+   "value": 38.52130279080547
+  },
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "0,6": {
+  "code": "element_line_cable",
+  "loading_percent": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.03,
+     2.07,
+     0.1
+    ],
+    "Time (Hr)",
+    "% Loading (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[0.2 | μ: 0.9 | 1.9]",
+    [
+     {
+      "mode": 1,
+      "title": "% Loading",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.2,
+       0.2,
+       0.2,
+       0.2,
+       0.4,
+       0.8,
+       1.5,
+       1.9,
+       1.9,
+       1.3,
+       0.6,
+       0.6,
+       0.6,
+       0.6,
+       0.6,
+       0.6,
+       1.3,
+       1.9,
+       1.9,
+       1.5,
+       1.5,
+       1.1,
+       0.8,
+       0.4
+      ]
+     }
+    ]
+   ]
+  },
+  "loading_percent_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% Loading (max)",
+   "click_to_edit_message": null,
+   "decimal": 1,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 1.9
+  },
+  "p_a_from_mw,p_b_from_mw,p_c_from_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Pa, Pb, Pc",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.0,
+     0.0012000000000000001,
+     0.1
+    ],
+    "Time (Hr)",
+    "Pa, Pb, Pc (MW, MW, MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MW, MW",
+   "value": [
+    "Pa: [0.0001 | μ: 0.0005 | 0.0011]\nPb: [0.0001 | μ: 0.0005 | 0.0011]\nPc: [0.0001 | μ: 0.0005 | 0.0011]",
+    [
+     {
+      "mode": 1,
+      "title": "Pa",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0001,
+       0.0001,
+       0.0001,
+       0.0001,
+       0.0002,
+       0.0004,
+       0.0009,
+       0.0011,
+       0.0011,
+       0.0008,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0008,
+       0.0011,
+       0.0011,
+       0.0009,
+       0.0009,
+       0.0007,
+       0.0004,
+       0.0002
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pb",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0001,
+       0.0001,
+       0.0001,
+       0.0001,
+       0.0002,
+       0.0004,
+       0.0009,
+       0.0011,
+       0.0011,
+       0.0008,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0008,
+       0.0011,
+       0.0011,
+       0.0009,
+       0.0009,
+       0.0007,
+       0.0004,
+       0.0002
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Pc",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0001,
+       0.0001,
+       0.0001,
+       0.0001,
+       0.0002,
+       0.0004,
+       0.0009,
+       0.0011,
+       0.0011,
+       0.0008,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0008,
+       0.0011,
+       0.0011,
+       0.0009,
+       0.0009,
+       0.0007,
+       0.0004,
+       0.0002
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     -5.421010862427522e-20,
+     0.0036
+    ],
+    "Time (Hr)",
+    "P (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0003 | μ: 0.0016 | 0.0033]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0007,
+       0.0013,
+       0.0026,
+       0.0033,
+       0.0033,
+       0.0023,
+       0.001,
+       0.001,
+       0.001,
+       0.001,
+       0.001,
+       0.001,
+       0.0023,
+       0.0033,
+       0.0033,
+       0.0026,
+       0.0026,
+       0.002,
+       0.0013,
+       0.0007
+      ]
+     }
+    ]
+   ]
+  },
+  "p_hv_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P (max)",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0033
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.849,
+     0.861
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.85 | μ: 0.85 | 0.86]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.86,
+       0.86,
+       0.86,
+       0.86,
+       0.86,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.86
+      ]
+     }
+    ]
+   ]
+  },
+  "pf_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF (min)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "",
+   "value": 0.85
+  },
+  "pl_mw": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.0,
+     0.0
+    ],
+    "Time (Hr)",
+    "P Loss (MW)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW",
+   "value": [
+    "[0.0 | μ: 0.0 | 0.0]",
+    [
+     {
+      "mode": 1,
+      "title": "P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_mw_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 5,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "MW",
+   "value": 0.0
+  },
+  "pl_perc": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     -0.0020000000000000018,
+     0.14200000000000002
+    ],
+    "Time (Hr)",
+    "% P Loss (%)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "%",
+   "value": [
+    "[0.01 | μ: 0.06 | 0.13]",
+    [
+     {
+      "mode": 1,
+      "title": "% P Loss",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.01,
+       0.01,
+       0.01,
+       0.01,
+       0.03,
+       0.05,
+       0.1,
+       0.13,
+       0.13,
+       0.09,
+       0.04,
+       0.04,
+       0.04,
+       0.04,
+       0.04,
+       0.04,
+       0.09,
+       0.13,
+       0.13,
+       0.1,
+       0.1,
+       0.08,
+       0.05,
+       0.03
+      ]
+     }
+    ]
+   ]
+  },
+  "pl_perc_max": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "% P Loss (max)",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "%",
+   "value": 0.13
+  },
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "1,3": {
+  "code": "element_circuitbreaker",
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "1,4": {
+  "code": "element_async_motor_3ph",
+  "p_mw,q_mvar": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "P, Q",
+   "click_to_edit_message": null,
+   "decimal": 4,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     -5.421010862427522e-20,
+     0.0036,
+     0.1
+    ],
+    "Time (Hr)",
+    "P, Q (MW, MVAr)",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "MW, MVAr",
+   "value": [
+    "P: [0.0003 | μ: 0.0016 | 0.0033]\nQ: [0.0002 | μ: 0.001 | 0.002]",
+    [
+     {
+      "mode": 1,
+      "title": "P",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0003,
+       0.0007,
+       0.0013,
+       0.0026,
+       0.0033,
+       0.0033,
+       0.0023,
+       0.001,
+       0.001,
+       0.001,
+       0.001,
+       0.001,
+       0.001,
+       0.0023,
+       0.0033,
+       0.0033,
+       0.0026,
+       0.0026,
+       0.002,
+       0.0013,
+       0.0007
+      ]
+     },
+     {
+      "mode": 1,
+      "title": "Q",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.0002,
+       0.0002,
+       0.0002,
+       0.0002,
+       0.0004,
+       0.0008,
+       0.0016,
+       0.002,
+       0.002,
+       0.0014,
+       0.0006,
+       0.0006,
+       0.0006,
+       0.0006,
+       0.0006,
+       0.0006,
+       0.0014,
+       0.002,
+       0.002,
+       0.0016,
+       0.0016,
+       0.0012,
+       0.0008,
+       0.0004
+      ]
+     }
+    ]
+   ]
+  },
+  "pf": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "PF",
+   "click_to_edit_message": null,
+   "decimal": 2,
+   "graph_options": [
+    [
+     0,
+     23,
+     1
+    ],
+    [
+     0.85,
+     0.85
+    ],
+    "Time (Hr)",
+    "PF ()",
+    {}
+   ],
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "graph",
+   "unit": "",
+   "value": [
+    "[0.85 | μ: 0.85 | 0.85]",
+    [
+     {
+      "mode": 1,
+      "title": "PF",
+      "xval": "range(0, 24)",
+      "yval": [
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85,
+       0.85
+      ]
+     }
+    ]
+   ]
+  },
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ },
+ "1,5": {
+  "code": "element_contactor",
+  "vn_kv": {
+   "alter_structure": false,
+   "alter_values_dict": {},
+   "caption": "Vn",
+   "click_to_edit_message": null,
+   "decimal": 3,
+   "max_chars": null,
+   "selection_image_list": null,
+   "selection_list": null,
+   "status_enable": true,
+   "status_floating": false,
+   "status_inactivate": true,
+   "type": "float",
+   "unit": "kV",
+   "value": 0.415
+  }
+ }
+}
