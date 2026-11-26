@@ -19,7 +19,6 @@
 # 
 
 import math
-from gi.repository import PangoCairo
 
 # local files import
 from ..core import constants, style
@@ -98,15 +97,6 @@ Creates a two-winding transformer.
         self.calculate_parameters()
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        self.render_model(context, self.schem_model)
-        self.render_text(context, self.text_model)
-        # Post processing
-        self.modify_extends()
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -237,15 +227,6 @@ Creates a three-winding transformer.
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        self.render_model(context, self.schem_model)
-        self.render_text(context, self.text_model)
-        # Post processing
-        self.modify_extends()
         
     def get_nodes(self, code):
         """Return nodes for analysis"""

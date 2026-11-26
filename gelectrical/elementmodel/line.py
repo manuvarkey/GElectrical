@@ -18,7 +18,7 @@
 #  
 # 
 
-import os, cairo, math, copy
+import os, math, copy
 
 # local files import
 from ..core import constants, style
@@ -119,9 +119,8 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
             self.calculate_damage_curve()
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         if self.fields['type']['value'] == 'Over Head':
             self.schem_model = [ 
                              ['LINE',(2,0),(2,8), []],
@@ -150,15 +149,9 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
             self.schem_model += SYMBOL_PEN
         if self.fields['symbol']['value'] in ['N', 'PE+N']:
             self.schem_model += SYMBOL_N
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -582,9 +575,8 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.calculate_parameters()
         self.assign_tootltips()
         
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.schem_model = copy.deepcopy(self.schem_models_dict[self.fields['laying_type']['value']])
         ## Add symbols
         SYMBOL_P = [['LINE',(1.25,5),(2.75,4.5), [], 'thin'],
@@ -600,15 +592,9 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             self.schem_model += SYMBOL_PEN
         if self.fields['neutral_xsec']['value'] != 0 and self.fields['cpe']['value'] != 'Neutral':
             self.schem_model += SYMBOL_N
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def set_text_field_value(self, code, value):
         if self.fields and code in self.fields:
@@ -1350,9 +1336,8 @@ Creates a bus trunking element with known parameters.
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.schem_model = [ 
                             ['LINE',(2,0),(2,8), []],
                             # Symbol
@@ -1363,12 +1348,6 @@ Creates a bus trunking element with known parameters.
                             ['LINE',(2.5,2),(3,1.5), [], 'thin'],
                             ['LINE',(3,6.5),(2.5,6), [], 'thin'],
                         ]
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])

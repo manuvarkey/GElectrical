@@ -18,8 +18,7 @@
 #  
 # 
 
-import os, cairo
-from gi.repository import PangoCairo
+import os
 
 # local files import
 from ..core import constants
@@ -62,15 +61,9 @@ For powerflow with diversity analysis, the diversity factors are defined at bus 
         self.set_model_from_param()
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.set_model_from_param()
-        # Render
-        self.render_model(context, self.schem_model)
-        self.render_text(context, self.text_model)
-        # Post processing
-        self.modify_extends()
         
     def get_nodes(self, code):
         """Return nodes for analysis"""

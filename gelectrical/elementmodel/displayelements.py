@@ -22,9 +22,6 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
-from mako.template import Template as ExprTemplate
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
 from ..core import constants, style
@@ -53,12 +50,9 @@ class DisplayElementNode(ElementModel):
         self.text_model = [[(1,1-style.SCHEM_FONT_SPACING/constants.M/2), "${ref}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],]
         self.schem_model = [['RECT', (0,0), 2,2, True, []],]
     
-    def render_element(self, context):
-        """Render element to context"""
-        self.render_model(context, self.schem_model, color=style.COLOR_OVERLAY_BG)
-        self.render_text(context, self.text_model, color=style.COLOR_OVERLAY_TEXT)
-        # Post processing
-        self.modify_extends()
+    def get_symbol_layers(self):
+        return [('schem', self.schem_model, style.COLOR_OVERLAY_BG),
+                ('text', self.text_model, style.COLOR_OVERLAY_TEXT)]
 
 
 class DisplayElementText(ElementModel):
@@ -82,23 +76,22 @@ class DisplayElementText(ElementModel):
         self.text_model = [[(0.5,0.5), "${text}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'left'],]
         self.schem_model = []
     
-    def render_element(self, context):
-        """Render element to context"""
-        self.render_model(context, self.schem_model)
-        self.render_text(context, self.text_model)
+    def get_symbol_layers(self):
+        """Text, then optional background and border sized to the text"""
+        from ..symbols.geometry import model_size, schem_extents
+        layers = [('schem', self.schem_model, None), ('text', self.text_model, None)]
         if self.fields['border']['value'] or self.fields['background']['value']:
-            self.modify_extends()
-            width = self.model_width + 1*constants.M
-            height = self.model_height + 1*constants.M
+            model_width, model_height = model_size(self, schem_extents(self.schem_model),
+                                                   self.get_text_extents(self.text_model))
+            width = model_width + 1*constants.M
+            height = model_height + 1*constants.M
             if self.fields['background']['value']:
                 schem_model_border = [['RECT', (0,0), width/constants.M, height/constants.M, True, []]]
-                self.render_model(context, schem_model_border, color=style.COLOR_OVERLAY_BG)
+                layers.append(('schem', schem_model_border, style.COLOR_OVERLAY_BG))
             if self.fields['border']['value']:
                 schem_model_border = [['RECT', (0,0), width/constants.M, height/constants.M, False, [], 'thin']]
-                self.render_model(context, schem_model_border)
-            
-        # Post processing
-        self.modify_extends()
+                layers.append(('schem', schem_model_border, None))
+        return layers
 
 
         

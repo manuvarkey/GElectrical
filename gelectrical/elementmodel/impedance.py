@@ -18,8 +18,7 @@
 #  
 # 
 
-import os, cairo
-from gi.repository import PangoCairo
+import os
 
 # local files import
 from ..core import constants, style
@@ -65,19 +64,8 @@ Creates a per unit impedance element connected in series with other elements.
                            [(3,None), "${name}", True]]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""

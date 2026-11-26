@@ -21,17 +21,11 @@
 # 
 
 import logging, copy
-from math import sin, cos, acos, asin, exp, log, log10
-import time
-from mako.template import Template as ExprTemplate
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
 from ..core import constants, style
 from ..core.fields import get_field_dict, get_fields_trunc
-from ..core.geometry import rect_from_points
-from ..symbols.render import draw_rectangle, draw_text
+from ..core.geometry import rect_overlaps, rect_contains_point
 from .tooltips import tooltips
 
 # Get logger object
@@ -43,6 +37,8 @@ class ElementModel:
     tooltip = ''
     element_tooltips = tooltips
     timestamp = 0
+    # True when model_width/model_height are set by the element itself
+    fixed_extents = False
     
     def __init__(self, cordinates=(0,0), **kwargs):
         # Data
@@ -71,10 +67,12 @@ class ElementModel:
         self.draw_schem_color = style.COLOR_NORMAL
         self.text_extends = []
         self.schem_extends = []
+        self.extents_stale = True  # Extents not computed since last change
     
     def set_text_field_value(self, code, value):
         if code in self.fields:
             self.fields[code]['value'] = value
+            self.extents_stale = True
             
     def get_text_field(self, code):
         if code in self.fields:
@@ -85,46 +83,28 @@ class ElementModel:
             return self.res_fields[code]
 
     def draw(self, context, select=False, override_color=None):
-        """Draw the schematic model"""
-        default_color = self.draw_schem_color
-        if override_color:
-            self.draw_schem_color = override_color
-        self.render_element(context)
-        self.draw_schem_color = default_color
-        if select == True and self.selected == True:
-            (x, y, width, height) = self.get_dimensions()
-            draw_rectangle(context,
-                                x-0.5*constants.M,
-                                y-0.5*constants.M,
-                                width+1*constants.M,
-                                height+1*constants.M,
-                                radius=constants.RECTANGLE_RADIUS,
-                                color=self.selected_color,
-                                stroke_width=constants.STROKE_WIDTH_SELECTED,
-                                line_style='dashed',
-                                dash_pattern=[20,5])
+        """Draw the schematic model (rendering lives in gelectrical.symbols)"""
+        from ..symbols.render import draw_element
+        draw_element(context, self, select, override_color)
     
     def check_overlap(self, rect):
-        """Check whether the passed rectangle is within element limits"""
-        element_region = cairo.Region(cairo.RectangleInt(*self.get_dimensions()))
-        if element_region.contains_rectangle(rect) in (cairo.RegionOverlap.IN, cairo.RegionOverlap.PART):
-            return True
-        else:
-            return False
+        """Check whether the passed rectangle (x, y, w, h) is within element limits"""
+        return rect_overlaps(self.get_dimensions(), rect)
         
     def check_overlap_ports(self, rect):
-        """Check whether the passed rectangle is contains points"""
+        """Check whether the passed rectangle (x, y, w, h) contains a port"""
         ports = self.get_ports_global()
-        source_region = cairo.Region(rect)
         for port in ports:
             x = int(port[0])
             y = int(port[1])
-            if source_region.contains_point(x,y):
+            if rect_contains_point(rect, x, y):
                 return (x,y)
         return False
             
     def get_dimensions(self):
-        """Get dimensions"""
+        """Get dimensions (computes the symbol extents if not current)"""
+        if self.extents_stale:
+            self.layout()
         if self.orientation == 'vertical':
             rect = (int(self.x), 
                     int(self.y), 
@@ -205,6 +185,7 @@ class ElementModel:
             self.gid = gid
             self.model_loading = False
             self.set_model_cleanup()
+            self.extents_stale = True
             
     def set_gid(self, gid):
         self.gid = gid
@@ -252,258 +233,36 @@ class ElementModel:
             values[code] = self.fields[code]['value']
         return values
     
+    ## Symbol interface (geometry and rendering in gelectrical.symbols)
+    
+    def update_symbol(self):
+        """Update symbol data (schem_model, text_model, ports) from fields"""
+        pass
+    
+    def symbol_active(self):
+        """False when the symbol is drawn in the inactive colour"""
+        return True
+    
+    def get_symbol_layers(self):
+        """Ordered symbol layers [(kind, model, color), ...] where kind is
+        'schem' or 'text' and color None means the element draw colour"""
+        self.update_symbol()
+        color = None if self.symbol_active() else style.COLOR_INACTIVE
+        return [('schem', self.schem_model, color), ('text', self.text_model, color)]
+    
+    def get_text_extents(self, text_model):
+        """Extents (x, y, w, h) of the labels of ``text_model``"""
+        from ..symbols.geometry import text_extents
+        return text_extents(self, text_model)
+    
+    def layout(self):
+        """Compute schem_extends, text_extends and the model size"""
+        from ..symbols.geometry import layout_element
+        layout_element(self)
+    
     def modify_extends(self):
-        element_region = cairo.Region(cairo.RectangleInt(*self.get_dimensions()))
-        rects = []
-        # Calculate extends
-        # Additional pixel added for rounding error and for preventing zero dimensions
-        for port in self.ports:
-            rects.append(cairo.RectangleInt(*rect_from_points((0,0), (constants.M*port[0], constants.M*port[1]))))
-        for x,y,w,h in self.schem_extends:
-            rects.append(cairo.RectangleInt(int(x), int(y), int(w)+1, int(h)+1))
-        for x,y,w,h in self.text_extends:
-            rects.append(cairo.RectangleInt(int(x), int(y), int(w)+1, int(h)+1))
-        # Modify extends
-        element_region = cairo.Region(rects)
-        master_rect = element_region.get_extents()
-        self.model_width = master_rect.width
-        self.model_height = master_rect.height
-    
-    def render_model(self, context, schem_model, color=None):
-        #
-        # Schem model reference
-        #
-        # Use lengths and coordinates as multiples of constants.M, angles in degrees
-        #
-        # [['LINE',(x0,y0),(x1,y1), (d1,d2,...), <'normal'/'thick'/'thin'>],
-        #  ['CURVE',(x0,y0),(x1,y2),(x3,y3),(x4,y4), (d1,d2,...), <'normal'/'thick'/'thin'>],
-        #  ['ARC', (x0,y0), r, t0, t1, (d1,d2,...), <'normal'/'thick'/'thin'>],
-        #  ['CIRCLE', (x0,y0), r, True/False, (d1,d2,...), <'normal'/'thick'/'thin'>],
-        #  ['RECT', (x0,y0), w, h, True/False, (d1,d2,...), <'normal'/'thick'/'thin'>],
-        #  ['PATH', (x0,y0), True/False, (d1,d2,...), 'normal'/'thick'/'thin', [['LINE', (dx1,dy1)],
-        #                                                                       ['CURVE', (dx0,dy0),(dx1,dy1),(dx2,dy2)],
-        #                                                                       ['ARC', (x0,y0), r, t0, t1]
-        #  ]
-        #       ...
-        # ]
-        #
-        
-        # Setup
-        if not color:
-            color = self.draw_schem_color
-        context.save()
-        (r,g,b,a) = style.hex2rgb(color)
-        context.set_source_rgba(r, g, b, a)
-        context.set_line_width(constants.STROKE_WIDTH_NORMAL)
-        context.set_line_cap(cairo.LINE_CAP_ROUND)
-        context.translate(self.x, self.y)
-        if self.orientation == 'vertical':
-            pass
-        elif self.orientation == 'horizontal':
-            matrix = cairo.Matrix(0, -1, 1, 0, 0, 0)
-            context.transform (matrix)
-        self.schem_extends = []
-        M = lambda x: [i*constants.M for i in x]
-        # Render
-        for item in schem_model:
-            if item[0] == 'LINE':
-                if len(item) == 4 or item[4] == 'normal':
-                    context.set_line_width(constants.STROKE_WIDTH_NORMAL)
-                elif item[4] == 'thin':
-                    context.set_line_width(constants.STROKE_WIDTH_THIN)
-                elif item[4] == 'thick':
-                    context.set_line_width(constants.STROKE_WIDTH_THICK)
-                elif item[4] == 'thicker':
-                    context.set_line_width(constants.STROKE_WIDTH_EXTRATHICK)
-                context.set_dash(item[3])
-                context.move_to(*M(item[1]))
-                context.line_to(*M(item[2]))
-                context.stroke()
-                self.schem_extends.append(rect_from_points(M(item[1]), M(item[2])))
-            elif item[0] == 'CURVE':
-                if len(item) == 6 or item[6] == 'normal':
-                    context.set_line_width(constants.STROKE_WIDTH_NORMAL)
-                elif item[6] == 'thin':
-                    context.set_line_width(constants.STROKE_WIDTH_THIN)
-                elif item[6] == 'thick':
-                    context.set_line_width(constants.STROKE_WIDTH_THICK)
-                elif item[6] == 'thicker':
-                    context.set_line_width(constants.STROKE_WIDTH_EXTRATHICK)
-                context.set_dash(item[5])
-                context.move_to(*M(item[1]))
-                context.curve_to(*M(item[2]), *M(item[3]), *M(item[4]))
-                context.stroke()
-                self.schem_extends.append(rect_from_points(M(item[1]), M(item[2]), M(item[3]), M(item[4])))
-            elif item[0] == 'ARC':
-                if len(item) == 6 or item[6] == 'normal':
-                    context.set_line_width(constants.STROKE_WIDTH_NORMAL)
-                elif item[6] == 'thin':
-                    context.set_line_width(constants.STROKE_WIDTH_THIN)
-                elif item[6] == 'thick':
-                    context.set_line_width(constants.STROKE_WIDTH_THICK)
-                elif item[6] == 'thicker':
-                    context.set_line_width(constants.STROKE_WIDTH_EXTRATHICK)
-                context.set_dash(item[5])
-                context.arc(*M(item[1]), constants.M*item[2], item[3]*constants.PI/180, item[4]*constants.PI/180)
-                context.stroke()
-                self.schem_extends.append(rect_from_points( \
-                                           (M(item[1])[0]+constants.M*item[2]*cos(item[3]*constants.PI/180), 
-                                            M(item[1])[1]+constants.M*item[2]*sin(item[3]*constants.PI/180)),
-                                           (M(item[1])[0]+constants.M*item[2]*cos(item[4]*constants.PI/180), 
-                                            M(item[1])[1]+constants.M*item[2]*sin(item[4]*constants.PI/180)),
-                                            ))
-            elif item[0] == 'CIRCLE':
-                if len(item) == 5 or item[5] == 'normal':
-                    context.set_line_width(constants.STROKE_WIDTH_NORMAL)
-                elif item[5] == 'thin':
-                    context.set_line_width(constants.STROKE_WIDTH_THIN)
-                elif item[5] == 'thick':
-                    context.set_line_width(constants.STROKE_WIDTH_THICK)
-                elif item[5] == 'thicker':
-                    context.set_line_width(constants.STROKE_WIDTH_EXTRATHICK)
-                context.set_dash(item[4])
-                context.arc(*M(item[1]), constants.M*item[2], 0, 2*constants.PI)
-                context.close_path()
-                if item[3]:
-                    context.fill()
-                else:
-                    context.stroke()
-                self.schem_extends.append((M(item[1])[0]-constants.M*item[2], 
-                                           M(item[1])[1]-constants.M*item[2],
-                                           2*constants.M*item[2], 
-                                           2*constants.M*item[2]))
-            elif item[0] == 'RECT':
-                if len(item) == 6 or item[6] == 'normal':
-                    context.set_line_width(constants.STROKE_WIDTH_NORMAL)
-                elif item[6] == 'thin':
-                    context.set_line_width(constants.STROKE_WIDTH_THIN)
-                elif item[6] == 'thick':
-                    context.set_line_width(constants.STROKE_WIDTH_THICK)
-                elif item[6] == 'thicker':
-                    context.set_line_width(constants.STROKE_WIDTH_EXTRATHICK)
-                context.set_dash(item[5])
-                context.rectangle(*M(item[1]), constants.M*item[2], constants.M*item[3])
-                if item[4]:
-                    context.fill()
-                else:
-                    context.stroke()
-                self.schem_extends.append((*M(item[1]), constants.M*item[2], constants.M*item[3]))
-            elif item[0] == 'PATH':
-                if item[4] == 'normal':
-                    context.set_line_width(constants.STROKE_WIDTH_NORMAL)
-                elif item[4] == 'thin':
-                    context.set_line_width(constants.STROKE_WIDTH_THIN)
-                elif item[4] == 'thick':
-                    context.set_line_width(constants.STROKE_WIDTH_THICK)
-                elif item[4] == 'thicker':
-                    context.set_line_width(constants.STROKE_WIDTH_EXTRATHICK)
-                context.set_dash(item[3])
-                context.move_to(*M(item[1]))
-                for subitem in item[5]:
-                    if subitem[0] == 'LINE':
-                        context.rel_line_to(*M(subitem[1]))
-                        self.schem_extends.append(rect_from_points(M(item[1]), M(subitem[1])))
-                    elif subitem[0] == 'CURVE':
-                        context.rel_curve_to(*M(subitem[1]), *M(subitem[2]), *M(subitem[3]))
-                        self.schem_extends.append(rect_from_points(M(item[1]), M(subitem[1]), M(subitem[2]), M(subitem[3])))
-                    elif subitem[0] == 'ARC':
-                        context.arc(*M(subitem[1]), constants.M*subitem[2], subitem[3]*constants.PI/180, subitem[4]*constants.PI/180)
-                        self.schem_extends.append(rect_from_points( \
-                                           (M(subitem[1])[0]+constants.M*subitem[2]*cos(subitem[3]*constants.PI/180), 
-                                            M(subitem[1])[1]+constants.M*subitem[2]*sin(subitem[3]*constants.PI/180)),
-                                           (M(subitem[1])[0]+constants.M*subitem[2]*cos(subitem[4]*constants.PI/180), 
-                                            M(subitem[1])[1]+constants.M*subitem[2]*sin(subitem[4]*constants.PI/180)),
-                                            ))
-                if item[2]:
-                    context.close_path()
-                    context.fill()
-                else:
-                    context.stroke()
-        # Cleanup
-        context.restore()
-    
-    def render_text(self, context, text_model, color=None):
-        #
-        # Text field definition reference
-        #
-        # { 'field': dict(),
-        #    ...
-        # }
-        #
-        # dict = {'type': 'str/float/int/str_list/float_list/int_list',
-        #         'caption': 'caption',
-        #         'unit': 'unit',
-        #         'value': 'value',
-        #         'max_chars: x',
-        #         'validation_func: func',
-        #         'selection_list: [x0, x1, x2, ...]',
-        #         'allow_custom_value: True/False'
-        #        }
-        # OR
-        # Use convinence function self.field_definition_dict(type, caption, unit, value, ...)
-        #
-        
-        #
-        # Text model reference
-        #
-        # Use coordinates as multiples of constants.M, angles in degrees
-        # Use None for y value for auto-increment
-        # Use Mako template for Expr
-        #
-        # [[(x,y), Expr, display True/False],
-        #    ...
-        # ]
-        #
-        
-        # Setup
-        if not color:
-            color = self.draw_schem_color
-        context.save()
-        context.translate(self.x, self.y)
-        if self.orientation == 'vertical':
-            pass
-        elif self.orientation == 'horizontal':
-            matrix = cairo.Matrix(0, -1, 1, 0, 0, 0)
-            context.transform (matrix)
-        self.text_extends = []
-        # Render
-        model_width_start = self.model_width
-        y_calc = 0
-        for model in text_model:
-            size = style.SCHEM_FONT_SIZE
-            weight = constants.SCHEM_FONT_WEIGHT
-            alignment = 'left'
-            if len(model) == 3:
-                ((x,y), expr, display_value) = model
-            elif len(model) == 4:
-                ((x,y), expr, display_value, size) = model
-            elif len(model) == 5:
-                ((x,y), expr, display_value, size, weight) = model
-            else:
-                ((x,y), expr, display_value, size, weight, alignment) = model
-            if display_value:
-                y_calc = constants.M*y if y is not None else y_calc + style.SCHEM_FONT_SPACING  # calculate y_calc (set or auto increment)
-                template = ExprTemplate(expr)
-                text = template.render(**self.get_field_value_dict())
-                (x,y,w,h) = draw_text(context, text, constants.M*x, y_calc, color=color, 
-                                           fontname=style.SCHEM_FONT_FACE, 
-                                           fontsize=size, fontweight=weight,
-                                           alignment=alignment)
-                self.text_extends.append((x, y, w, h))
-        # Cleanup
-        context.restore()
-        
-    ## Mandatory functions
-    
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        self.render_model(context, self.schem_model)
-        self.render_text(context, self.text_model)
-        # Post processing
-        self.modify_extends()
+        """Recompute the model size (kept for compatibility)"""
+        self.layout()
         
     def get_nodes(self, code):
         """Return nodes for analysis"""

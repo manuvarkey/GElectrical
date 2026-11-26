@@ -24,8 +24,6 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
 from ..core import constants, style
@@ -298,7 +296,7 @@ class DrawingModel:
         x = int(x-w/2)
         y = int(y-h/2)
         # Form selection rectangle
-        rect = cairo.RectangleInt(x, y, w, h)
+        rect = (x, y, w, h)
         for element in self.elements:
             # Check for overlap
             port = element.check_overlap_ports(rect)
@@ -316,7 +314,7 @@ class DrawingModel:
         x = int(x-w/2)
         y = int(y-h/2)
         # Form selection rectangle
-        rect = cairo.RectangleInt(x, y, w, h)
+        rect = (x, y, w, h)
         for slno, element in enumerate(self.elements):
             # Check for overlap
             if element.check_overlap(rect):
@@ -431,7 +429,7 @@ class DrawingModel:
         y = int(y)
         w = int(w)
         h = int(h)
-        rect = cairo.RectangleInt(x, y, w, h)  # selection rectangle
+        rect = (x, y, w, h)  # selection rectangle
         for elno, element in enumerate(self.elements):
             if (whitelist and (elno in whitelist)) or whitelist is None:
                 # Check for selection

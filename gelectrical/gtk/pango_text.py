@@ -24,8 +24,9 @@
 """PangoCairo text backend for the legacy GTK UI.
 
 Drawing is the pre-M2 ``misc.draw_text`` unchanged, so screen, print and
-PDF output of the GTK application keep their appearance. Measurement uses
-an identity-scaled context (see :mod:`gelectrical.symbols.text`).
+PDF output of the GTK application keep their appearance. Geometry queries measure
+on an identity-scaled context; while rendering, text is measured on the
+output context as before (see :mod:`gelectrical.symbols.text`).
 """
 
 import cairo
@@ -57,7 +58,12 @@ class PangoTextBackend(TextBackend):
         layout.set_text(text)
         return layout
 
-    def measure_text(self, text, fontname, fontsize, fontweight):
+    def measure_text(self, text, fontname, fontsize, fontweight, context=None):
+        if context is not None:
+            # Rendering: measure on the output context (pre-M2 behaviour)
+            layout = self._layout(context, text, fontname, fontsize, fontweight)
+            (width, height) = layout.get_size()
+            return (Pango.units_to_double(width), Pango.units_to_double(height))
         key = (text, fontname, fontsize, fontweight)
         if key not in self._cache:
             layout = self._layout(self._measure_context, text, fontname, fontsize, fontweight)

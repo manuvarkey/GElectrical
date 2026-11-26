@@ -22,9 +22,6 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
-from mako.template import Template as ExprTemplate
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
 from ..core import constants, style
@@ -41,6 +38,7 @@ class Template(ElementModel):
     name = 'Template'
     group = 'Miscellaneous'
     icon = None
+    fixed_extents = True
 
     def __init__(self, width=constants.PAGE_WIDTH, height=constants.PAGE_HEIGHT, **kwargs):
         # Global
@@ -129,9 +127,6 @@ class Template(ElementModel):
             self.text_model.append([(x1+self.border_width/3,y-vertical_ref_length/2), refcode, True])
             self.text_model.append([(x2+self.border_width/3,y-vertical_ref_length/2), refcode, True])
             
-    def modify_extends(self):
-        pass
-            
             
 class TitleBlock(ElementModel):
     """Class for rendering cross reference elements"""
@@ -140,6 +135,7 @@ class TitleBlock(ElementModel):
     name = 'Template'
     group = 'Miscellaneous'
     icon = None
+    fixed_extents = True
 
     def __init__(self, **kwargs):
         # Global
@@ -201,6 +197,4 @@ class TitleBlock(ElementModel):
         
         self.x = (self.fields['page_width']['value']/constants.M - border_right - border_width - self.model_width)*constants.M
         self.y = (self.fields['page_height']['value']/constants.M - border_bottom - border_width - self.model_height)*constants.M
-        
-    def modify_extends(self):
-        pass
+

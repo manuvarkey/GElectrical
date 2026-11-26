@@ -38,6 +38,8 @@ The decision and the measured differences are recorded in
 docs/architecture/backend.md ("Headless text metrics").
 """
 
+import contextlib
+
 import cairo
 
 # Pango resolves point sizes at 96 dpi on Cairo contexts
@@ -51,8 +53,9 @@ class TextBackend:
 
     name = 'abstract'
 
-    def measure_text(self, text, fontname, fontsize, fontweight):
-        """Return the logical (width, height) of ``text`` in drawing units"""
+    def measure_text(self, text, fontname, fontsize, fontweight, context=None):
+        """Return the logical (width, height) of ``text`` in drawing units,
+        measured on ``context`` when given (and supported by the backend)"""
         raise NotImplementedError
 
     def draw_text(self, context, text, x, y, color, fontname, fontsize, fontweight, alignment):
@@ -82,7 +85,8 @@ class CairoTextBackend(TextBackend):
         widths = [context.text_extents(line).x_advance for line in lines]
         return ascent, ascent + descent, widths
 
-    def measure_text(self, text, fontname, fontsize, fontweight):
+    def measure_text(self, text, fontname, fontsize, fontweight, context=None):
+        # Toy-API metrics are taken at identity scale whatever the context
         key = (text, fontname, fontsize, fontweight)
         if key not in self._cache:
             context = self._measure_context
@@ -142,5 +146,20 @@ def set_text_backend(backend):
     global _backend
     _backend = backend
 
+_measure_on = None
+
+
+@contextlib.contextmanager
+def measuring_on(context):
+    """Measure text on ``context`` inside the block (used while rendering, so
+    that a backend can size symbols for the actual output like before M2)"""
+    global _measure_on
+    previous = _measure_on
+    _measure_on = context
+    try:
+        yield
+    finally:
+        _measure_on = previous
+
 def measure_text(text, fontname, fontsize, fontweight):
-    return get_text_backend().measure_text(text, fontname, fontsize, fontweight)
+    return get_text_backend().measure_text(text, fontname, fontsize, fontweight, context=_measure_on)

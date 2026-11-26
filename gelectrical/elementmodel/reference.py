@@ -22,9 +22,6 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
-from mako.template import Template as ExprTemplate
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
 from ..core import constants, style
@@ -65,11 +62,11 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
                            [(7,3+(style.SCHEM_FONT_SPACING-style.SCHEM_FONT_SIZE)/constants.M), "${sub_title}", True]]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        self.render_text(context, self.text_model)
-        (tx1, ty1, tw1, th1) = self.text_extends[2]
-        (tx2, ty2, tw2, th2) = self.text_extends[3]
+    def get_symbol_layers(self):
+        """Labels first; the reference line follows the title width"""
+        text_extends = self.get_text_extents(self.text_model)
+        (tx1, ty1, tw1, th1) = text_extends[2]
+        (tx2, ty2, tw2, th2) = text_extends[3]
         width = max(tw1, tw2)
         #self.schem_model = [ 
                              #['CIRCLE', (3,3), 3, False, []],
@@ -86,9 +83,7 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
                              ['LINE', (3,6),(6,3), []],
                              ['LINE', (0,3),(xe,3), []],
                            ]
-        self.render_model(context, self.schem_model)
-        # Post processing
-        self.modify_extends()
+        return [('text', self.text_model, None), ('schem', self.schem_model, None)]
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -127,13 +122,9 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
         self.set_model_from_param()
         self.assign_tootltips()        
         
-    def render_element(self, context):
-        """Render element to context"""
+    def get_symbol_layers(self):
         self.set_model_from_param()
-        self.render_text(context, self.text_model)
-        self.render_model(context, self.schem_model)
-        # Post processing
-        self.modify_extends()
+        return [('text', self.text_model, None), ('schem', self.schem_model, None)]
         
     # Private functions
     

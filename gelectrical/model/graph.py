@@ -23,8 +23,6 @@
 import logging, copy, bisect
 from math import sin, cos, acos, asin, exp, log, log10
 from scipy.interpolate import interp1d
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
 from ..core import constants

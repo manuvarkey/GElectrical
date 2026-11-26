@@ -40,7 +40,7 @@ from ..core import style, paths
 from ..symbols.text import set_text_backend
 from .pango_text import PangoTextBackend
 from ..model import drawing
-from ..elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference, displayelements
+from ..elementmodel import registry
 from ..model.project import ProjectModel
 from .view.drawing import DrawingSelectionDialog
 from .view.field import FieldView, FieldViewDialog
@@ -928,39 +928,7 @@ class MainWindow():
         self.program_state['program_settings_main'] = self.program_settings['Defaults']
         self.program_state['program_settings'] = self.program_settings
         # Setup elements
-        self.program_state['element_models'] = dict()
-        self.program_state['element_models'][switch.Switch.code] = switch.Switch
-        self.program_state['element_models'][switch.Fuse.code] = switch.Fuse
-        self.program_state['element_models'][switch.CircuitBreaker.code] = switch.CircuitBreaker
-        self.program_state['element_models'][switch.Contactor.code] = switch.Contactor
-        self.program_state['element_models'][switch.ChangeOver.code] = switch.ChangeOver
-        self.program_state['element_models'][busbar.BusBar.code] = busbar.BusBar
-        self.program_state['element_models'][grid.Grid.code] = grid.Grid
-        self.program_state['element_models'][reference.Reference.code] = reference.Reference
-        self.program_state['element_models'][reference.ReferenceBox.code] = reference.ReferenceBox
-        self.program_state['element_models'][transformer.Transformer.code] = transformer.Transformer
-        self.program_state['element_models'][transformer.Transformer3w.code] = transformer.Transformer3w
-        self.program_state['element_models'][load.Load.code] = load.Load
-        self.program_state['element_models'][load.AsymmetricLoad.code] = load.AsymmetricLoad
-        self.program_state['element_models'][load.SinglePhaseLoad.code] = load.SinglePhaseLoad
-        self.program_state['element_models'][line.Line.code] = line.Line
-        self.program_state['element_models'][line.LTCableIEC.code] = line.LTCableIEC
-        self.program_state['element_models'][line.LTCableCustom.code] = line.LTCableCustom
-        self.program_state['element_models'][line.BusTrunking.code] = line.BusTrunking
-        self.program_state['element_models'][impedance.Impedance.code] = impedance.Impedance
-        self.program_state['element_models'][impedance.Inductance.code] = impedance.Inductance
-        self.program_state['element_models'][shunt.ShuntCapacitor.code] = shunt.ShuntCapacitor
-        self.program_state['element_models'][generator.Generator.code] = generator.Generator
-        # self.program_state['element_models'][generator.Motor.code] = generator.Motor
-        self.program_state['element_models'][load.Motor3ph.code] = load.Motor3ph
-        self.program_state['element_models'][load.Motor1ph.code] = load.Motor1ph
-        self.program_state['element_models'][displayelements.DisplayElementNode.code] = displayelements.DisplayElementNode
-        self.program_state['element_models'][generator.StaticGenerator.code] = generator.StaticGenerator
-        self.program_state['element_models'][generator.SinglePhaseStaticGenerator.code] = generator.SinglePhaseStaticGenerator
-        self.program_state['element_models'][ward.Ward.code] = ward.Ward
-        self.program_state['element_models'][ward.XWard.code] = ward.XWard
-        self.program_state['element_models'][shunt.Shunt.code] = shunt.Shunt
-        self.program_state['element_models'][displayelements.DisplayElementText.code] = displayelements.DisplayElementText
+        self.program_state['element_models'] = registry.get_element_models()
         
         # Setup main window
         self.builder = Gtk.Builder()
@@ -1014,32 +982,26 @@ class MainWindow():
         self.draw_element_listbox.connect("row_activated", self.on_draw_element_add)
         self.draw_element_searchbox.connect("search-changed", self.on_draw_element_search_changed)
         
-        for code, model in self.program_state['element_models'].items():
-            # Dont add advanced elements to toolbar if advanced mode enabled
-            if self.program_settings['Interface']['advanced_mode']['value'] is False and code in misc.ADVANCED_ELEMENTS:
-                continue
-            name = model.name
-            group = model.group
-            icon_path = model.icon
-            tooltip = model.tooltip
-            if group and name and icon_path:
-                if self.program_state['dark_mode']:
-                    icon = misc.get_image_from_path(icon_path, inverted=True)
-                else:
-                    icon = misc.get_image_from_path(icon_path)
-                icon.set_size_request(40, 40)
-                caption = Gtk.Label(name, xalign=0)
-                hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-                hbox.pack_start(icon, False, False, 12)
-                hbox.pack_start(caption, True, True, 12)
-                row = Gtk.ListBoxRow()
-                row.props.name = code
-                row.set_activatable(True)
-                row.add(hbox)
-                row.set_tooltip_markup(tooltip)
-                self.draw_element_groups[code] = group
-                self.draw_element_names[code] = name
-                self.draw_element_listbox.add(row)
+        # Dont add advanced elements to toolbar if advanced mode enabled
+        advanced_mode = self.program_settings['Interface']['advanced_mode']['value']
+        for code, name, group, icon_path, tooltip in registry.palette_entries(advanced_mode):
+            if self.program_state['dark_mode']:
+                icon = misc.get_image_from_path(icon_path, inverted=True)
+            else:
+                icon = misc.get_image_from_path(icon_path)
+            icon.set_size_request(40, 40)
+            caption = Gtk.Label(name, xalign=0)
+            hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+            hbox.pack_start(icon, False, False, 12)
+            hbox.pack_start(caption, True, True, 12)
+            row = Gtk.ListBoxRow()
+            row.props.name = code
+            row.set_activatable(True)
+            row.add(hbox)
+            row.set_tooltip_markup(tooltip)
+            self.draw_element_groups[code] = group
+            self.draw_element_names[code] = name
+            self.draw_element_listbox.add(row)
         self.draw_element_listbox.show_all()
         
         # Setup field views

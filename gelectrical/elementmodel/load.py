@@ -18,8 +18,7 @@
 #  
 # 
 
-import os, cairo, math
-from gi.repository import PangoCairo
+import os, math
 
 # local files import
 from ..core import constants, style
@@ -64,23 +63,16 @@ Creates a generic three phase load element.
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         pftag = 'lag' if self.fields['mode']['value'] else 'lead'
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${sn_kva}kVA", True],
                            [(3,None), "${cos_phi} pf " + pftag, True],
                            [(3,None), "${name}", True]]
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -143,23 +135,16 @@ Creates a generic three phase assymetric load element.
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${sn_kva}kVA", True],
                            [(3,None), "(${p_a_kw}, ${p_b_kw}, ${p_c_kw})kW", True],
                            [(3,None), "(${q_a_kvar}, ${q_b_kvar}, ${q_c_kvar})kVAr", True],
                            [(3,None), "${name}", True]]
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -222,24 +207,17 @@ Creates a generic single phase load element.
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         pftag = 'lag' if self.fields['mode']['value'] else 'lead'
         self.text_model = [[(3,1), "${ref}", True],
                            [(3,None), "${sn_kva}kVA", True],
                            [(3,None), "${cos_phi} pf " + pftag, True],
                            [(3,None), "${name}", True],
                            [(2,7.5), "${phase}", True]]
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -368,18 +346,12 @@ Creates a generic three phase motor element.
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+    def update_symbol(self):
+        """Fixed motor symbol (do not use the load label update)"""
+        pass
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
 
     def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
@@ -480,15 +452,9 @@ Creates a generic single phase motor element.
             self.damage_model.update_parameters(self.fields['dcurve']['value']['parameters'])
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+    def update_symbol(self):
+        """Fixed motor symbol (do not use the load label update)"""
+        pass
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])

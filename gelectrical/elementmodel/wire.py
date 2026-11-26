@@ -22,9 +22,6 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
-from mako.template import Template as ExprTemplate
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
 from ..core import constants
@@ -60,15 +57,6 @@ class Wire(ElementModel):
         if points:
             self.update_points(points, init=True)
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        self.render_model(context, self.schem_model)
-        self.render_text(context, self.text_model)
-        # Post processing
-        self.modify_extends()
         
     def get_nodes(self, code):
         """Return nodes for analysis"""

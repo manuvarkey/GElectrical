@@ -18,7 +18,7 @@
 #  
 # 
 
-import os, cairo, math
+import os, math
 import numpy as np
 from shapely import Polygon, Point, LineString
 
@@ -71,19 +71,8 @@ Two elements that are connected through a closed switche are fused in the power 
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        if self.fields['closed']['value'] == True:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+    def symbol_active(self):
+        return self.fields['closed']['value'] == True
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -410,24 +399,17 @@ Adds a fuse element used for the protection of circuit elements.
         self.calculate_parameters()
         self.assign_tootltips()
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         if self.fields['sdfu']['value']:
             self.schem_model = self.schem_model_sdfu
             self.ports = [[1, 0], [1, 10]]
         else:
             self.schem_model = self.schem_model_fuse
             self.ports = [[1, 0], [1, 6]]
-        # Render
-        if self.fields['closed']['value'] == True:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return self.fields['closed']['value'] == True
 
     def get_line_protection_model(self):
         f = FieldDict(self.fields)
@@ -695,9 +677,8 @@ Adds a circuit breaker element used for the protection of circuit elements.
         self.calculate_parameters()
         self.assign_tootltips()
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         if self.fields['drawout']['value']:
             self.schem_model = self.schem_model_do
         else:
@@ -705,15 +686,9 @@ Adds a circuit breaker element used for the protection of circuit elements.
                 self.schem_model = self.schem_model_rccb
             else:
                 self.schem_model = self.schem_model_ndo
-        # Render
-        if self.fields['closed']['value'] == True:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return self.fields['closed']['value'] == True
             
     def get_line_protection_model(self):
         f = FieldDict(self.fields)
@@ -886,22 +861,15 @@ Adds a contactor element used for on-load switching of loads.
         self.calculate_parameters()
         self.assign_tootltips()
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         if self.fields['trip_unit']['value'] == True:
             self.schem_model = self.schem_model_ol
         else:
             self.schem_model = self.schem_model_plain
-        # Render
-        if self.fields['closed']['value'] == True:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return self.fields['closed']['value'] == True
 
     def set_text_field_value(self, code, value):
         ElementModel.set_text_field_value(self, code, value)
