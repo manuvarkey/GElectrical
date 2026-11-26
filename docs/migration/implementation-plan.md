@@ -128,6 +128,11 @@ because it needs no backend.
 
 ## M2 — Headless engine extraction (PoC 1)
 
+*Status (2026-11-27): implemented on `feat/m2-milestone`; owner review
+pending. One acceptance item is open: the raster limit for headless drawings
+with Cairo text (see the [validation log](validation.md) M2 entry and
+[ADR 0018](../decisions/0018-headless-engine-split.md)).*
+
 - **Objective:** make the engine importable and runnable without GTK or a
   display, with identical results.
 - **Scope:** package split described in [backend](../architecture/backend.md#2-engine-package-gelectrical).

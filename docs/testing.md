@@ -12,7 +12,10 @@ since M1; the frontend Vitest and Storybook layers since M6).
 | Check | Command | Notes |
 | --- | --- | --- |
 | Smoke test | `pixi run smoke` (`--keep` to inspect outputs; pass `.gepro` paths to limit) | Opens each sample, runs diagnostics, PF, both SC, rules check, exports JSON/report/drawing. Needs a display (`xvfb-run` on Linux) |
-| Regression baseline | `xvfb-run -a pixi run -e test test` | Captures every sample and coverage project with the legacy code and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)); about 4 minutes |
+| Regression baseline | `xvfb-run -a pixi run -e test test` | Captures every sample and coverage project with the legacy GTK code and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)); about 4 minutes |
+| Engine unit tests | `pixi run -e test test-engine` | `tests/engine/` (PyGObject blocked: fields, registry, geometry vs `cairo.Region`, symbols, persistence round trip, pipeline, headless import) and `tests/test_symbols_extents.py` (headless text metrics vs PangoCairo, needs PyGObject but no display). No display needed |
+| Headless baseline | `pixi run -e test test-headless` | Captures every baseline project with the headless engine (`capture.py --headless`, no GTK, no display) and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)) |
+| Headless run | `pixi run headless path/to/x.gepro [--out DIR]` | Open, analyse, rules check, export JSON/report/drawing without GTK |
 | Frontend (all) | `npm run check` | Prettier, dependency boundary, licences, tool tests, `vue-tsc`, Vitest, library and app builds |
 | EngineeringUI tests | `npm test -w @kavilgroup/engineering-ui` | Vitest projects `unit` (happy-dom) and `storybook` (every story in Chromium via Playwright: play functions plus axe; any violation fails). Needs `npx playwright install chromium-headless-shell` once |
 | App shell tests | `npm test -w gelectrical-modern` | Vitest component tests with mock data |
