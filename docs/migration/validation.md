@@ -106,3 +106,122 @@ Navigation: [migration index](README.md) · [testing guide](../testing.md).
 - Hosted re-run 45859730391 at `7c10cfb`: Linux smoke + regression baseline
   **passed** (5 min 14 s; drawing PNG comparison skipped, fonts differ),
   Windows smoke **passed** (2 min 20 s).
+
+## 2026-11-26 — M1b Python 3.14 and pandapower 3.5.6 (branch `feat/m1b-python-pandapower-upgrade`)
+
+Status: **difference report awaiting owner approval. Baseline not regenerated.**
+
+- Environment change (`pixi.toml`, `pixi.lock`): Python 3.12.16 → 3.14.10,
+  pandapower 3.2.1 (conda-forge) → 3.5.6 (PyPI via `[pypi-dependencies]`),
+  WeasyPrint 69.0 (conda-forge) → 70.0 (PyPI, the release that ships
+  `weasyprint-windows-onedir.zip`), NumPy 2.2.6 → 2.4.6, SciPy 1.13.1 →
+  1.18.1. Unchanged: pandas 2.3.3, Numba 0.68.1, Shapely 2.2.0, NetworkX 3.7,
+  matplotlib 3.11.2, GTK 3.24.52, PyGObject 3.58.1. Only pandapower and
+  WeasyPrint come from PyPI; their dependencies (including Pango and the
+  compiled Python packages) come from conda-forge, with pandapower's
+  `numpy<2.5`, `pandas~=2.3` and other bounds mirrored in `pixi.toml` so the
+  conda solve stays compatible. `pixi lock` solved win-64, linux-64, osx-64
+  and osx-arm64 (both environments). Lock SHA-256 starts `a8c1eda3dd45d1c4`.
+- Legacy pins (D11): `requirements.txt` regenerated from the dependency
+  closure of the new environment (pandapower 3.5.6, WeasyPrint 70.0; pycairo
+  and PyGObject stay system-provided as before); `setup.py` pins
+  `pandapower==3.5.6`, `weasyprint==70.0` and `python_requires>=3.14,<3.15`.
+- Numba: `pandapower.auxiliary._check_if_numba_is_installed()` is `True`,
+  `net._options["numba"]` is `True` after `runpp` and `runpp_3ph`, no Numba
+  fallback warning, and the JIT dispatchers `makeYbus_numba.gen_Ybus` and
+  `create_jacobian_numba.create_J2` hold compiled signatures after a run.
+
+### Compatibility fixes (no change of engineering intent)
+
+| Change | Cause | Evidence |
+| --- | --- | --- |
+| `elementmodel/transformer.py`: pass `mag0_percent = field × 100` | pandapower 3.4.0 "`mag0_percent` is treated as a percent instead of ratio"; 3.2.1 used the value as the ratio Zm0/Z0. The GElectrical field is the ratio (`Zm0/Z0`, default 10) | Same pandapower net (dumped with 3.2.1) solved with 3.5.6 changed `res_bus_3ph` by up to 7e-5 pu; the only differing matrix entry was the zero-sequence magnetising shunt of the Dyn transformer (`BR_G_ASYM`/`BR_B_ASYM`). After the fix every `res_*_3ph` table and every 3-phase result field equals the baseline within tolerance |
+| `elementmodel/generator.py` (`StaticGenerator`) and the diversity balancing sgen in `model/pandapower.py`: pass `type='wye'` | `create_sgen` default `type` changed from `'wye'` to `None`; 3-phase power flow ignores sgens whose type is neither wye nor delta | `cov_static_generation` 3-phase voltages moved by 5.8e-7 pu; equal to baseline after the fix |
+| `model/pandapower.py`: `bus.vn_kv.at[i] = …` → `bus.at[i, 'vn_kv'] = …` (4 lines) | Chained assignment. Works on pandas 2.3 but emits `ChainedAssignmentError` (96 warnings in the M1 baseline) and stops working under pandas 3 copy-on-write. Python 3.14 no longer shows the warning | `pp_input.json` bus tables unchanged; warning gone |
+
+### Difference report (final capture vs M1 baseline)
+
+`baseline-capture --out <scratch>` then `compare.py`, with diff limits lifted:
+6,760 differences in 17/17 projects. Every difference is in one of the rows
+below. Unchanged in all 17 projects: `model.json`, `roundtrip.json`,
+`topology.json`, `curves.json`, `d8.json`, `diagnostics.json`, `renumber.json`,
+`undo.json`, `drawing_*.png` (compared, fonts match), balanced power flow
+(all `pf_bal`, `pfdiv_bal`, `ts_bal` result tables), all `res_*_3ph` tables,
+maximum short-circuit values, rules-check results (except the new
+`cov_generation` 3-phase runs) and every result field other than those below.
+
+| # | Artefacts | Old → new | Cause |
+| --- | --- | --- | --- |
+| 1 | Minimum short-circuit values: `ikss_ka_3ph_min`, `ikss_ka_1ph_min`, `zk_ohm_min`, `zk_ohm_1ph_min` (`results.json`, `node_results.json`, 5 lines of `report.txt` per affected project), `sc.json` (`res_bus_sc` of the `min` case: `ikss_ka`, `ip_ka`, `skss_mw`, `rk_ohm`, `xk_ohm`, `rk0_ohm`, `xk0_ohm`) | See table below; −0.1 % to −3.0 % in projects with a transformer | pandapower 3.5.6 applies the IEC 60909-0:2016 transformer correction factor K_T only in the `max` case (§6.3.3); 3.2.1 also applied it in the `min` case. Verified: with the 3.2.1 behaviour patched back into the installed pandapower (temporarily, then restored and checked byte-identical), all of these differences vanished except row 2 |
+| 2 | Same fields, `edge__unusual_values` only (`lv_tol_percent = 10`) | 3-phase min −5.26 % (e.g. 4.2633 → 4.0389 kA); 1-phase min +0.02 % | pandapower now uses c_min = 0.90 for low-voltage networks with 10 % tolerance (IEC 60909-0:2016 Table 1); 3.2.1 used 0.95. The 1-phase minimum is computed by GElectrical with its own c factor, so only the K_T change applies; K_T > 1 for c_max = 1.1, so removing it lowers the impedance |
+| 3 | `cov_generation` `pf_3ph`, `pfdiv_3ph`, `ts_3ph` | Previously `KeyError: 'res_gen_3ph'` (D17); now the chain completes, but power flow emits `MatrixRankWarning: Matrix is exactly singular` and every 3-phase bus, generator and grid result is `NaN` | pandapower 3.5.0 "gen for 3ph load flow" fix. The network has a generator and the grid on the same bus (pandapower diagnostic warns). New files: `pf.json`, `results.json`, `node_results.json`, `rules.json`, `sc.json` in those three modes. **Owner decision needed:** the legacy app now shows `NaN` results instead of failing |
+| 4 | `pf.json` `res_bus`, `res_line`, `res_trafo`, `res_ext_grid`, `res_load`, `res_sgen` in 3-phase modes (1,599 values) | 3.2.1 left placeholder values after `runpp_3ph` (`vm_pu` 1.0, line flows 0); 3.5.6 fills them from the 3-phase solution | pandapower result extraction. Not used by GElectrical in 3-phase mode (it reads `res_*_3ph`); no result field changed |
+| 5 | `pp_input.json`, `pf.json` `inputs_after_run`: `asymmetric_load`, `asymmetric_sgen` | New columns `sn_a_mva`, `sn_b_mva`, `sn_c_mva` (NaN) | pandapower 3.3.0 per-phase rating columns; not set by GElectrical, not used in calculation |
+| 6 | `pf.json` `inputs_after_run/trafo/*/mag0_percent` (3-phase modes) | 10 → 1000 | Compatibility fix above (same physical value) |
+| 7 | `status.json` `warnings` (111 files) | Diagnostic log lines now come from `pandapower.diagnostic.diagnostic_helpers` at WARNING level (720 lines; was 12 from `pandapower.diagnostic`); `ChainedAssignmentError` warnings gone; `cov_generation` 3-phase: `MatrixRankWarning`, extra `RuntimeWarning` | pandapower 3.3 diagnostic restructuring; chained-assignment fix above; row 3 |
+
+Minimum short-circuit changes in `pf_bal` node results (largest change per
+project and field; projects not listed have no change):
+
+| Project | Field | Nodes | Largest: old → new (kA) | Range |
+| --- | --- | --- | --- | --- |
+| `cov_multisheet` | 3-phase min | 12 | 7.1518 → 6.9582 (−2.71 %) | −2.71 … −0.20 % |
+| `cov_multisheet` | 1-phase min | 12 | 0.02275 → 0.02275 (−0.001 %) | ≈ 0 % |
+| `cov_radial_lv` | 3-phase min | 13 | 12.7805 → 12.4117 (−2.89 %) | −2.89 … −0.09 % |
+| `cov_radial_lv` | 1-phase min | 13 | 13.5024 → 13.1054 (−2.94 %) | −2.94 … −0.10 % |
+| `edge__unusual_values` | 3-phase min | 5 | 0.2447 → 0.2318 (−5.26 %) | −5.26 … −5.24 % |
+| `edge__unusual_values` | 1-phase min | 5 | 4.5299 → 4.5309 (+0.02 %) | 0 … +0.02 % |
+| `sample__kerala_inspectorate_sample` | 3-phase min | 3 | 9.9016 → 9.6122 (−2.92 %) | −2.92 … −1.18 % |
+| `sample__kerala_inspectorate_sample` | 1-phase min | 3 | 10.0807 → 9.7808 (−2.98 %) | −2.98 … −0.08 % |
+| `sample__sample` | 3-phase min | 11 | 15.8733 → 15.4964 (−2.37 %) | −2.37 … −0.12 % |
+| `sample__sample` | 1-phase min | 11 | 16.8138 → 16.3910 (−2.51 %) | −2.51 … −0.01 % |
+
+The same changes appear in every analysis mode of these projects (short
+circuit does not depend on the power-flow mode).
+
+### Checks run
+
+- `xvfb-run -a pixi run smoke`: 3/3 passed (Python 3.14, WeasyPrint 70.0 PDF
+  export included).
+- Full baseline capture: 17/17 projects captured; report PDF generated in
+  the same projects as the baseline (D18 failures unchanged).
+- `GELECTRICAL_BASELINE_CAPTURE=<final capture> pixi run -e test test`:
+  21 passed, 17 failed (every project differs from the M1 baseline as listed
+  above; expected until the approved re-baseline).
+- Bisection used a scratch copy of the M1 environment (`pixi install --frozen`
+  from the `master` lock): the same pandapower JSON net solved with 3.2.1 and
+  3.5.6, and the sequence admittance matrices compared.
+- `git diff --check` clean.
+
+### Not run / open
+
+- Windows and macOS: lock solved, but smoke test not run (Windows CI job runs
+  on push). Hosted CI not run (no push).
+- Interactive GTK session on Python 3.14 (`pixi run start`) not exercised by
+  hand; only the windows built by the smoke test and the capture.
+- Flatpak manifest (`com.kavilgroup.gelectrical.json`) still builds
+  pandapower 2.14.9 and WeasyPrint 62.3 on the GNOME 46 runtime (Python 3.11),
+  and Snap (core22, Python 3.10) installs `requirements.txt`, which now needs
+  Python ≥ 3.11 (NumPy 2.4). With the `mag0_percent` fix a pandapower < 3.4
+  build would model the zero-sequence magnetising impedance 100 times too
+  large. These packages need updating before their next release (M14).
+- Next step after approval: regenerate `tests/baseline/` with an
+  `environment.json` that references this entry (implementation plan M1b
+  step 4).
+
+## 2026-11-26 — M1b re-baseline (branch `feat/m1b-python-pandapower-upgrade`)
+
+- Owner approved the M1b difference report above ("Approve, re-baseline").
+  The handling of `NaN` 3-phase results for `cov_generation` (row 3) was not
+  decided; the baseline records the current behaviour.
+- `tools/baseline/capture.py` gained `--reason`, stored as `baseline_reason`
+  in `environment.json`. Command:
+  `xvfb-run -a pixi run -e test baseline-capture --reason "M1b: … see docs/migration/validation.md (2026-11-26 M1b entry)"`.
+- New `tests/baseline/`: 17/17 projects; 356 files modified, 15 added (the
+  `cov_generation` 3-phase result files). Identical to the capture analysed
+  in the difference report (`diff -rq`: only `environment.json` differs, by
+  `baseline_reason`).
+- `xvfb-run -a pixi run -e test test`: **38 passed** (fresh capture, 4 min 5 s).
+- `xvfb-run -a pixi run smoke`: 3/3 passed (run before the re-baseline;
+  engine code unchanged since).
+- **Not run:** Windows/macOS smoke, hosted CI (no push).

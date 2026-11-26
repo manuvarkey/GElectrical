@@ -2503,7 +2503,7 @@ Nodes
 | 0.415
 | 0.29
 | 8.1
-| 7.15
+| 6.96
 | 19.72
 | 0.03
 | 0.02
@@ -2511,7 +2511,7 @@ Nodes
 | 0.415
 | 0.29
 | 8.1
-| 7.15
+| 6.96
 | 19.72
 | 0.03
 | 0.02
@@ -2567,7 +2567,7 @@ Nodes
 | 0.415
 | 0.45
 | 3.69
-| 2.39
+| 2.38
 | 5.37
 | 0.0
 | 0.0
@@ -2575,7 +2575,7 @@ Nodes
 | 0.415
 | 0.45
 | 3.69
-| 2.39
+| 2.38
 | 5.37
 | 0.0
 | 0.0
@@ -2583,7 +2583,7 @@ Nodes
 | 0.415
 | 0.29
 | 8.1
-| 7.15
+| 6.96
 | 19.72
 | 0.03
 | 0.02
@@ -2599,7 +2599,7 @@ Nodes
 | 0.415
 | 0.43
 | 4.18
-| 2.77
+| 2.76
 | 6.13
 | 0.02
 | 0.02
@@ -2615,7 +2615,7 @@ Nodes
 | 0.415
 | 0.45
 | 3.69
-| 2.39
+| 2.38
 | 5.37
 | 0.0
 | 0.0
@@ -2784,7 +2784,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 2.39
+| 2.38
 | kA
 | 6
 | Isc (pk, max)
@@ -2821,7 +2821,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 2.39
+| 2.38
 | kA
 | 6
 | Isc (pk, max)
@@ -2858,7 +2858,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 7.15
+| 6.96
 | kA
 | 6
 | Isc (pk, max)
@@ -2969,7 +2969,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 2.77
+| 2.76
 | kA
 | 6
 | Isc (pk, max)
@@ -3006,7 +3006,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 2.77
+| 2.76
 | kA
 | 6
 | Isc (pk, max)
@@ -3080,7 +3080,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 2.39
+| 2.38
 | kA
 | 6
 | Isc (pk, max)
@@ -3154,7 +3154,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 7.15
+| 6.96
 | kA
 | 6
 | Isc (pk, max)
@@ -3191,7 +3191,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 7.15
+| 6.96
 | kA
 | 6
 | Isc (pk, max)
@@ -3413,7 +3413,7 @@ B1 - Bus Bar
 | kA
 | 5
 | Isc (sym, min)
-| 7.15
+| 6.96
 | kA
 | 6
 | Isc (pk, max)
@@ -3487,7 +3487,7 @@ B3 - Bus Bar
 | kA
 | 5
 | Isc (sym, min)
-| 2.39
+| 2.38
 | kA
 | 6
 | Isc (pk, max)

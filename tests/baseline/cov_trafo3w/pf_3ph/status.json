@@ -33,7 +33,8 @@
   "NotImplementedError: Three winding transformers are not implemented for unbalanced calculations"
  ],
  "warnings": [
-  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
-  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"
+  "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations",
+  "pandapower.diagnostic.diagnostic_helpers: \n\n--------------- END OF PANDAPOWER DIAGNOSTIC ---------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \n\n---------------- PANDAPOWER DIAGNOSTIC TOOL ----------------\n"
  ]
 }

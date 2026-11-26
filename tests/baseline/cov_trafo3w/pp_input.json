@@ -147,7 +147,7 @@
      "name": "C2",
      "p_mw": 0.0,
      "q_mvar": -1.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 20.0
     },
@@ -160,7 +160,7 @@
      "name": "Z4",
      "p_mw": 0.05,
      "q_mvar": 0.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 10.0
     }
@@ -417,7 +417,7 @@
      "name": "C2",
      "p_mw": 0.0,
      "q_mvar": -1.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 20.0
     },
@@ -430,7 +430,7 @@
      "name": "Z4",
      "p_mw": 0.05,
      "q_mvar": 0.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 10.0
     }
@@ -687,7 +687,7 @@
      "name": "C2",
      "p_mw": 0.0,
      "q_mvar": -1.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 20.0
     },
@@ -700,7 +700,7 @@
      "name": "Z4",
      "p_mw": 0.05,
      "q_mvar": 0.0,
-     "step": 1,
+     "step": 1.0,
      "step_dependency_table": false,
      "vn_kv": 10.0
     }

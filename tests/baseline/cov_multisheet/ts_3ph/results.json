@@ -1173,7 +1173,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.022754310696606342
+   "value": 0.022754080574142826
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1205,7 +1205,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 7.15177960392549
+   "value": 6.9581759586619025
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -3362,7 +3362,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.022255056941012284
+   "value": 0.022254833943903516
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -3378,7 +3378,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.9669359147066636
+   "value": 2.966935914706664
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -3394,7 +3394,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 1.8633651643124534
+   "value": 1.8575661016857643
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -3410,7 +3410,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 4.292047900720784
+   "value": 4.292047900720785
   },
   "vn_kv": {
    "alter_structure": false,
@@ -5697,7 +5697,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 0.002272303777491182
+   "value": 0.002272301536781161
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -5713,7 +5713,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 3.688570192422424
+   "value": 3.6885701924224192
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -5729,7 +5729,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 2.389721282332744
+   "value": 2.378699040694083
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -5745,7 +5745,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 5.3687268975334215
+   "value": 5.368726897533415
   },
   "vn_kv": {
    "alter_structure": false,

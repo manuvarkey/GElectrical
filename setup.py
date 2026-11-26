@@ -24,7 +24,12 @@ setup(
 
     long_description= 'A free and opensource electrical system analysis software for LV/MV electrical distribution networks.',
     
-    install_requires=["appdirs", "pycairo", "numpy", "numba", "scipy", "pandas", "mako", "networkx", "matplotlib", "pandapower", "jinja2", "weasyprint", "openpyxl", "shapely", "PyGObject"],
+    # Python and pandapower/WeasyPrint versions: ADR 0015 and ADR 0016
+    # (docs/decisions). Keep in sync with pixi.toml and requirements.txt.
+    python_requires=">=3.14,<3.15",
+    install_requires=["appdirs", "pycairo", "numpy>=1.26,<2.5", "numba>=0.68", "scipy>=1.15",
+                      "pandas~=2.3", "mako", "networkx~=3.6", "matplotlib", "pandapower==3.5.6",
+                      "jinja2", "weasyprint==70.0", "openpyxl", "shapely", "PyGObject"],
    
     
     classifiers=[

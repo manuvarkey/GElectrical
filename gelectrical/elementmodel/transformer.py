@@ -131,7 +131,9 @@ Creates a two-winding transformer.
                                             'vector_group': self.fields['vector_group']['value'],
                                             'vk0_percent': self.fields['vk0_percent']['value'],
                                             'vkr0_percent': self.fields['vkr0_percent']['value'],
-                                            'mag0_percent': self.fields['mag0_percent']['value'],
+                                            # Field is the ratio Zm0/Z0; pandapower >= 3.4
+                                            # reads mag0_percent as a percentage.
+                                            'mag0_percent': self.fields['mag0_percent']['value'] * 100,
                                             'mag0_rx': self.fields['mag0_rx']['value'],
                                             'si0_hv_partial': self.fields['si0_hv_partial']['value'],
                                             'tap_side': self.fields['tap_side']['value'],

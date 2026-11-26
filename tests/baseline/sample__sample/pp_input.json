@@ -16,6 +16,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.025,
      "type": "wye"
     }
@@ -431,7 +434,7 @@
      "id_characteristic_table": "NaN",
      "in_service": true,
      "lv_bus": "N[(0, 0):1|(0, 19):0]",
-     "mag0_percent": 10.0,
+     "mag0_percent": 1000.0,
      "mag0_rx": 0.0,
      "name": "T1",
      "oltc": false,
@@ -479,6 +482,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.025,
      "type": "wye"
     }
@@ -894,7 +900,7 @@
      "id_characteristic_table": "NaN",
      "in_service": true,
      "lv_bus": "N[(0, 0):1|(0, 19):0]",
-     "mag0_percent": 10.0,
+     "mag0_percent": 1000.0,
      "mag0_rx": 0.0,
      "name": "T1",
      "oltc": false,
@@ -942,6 +948,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.025,
      "type": "wye"
     }
@@ -1350,7 +1359,7 @@
      "id_characteristic_table": "NaN",
      "in_service": true,
      "lv_bus": "N[(0, 0):1|(0, 19):0]",
-     "mag0_percent": 10.0,
+     "mag0_percent": 1000.0,
      "mag0_rx": 0.0,
      "name": "T1",
      "oltc": false,

@@ -964,8 +964,12 @@ def run_single(filename, out_dir):
     print(json.dumps(summary))
 
 
-def capture_all(projects, out_root, hash_seed='0', clean=True):
-    """Capture ``projects`` into ``out_root``; return (summaries, failures)."""
+def capture_all(projects, out_root, hash_seed='0', clean=True, reason=None):
+    """Capture ``projects`` into ``out_root``; return (summaries, failures).
+
+    ``reason`` is stored as ``baseline_reason`` in ``environment.json``: for an
+    approved re-baseline, a reference to the validation-log entry.
+    """
     os.makedirs(out_root, exist_ok=True)
     summaries, failures = {}, []
     for filename in projects:
@@ -994,6 +998,8 @@ def capture_all(projects, out_root, hash_seed='0', clean=True):
     else:
         manifest = {'error': proc.stderr[-2000:]}
     manifest['projects'] = sorted(summaries)
+    if reason:
+        manifest['baseline_reason'] = reason
     write_json(os.path.join(out_root, 'environment.json'), manifest)
     return summaries, failures
 
@@ -1006,6 +1012,8 @@ def main(argv):
     parser.add_argument('--environment', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--hash-seed', default='0',
                         help='PYTHONHASHSEED for the capture subprocesses (default 0)')
+    parser.add_argument('--reason',
+                        help='approved re-baseline: validation-log reference stored in environment.json')
     args = parser.parse_args(argv)
 
     if args.single:
@@ -1027,7 +1035,7 @@ def main(argv):
         return 0
 
     projects = args.projects or default_projects()
-    summaries, failures = capture_all(projects, args.out, args.hash_seed)
+    summaries, failures = capture_all(projects, args.out, args.hash_seed, reason=args.reason)
     for name, output in failures:
         print('\n==== %s ====\n%s' % (name, output), file=sys.stderr)
     print('%d/%d projects captured into %s' % (len(summaries), len(projects), args.out))

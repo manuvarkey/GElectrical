@@ -2085,15 +2085,15 @@ Nodes
 | 0.415
 | 0.59
 | 14.48
-| 12.78
+| 12.41
 | 30.59
 | 15.15
-| 13.5
+| 13.11
 | 4
 | 0.415
 | 0.97
 | 4.7
-| 2.94
+| 2.93
 | 6.79
 | 2.6
 | 1.56
@@ -2101,10 +2101,10 @@ Nodes
 | 0.415
 | 0.59
 | 14.48
-| 12.78
+| 12.41
 | 30.59
 | 15.15
-| 13.5
+| 13.11
 | 6
 | 0.415
 | 2.46
@@ -2117,47 +2117,47 @@ Nodes
 | 0.415
 | 0.59
 | 14.48
-| 12.78
+| 12.41
 | 30.59
 | 15.15
-| 13.5
+| 13.11
 | 8
 | 0.415
 | 0.67
 | 11.93
-| 10.3
+| 10.06
 | 22.88
 | 7.71
-| 6.71
+| 6.61
 | 9
 | 0.415
 | 0.59
 | 14.48
-| 12.78
+| 12.41
 | 30.59
 | 15.15
-| 13.5
+| 13.11
 | 10
 | 0.415
 | 0.61
 | 11.26
-| 9.61
+| 9.4
 | 21.12
 | 11.67
-| 10.06
+| 9.85
 | 11
 | 0.415
 | 0.59
 | 14.48
-| 12.78
+| 12.41
 | 30.59
 | 15.15
-| 13.5
+| 13.11
 | 12
 | 0.415
 | 0.67
 | 4.05
-| 2.5
+| 2.49
 | 5.84
 | 2.19
 | 1.31
@@ -2165,26 +2165,26 @@ Nodes
 | 0.415
 | 0.59
 | 14.48
-| 12.78
+| 12.41
 | 30.59
 | 15.15
-| 13.5
+| 13.11
 | 14
 | 0.415
 | 0.6
 | 8.68
-| 6.08
+| 6.02
 | 12.89
 | 5.7
-| 3.63
+| 3.61
 | 15
 | 0.415
 | 0.59
 | 14.48
-| 12.78
+| 12.41
 | 30.59
 | 15.15
-| 13.5
+| 13.11
 Load Profiles
 Flat
 [img]
@@ -2311,7 +2311,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 9.61
+| 9.4
 | kA
 | 6
 | Isc (pk, max)
@@ -2323,7 +2323,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 10.06
+| 9.85
 | kA
 11 - Network Node
 | Sl.No.
@@ -2348,7 +2348,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2360,7 +2360,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 12 - Network Node
 | Sl.No.
@@ -2385,7 +2385,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 2.5
+| 2.49
 | kA
 | 6
 | Isc (pk, max)
@@ -2422,7 +2422,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2434,7 +2434,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 14 - Network Node
 | Sl.No.
@@ -2459,7 +2459,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 6.08
+| 6.02
 | kA
 | 6
 | Isc (pk, max)
@@ -2471,7 +2471,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 3.63
+| 3.61
 | kA
 15 - Network Node
 | Sl.No.
@@ -2496,7 +2496,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2508,7 +2508,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 2 - Network Node
 | Sl.No.
@@ -2570,7 +2570,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2582,7 +2582,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 4 - Network Node
 | Sl.No.
@@ -2607,7 +2607,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 2.94
+| 2.93
 | kA
 | 6
 | Isc (pk, max)
@@ -2644,7 +2644,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2656,7 +2656,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 6 - Network Node
 | Sl.No.
@@ -2718,7 +2718,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2730,7 +2730,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 8 - Network Node
 | Sl.No.
@@ -2755,7 +2755,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 10.3
+| 10.06
 | kA
 | 6
 | Isc (pk, max)
@@ -2767,7 +2767,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 6.71
+| 6.61
 | kA
 9 - Network Node
 | Sl.No.
@@ -2792,7 +2792,7 @@ Analysis results
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2804,7 +2804,7 @@ Analysis results
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 B1 - Bus Bar
 | Sl.No.
@@ -2829,7 +2829,7 @@ B1 - Bus Bar
 | kA
 | 5
 | Isc (sym, min)
-| 12.78
+| 12.41
 | kA
 | 6
 | Isc (pk, max)
@@ -2841,7 +2841,7 @@ B1 - Bus Bar
 | kA
 | 8
 | Isc (L-G, min)
-| 13.5
+| 13.11
 | kA
 G1 - External Grid
 | Sl.No.

@@ -2058,7 +2058,7 @@ Nodes
 | 0.415
 | 3.54
 | 4.41
-| 2.27
+| 2.26
 | 6.37
 | 0.64
 | 0.31
@@ -2066,7 +2066,7 @@ Nodes
 | 0.415
 | 3.96
 | 3.86
-| 1.97
+| 1.96
 | 5.58
 | 0.55
 | 0.26
@@ -2074,23 +2074,23 @@ Nodes
 | 0.415
 | 0.96
 | 19.58
-| 15.87
+| 15.5
 | 42.93
 | 20.0
-| 16.81
+| 16.39
 | 7
 | 0.415
 | 1.09
 | 18.87
-| 15.17
+| 14.83
 | 38.52
 | 16.98
-| 13.86
+| 13.59
 | 8
 | 0.415
 | 1.19
 | 4.47
-| 2.27
+| 2.26
 | 6.45
 | 0.64
 | 0.31
@@ -2098,7 +2098,7 @@ Nodes
 | 0.415
 | 1.19
 | 4.47
-| 2.27
+| 2.26
 | 6.45
 | 0.64
 | 0.31
@@ -2106,23 +2106,23 @@ Nodes
 | 0.415
 | 1.09
 | 18.87
-| 15.17
+| 14.83
 | 38.52
 | 16.98
-| 13.86
+| 13.59
 | 11
 | 0.415
 | 1.09
 | 18.87
-| 15.17
+| 14.83
 | 38.52
 | 16.98
-| 13.86
+| 13.59
 | 12
 | 0.415
 | 1.19
 | 4.47
-| 2.27
+| 2.26
 | 6.45
 | 0.64
 | 0.31
@@ -2130,18 +2130,18 @@ Nodes
 | 0.415
 | 1.09
 | 18.87
-| 15.17
+| 14.83
 | 38.52
 | 16.98
-| 13.86
+| 13.59
 | 14
 | 0.415
 | 1.09
 | 18.87
-| 15.17
+| 14.83
 | 38.52
 | 16.98
-| 13.86
+| 13.59
 | 15
 |
 |
@@ -2292,7 +2292,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 15.17
+| 14.83
 | kA
 | 7
 | Isc (pk, max)
@@ -2304,7 +2304,7 @@ Analysis results
 | kA
 | 9
 | Isc (L-G, min)
-| 13.86
+| 13.59
 | kA
 11 - Network Node
 | Sl.No.
@@ -2335,7 +2335,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 15.17
+| 14.83
 | kA
 | 7
 | Isc (pk, max)
@@ -2347,7 +2347,7 @@ Analysis results
 | kA
 | 9
 | Isc (L-G, min)
-| 13.86
+| 13.59
 | kA
 12 - Network Node
 | Sl.No.
@@ -2378,7 +2378,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 2.27
+| 2.26
 | kA
 | 7
 | Isc (pk, max)
@@ -2421,7 +2421,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 2.27
+| 2.26
 | kA
 | 7
 | Isc (pk, max)
@@ -2464,7 +2464,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 15.17
+| 14.83
 | kA
 | 7
 | Isc (pk, max)
@@ -2476,7 +2476,7 @@ Analysis results
 | kA
 | 9
 | Isc (L-G, min)
-| 13.86
+| 13.59
 | kA
 14 - Network Node
 | Sl.No.
@@ -2507,7 +2507,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 15.17
+| 14.83
 | kA
 | 7
 | Isc (pk, max)
@@ -2519,7 +2519,7 @@ Analysis results
 | kA
 | 9
 | Isc (L-G, min)
-| 13.86
+| 13.59
 | kA
 2 - Network Node
 | Sl.No.
@@ -2636,7 +2636,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 2.27
+| 2.26
 | kA
 | 7
 | Isc (pk, max)
@@ -2679,7 +2679,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 1.97
+| 1.96
 | kA
 | 7
 | Isc (pk, max)
@@ -2722,7 +2722,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 15.87
+| 15.5
 | kA
 | 7
 | Isc (pk, max)
@@ -2734,7 +2734,7 @@ Analysis results
 | kA
 | 9
 | Isc (L-G, min)
-| 16.81
+| 16.39
 | kA
 7 - Network Node
 | Sl.No.
@@ -2765,7 +2765,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 15.17
+| 14.83
 | kA
 | 7
 | Isc (pk, max)
@@ -2777,7 +2777,7 @@ Analysis results
 | kA
 | 9
 | Isc (L-G, min)
-| 13.86
+| 13.59
 | kA
 8 - Network Node
 | Sl.No.
@@ -2808,7 +2808,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 2.27
+| 2.26
 | kA
 | 7
 | Isc (pk, max)
@@ -2851,7 +2851,7 @@ Analysis results
 | kA
 | 6
 | Isc (sym, min)
-| 2.27
+| 2.26
 | kA
 | 7
 | Isc (pk, max)
@@ -2894,7 +2894,7 @@ A1-B1 - Bus Bar
 | kA
 | 6
 | Isc (sym, min)
-| 15.17
+| 14.83
 | kA
 | 7
 | Isc (pk, max)
@@ -2906,7 +2906,7 @@ A1-B1 - Bus Bar
 | kA
 | 9
 | Isc (L-G, min)
-| 13.86
+| 13.59
 | kA
 A1-Q1 - Circuit Breaker
 | Sl.No.

@@ -23,8 +23,23 @@
  ],
  "stopped": "Diagnostics returned critical errors",
  "warnings": [
-  "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
   "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations",
-  "RuntimeWarning: divide by zero encountered in divide"
+  "RuntimeWarning: divide by zero encountered in divide",
+  "pandapower.diagnostic.diagnostic_helpers: \n\n--------------- END OF PANDAPOWER DIAGNOSTIC ---------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \n\n---------------- PANDAPOWER DIAGNOSTIC TOOL ----------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \n------------------------------------------------------------\n",
+  "pandapower.diagnostic.diagnostic_helpers: \nSUMMARY: 1 element(s) that connect different voltage levels found.",
+  "pandapower.diagnostic.diagnostic_helpers: \nSUMMARY: 1 invalid values found.",
+  "pandapower.diagnostic.diagnostic_helpers: \nSUMMARY: 5 disconnected element(s) found.",
+  "pandapower.diagnostic.diagnostic_helpers: Checking for connections of different voltage levels...\n",
+  "pandapower.diagnostic.diagnostic_helpers: Checking for elements without a connection to an external grid...\n",
+  "pandapower.diagnostic.diagnostic_helpers: Checking for invalid_values...\n",
+  "pandapower.diagnostic.diagnostic_helpers: Disconnected section found, consisting of the following elements:",
+  "pandapower.diagnostic.diagnostic_helpers: Invalid value found: 'bus 2' with attribute 'vn_kv' = 0.0 (data type: <class 'numpy.float64'>). Valid input needs to be >0.",
+  "pandapower.diagnostic.diagnostic_helpers: bus:",
+  "pandapower.diagnostic.diagnostic_helpers: buses: [2, 3]",
+  "pandapower.diagnostic.diagnostic_helpers: line 1 connects bus 2: B2 (vn_kv = 0.0) and bus 3: 2 (vn_kv = 0.415)",
+  "pandapower.diagnostic.diagnostic_helpers: lines: [1]",
+  "pandapower.diagnostic.diagnostic_helpers: loads: [1, 2]"
  ]
 }

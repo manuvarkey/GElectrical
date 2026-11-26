@@ -16,6 +16,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0023999999999999994,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.004,
      "type": "wye"
     }
@@ -34,6 +37,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.003,
      "type": "wye"
     }
@@ -406,6 +412,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0023999999999999994,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.004,
      "type": "wye"
     }
@@ -424,6 +433,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.003,
      "type": "wye"
     }
@@ -796,6 +808,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0023999999999999994,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.004,
      "type": "wye"
     }
@@ -814,6 +829,9 @@
      "q_b_mvar": 0.0,
      "q_c_mvar": 0.0,
      "scaling": 1.0,
+     "sn_a_mva": "NaN",
+     "sn_b_mva": "NaN",
+     "sn_c_mva": "NaN",
      "sn_mva": 0.003,
      "type": "wye"
     }

@@ -174,6 +174,10 @@ If you want to model a voltage controlled generator, use the generator element i
                                        'sn_mva': sn_mva,
                                        'p_mw': p_mw,
                                        'q_mvar': q_mvar,
+                                       # pandapower < 3.5 defaulted to 'wye'; newer
+                                       # versions default to None, which 3-phase
+                                       # power flow ignores.
+                                       'type': 'wye',
                                        'k': self.fields['k']['value'],
                                        'in_service': self.fields['in_service']['value']}),)
         return power_model

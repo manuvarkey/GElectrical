@@ -1046,7 +1046,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.0043677058945661
+   "value": 1.0043677058943814
   },
   "delv_perc_b": {
    "alter_structure": false,
@@ -1062,7 +1062,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.605395725304092
+   "value": 0.6053957253038931
   },
   "delv_perc_c": {
    "alter_structure": false,
@@ -1078,7 +1078,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.5805804664029779
+   "value": 0.5805804664027931
   },
   "delv_perc_max": {
    "alter_structure": false,
@@ -1094,7 +1094,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 1.0043677058945661
+   "value": 1.0043677058943814
   },
   "ikss_ka_1ph_max": {
    "alter_structure": false,
@@ -1110,7 +1110,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 16.983150809511073
+   "value": 16.983150809511084
   },
   "ikss_ka_1ph_min": {
    "alter_structure": false,
@@ -1126,7 +1126,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 13.864329220149664
+   "value": 13.587471045400516
   },
   "ikss_ka_3ph_max": {
    "alter_structure": false,
@@ -1142,7 +1142,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 18.87495678179212
+   "value": 18.874956781792136
   },
   "ikss_ka_3ph_min": {
    "alter_structure": false,
@@ -1158,7 +1158,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 15.1661484601151
+   "value": 14.825465247210243
   },
   "ipss_ka_3ph_max": {
    "alter_structure": false,
@@ -1174,7 +1174,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "kA",
-   "value": 38.52130279080547
+   "value": 38.52130279080549
   },
   "unbalance_perc": {
    "alter_structure": false,
@@ -1190,7 +1190,7 @@
    "status_inactivate": true,
    "type": "float",
    "unit": "%",
-   "value": 0.1634555755677651
+   "value": 0.16345557556776447
   },
   "vm_a_pu": {
    "alter_structure": false,
