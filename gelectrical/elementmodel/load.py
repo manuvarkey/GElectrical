@@ -22,7 +22,8 @@ import os, cairo, math
 from gi.repository import PangoCairo
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path, open_library
 from .element import ElementModel
 from ..model.protection import ProtectionModel
 
@@ -32,7 +33,7 @@ class Load(ElementModel):
     code = 'element_load'
     name = 'Load 3ph'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'load.svg')
+    icon = abs_path('icons', 'load.svg')
     tooltip = """<b>Load 3ph</b>
 
 Creates a generic three phase load element.
@@ -53,7 +54,7 @@ Creates a generic three phase load element.
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True ) }
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
+        self.fields['load_profile']['graph_options'] = (constants.GRAPH_LOAD_TIME_LIMITS, constants.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,5), []],
@@ -76,8 +77,8 @@ Creates a generic three phase load element.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
         
@@ -88,7 +89,7 @@ Creates a generic three phase load element.
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         mode = 'underexcited' if self.fields['mode']['value'] else 'overexcited'
@@ -106,7 +107,7 @@ class AsymmetricLoad(ElementModel):
     code = 'element_asymmetric_load'
     name = 'Load 3ph Asymmetric'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'load.svg')
+    icon = abs_path('icons', 'load.svg')
     tooltip = """<b>Load 3ph Asymmetric</b>
 
 Creates a generic three phase assymetric load element.
@@ -132,7 +133,7 @@ Creates a generic three phase assymetric load element.
                        'type':          self.get_field_dict('str', 'Connection Type', '', 'wye', selection_list=['wye','delta']),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True )}
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
+        self.fields['load_profile']['graph_options'] = (constants.GRAPH_LOAD_TIME_LIMITS, constants.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,5), []],
@@ -155,8 +156,8 @@ Creates a generic three phase assymetric load element.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
         
@@ -167,7 +168,7 @@ Creates a generic three phase assymetric load element.
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('asymmetric_load', (p0,), {'name': self.fields['ref']['value'],
@@ -189,7 +190,7 @@ class SinglePhaseLoad(Load):
     code = 'element_single_phase_load'
     name = 'Load 1ph'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'load.svg')
+    icon = abs_path('icons', 'load.svg')
     tooltip = """<b>Load 1ph</b>
 
 Creates a generic single phase load element.
@@ -211,7 +212,7 @@ Creates a generic single phase load element.
                        'mode':          self.get_field_dict('bool', 'Inductive ?', '', True),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 'load_prof_1', status_inactivate=True )}
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
+        self.fields['load_profile']['graph_options'] = (constants.GRAPH_LOAD_TIME_LIMITS, constants.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = []
         self.schem_model = [ 
                              ['LINE',(1,0),(1,5), []],
@@ -235,8 +236,8 @@ Creates a generic single phase load element.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
         
@@ -247,7 +248,7 @@ Creates a generic single phase load element.
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         pf = self.fields['cos_phi']['value']
@@ -292,7 +293,7 @@ class Motor3ph(Load):
     code = 'element_async_motor_3ph'
     name = 'Motor 3ph'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'motor.svg')
+    icon = abs_path('icons', 'motor.svg')
     tooltip = """<b>Motor 3ph</b>
 
 Creates a generic three phase motor element.
@@ -301,7 +302,7 @@ Creates a generic three phase motor element.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Load.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('motor.csv')
+        self.database_path = open_library('motor.csv')
         self.ports = [[2, 0]]
         self.fields['ref']['value'] = 'M?'
         self.fields['sn_kva']['status_enable'] = False
@@ -313,8 +314,8 @@ Creates a generic three phase motor element.
                             'rx'    : self.get_field_dict('float', 'R/X', '', 0.42),
                             'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
                                                           status_inactivate=True),})
-        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['dcurve']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
         self.text_model = [[(5,2), "${ref}", True],
@@ -375,16 +376,16 @@ Creates a generic three phase motor element.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
 
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
-        if mode == misc.POWER_MODEL_POWERFLOW:
-            power_model = Load.get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW)
-        elif mode in (misc.POWER_MODEL_LINEFAULT, misc.POWER_MODEL_GROUNDFAULT):
+        if mode == constants.POWER_MODEL_POWERFLOW:
+            power_model = Load.get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW)
+        elif mode in (constants.POWER_MODEL_LINEFAULT, constants.POWER_MODEL_GROUNDFAULT):
             p0 = code + ':0'
             p_mw = self.fields['p_kw']['value']*self.fields['efficiency']['value']/(100*1000)
             pf = self.fields['cos_phi']['value']
@@ -406,7 +407,7 @@ class Motor1ph(SinglePhaseLoad):
     code = 'element_async_motor_1ph'
     name = 'Motor 1ph'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'motor.svg')
+    icon = abs_path('icons', 'motor.svg')
     tooltip = """<b>Motor 1ph</b>
 
 Creates a generic single phase motor element.
@@ -415,7 +416,7 @@ Creates a generic single phase motor element.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         SinglePhaseLoad.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('motor1ph.csv')
+        self.database_path = open_library('motor1ph.csv')
         self.ports = [[2, 0]]
         self.fields['ref']['value'] = 'M?'
         self.fields['sn_kva']['status_enable'] = False
@@ -426,8 +427,8 @@ Creates a generic single phase motor element.
                             'k'     : self.get_field_dict('float', 'Isc/In', '', 5, alter_structure=True),
                             'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
                                                           status_inactivate=True)})
-        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['dcurve']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
         self.text_model = [[(5,2), "${ref}", True],
@@ -487,7 +488,7 @@ Creates a generic single phase motor element.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()

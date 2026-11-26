@@ -22,7 +22,8 @@ import math
 from gi.repository import PangoCairo
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path, open_library
 from .element import ElementModel
 from ..model.protection import ProtectionModel
 
@@ -32,7 +33,7 @@ class Transformer(ElementModel):
     code = 'element_transformer'
     name = 'Transformer'
     group = 'Transformers'
-    icon = misc.abs_path('icons', 'transformer.svg')
+    icon = abs_path('icons', 'transformer.svg')
     tooltip = """<b>Two-winding Transformer</b>
 
 Creates a two-winding transformer.
@@ -41,7 +42,7 @@ Creates a two-winding transformer.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ElementModel.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('transformer.csv')
+        self.database_path = open_library('transformer.csv')
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 0],
@@ -77,8 +78,8 @@ Creates a two-winding transformer.
                        'tap_pos':       self.get_field_dict('int', 'Current tap position', '', 0),
                        'tap_step_percent': self.get_field_dict('float', 'Tap step size', '%', 2.5),
                        'oltc':          self.get_field_dict('bool', 'OLTC provided ?', '', False)}
-        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['dcurve']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
         
@@ -86,8 +87,8 @@ Creates a two-winding transformer.
                            [(5,None), "${sn_mva}MVA", True],
                            [(5,None), "${'%g'%(vn_hv_kv)}/${'%g'%(vn_lv_kv)}kV", True],
                            [(5,None), "${name}", True],
-                           [(2,3.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_hv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(2,6.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_lv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center']]
+                           [(2,3.5-style.SCHEM_FONT_SIZE/2/constants.M), "${sym_hv}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],
+                           [(2,6.5-style.SCHEM_FONT_SIZE/2/constants.M), "${sym_lv}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center']]
         self.schem_model = [ 
                              ['CIRCLE', (2,3.5), 2, False, []],
                              ['CIRCLE', (2,6.5), 2, False, []],
@@ -116,7 +117,7 @@ Creates a two-winding transformer.
                  (p1, (ports[1],)))
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p1 = code + ':1'
@@ -181,7 +182,7 @@ class Transformer3w(ElementModel):
     code = 'element_transformer3w'
     name = '3W Transformer'
     group = 'Transformers'
-    icon = misc.abs_path('icons', 'transformer3w.svg')
+    icon = abs_path('icons', 'transformer3w.svg')
     tooltip = """<b>Three-winding Transformer</b>
 
 Creates a three-winding transformer.
@@ -190,7 +191,7 @@ Creates a three-winding transformer.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ElementModel.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('transformer3w.csv')
+        self.database_path = open_library('transformer3w.csv')
         self.model_width = 0
         self.model_height = 0
         self.ports = [[4, 0],
@@ -223,9 +224,9 @@ Creates a three-winding transformer.
                            [(8.5,None), "${sn_hv_mva}/${sn_mv_mva}/${sn_lv_mva}MVA", True],
                            [(8.5,None), "${'%g'%(vn_hv_kv)}/${'%g'%(vn_mv_kv)}/${'%g'%(vn_lv_kv)}kV", True],
                            [(8.5,None), "${name}", True],
-                           [(4,3.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_hv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(2,6.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_mv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(6,6.5-misc.SCHEM_FONT_SIZE/2/misc.M), "${sym_lv}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center']]
+                           [(4,3.5-style.SCHEM_FONT_SIZE/2/constants.M), "${sym_hv}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],
+                           [(2,6.5-style.SCHEM_FONT_SIZE/2/constants.M), "${sym_mv}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],
+                           [(6,6.5-style.SCHEM_FONT_SIZE/2/constants.M), "${sym_lv}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center']]
         self.schem_model = [ 
                              ['CIRCLE', (4,3.5), 2, False, []],
                              ['CIRCLE', (2,6.5), 2, False, []],
@@ -257,7 +258,7 @@ Creates a three-winding transformer.
                  (p2, (ports[2],)))
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p1 = code + ':1'

@@ -27,7 +27,7 @@ from gi.repository import Gtk, Gdk
 import cairo
 
 # local files import
-from .. import misc
+from ..core import constants
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -63,10 +63,10 @@ class GraphModel():
         xval = copy.copy(self.xval)
         yval = copy.copy(self.yval)
         
-        if self.mode == misc.GRAPH_DATATYPE_FREE:
+        if self.mode == constants.GRAPH_DATATYPE_FREE:
             xval.append(x)
             yval.append(y)
-        elif self.mode == misc.GRAPH_DATATYPE_PROFILE:
+        elif self.mode == constants.GRAPH_DATATYPE_PROFILE:
             if x in xval:
                 pos = xval.index(x)
                 yval[pos] = y
@@ -81,7 +81,7 @@ class GraphModel():
         xval = copy.copy(self.xval)
         yval = copy.copy(self.yval)
         
-        if self.mode in (misc.GRAPH_DATATYPE_FREE, misc.GRAPH_DATATYPE_PROFILE):            
+        if self.mode in (constants.GRAPH_DATATYPE_FREE, constants.GRAPH_DATATYPE_PROFILE):            
             if x in xval:
                 pos = xval.index(x)
                 yval.pop(pos)

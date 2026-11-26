@@ -27,7 +27,10 @@ from gi.repository import Gtk, Gdk
 import cairo
 
 # local files import
-from .. import misc
+from ..core import constants
+from ..core.fields import get_fields_trunc
+from ..core.geometry import rect_from_points
+from ..core.paths import abs_path
 from .element import ElementModel
 
 # Get logger object
@@ -40,7 +43,7 @@ class Wire(ElementModel):
     code = 'element_wire'
     name = 'Wire'
     group = ''
-    icon = misc.abs_path('icons', 'wire.svg')
+    icon = abs_path('icons', 'wire.svg')
 
     def __init__(self, points=None, **kwargs):
         # Global
@@ -78,8 +81,8 @@ class Wire(ElementModel):
         """Update given points to wire element"""
         
         def local(port):  # convert to local coordinates
-            x = (port[0] - self.x)/misc.M
-            y = (port[1] - self.y)/misc.M
+            x = (port[0] - self.x)/constants.M
+            y = (port[1] - self.y)/constants.M
             return (x,y)
                 
         if points:
@@ -87,7 +90,7 @@ class Wire(ElementModel):
             
         if len(self.points) > 1:
             # Set dimenstions
-            (x, y, self.model_width, self.model_height) = misc.rect_from_points(*self.points)
+            (x, y, self.model_width, self.model_height) = rect_from_points(*self.points)
             if init:
                 self.x = x
                 self.y = y
@@ -126,7 +129,7 @@ class Wire(ElementModel):
                 'y': self.y,
                 'orientation': self.orientation,
                 'ports': copy.deepcopy(self.ports),
-                'fields': misc.get_fields_trunc(self.fields),
+                'fields': get_fields_trunc(self.fields),
                 'points': copy.deepcopy(self.points)}
     
     def set_model(self, model, gid=None):

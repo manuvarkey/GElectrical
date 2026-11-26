@@ -28,8 +28,10 @@ from gi.repository import Gtk, Gdk
 import cairo
 
 # local files import
-from .. import misc
-from ..misc import undoable, group
+from ..core import constants, style
+from ..core.fields import get_field_dict, get_fields_trunc, update_fields
+from ..core.undoable import group, undoable
+from ..symbols.render import draw_line, draw_rectangle
 from ..elementmodel.element import ElementModel, ElementGroup
 from ..elementmodel.template import Template, TitleBlock
 from ..elementmodel.elementassembly import ElementAssembly
@@ -49,12 +51,12 @@ class DrawingModel:
         # State variables
         self.parent = parent
         self.program_state = program_state
-        self.grid_width = misc.GRID_WIDTH
+        self.grid_width = constants.GRID_WIDTH
         self.element_models = self.program_state['element_models']
         self.floating_model = None
         self.wire_points = []
         self.selected_ports = []
-        self.selected_port_color = misc.COLOR_SELECTED
+        self.selected_port_color = style.COLOR_SELECTED
         self.stack = program_state['stack']
         self.assembly_dict = dict()
         self.element_gid_mapping = dict()  # Element slno -> gid mapping
@@ -62,20 +64,20 @@ class DrawingModel:
         self.gid = 0
         
         # Data
-        self.fields = {'name':          misc.get_field_dict('str', 'Sheet Name', '', 'Sheet', status_inactivate=False),
-                       'page_size':     misc.get_field_dict('str', 'Page Size', '', 'A3', status_inactivate=False, selection_list=list(misc.paper_sizes.keys())),
-                       'page_width':    misc.get_field_dict('float', 'Page Width', 'points', 1000, status_inactivate=True, decimal=0),
-                       'page_height':   misc.get_field_dict('float', 'Page Height', 'points', 1000, status_inactivate=True, decimal=0),
-                       'title':         misc.get_field_dict('str', 'Title', '', 'TITLE', status_inactivate=False),
-                       'drawing_no':    misc.get_field_dict('str', 'Drawing Number', '', 'PROJECT/ELEC/SLD/1', status_inactivate=False),
-                       'sheet_no':      misc.get_field_dict('str', 'Sheet No.', '', '1', status_inactivate=True),
-                       'type':          misc.get_field_dict('str', 'Document Type', '', 'Electrical Schematic', status_inactivate=False),
-                       'status':        misc.get_field_dict('str', 'Document Status.', '', 'DRAFT', status_inactivate=False),
-                       'rev':           misc.get_field_dict('str', 'Revision', '', 'A', status_inactivate=False),
-                       'date_of_issue': misc.get_field_dict('str', 'Date of Issue', '', '2000-00-00', status_inactivate=False),}
-        (width, height) = misc.paper_sizes[self.fields['page_size']['value']]
-        self.fields['page_width']['value'] = width/misc.POINT_TO_MM
-        self.fields['page_height']['value'] = height/misc.POINT_TO_MM
+        self.fields = {'name':          get_field_dict('str', 'Sheet Name', '', 'Sheet', status_inactivate=False),
+                       'page_size':     get_field_dict('str', 'Page Size', '', 'A3', status_inactivate=False, selection_list=list(constants.paper_sizes.keys())),
+                       'page_width':    get_field_dict('float', 'Page Width', 'points', 1000, status_inactivate=True, decimal=0),
+                       'page_height':   get_field_dict('float', 'Page Height', 'points', 1000, status_inactivate=True, decimal=0),
+                       'title':         get_field_dict('str', 'Title', '', 'TITLE', status_inactivate=False),
+                       'drawing_no':    get_field_dict('str', 'Drawing Number', '', 'PROJECT/ELEC/SLD/1', status_inactivate=False),
+                       'sheet_no':      get_field_dict('str', 'Sheet No.', '', '1', status_inactivate=True),
+                       'type':          get_field_dict('str', 'Document Type', '', 'Electrical Schematic', status_inactivate=False),
+                       'status':        get_field_dict('str', 'Document Status.', '', 'DRAFT', status_inactivate=False),
+                       'rev':           get_field_dict('str', 'Revision', '', 'A', status_inactivate=False),
+                       'date_of_issue': get_field_dict('str', 'Date of Issue', '', '2000-00-00', status_inactivate=False),}
+        (width, height) = constants.paper_sizes[self.fields['page_size']['value']]
+        self.fields['page_width']['value'] = width/constants.POINT_TO_MM
+        self.fields['page_height']['value'] = height/constants.POINT_TO_MM
         self.template = Template(width, height)
         self.title_block = TitleBlock()
         self.elements = []
@@ -102,10 +104,10 @@ class DrawingModel:
         """Get storage model"""
         element_models = []
         for element in self.elements:
-            if element.code not in misc.DISPLAY_ELEMENT_CODES:
+            if element.code not in constants.DISPLAY_ELEMENT_CODES:
                 element_models.append(element.get_model())
         model = dict()
-        model['fields'] = misc.get_fields_trunc(self.fields)
+        model['fields'] = get_fields_trunc(self.fields)
         model['elements'] = element_models
         return ['DrawingModel', model]
             
@@ -123,7 +125,7 @@ class DrawingModel:
                         element = Wire()
                     else:
                         element = self.program_state['element_models'][code](project_settings=self.program_state['project_settings'])
-                        if code in misc.LOADPROFILE_CODES:
+                        if code in constants.LOADPROFILE_CODES:
                             element.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     element.set_model(base_model, self.get_gid())
                     self.elements.append(element)
@@ -137,20 +139,20 @@ class DrawingModel:
                             child_element = self.elements[child_el_no]
                             child_element.set_gid_assembly(gid_assembly)
                     
-            self.fields = misc.update_fields(self.fields, model[1]['fields'])
+            self.fields = update_fields(self.fields, model[1]['fields'])
             if self.fields['page_size']['value'] != 'Custom':
-                (width, height) = misc.paper_sizes[self.fields['page_size']['value']]
-                self.fields['page_width']['value'] = width/misc.POINT_TO_MM
-                self.fields['page_height']['value'] = height/misc.POINT_TO_MM
+                (width, height) = constants.paper_sizes[self.fields['page_size']['value']]
+                self.fields['page_width']['value'] = width/constants.POINT_TO_MM
+                self.fields['page_height']['value'] = height/constants.POINT_TO_MM
                 self.template = Template(width, height)
             else:
                 self.template = Template(self.fields['page_width']['value'], self.fields['page_height']['value'])
             self.update_title_block()
-            self.grid_width = misc.GRID_WIDTH
+            self.grid_width = constants.GRID_WIDTH
             self.floating_model = None
             self.wire_points = []
             self.selected_ports = []
-            self.selected_port_color = misc.COLOR_SELECTED
+            self.selected_port_color = style.COLOR_SELECTED
             self.models_drawn = False
             
     ## Update functions
@@ -289,7 +291,7 @@ class DrawingModel:
         y = round(y/self.grid_width, 0)*self.grid_width
         return x,y
     
-    def get_port_around_coordinate(self, x, y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT, ignore_display_elements=False):
+    def get_port_around_coordinate(self, x, y, w=constants.SELECT_PORT_RECT, h=constants.SELECT_PORT_RECT, ignore_display_elements=False):
         """Get port around given coordinate"""
         w = int(w)
         h = int(h)
@@ -302,12 +304,12 @@ class DrawingModel:
             port = element.check_overlap_ports(rect)
             if port:
                 if ignore_display_elements:
-                    if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                    if element.code not in constants.DISPLAY_ELEMENT_CODES:
                         return port
                 else:
                     return port
                 
-    def get_element_around_coordinate(self, x, y, w=misc.SELECT_PORT_RECT, h=misc.SELECT_PORT_RECT, ignore_display_elements=False):
+    def get_element_around_coordinate(self, x, y, w=constants.SELECT_PORT_RECT, h=constants.SELECT_PORT_RECT, ignore_display_elements=False):
         """Get element around given coordinate"""
         w = int(w)
         h = int(h)
@@ -319,7 +321,7 @@ class DrawingModel:
             # Check for overlap
             if element.check_overlap(rect):
                 if ignore_display_elements:
-                    if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                    if element.code not in constants.DISPLAY_ELEMENT_CODES:
                         return slno, element
                 else:
                     return slno, element
@@ -332,9 +334,9 @@ class DrawingModel:
         value_old = self.fields[field_code]['value']
         self.fields[field_code]['value'] = value
         
-        (width, height) = misc.paper_sizes[self.fields['page_size']['value']]
-        self.fields['page_width']['value'] = width/misc.POINT_TO_MM
-        self.fields['page_height']['value'] = height/misc.POINT_TO_MM
+        (width, height) = constants.paper_sizes[self.fields['page_size']['value']]
+        self.fields['page_width']['value'] = width/constants.POINT_TO_MM
+        self.fields['page_height']['value'] = height/constants.POINT_TO_MM
         
         self.template.set_dimensions(width, height)
         self.update_title_block()
@@ -412,13 +414,13 @@ class DrawingModel:
         for element in self.elements:
             element.set_selection(False)
         self.selected_ports = []
-        self.selected_port_color = misc.COLOR_SELECTED
+        self.selected_port_color = style.COLOR_SELECTED
             
     def select_all(self):
         for element in self.elements:
             element.set_selection(True)
             
-    def select_ports(self, nodes, color=misc.COLOR_SELECTED):
+    def select_ports(self, nodes, color=style.COLOR_SELECTED):
         """Add selection nodes"""
         self.selected_ports = nodes
         self.selected_port_color = color
@@ -486,7 +488,7 @@ class DrawingModel:
                     assembly.fields['text3']['value'] = element.fields['text3']['value']
                     # Update element assembly ids
                     for element in selected:
-                        if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                        if element.code not in constants.DISPLAY_ELEMENT_CODES:
                             element.set_gid_assembly(gid_assembly)
                     self.update_element_at_index(assembly, index)
                     return
@@ -496,7 +498,7 @@ class DrawingModel:
             assembly.set_gid(gid_assembly)
             # Update element assembly ids
             for element in selected:
-                if element.code not in misc.DISPLAY_ELEMENT_CODES:
+                if element.code not in constants.DISPLAY_ELEMENT_CODES:
                     element.set_gid_assembly(gid_assembly)
             self.insert_element_at_index(assembly)
         
@@ -508,7 +510,7 @@ class DrawingModel:
         rows = []
         for el_no, element in enumerate(self.elements):
             # If display element, delete element
-            if element.code in misc.DISPLAY_ELEMENT_CODES:
+            if element.code in constants.DISPLAY_ELEMENT_CODES:
                 rows.append(el_no)
             # Else clear results
             else:
@@ -556,7 +558,7 @@ class DrawingModel:
                 # Insert elements inside elementgroup
                 for el_no, element in enumerate(self.floating_model.elements):
                     element_copy = self.get_element_copy(element)
-                    if element_copy.code in misc.LOADPROFILE_CODES:
+                    if element_copy.code in constants.LOADPROFILE_CODES:
                         element_copy.fields['load_profile']['selection_list'] = self.parent.loadprofiles
                     self.insert_element_at_index(element_copy)
                     elements_copy.append(element_copy)
@@ -597,7 +599,7 @@ class DrawingModel:
         grid_width = self.grid_width
         
         context.save()
-        (r,g,b,a) = misc.hex2rgb(misc.COLOR_GRID)
+        (r,g,b,a) = style.hex2rgb(style.COLOR_GRID)
         context.set_source_rgba(r, g, b, a)
         context.set_line_width(0.2)
         for x in range(0, int(page_width), int(grid_width)):
@@ -613,30 +615,30 @@ class DrawingModel:
         
     def draw_model(self, context, select=False, whitelist=None):
         """Draw the schematic model"""
-        self.title_block.draw(context, override_color=misc.COLOR_NORMAL)
-        self.template.draw(context, override_color=misc.COLOR_NORMAL)
+        self.title_block.draw(context, override_color=style.COLOR_NORMAL)
+        self.template.draw(context, override_color=style.COLOR_NORMAL)
         for elno, element in enumerate(self.elements):
             # Draw considering whitelist
             if whitelist is not None and (elno not in whitelist):
-                element.draw(context, select, override_color=misc.COLOR_INACTIVE)
+                element.draw(context, select, override_color=style.COLOR_INACTIVE)
             else:
                 # If reference not linked display error
-                if element.code in misc.REFERENCE_CODES and element.fields['ref']['value'] in ('', '?', 'CR?'):
-                    element.draw(context, select, override_color=misc.COLOR_SELECTED_WARNING)
+                if element.code in constants.REFERENCE_CODES and element.fields['ref']['value'] in ('', '?', 'CR?'):
+                    element.draw(context, select, override_color=style.COLOR_SELECTED_WARNING)
                 else:
-                    element.draw(context, select, override_color=misc.COLOR_NORMAL)
+                    element.draw(context, select, override_color=style.COLOR_NORMAL)
         self.draw_selected_ports(context)
         self.models_drawn = True
             
     def draw_selected_ports(self, context):
         for port in self.selected_ports:
-            misc.draw_rectangle(context,
-                                port[0] - misc.SELECT_PORT_RECT/2, 
-                                port[1] - misc.SELECT_PORT_RECT/2,
-                                misc.SELECT_PORT_RECT,
-                                misc.SELECT_PORT_RECT,
+            draw_rectangle(context,
+                                port[0] - constants.SELECT_PORT_RECT/2, 
+                                port[1] - constants.SELECT_PORT_RECT/2,
+                                constants.SELECT_PORT_RECT,
+                                constants.SELECT_PORT_RECT,
                                 color=self.selected_port_color, 
-                                stroke_width=misc.STROKE_WIDTH_SELECTED)
+                                stroke_width=constants.STROKE_WIDTH_SELECTED)
         
     def draw_floating_model(self, context, x, y, grid_constraint=True):
         """Draw the selected schematic model"""
@@ -648,7 +650,7 @@ class DrawingModel:
             for element in self.floating_model.elements:
                 element.draw(context)
             
-    def draw_wire(self, context, x, y, grid_constraint=True, color=misc.COLOR_NORMAL):
+    def draw_wire(self, context, x, y, grid_constraint=True, color=style.COLOR_NORMAL):
         """Draw the saved wire"""
         if self.wire_points:
             # Draw wire
@@ -658,7 +660,7 @@ class DrawingModel:
             # Draw leading line
             if grid_constraint:  # Modify x,y to correspond to grid
                 x,y = self.get_grid_point(x,y)
-            misc.draw_line(context, *self.wire_points[-1], x, y, 
+            draw_line(context, *self.wire_points[-1], x, y, 
                            color = color, 
-                           dash_pattern = misc.WIRE_ADD_DRAW_PATTERN, 
-                           stroke_width = misc.STROKE_WIDTH_NORMAL)
+                           dash_pattern = constants.WIRE_ADD_DRAW_PATTERN, 
+                           stroke_width = constants.STROKE_WIDTH_NORMAL)

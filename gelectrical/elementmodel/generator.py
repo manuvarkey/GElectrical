@@ -22,7 +22,8 @@ import os, cairo
 from gi.repository import PangoCairo
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path, open_library
 from .element import ElementModel
 
 
@@ -31,7 +32,7 @@ class Generator(ElementModel):
     code = 'element_generator'
     name = 'Generator'
     group = 'Sources'
-    icon = misc.abs_path('icons', 'generator.svg')
+    icon = abs_path('icons', 'generator.svg')
     tooltip = """<b>Generator</b>
 
 Generators are modelled as voltage controlled PV nodes, with input parameters active power and a voltage set point. 
@@ -77,8 +78,8 @@ If you want to model a generator as PQ load with fixed reactive power and variab
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
         
@@ -89,7 +90,7 @@ If you want to model a generator as PQ load with fixed reactive power and variab
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('gen', (p0,), {'name': self.fields['ref']['value'],
@@ -109,7 +110,7 @@ class StaticGenerator(ElementModel):
     code = 'element_staticgenerator'
     name = 'Static Generator 3ph'
     group = 'Sources'
-    icon = misc.abs_path('icons', 'generator.svg')
+    icon = abs_path('icons', 'generator.svg')
     tooltip = """<b>Static Generator</b>
 
 Static generators are modelled as positive and constant PQ power. This element is used to model generators with a constant active and reactive power feed-in. 
@@ -130,7 +131,7 @@ If you want to model a voltage controlled generator, use the generator element i
                        'k':    self.get_field_dict('float', 'In/Isc', '', 0.1),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Generation Profile', '', 0, status_inactivate=True ) }
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
+        self.fields['load_profile']['graph_options'] = (constants.GRAPH_LOAD_TIME_LIMITS, constants.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = [[(5,0), "${name}, ${ref}", True],
                            [(5,None), "${p_mw}+j${q_mvar}MVA", True]]
         self.schem_model = [ 
@@ -152,8 +153,8 @@ If you want to model a voltage controlled generator, use the generator element i
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
         
@@ -164,7 +165,7 @@ If you want to model a voltage controlled generator, use the generator element i
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p_mw = self.fields['p_mw']['value']
@@ -188,7 +189,7 @@ class SinglePhaseStaticGenerator(ElementModel):
     code = 'element_single_phase_staticgenerator'
     name = 'Static Generator 1ph'
     group = 'Sources'
-    icon = misc.abs_path('icons', 'generator.svg')
+    icon = abs_path('icons', 'generator.svg')
     tooltip = """<b>Asymmetric Static Generator</b>
 
 Static generators are modelled as positive and constant PQ power. This element is used to model generators with a constant active and reactive power feed-in. 
@@ -208,7 +209,7 @@ Static generators are modelled as positive and constant PQ power. This element i
                        'phase':          self.get_field_dict('str', 'Phase', '', 'A', selection_list=['A','B','C']),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Generation Profile', '', 0, status_inactivate=True ) }
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
+        self.fields['load_profile']['graph_options'] = (constants.GRAPH_LOAD_TIME_LIMITS, constants.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = [[(5,0), "${name}, ${ref}", True],
                            [(5,None), "${p_kw}+j${q_kvar}kVA", True],
                            [(4,3), "${phase}", True]]
@@ -231,8 +232,8 @@ Static generators are modelled as positive and constant PQ power. This element i
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
         
@@ -243,7 +244,7 @@ Static generators are modelled as positive and constant PQ power. This element i
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p_mw = self.fields['p_kw']['value']/1000
@@ -279,12 +280,12 @@ class Motor(StaticGenerator):
     code = 'element_async_motor'
     name = 'Asynchronous Motor'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'motor.svg')
+    icon = abs_path('icons', 'motor.svg')
 
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         StaticGenerator.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('motor.csv')
+        self.database_path = open_library('motor.csv')
         self.ports = [[2, 0]]
         self.fields = {'ref':     self.get_field_dict('str', 'Reference', '', 'M?'),
                        'name':     self.get_field_dict('str', 'Name', '', 'MOTOR'),
@@ -294,7 +295,7 @@ class Motor(StaticGenerator):
                        'rx':      self.get_field_dict('float', 'R/X', '', 0.42),
                        'in_service':    self.get_field_dict('bool', 'In Service ?', '', True),
                        'load_profile':  self.get_field_dict('graph', 'Load Profile', '', 0, status_inactivate=True ) }
-        self.fields['load_profile']['graph_options'] = (misc.GRAPH_LOAD_TIME_LIMITS, misc.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
+        self.fields['load_profile']['graph_options'] = (constants.GRAPH_LOAD_TIME_LIMITS, constants.GRAPH_LOAD_CURRENT_LIMITS, 'Time (Hr)', 'DF', {})
         self.text_model = [[(5,2), "${name}, ${ref}", True],
                            [(5,None), "${p_kw}kW, ${cos_phi}pf", True],]
         self.schem_model = [ 
@@ -312,7 +313,7 @@ class Motor(StaticGenerator):
                            ]
         self.assign_tootltips()
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p_mw = self.fields['p_kw']['value']/1000

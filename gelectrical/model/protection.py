@@ -29,8 +29,9 @@ from shapely import Polygon, Point, LineString
 #     return fit_func_mod
 
 # local files import
-from .. import misc
-from ..misc import FieldDict
+from ..core import constants
+from ..core.fields import FieldDict, get_fields_from_params, update_params_from_fields, update_params_from_params
+from ..core.interpolation import log_interpolate_piecewise
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -134,7 +135,7 @@ class ProtectionModel():
         return new_obj
 
     def get_data_fields(self, modify_code=''):
-        fields = misc.get_fields_from_params(self.data_struct['parameters'], modify_code)
+        fields = get_fields_from_params(self.data_struct['parameters'], modify_code)
         return fields
 
     def update_graph(self):
@@ -142,7 +143,7 @@ class ProtectionModel():
             polygon_pnts = np.array((self.polygon.exterior.coords))
             xval = list(polygon_pnts[:,0])
             yval = list(polygon_pnts[:,1])
-            graph_model = [self.title, [{'mode':misc.GRAPH_DATATYPE_POLYGON, 
+            graph_model = [self.title, [{'mode':constants.GRAPH_DATATYPE_POLYGON, 
                                             'title':self.title, 
                                             'xval':xval, 
                                             'yval': yval},]]
@@ -157,24 +158,24 @@ class ProtectionModel():
             starting_flag = False
 
             if xval1 and yval1:
-                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                graphs.append({'mode':constants.GRAPH_DATATYPE_PROFILE, 
                                             'title': self.title + ' - Damage', 
                                             'xval':xval1, 
                                             'yval': yval1})
                 damage_flag = True
             else:
-                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                graphs.append({'mode':constants.GRAPH_DATATYPE_PROFILE, 
                                             'title': '', 
                                             'xval':[], 
                                             'yval': []})
             if xval2 and yval2:
-                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                graphs.append({'mode':constants.GRAPH_DATATYPE_PROFILE, 
                                             'title':self.title + ' - Starting', 
                                             'xval':xval2, 
                                             'yval': yval2})
                 starting_flag = True
             else:
-                graphs.append({'mode':misc.GRAPH_DATATYPE_PROFILE, 
+                graphs.append({'mode':constants.GRAPH_DATATYPE_PROFILE, 
                                             'title': '', 
                                             'xval':[], 
                                             'yval': []})
@@ -190,10 +191,10 @@ class ProtectionModel():
             self.data_struct['graph_model'] = graph_model
             
     def update_parameters(self, parameters):
-        misc.update_params_from_params(self.data_struct['parameters'], parameters)
+        update_params_from_params(self.data_struct['parameters'], parameters)
 
     def update_parameters_from_fields(self, fields):
-        misc.update_params_from_fields(self.data_struct['parameters'], fields)
+        update_params_from_fields(self.data_struct['parameters'], fields)
 
     def evaluate_curves(self, fields, data_fields=None, scale=1):
         
@@ -400,7 +401,7 @@ class ProtectionModel():
 
         # Geometry elements
         if curve_upper is not None:
-            # self.linestring_upper = LineString(misc.log_interpolate_piecewise(self.curve_upper))
+            # self.linestring_upper = LineString(log_interpolate_piecewise(self.curve_upper))
             self.linestring_upper = LineString(curve_upper)
             self.linestring_upper_log = LineString(np.log10(curve_upper))
         else:
@@ -408,7 +409,7 @@ class ProtectionModel():
             self.linestring_upper_log = None
 
         if curve_lower is not None:
-            # self.linestring_lower = LineString(misc.log_interpolate_piecewise(self.curve_lower))
+            # self.linestring_lower = LineString(log_interpolate_piecewise(self.curve_lower))
             self.linestring_lower = LineString(curve_lower)
             self.linestring_lower_log = LineString(np.log10(curve_lower))
         else:

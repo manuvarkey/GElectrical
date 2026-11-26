@@ -23,8 +23,9 @@ import numpy as np
 from shapely import Polygon, Point, LineString
 
 # local files import
-from .. import misc
-from ..misc import FieldDict
+from ..core import constants, style
+from ..core.fields import FieldDict, get_blank_data_struct, set_field_selection_list
+from ..core.paths import abs_path, open_library
 from .element import ElementModel
 from ..model.protection import ProtectionModel
 from ..model.protection import get_protection_model, get_thermal_protection_models
@@ -43,7 +44,7 @@ class Switch(ElementModel):
     code = 'element_switch'
     name = 'Switch'
     group = 'Switching Devices'
-    icon = misc.abs_path('icons', 'switch.svg')
+    icon = abs_path('icons', 'switch.svg')
     tooltip = """<b>Switch</b>
 
 Adds a generic switch element.
@@ -79,8 +80,8 @@ Two elements that are connected through a closed switche are fused in the power 
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
         
@@ -93,7 +94,7 @@ Two elements that are connected through a closed switche are fused in the power 
                  (p1, (ports[1],)))
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p1 = code + ':1'
@@ -146,12 +147,12 @@ class ProtectionDevice(Switch):
                                                             status_enable=False,
                                                             alter_structure=True)
                        })
-        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['pcurve_l']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
-        self.fields['pcurve_g']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['pcurve_g']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
         self.line_protection_model = None
@@ -174,8 +175,8 @@ class ProtectionDevice(Switch):
 
         # If custom enabled, remove protection models
         if code == 'custom' and value is True:
-            self.fields['pcurve_l']['value'] = misc.get_blank_data_struct('protection')
-            self.fields['pcurve_g']['value'] = misc.get_blank_data_struct('protection')
+            self.fields['pcurve_l']['value'] = get_blank_data_struct('protection')
+            self.fields['pcurve_g']['value'] = get_blank_data_struct('protection')
 
         # Enable or disable curves based on value of custom
         if self.fields['custom']['value']:
@@ -205,11 +206,11 @@ class ProtectionDevice(Switch):
                 self.fields['prot_0_curve_type']['status_enable'] = False
         else:
             # Set types
-            misc.set_field_selection_list(self.fields, 'type', self.list_types, modified)
+            set_field_selection_list(self.fields, 'type', self.list_types, modified)
 
             # Set sub type
             if self.fields['type']['value'] in self.dict_subtype:
-                misc.set_field_selection_list(self.fields, 'subtype', self.dict_subtype[self.fields['type']['value']],
+                set_field_selection_list(self.fields, 'subtype', self.dict_subtype[self.fields['type']['value']],
                                                modified)
                 self.fields['subtype']['status_enable'] = True
             else:
@@ -219,7 +220,7 @@ class ProtectionDevice(Switch):
 
             # Set protection curve
             if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_curve_type:
-                misc.set_field_selection_list(self.fields, 'prot_curve_type',
+                set_field_selection_list(self.fields, 'prot_curve_type',
                         self.dict_prot_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])], 
                         modified)
                 self.fields['prot_curve_type']['status_enable'] = True
@@ -228,7 +229,7 @@ class ProtectionDevice(Switch):
                 self.fields['prot_curve_type']['value'] = 'None'
                 self.fields['prot_curve_type']['status_enable'] = False
             if (self.fields['type']['value'], self.fields['subtype']['value']) in self.dict_prot_0_curve_type:
-                misc.set_field_selection_list(self.fields, 'prot_0_curve_type',
+                set_field_selection_list(self.fields, 'prot_0_curve_type',
                         self.dict_prot_0_curve_type[(self.fields['type']['value'], self.fields['subtype']['value'])], 
                         modified)
                 self.fields['prot_0_curve_type']['status_enable'] = True
@@ -239,11 +240,11 @@ class ProtectionDevice(Switch):
 
             # Set In selection list
             if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value']) in self.dict_in:
-                misc.set_field_selection_list(self.fields, 'In', 
+                set_field_selection_list(self.fields, 'In', 
                         self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_curve_type']['value'])], 
                         modified)
             elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_in:
-                misc.set_field_selection_list(self.fields, 'In', 
+                set_field_selection_list(self.fields, 'In', 
                         self.dict_in[(self.fields['type']['value'], self.fields['subtype']['value'], '*')], 
                         modified)
             else:
@@ -251,11 +252,11 @@ class ProtectionDevice(Switch):
 
             # Set I0 selection list
             if (self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value']) in self.dict_i0:
-                misc.set_field_selection_list(self.fields, 'I0', 
+                set_field_selection_list(self.fields, 'I0', 
                         self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], self.fields['prot_0_curve_type']['value'])], 
                         modified)
             elif (self.fields['type']['value'], self.fields['subtype']['value'], '*') in self.dict_i0:
-                misc.set_field_selection_list(self.fields, 'I0', 
+                set_field_selection_list(self.fields, 'I0', 
                         self.dict_i0[(self.fields['type']['value'], self.fields['subtype']['value'], '*')], 
                         modified)
             else:
@@ -345,7 +346,7 @@ class Fuse(ProtectionDevice):
     code = 'element_fuse'
     name = 'Fuse'
     group = 'Switching Devices'
-    icon = misc.abs_path('icons', 'fuse.svg')
+    icon = abs_path('icons', 'fuse.svg')
     tooltip = """<b>Fuse</b>
 
 Adds a fuse element used for the protection of circuit elements.
@@ -354,7 +355,7 @@ Adds a fuse element used for the protection of circuit elements.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ProtectionDevice.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('fuse.csv')
+        self.database_path = open_library('fuse.csv')
         self.ports = [[1, 0],
                       [1, 6]]
         # Data drapdowns
@@ -423,8 +424,8 @@ Adds a fuse element used for the protection of circuit elements.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
 
@@ -577,7 +578,7 @@ class CircuitBreaker(ProtectionDevice):
     code = 'element_circuitbreaker'
     name = 'Circuit Breaker'
     group = 'Switching Devices'
-    icon = misc.abs_path('icons', 'circuitbreaker.svg')
+    icon = abs_path('icons', 'circuitbreaker.svg')
     tooltip = """<b>Circuit Breaker</b>
 
 Adds a circuit breaker element used for the protection of circuit elements.
@@ -586,7 +587,7 @@ Adds a circuit breaker element used for the protection of circuit elements.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         ProtectionDevice.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('cb.csv')
+        self.database_path = open_library('cb.csv')
         self.ports = [[1, 0],
                       [1, 6]]
         pole_types = ['SP', 'SPN', 'DP', 'TP', 'TPN', 'FP']
@@ -709,8 +710,8 @@ Adds a circuit breaker element used for the protection of circuit elements.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
             
@@ -819,7 +820,7 @@ class Contactor(Switch):
     code = 'element_contactor'
     name = 'Contactor'
     group = 'Switching Devices'
-    icon = misc.abs_path('icons', 'contactor.svg')
+    icon = abs_path('icons', 'contactor.svg')
     tooltip = """<b>Contactor</b>
 
 Adds a contactor element used for on-load switching of loads.
@@ -855,12 +856,12 @@ Adds a contactor element used for on-load switching of loads.
                         'pcurve_g'   : self.get_field_dict('data', 'Ground Protection', '', None,
                                                             status_enable=False,
                                                             alter_structure=True)}
-        self.fields['pcurve_l']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['pcurve_l']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
-        self.fields['pcurve_g']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['pcurve_g']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
         self.text_model = [[(3.5,1), "${ref}", True],
@@ -897,8 +898,8 @@ Adds a contactor element used for on-load switching of loads.
             self.render_model(context, self.schem_model)
             self.render_text(context, self.text_model)
         else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
+            self.render_model(context, self.schem_model, color=style.COLOR_INACTIVE)
+            self.render_text(context, self.text_model, color=style.COLOR_INACTIVE)
         # Post processing
         self.modify_extends()
 
@@ -907,13 +908,13 @@ Adds a contactor element used for on-load switching of loads.
         modified = {}
         # If custom enabled, remove protection models
         if code == 'custom' and value is True:
-            self.fields['pcurve_l']['value'] = misc.get_blank_data_struct('protection')
+            self.fields['pcurve_l']['value'] = get_blank_data_struct('protection')
 
         # Handle case when custom is enabled
         if self.fields['custom']['value']:
             self.fields['prot_curve_type']['selection_list'] = None
         else:
-            misc.set_field_selection_list(self.fields, 'prot_curve_type', self.prottypes_ol, modified)
+            set_field_selection_list(self.fields, 'prot_curve_type', self.prottypes_ol, modified)
 
         # Handle case when trip unit is enabled
         if self.fields['trip_unit']['value']:
@@ -966,7 +967,7 @@ class ChangeOver(ElementModel):
     code = 'element_co_switch'
     name = 'Changeover switch'
     group = 'Switching Devices'
-    icon = misc.abs_path('icons', 'coswitch.svg')
+    icon = abs_path('icons', 'coswitch.svg')
     tooltip = """<b>Changeover switch</b>
 
 Adds a changeover switch element used for on-load switching of sources/ loads.
@@ -1065,7 +1066,7 @@ Adds a changeover switch element used for on-load switching of sources/ loads.
                  (p2, (ports[2],)))
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p1 = code + ':1'

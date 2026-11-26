@@ -25,8 +25,8 @@
 import logging, math
 
 # local files import
-from .. import misc
-from ..misc import FieldDict, Element
+from ..core import constants
+from ..core.fields import Element, FieldDict
 # Get logger object
 log = logging.getLogger(__name__)
 
@@ -68,24 +68,24 @@ def get_message_data_struct(network, results_dict_pass, results_dict_fail):
 electrical_rules = {
 # LINES
 'Line loading % < 100%': ('arg1 <= arg2', 
-                    (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
+                    (constants.LINE_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.r.loading_percent_max'),
                     ('constant', 100)),
 'Line loss % < X %': ('arg1 <= sr.line_max_loss', 
-                    (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
+                    (constants.LINE_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.r.pl_perc_max')),
 'Line protection by upstream breaker': ("arg2[0].contains(arg1[0], curve='upper', direction='right', i_max=arg3[0], scale=arg2[2]/arg3[1]) and arg1[1] >= arg2[1]", 
-                    (misc.LINE_ELEMENT_CODES, 'True', 'all'), 
+                    (constants.LINE_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.damage_model.linestring_upper_log, e.f.max_i_ka * e.f.df * e.f.parallel * 1000'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.f.In, e.r.vn_kv'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.f.In, e.r.vn_kv'),
                     ('downstream_node', 'max(e.r.ikss_ka_3ph_max, e.r.ikss_ka_1ph_max)*1000, e.r.vn_kv')),
 'Automatic disconnection time of line < X s': ("max(arg1[1].get_current(sr.max_disc_time))*(arg2[1]/arg1[2]) < arg2[0] if arg1[1] else max(arg1[0].get_current(sr.max_disc_time))*(arg2[1]/arg1[2]) < arg2[0]", 
-                    (misc.LINE_ELEMENT_CODES, 'True', 'all'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.ground_protection_model, e.r.vn_kv'),
+                    (constants.LINE_ELEMENT_CODES, 'True', 'all'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.ground_protection_model, e.r.vn_kv'),
                     ('downstream_node', 'min(e.r.ikss_ka_3ph_min, e.r.ikss_ka_1ph_min)*1000, e.r.vn_kv')),
 'CPE conductor sized for fault current': ("arg3 / (max(arg1[1].get_time(arg2[0]*(arg2[1]/arg1[2]))) if arg1[1] else max(arg1[0].get_time(arg2[0]*(arg2[1]/arg1[2]))))**0.5 > arg2[0]", 
-                    (misc.LINE_ELEMENT_CODES, 'True', 'all'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.ground_protection_model, e.r.vn_kv'),
+                    (constants.LINE_ELEMENT_CODES, 'True', 'all'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.ground_protection_model, e.r.vn_kv'),
                     ('downstream_node', 'e.r.ikss_ka_1ph_max*1000, e.r.vn_kv'),
                     ('self', 'e.f.cpe_sc_current_rating * e.f.parallel * 1000')),
 # TRANSFORMER
@@ -95,45 +95,45 @@ electrical_rules = {
 'Transformer protection by upstream breaker': ("arg2[0].contains(arg1[0], curve='upper', direction='right', i_max=arg3, scale=arg2[1]/arg1[1])", 
                     (['element_transformer'], 'True', 'all'), 
                     ('self', 'e.damage_model.linestring_upper_log, e.f.vn_lv_kv'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
                     ('downstream_node', 'max(e.r.ikss_ka_3ph_max, e.r.ikss_ka_1ph_max)*1000')),
 'Transformer inrush current coordination with upstream breaker': ("arg2[0].contains(arg1[0], curve='lower', direction='left', scale=arg2[1]/arg1[1])", 
                     (['element_transformer'], 'True', 'all'), 
                     ('self', 'e.damage_model.linestring_lower_log, e.f.vn_lv_kv'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv')),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv')),
 # MOTORS
 'Motor protection by upstream breaker': ("arg2[0].contains(arg1, curve='upper', direction='right', i_max=arg3[0], scale=arg2[1]/arg3[1])", 
-                    (misc.MOTOR_ELEMENT_CODES, 'True', 'all'), 
+                    (constants.MOTOR_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.damage_model.linestring_upper_log'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
                     ('upstream_node', 'max(e.r.ikss_ka_3ph_max, e.r.ikss_ka_1ph_max)*1000, e.r.vn_kv')),
 'Motor inrush current coordination with upstream breaker': ("arg2[0].contains(arg1, curve='lower', direction='left', scale=arg2[1]/arg3)", 
-                    (misc.MOTOR_ELEMENT_CODES, 'True', 'all'), 
+                    (constants.MOTOR_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.damage_model.linestring_lower_log'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
                     ('upstream_node', 'e.r.vn_kv')),
 # BREAKERS
 'Breaker short circuit current < Fault level': ("arg1 > arg2", 
-                    (misc.PROTECTION_ELEMENT_CODES, 'True', 'all'), 
+                    (constants.PROTECTION_ELEMENT_CODES, 'True', 'all'), 
                     ('self', 'e.f.Isc*1000'),
                     ('downstream_node', 'max(e.r.ikss_ka_3ph_max, e.r.ikss_ka_1ph_max)*1000')),
 'Breaker coordination with upstream': ("arg2[0].contains(arg1[0], curve='lower', direction='left', i_max=arg3, scale=arg2[1]/arg1[1])", 
-                    (misc.PROTECTION_ELEMENT_CODES, 'True', 'all_ifexist'), 
+                    (constants.PROTECTION_ELEMENT_CODES, 'True', 'all_ifexist'), 
                     ('self', 'e.line_protection_model.linestring_upper_log, e.r.vn_kv'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.r.vn_kv'),
                     ('downstream_node', 'max(e.r.ikss_ka_3ph_max, e.r.ikss_ka_1ph_max)*1000')),
 # LOADS
 'Automatic disconnection time of load < X s': ("max(arg1[1].get_current(sr.max_disc_time))*(arg2[1]/arg1[2]) < arg2[0] if arg1[1] else max(arg1[0].get_current(sr.max_disc_time))*(arg2[1]/arg1[2]) < arg2[0]", 
-                    (misc.LOAD_ELEMENT_CODES, 'True', 'all'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.ground_protection_model, e.r.vn_kv'),
+                    (constants.LOAD_ELEMENT_CODES, 'True', 'all'),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.line_protection_model, e.ground_protection_model, e.r.vn_kv'),
                     ('upstream_node', 'min(e.r.ikss_ka_3ph_min, e.r.ikss_ka_1ph_min)*1000, e.r.vn_kv')),
 'Voltage drop  < X %': ("arg1 <= sr.max_voltage_drop", 
-                    (misc.LOAD_ELEMENT_CODES, 'True', 'all'),
+                    (constants.LOAD_ELEMENT_CODES, 'True', 'all'),
                     ('upstream_node', 'e.r.delv_perc_max')),
 # CONNECTIVITY
 'Three phase load connected to three phase line': ("arg1 not in ('SP', 'SPN', 'DP')", 
                     (('element_load', 'element_async_motor_3ph'), 'True', 'all_ifexist'),
-                    ('upstream', misc.PROTECTION_ELEMENT_CODES, 'e.f.poles')),
+                    ('upstream', constants.PROTECTION_ELEMENT_CODES, 'e.f.poles')),
 
 }
 

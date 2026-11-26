@@ -22,7 +22,8 @@ import os, cairo
 from gi.repository import PangoCairo
 
 # local files import
-from .. import misc
+from ..core import constants
+from ..core.paths import abs_path
 from .element import ElementModel
 
 
@@ -31,7 +32,7 @@ class BusBar(ElementModel):
     code = 'element_busbar'
     name = 'Bus Bar'
     group = 'Components'
-    icon = misc.abs_path('icons', 'busbar.svg')
+    icon = abs_path('icons', 'busbar.svg')
     tooltip = """<b>Bus</b>
 
 Busses are the nodes of the network that all other elements connect to. Number of connections to the bus can be modified as per requirement.
@@ -78,7 +79,7 @@ For powerflow with diversity analysis, the diversity factors are defined at bus 
         nodes = ((p0, ports),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('bus', (p0,), {'name': self.fields['ref']['value'],

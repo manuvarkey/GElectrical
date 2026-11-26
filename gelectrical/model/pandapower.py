@@ -42,7 +42,8 @@ import networkx as nx
 from networkx.algorithms.components.connected import connected_components
 
 # local files import
-from .. import misc
+from ..core import constants
+from ..core.fields import get_field_dict
 from ..model.graph import GraphModel
 
 # Get logger object
@@ -80,22 +81,22 @@ class PandaPowerModel:
 
     # Analysis functions
 
-    def build_power_model(self, mode=misc.POWER_MODEL_POWERFLOW):
+    def build_power_model(self, mode=constants.POWER_MODEL_POWERFLOW):
         """Build power models for use with pandapower"""
         self.power_nodes = dict()
         self.power_nodes_inverted = dict()
         self.power_elements = dict()
         self.power_elements_inverted = dict()
 
-        if mode == misc.POWER_MODEL_POWERFLOW:
+        if mode == constants.POWER_MODEL_POWERFLOW:
             self.power_model = pp.create_empty_network()
             power_model = self.power_model
 
-        elif mode == misc.POWER_MODEL_LINEFAULT:
+        elif mode == constants.POWER_MODEL_LINEFAULT:
             self.power_model_lf = pp.create_empty_network()
             power_model = self.power_model_lf
 
-        elif mode == misc.POWER_MODEL_GROUNDFAULT:
+        elif mode == constants.POWER_MODEL_GROUNDFAULT:
             self.power_model_gf = pp.create_empty_network()
             power_model = self.power_model_gf
         else:
@@ -288,14 +289,14 @@ class PandaPowerModel:
             else:
                 node_result = dict()
                 self.node_results[node] = node_result
-            node_result['vn_kv'] = misc.get_field_dict(
+            node_result['vn_kv'] = get_field_dict(
                 'float', 'Vn', 'kV', model['vn_kv'], decimal=3)
 
-        if mode == misc.POWER_MODEL_POWERFLOW:
+        if mode == constants.POWER_MODEL_POWERFLOW:
             log.info('PandaPowerModel - build_powermodel - model generated - POWER_MODEL_POWERFLOW')
-        elif mode == misc.POWER_MODEL_LINEFAULT:
+        elif mode == constants.POWER_MODEL_LINEFAULT:
             log.info('PandaPowerModel - build_powermodel - model generated - POWER_MODEL_LINEFAULT')
-        elif mode == misc.POWER_MODEL_GROUNDFAULT:
+        elif mode == constants.POWER_MODEL_GROUNDFAULT:
             log.info('PandaPowerModel - build_powermodel - model generated - POWER_MODEL_GROUNDFAULT')
 
     def run_diagnostics(self):
@@ -331,7 +332,7 @@ class PandaPowerModel:
             if result:
 
                 if code == 'disconnected_elements':
-                    ret_codes.append(misc.OK)
+                    ret_codes.append(constants.OK)
                     for element_result in result:
                         for element_error_code, elementids_power in element_result.items():
                             if element_error_code in ['buses']:
@@ -350,7 +351,7 @@ class PandaPowerModel:
                                 result_parsed.append([message, model])
 
                 elif code == 'different_voltage_levels_connected':
-                    ret_codes.append(misc.ERROR)
+                    ret_codes.append(constants.ERROR)
                     for element_error_code, elementids_power in result.items():
                         code = error_code_subs_dict[element_error_code]
                         elementids = [self.power_elements_inverted[code, e_id]
@@ -360,7 +361,7 @@ class PandaPowerModel:
                         result_parsed.append([error(message), model])
 
                 elif code == 'implausible_impedance_values':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     for element_result in result:
                         for element_error_code, elementids_power in element_result.items():
                             if element_error_code in ['line', 'xward', 'impedance']:
@@ -374,7 +375,7 @@ class PandaPowerModel:
                                         [warning(message), model])
 
                 elif code == 'nominal_voltages_dont_match':
-                    ret_codes.append(misc.ERROR)
+                    ret_codes.append(constants.ERROR)
                     for element_error_code, bus_dict in result.items():
                         if element_error_code in ['trafo', 'trafo3w']:
                             elementids_added = []
@@ -390,7 +391,7 @@ class PandaPowerModel:
                             result_parsed.append([error(message), model])
 
                 elif code == 'invalid_values':
-                    ret_codes.append(misc.ERROR)
+                    ret_codes.append(constants.ERROR)
                     for element_error_code, error_lists in result.items():
                         for error_list in error_lists:
                             if element_error_code in ['bus']:
@@ -411,7 +412,7 @@ class PandaPowerModel:
                                 result_parsed.append([error(message), model])
 
                 elif code == 'multiple_voltage_controlling_elements_per_bus':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     for element_error_code, error_lists in result.items():
                         if element_error_code in ['buses_with_gens_and_ext_grids', 'buses_with_mult_ext_grids']:
                             elementids_added = []
@@ -426,12 +427,12 @@ class PandaPowerModel:
                             result_parsed.append([warning(message), model])
 
                 elif code == 'no_ext_grid':
-                    ret_codes.append(misc.ERROR)
+                    ret_codes.append(constants.ERROR)
                     result_parsed.append(
                         [error('No power source found in the model.'), []])
 
                 elif code == 'parallel_switches':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     model = []
                     for elementids_power in result:
                         elementids = [self.power_elements_inverted['switch', e_id]
@@ -443,7 +444,7 @@ class PandaPowerModel:
                         result_parsed.append([warning(message), model])
 
                 elif code == 'overload':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     if result.get('load'):
                         message = 'Overload detected: Power flow converges with load scaled down.'
                         model = [['element', []]]  # Placeholder for elements if applicable
@@ -454,33 +455,33 @@ class PandaPowerModel:
                         result_parsed.append([warning(message), model])
 
                 elif code == 'wrong_line_capacitance':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     message = 'Line capacitance too high: Power flow converges with capacitance scaled down.'
                     model = [['element', []]]  # Placeholder for elements if applicable
                     result_parsed.append([warning(message), model])
 
                 elif code == 'wrong_switch_configuration':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     if result:
                         message = 'Switch configuration issue: Power flow converges with all switches closed.'
                         model = [['element', []]]  # Placeholder for elements if applicable
                         result_parsed.append([warning(message), model])
 
                 elif code == 'test_subnet_from_zone':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     problematic_zones = ', '.join(result.keys())
                     message = f'Loadflow problems detected in zones: {problematic_zones}'
                     model = [['node', list(result.keys())]]  # Assuming zones correspond to nodes
                     result_parsed.append([warning(message), model])
 
                 elif code == 'test_continuous_bus_indices':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     message = 'Continuous bus index required for power flow convergence.'
                     model = [['node', []]]  # Placeholder for nodes if applicable
                     result_parsed.append([warning(message), model])
 
                 elif code == 'optimistic_powerflow':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     if result.get('load_sgen_zero'):
                         message = 'Optimistic power flow: Converges with load and generation set to zero.'
                         model = [['element', []]]  # Placeholder for elements if applicable
@@ -495,7 +496,7 @@ class PandaPowerModel:
                         result_parsed.append([warning(message), model])
 
                 elif code == 'deviation_from_std_type':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     for element_type, deviations in result.items():
                         for element_id, details in deviations.items():
                             if details.get('std_type_in_lib'):
@@ -506,19 +507,19 @@ class PandaPowerModel:
                                 result_parsed.append([warning(message), []])
 
                 elif code == 'numba_comparison':
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     for element_type, deviations in result.items():
                         for res_type, diff in deviations.items():
                             message = f'{element_type}.{res_type}: Absolute deviations detected: {diff}'
                             result_parsed.append([warning(message), []])
                 
                 else:
-                    ret_codes.append(misc.WARNING)
+                    ret_codes.append(constants.WARNING)
                     result_parsed.append(
                         [warning(code + ': ' + str(result)), []])
 
         self.diagnostic_results['Electrical Model'] = result_parsed
-        ret_code = misc.ERROR if misc.ERROR in ret_codes else misc.WARNING
+        ret_code = constants.ERROR if constants.ERROR in ret_codes else constants.WARNING
         log.info('PandaPowerModel - run_diagnostics - diagnostic run')
         return self.diagnostic_results, ret_code
 
@@ -536,7 +537,7 @@ class PandaPowerModel:
                 #         gnode = self.node_mapping[lnode]
                 #         bus_index = self.power_nodes[gnode]
                 #         DF = element.fields['DF']['value']
-                #         lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
+                #         lines = self.network_model.get_downstream_element(e_code, codes=constants.LINE_ELEMENT_CODES)
                 #         if lines:
                 #             for line_code in lines:
                 #                 (linecode, line_index) = self.power_elements[line_code]
@@ -572,7 +573,7 @@ class PandaPowerModel:
                         gnode_bus =  self.network_model.gnode_element_mapping_inverted[e_code][0]
                         bus_index = self.power_nodes[gnode_bus]
                         DF_bus = self.network_model.gnode_df_mapping[gnode_bus]
-                        loads = self.network_model.get_downstream_element(e_code, codes=misc.LOAD_ELEMENT_CODES)
+                        loads = self.network_model.get_downstream_element(e_code, codes=constants.LOAD_ELEMENT_CODES)
                         if loads:
                             p_a_mw = 0
                             p_b_mw = 0
@@ -622,7 +623,7 @@ class PandaPowerModel:
                 #         gnode =  self.network_model.gnode_element_mapping_inverted[e_code][0]
                 #         bus_index = self.power_nodes[gnode]
                 #         DF = element.fields['DF']['value']
-                #         lines = self.network_model.get_downstream_element(e_code, codes=misc.LINE_ELEMENT_CODES)
+                #         lines = self.network_model.get_downstream_element(e_code, codes=constants.LINE_ELEMENT_CODES)
                 #         if lines:
                 #             for line_code in lines:
                 #                 (linecode, line_index) = self.power_elements[line_code]
@@ -644,7 +645,7 @@ class PandaPowerModel:
                         gnode_bus =  self.network_model.gnode_element_mapping_inverted[e_code][0]
                         bus_index = self.power_nodes[gnode_bus]
                         DF_bus = self.network_model.gnode_df_mapping[gnode_bus]
-                        loads = self.network_model.get_downstream_element(e_code, codes=misc.LOAD_ELEMENT_CODES)
+                        loads = self.network_model.get_downstream_element(e_code, codes=constants.LOAD_ELEMENT_CODES)
                         if loads:
                             p_mw = 0
                             q_mvar = 0
@@ -717,27 +718,27 @@ class PandaPowerModel:
                 result = getattr(self.power_model, 'res_bus').loc[bus_id]
 
             if runpp_3ph:
-                node_result['vm_a_pu'] = misc.get_field_dict('str', 'Va', 'pu < deg',
+                node_result['vm_a_pu'] = get_field_dict('str', 'Va', 'pu < deg',
                                         str(round(result['vm_a_pu'],4)) + ' < ' + str(round(result['va_a_degree'], 2)))
-                node_result['vm_b_pu'] = misc.get_field_dict('str', 'Vb', 'pu < deg',
+                node_result['vm_b_pu'] = get_field_dict('str', 'Vb', 'pu < deg',
                                         str(round(result['vm_b_pu'],4)) + ' < ' + str(round(result['va_b_degree'], 2)))
-                node_result['vm_c_pu'] = misc.get_field_dict('str', 'Vc', 'pu < deg',
+                node_result['vm_c_pu'] = get_field_dict('str', 'Vc', 'pu < deg',
                                         str(round(result['vm_c_pu'],4)) + ' < ' + str(round(result['va_c_degree'], 2)))
                 min_v = min(result['vm_a_pu'], result['vm_b_pu'], result['vm_c_pu'])
-                node_result['delv_perc_max'] = misc.get_field_dict(
+                node_result['delv_perc_max'] = get_field_dict(
                     'float', 'ΔV', '%', 100-min_v*100, decimal=2)
-                node_result['delv_perc_a'] = misc.get_field_dict(
+                node_result['delv_perc_a'] = get_field_dict(
                     'float', 'ΔVa', '%', 100-result['vm_a_pu']*100, decimal=2)
-                node_result['delv_perc_b'] = misc.get_field_dict(
+                node_result['delv_perc_b'] = get_field_dict(
                     'float', 'ΔVb', '%', 100-result['vm_b_pu']*100, decimal=2)
-                node_result['delv_perc_c'] = misc.get_field_dict(
+                node_result['delv_perc_c'] = get_field_dict(
                     'float', 'ΔVc', '%', 100-result['vm_c_pu']*100, decimal=2)
-                node_result['unbalance_perc'] = misc.get_field_dict(
+                node_result['unbalance_perc'] = get_field_dict(
                     'float', 'Voltage unbalance', '%', result['unbalance_percent'], decimal=2)
             else:
-                node_result['vm_pu'] = misc.get_field_dict('str', 'V', 'pu < deg',
+                node_result['vm_pu'] = get_field_dict('str', 'V', 'pu < deg',
                                         str(round(result['vm_pu'],4)) + ' < ' + str(round(result['va_degree'], 2)))
-                node_result['delv_perc_max'] = misc.get_field_dict(
+                node_result['delv_perc_max'] = get_field_dict(
                     'float', 'ΔV', '%', 100-result['vm_pu']*100, decimal=2)
 
         # Update elements
@@ -763,145 +764,145 @@ class PandaPowerModel:
                 # Populate element results
                 if runpp_3ph:
                     if elementcode in ['load', 'sgen', 'storage']:
-                        element_result['p_mw'] = misc.get_field_dict(
+                        element_result['p_mw'] = get_field_dict(
                             'float', 'P', 'MW', R(result['p_mw'],4))
-                        element_result['q_mvar'] = misc.get_field_dict(
+                        element_result['q_mvar'] = get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_mvar'],4))
-                        element_result['pf'] = misc.get_field_dict(
+                        element_result['pf'] = get_field_dict(
                             'float', 'PF', '',
                             pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
                     elif elementcode in ['ext_grid', 'asymmetric_load', 'asymmetric_sgen']:
-                        element_result['p_mw'] = misc.get_field_dict('float', 'P', '',
+                        element_result['p_mw'] = get_field_dict('float', 'P', '',
                             sum_func(result['p_a_mw'], result['p_b_mw'], result['p_c_mw'], 4))
-                        element_result['pf'] = misc.get_field_dict('float', 'PF', '',
+                        element_result['pf'] = get_field_dict('float', 'PF', '',
                             pf_3_3_func(result['p_a_mw'], result['p_b_mw'], result['p_c_mw'],
                                         result['q_a_mvar'], result['q_b_mvar'], result['q_c_mvar'], 2))
-                        element_result['p_a_mw'] = misc.get_field_dict(
+                        element_result['p_a_mw'] = get_field_dict(
                             'float', 'Pa', 'MW', R(result['p_a_mw'],4))
-                        element_result['p_b_mw'] = misc.get_field_dict(
+                        element_result['p_b_mw'] = get_field_dict(
                             'float', 'Pb', 'MW', R(result['p_b_mw'],4))
-                        element_result['p_c_mw'] = misc.get_field_dict(
+                        element_result['p_c_mw'] = get_field_dict(
                             'float', 'Pc', 'MW', R(result['p_c_mw'],4))
                     elif elementcode == 'trafo':
-                        element_result['p_hv_mw'] = misc.get_field_dict('float', 'P', 'MW',
+                        element_result['p_hv_mw'] = get_field_dict('float', 'P', 'MW',
                             sum_func(result['p_a_hv_mw'], result['p_b_hv_mw'], result['p_c_hv_mw'], 4))
-                        element_result['pf'] = misc.get_field_dict('float', 'PF', '',
+                        element_result['pf'] = get_field_dict('float', 'PF', '',
                             pf_3_3_func(result['p_a_hv_mw'], result['p_b_hv_mw'], result['p_c_hv_mw'],
                                         result['q_a_hv_mvar'], result['q_b_hv_mvar'], result['q_c_hv_mvar'], 2))
-                        element_result['loading_percent_max'] = misc.get_field_dict(
+                        element_result['loading_percent_max'] = get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw_max'] = misc.get_field_dict(
+                        element_result['pl_mw_max'] = get_field_dict(
                             'float', 'P loss', 'MW',
                             sum_func(result['pl_a_mw'], result['pl_b_mw'], result['pl_c_mw'], 5))
                     elif elementcode == 'trafo3w':
-                        element_result['p_hv_mw'] = misc.get_field_dict(
+                        element_result['p_hv_mw'] = get_field_dict(
                             'float', 'P HV', 'MW', R(result['p_hv_mw'], 4))
-                        element_result['q_hv_mvar'] = misc.get_field_dict(
+                        element_result['q_hv_mvar'] = get_field_dict(
                             'float', 'Q HV', 'MVAr', R(result['q_hv_mvar'], 4))
-                        element_result['p_mv_mw'] = misc.get_field_dict(
+                        element_result['p_mv_mw'] = get_field_dict(
                             'float', 'P MV', 'MW', R(result['p_mv_mw'], 4))
-                        element_result['q_mv_mvar'] = misc.get_field_dict(
+                        element_result['q_mv_mvar'] = get_field_dict(
                             'float', 'Q MV', 'MVAr', R(result['q_mv_mvar'], 4))
-                        element_result['p_lv_mw'] = misc.get_field_dict(
+                        element_result['p_lv_mw'] = get_field_dict(
                             'float', 'P LV', 'MW', R(result['p_lv_mw'], 4))
-                        element_result['q_lv_mvar'] = misc.get_field_dict(
+                        element_result['q_lv_mvar'] = get_field_dict(
                             'float', 'Q LV', 'MVAr', R(result['q_lv_mvar'], 4))
-                        element_result['loading_percent_max'] = misc.get_field_dict(
+                        element_result['loading_percent_max'] = get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw_max'] = misc.get_field_dict(
+                        element_result['pl_mw_max'] = get_field_dict(
                             'float', 'P loss', 'MW', R(result['pl_mw'], 5))
                     elif elementcode in ['line']:
-                        element_result['p_from_mw'] = misc.get_field_dict('float', 'P', 'MW',
+                        element_result['p_from_mw'] = get_field_dict('float', 'P', 'MW',
                             sum_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 4))
-                        element_result['q_from_mvar'] = misc.get_field_dict('float', 'Q', 'MVAr',
+                        element_result['q_from_mvar'] = get_field_dict('float', 'Q', 'MVAr',
                             sum_func(result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 4))
-                        element_result['pf'] = misc.get_field_dict('float', 'PF', '',
+                        element_result['pf'] = get_field_dict('float', 'PF', '',
                             pf_3_3_func(result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'],
                                         result['q_a_from_mvar'], result['q_b_from_mvar'], result['q_c_from_mvar'], 2))
-                        element_result['p_a_from_mw'] = misc.get_field_dict(
+                        element_result['p_a_from_mw'] = get_field_dict(
                             'float', 'Pa', 'MW', R(result['p_a_from_mw'],4))
-                        element_result['p_b_from_mw'] = misc.get_field_dict(
+                        element_result['p_b_from_mw'] = get_field_dict(
                             'float', 'Pb', 'MW', R(result['p_b_from_mw'],4))
-                        element_result['p_c_from_mw'] = misc.get_field_dict(
+                        element_result['p_c_from_mw'] = get_field_dict(
                             'float', 'Pc', 'MW', R(result['p_c_from_mw'],4))
-                        element_result['loading_percent_max'] = misc.get_field_dict(
+                        element_result['loading_percent_max'] = get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw_max'] = misc.get_field_dict(
+                        element_result['pl_mw_max'] = get_field_dict(
                             'float', 'P loss', 'MW',
                             sum_func(result['pl_a_mw'], result['pl_b_mw'], result['pl_c_mw'], 5))
-                        element_result['pl_perc_max'] = misc.get_field_dict('float', '% P Loss', '%',
+                        element_result['pl_perc_max'] = get_field_dict('float', '% P Loss', '%',
                             percentage_3_3_func(result['pl_a_mw'], result['pl_b_mw'], result['pl_c_mw'],
                                                 result['p_a_from_mw'], result['p_b_from_mw'], result['p_c_from_mw'], 2))
                 else:
                     if elementcode in ['ext_grid', 'load', 'sgen', 'shunt', 'ward', 'xward', 'storage']:
-                        element_result['p_mw'] = misc.get_field_dict(
+                        element_result['p_mw'] = get_field_dict(
                             'float', 'P', 'MW', R(result['p_mw'],4))
-                        element_result['q_mvar'] = misc.get_field_dict(
+                        element_result['q_mvar'] = get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_mvar'],4))
-                        element_result['pf'] = misc.get_field_dict(
+                        element_result['pf'] = get_field_dict(
                             'float', 'PF', '',
                             pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
                     elif elementcode == 'trafo':
-                        element_result['p_hv_mw'] = misc.get_field_dict(
+                        element_result['p_hv_mw'] = get_field_dict(
                             'float', 'P', 'MW', R(result['p_hv_mw'], 4))
-                        element_result['q_hv_mvar'] = misc.get_field_dict(
+                        element_result['q_hv_mvar'] = get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_hv_mvar'], 4))
-                        element_result['loading_percent_max'] = misc.get_field_dict(
+                        element_result['loading_percent_max'] = get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw_max'] = misc.get_field_dict(
+                        element_result['pl_mw_max'] = get_field_dict(
                             'float', 'P loss', 'MW', R(result['pl_mw'], 5))
                     elif elementcode == 'trafo3w':
-                        element_result['p_hv_mw'] = misc.get_field_dict(
+                        element_result['p_hv_mw'] = get_field_dict(
                             'float', 'P HV', 'MW', R(result['p_hv_mw'], 4))
-                        element_result['q_hv_mvar'] = misc.get_field_dict(
+                        element_result['q_hv_mvar'] = get_field_dict(
                             'float', 'Q HV', 'MVAr', R(result['q_hv_mvar'], 4))
-                        element_result['p_mv_mw'] = misc.get_field_dict(
+                        element_result['p_mv_mw'] = get_field_dict(
                             'float', 'P MV', 'MW', R(result['p_mv_mw'], 4))
-                        element_result['q_mv_mvar'] = misc.get_field_dict(
+                        element_result['q_mv_mvar'] = get_field_dict(
                             'float', 'Q MV', 'MVAr', R(result['q_mv_mvar'], 4))
-                        element_result['p_lv_mw'] = misc.get_field_dict(
+                        element_result['p_lv_mw'] = get_field_dict(
                             'float', 'P LV', 'MW', R(result['p_lv_mw'], 4))
-                        element_result['q_lv_mvar'] = misc.get_field_dict(
+                        element_result['q_lv_mvar'] = get_field_dict(
                             'float', 'Q LV', 'MVAr', R(result['q_lv_mvar'], 4))
-                        element_result['loading_percent_max'] = misc.get_field_dict(
+                        element_result['loading_percent_max'] = get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw_max'] = misc.get_field_dict(
+                        element_result['pl_mw_max'] = get_field_dict(
                             'float', 'P loss', 'MW', R(result['pl_mw'], 5))
                     elif elementcode == 'gen':
-                        element_result['p_mw'] = misc.get_field_dict(
+                        element_result['p_mw'] = get_field_dict(
                             'float', 'P', 'MW', R(result['p_mw'], 4))
-                        element_result['q_mvar'] = misc.get_field_dict(
+                        element_result['q_mvar'] = get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_mvar'], 4))
-                        element_result['pf'] = misc.get_field_dict(
+                        element_result['pf'] = get_field_dict(
                             'float', 'PF', '',
                             pf_1_1_func(result['p_mw'], result['q_mvar'], 2))
-                        element_result['vm_pu'] = misc.get_field_dict(
+                        element_result['vm_pu'] = get_field_dict(
                             'float', 'V', 'pu', R(result['vm_pu'], 2))
-                        element_result['va_degree'] = misc.get_field_dict(
+                        element_result['va_degree'] = get_field_dict(
                             'float', 'V angle', 'degree', R(result['va_degree'], 1))
                     elif elementcode in ['impedance', 'dcline']:
-                        element_result['p_from_mw'] = misc.get_field_dict(
+                        element_result['p_from_mw'] = get_field_dict(
                             'float', 'P', 'MW', R(result['p_from_mw'], 4))
-                        element_result['q_from_mvar'] = misc.get_field_dict(
+                        element_result['q_from_mvar'] = get_field_dict(
                             'float', 'Q', 'MVAr', R(result['q_from_mvar'], 4))
-                        element_result['pl_mw'] = misc.get_field_dict(
+                        element_result['pl_mw'] = get_field_dict(
                             'float', 'P loss', 'MW', R(result['pl_mw'], 4))
                     elif elementcode in ['line']:
-                        element_result['p_from_mw'] = misc.get_field_dict(
+                        element_result['p_from_mw'] = get_field_dict(
                             'float', 'P', 'MW', R(result['p_from_mw'], 4))
-                        element_result['q_from_mvar'] = misc.get_field_dict(
+                        element_result['q_from_mvar'] = get_field_dict(
                             'float', 'Q', 'MW', R(result['q_from_mvar'], 4))
-                        element_result['pf'] = misc.get_field_dict(
+                        element_result['pf'] = get_field_dict(
                             'float', 'PF', '',
                             pf_1_1_func(result['p_from_mw'], result['q_from_mvar'], 2))
-                        element_result['loading_percent_max'] = misc.get_field_dict(
+                        element_result['loading_percent_max'] = get_field_dict(
                             'float', '% Loading', '%', R(result['loading_percent'], 1))
-                        element_result['pl_mw_max'] = misc.get_field_dict(
+                        element_result['pl_mw_max'] = get_field_dict(
                             'float', 'P loss', 'MW', R(result['pl_mw'], 5))
-                        element_result['pl_perc_max'] = misc.get_field_dict(
+                        element_result['pl_perc_max'] = get_field_dict(
                             'float', '% P Loss', '%',
                             percentage_1_1_func(result['pl_mw'], result['p_from_mw'], 2))
-                        element_result['delv_max'] = misc.get_field_dict(
+                        element_result['delv_max'] = get_field_dict(
                             'float', 'ΔV', '%',
                             delv_func(result['vm_from_pu'], result['vm_to_pu'],
                                       result['va_from_degree'], result['va_to_degree'], 2))
@@ -1306,29 +1307,29 @@ class PandaPowerModel:
             delta = (val_max - val_min)*0.1
             ylimits = (val_min - delta, val_max + delta)
             title = '[{} | μ: {} | {}]'.format(val_min, val_avg, val_max)
-            model = [{'mode': misc.GRAPH_DATATYPE_PROFILE,
+            model = [{'mode': constants.GRAPH_DATATYPE_PROFILE,
                               'title': caption, 'xval': time_steps, 'yval': values_combined},]
             # Add combined graph
             graph_model = [title, model]
-            result[dst_code] = misc.get_field_dict(
+            result[dst_code] = get_field_dict(
                 'graph', caption, unit, graph_model, decimal=decimal)
             result[dst_code]['graph_options'] = (
-                misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', caption + ' (' + unit + ')', {})
+                constants.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', caption + ' (' + unit + ')', {})
             # Add stats
             if 'avg' in stat_fields:
                 subcode = dst_code + '_max'
                 subcaption = caption + ' (avg)'
-                result[subcode] = misc.get_field_dict(
+                result[subcode] = get_field_dict(
                     'float', subcaption, unit, val_avg, decimal=decimal)
             if 'max' in stat_fields:
                 subcode = dst_code + '_max'
                 subcaption = caption + ' (max)'
-                result[subcode] = misc.get_field_dict(
+                result[subcode] = get_field_dict(
                     'float', subcaption, unit, val_max, decimal=decimal)
             if 'min' in stat_fields:
                 subcode = dst_code + '_max'
                 subcaption = caption + ' (min)'
-                result[subcode] = misc.get_field_dict(
+                result[subcode] = get_field_dict(
                     'float', subcaption, unit, val_min, decimal=decimal)
 
         def set_graphdata(result, table, data):
@@ -1362,7 +1363,7 @@ class PandaPowerModel:
                 ylimits_min.append(val_min - delta)
                 ylimits_max.append(val_max + delta)
 
-                model.append({'mode': misc.GRAPH_DATATYPE_PROFILE,
+                model.append({'mode': constants.GRAPH_DATATYPE_PROFILE,
                               'title': caption, 'xval': time_steps, 'yval': values})
                 maintitle += title + '\n'
                 maincaption += caption + ', '
@@ -1376,10 +1377,10 @@ class PandaPowerModel:
             maincode = maincode.strip(',')
             ylimits = (min(ylimits_min), max(ylimits_max), 0.1)
             graph_model = [maintitle, model]
-            result[maincode] = misc.get_field_dict(
+            result[maincode] = get_field_dict(
                 'graph', maincaption, mainunit, graph_model, decimal=decimal)
             result[maincode]['graph_options'] = (
-                misc.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', maincaption + ' (' + mainunit + ')', {})
+                constants.GRAPH_LOAD_TIME_LIMITS, ylimits, 'Time (Hr)', maincaption + ' (' + mainunit + ')', {})
 
         def set_graph_data_stats(result, table, data, fields=['avg']):
             model = []
@@ -1401,19 +1402,19 @@ class PandaPowerModel:
                     val_avg = round(sum(values)/len(values), decimal)
                     subcode = modcode + '_max'
                     subcaption = caption + ' (avg)'
-                    result[subcode] = misc.get_field_dict(
+                    result[subcode] = get_field_dict(
                         'float', subcaption, unit, val_avg, decimal=decimal)
                 if 'max' in fields:
                     val_max = round(max(values), decimal)
                     subcode = modcode + '_max'
                     subcaption = caption + ' (max)'
-                    result[subcode] = misc.get_field_dict(
+                    result[subcode] = get_field_dict(
                         'float', subcaption, unit, val_max, decimal=decimal)
                 if 'min' in fields:
                     val_min = round(min(values), decimal)
                     subcode = modcode + '_max'
                     subcaption = caption + ' (min)'
-                    result[subcode] = misc.get_field_dict(
+                    result[subcode] = get_field_dict(
                         'float', subcaption, unit, val_min, decimal=decimal)
 
         def modfunc(x): return 100-x*100
@@ -1654,14 +1655,14 @@ class PandaPowerModel:
             if show_impedances:
                 z_max = str(round(res_3ph_max['rk_ohm'][bus],4)) + ' + j' + str(round(res_3ph_max['xk_ohm'][bus],4))
                 z_min = str(round(res_3ph_min['rk_ohm'][bus],4)) + ' + j' + str(round(res_3ph_min['xk_ohm'][bus],4))
-                node_result['zk_ohm_max'] = misc.get_field_dict('str', 'Z12 (sym, max)', 'Ohm', z_max)
-                node_result['zk_ohm_min'] = misc.get_field_dict('str', 'Z12 (sym, min)', 'Ohm', z_min)
+                node_result['zk_ohm_max'] = get_field_dict('str', 'Z12 (sym, max)', 'Ohm', z_max)
+                node_result['zk_ohm_min'] = get_field_dict('str', 'Z12 (sym, min)', 'Ohm', z_min)
 
-            node_result['ikss_ka_3ph_max'] = misc.get_field_dict(
+            node_result['ikss_ka_3ph_max'] = get_field_dict(
                 'float', 'Isc (sym, max)', 'kA', res_3ph_max['ikss_ka'][bus], decimal=2)
-            node_result['ikss_ka_3ph_min'] = misc.get_field_dict(
+            node_result['ikss_ka_3ph_min'] = get_field_dict(
                 'float', 'Isc (sym, min)', 'kA', res_3ph_min['ikss_ka'][bus], decimal=2)
-            node_result['ipss_ka_3ph_max'] = misc.get_field_dict(
+            node_result['ipss_ka_3ph_max'] = get_field_dict(
                 'float', 'Isc (pk, max)', 'kA', res_3ph_max['ip_ka'][bus], decimal=2)
         log.info('PandaPowerModel - run_sym_sccalc - calculation run')
 
@@ -1714,14 +1715,14 @@ class PandaPowerModel:
                 z_min = str(round(res_1ph_min['rk_ohm'][bus],4)) + ' + j' + str(round(res_1ph_min['xk_ohm'][bus],4))
                 z0_max = str(round(res_1ph_max['rk0_ohm'][bus],4)) + ' + j' + str(round(res_1ph_max['xk0_ohm'][bus],4))
                 z0_min = str(round(res_1ph_min['rk0_ohm'][bus],4)) + ' + j' + str(round(res_1ph_min['xk0_ohm'][bus],4))
-                node_result['zk_ohm_1ph_max'] = misc.get_field_dict('str', 'Z12 (L-G, max)', 'Ohm', z_max)
-                node_result['zk_ohm_1ph_min'] = misc.get_field_dict('str', 'Z12 (L-G, min)', 'Ohm', z_min)
-                node_result['zk0_ohm_1ph_max'] = misc.get_field_dict('str', 'Z0 (L-G, max)', 'Ohm', z0_max)
-                node_result['zk0_ohm_1ph_min'] = misc.get_field_dict('str', 'Z0 (L-G, min)', 'Ohm', z0_min)
+                node_result['zk_ohm_1ph_max'] = get_field_dict('str', 'Z12 (L-G, max)', 'Ohm', z_max)
+                node_result['zk_ohm_1ph_min'] = get_field_dict('str', 'Z12 (L-G, min)', 'Ohm', z_min)
+                node_result['zk0_ohm_1ph_max'] = get_field_dict('str', 'Z0 (L-G, max)', 'Ohm', z0_max)
+                node_result['zk0_ohm_1ph_min'] = get_field_dict('str', 'Z0 (L-G, min)', 'Ohm', z0_min)
 
-            node_result['ikss_ka_1ph_max'] = misc.get_field_dict(
+            node_result['ikss_ka_1ph_max'] = get_field_dict(
                 'float', 'Isc (L-G, max)', 'kA', ikss_max, decimal=2)
-            node_result['ikss_ka_1ph_min'] = misc.get_field_dict(
+            node_result['ikss_ka_1ph_min'] = get_field_dict(
                 'float', 'Isc (L-G, min)', 'kA', ikss_min, decimal=2)
 
         log.info('PandaPowerModel - run_linetoground_sccalc - calculation run')
@@ -1740,8 +1741,8 @@ class PandaPowerModel:
                 (elementcode, element_id) = self.power_elements[e_code]
 
                 # Add node related data to elements
-                if element.code in misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES:
-                    if element.code not in misc.TRAFO_ELEMENT_CODES:
+                if element.code in constants.PROTECTION_ELEMENT_CODES + constants.DAMAGE_ELEMENT_CODES:
+                    if element.code not in constants.TRAFO_ELEMENT_CODES:
                         lnode = element.get_nodes(str(e_code))[0][0]
                         gnode = self.node_mapping[lnode]
                         node_result = self.node_results[gnode]

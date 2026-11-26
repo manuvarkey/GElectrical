@@ -36,6 +36,9 @@ from gi.repository import Gtk, Gdk, GLib, Gio, GdkPixbuf
 from .. import undo, misc, model, elementmodel
 from . import view
 from ..misc import group
+from ..core import style, paths
+from ..symbols.text import set_text_backend
+from .pango_text import PangoTextBackend
 from ..model import drawing
 from ..elementmodel import switch, busbar, grid, transformer, load, line, impedance, shunt, ward, generator, reference, displayelements
 from ..model.project import ProjectModel
@@ -862,6 +865,8 @@ class MainWindow():
     def __init__(self, id=0):
         
         log.info('MainWindow - Start initialisation')
+        # Legacy UI keeps PangoCairo text rendering
+        set_text_backend(PangoTextBackend())
         
         self.id = id
         self.project_active = False

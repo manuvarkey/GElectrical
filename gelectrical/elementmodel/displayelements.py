@@ -27,7 +27,8 @@ from gi.repository import Gtk, Gdk
 import cairo
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path
 from .element import ElementModel
 
 # Get logger object
@@ -49,13 +50,13 @@ class DisplayElementNode(ElementModel):
         self.model_height = 0
         self.ports = [(1,1)]
         self.fields = {'ref':     self.get_field_dict('str', 'Node ID', '', ref, status_inactivate=True)}
-        self.text_model = [[(1,1-misc.SCHEM_FONT_SPACING/misc.M/2), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],]
+        self.text_model = [[(1,1-style.SCHEM_FONT_SPACING/constants.M/2), "${ref}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],]
         self.schem_model = [['RECT', (0,0), 2,2, True, []],]
     
     def render_element(self, context):
         """Render element to context"""
-        self.render_model(context, self.schem_model, color=misc.COLOR_OVERLAY_BG)
-        self.render_text(context, self.text_model, color=misc.COLOR_OVERLAY_TEXT)
+        self.render_model(context, self.schem_model, color=style.COLOR_OVERLAY_BG)
+        self.render_text(context, self.text_model, color=style.COLOR_OVERLAY_TEXT)
         # Post processing
         self.modify_extends()
 
@@ -66,7 +67,7 @@ class DisplayElementText(ElementModel):
     code = 'element_display_text'
     name = 'Text Display Element'
     group = 'Miscellaneous'
-    icon = misc.abs_path('icons', 'display-text.svg')
+    icon = abs_path('icons', 'display-text.svg')
     tooltip = """<b>Text Display Element</b>"""
     
     def __init__(self, cordinates=(0,0), **kwargs):
@@ -78,7 +79,7 @@ class DisplayElementText(ElementModel):
         self.fields = {'text'       : self.get_field_dict('multiline_str', 'Text', '', 'Notes:\n', status_floating=True),
                        'background' : self.get_field_dict('bool', 'Fill', '', True, status_floating=True),
                        'border'     : self.get_field_dict('bool', 'Border', '', False, status_floating=True)}
-        self.text_model = [[(0.5,0.5), "${text}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'left'],]
+        self.text_model = [[(0.5,0.5), "${text}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'left'],]
         self.schem_model = []
     
     def render_element(self, context):
@@ -87,13 +88,13 @@ class DisplayElementText(ElementModel):
         self.render_text(context, self.text_model)
         if self.fields['border']['value'] or self.fields['background']['value']:
             self.modify_extends()
-            width = self.model_width + 1*misc.M
-            height = self.model_height + 1*misc.M
+            width = self.model_width + 1*constants.M
+            height = self.model_height + 1*constants.M
             if self.fields['background']['value']:
-                schem_model_border = [['RECT', (0,0), width/misc.M, height/misc.M, True, []]]
-                self.render_model(context, schem_model_border, color=misc.COLOR_OVERLAY_BG)
+                schem_model_border = [['RECT', (0,0), width/constants.M, height/constants.M, True, []]]
+                self.render_model(context, schem_model_border, color=style.COLOR_OVERLAY_BG)
             if self.fields['border']['value']:
-                schem_model_border = [['RECT', (0,0), width/misc.M, height/misc.M, False, [], 'thin']]
+                schem_model_border = [['RECT', (0,0), width/constants.M, height/constants.M, False, [], 'thin']]
                 self.render_model(context, schem_model_border)
             
         # Post processing

@@ -29,8 +29,11 @@ from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 
 # local files import
-from .. import misc
-from ..misc import undoable, group
+from ..core import constants, style
+from ..core.fields import ReferenceCounter, default_project_settings, get_field_dict, get_fields_dict_trunc, update_fields_dict
+from ..core.paths import abs_path, open_library, posix_path
+from ..core.undoable import group, undoable
+from ..reports.tables import elements_to_table, fields_to_table
 from .drawing import DrawingModel
 from ..gtk.view.drawing import DrawingView
 from ..gtk.view.graph import GraphViewDialog, GraphImage
@@ -50,7 +53,7 @@ class ProjectModel:
         # Data
         self.drawing_models = []
         program_settings = program_state['program_settings_main']
-        self.fields = misc.default_project_settings
+        self.fields = default_project_settings
         self.fields['Information']['drawing_field_dept']['value'] = copy.deepcopy(program_settings['drawing_field_dept']['value'])
         self.fields['Information']['drawing_field_techref']['value'] =  copy.deepcopy(program_settings['drawing_field_techref']['value'])
         self.fields['Information']['drawing_field_created']['value'] =  copy.deepcopy(program_settings['drawing_field_created']['value'])
@@ -59,7 +62,7 @@ class ProjectModel:
         self.fields['Information']['drawing_field_address']['value'] = copy.deepcopy(program_settings['drawing_field_address']['value'])
         program_state['project_settings_main'] = self.fields['Information']
         program_state['project_settings'] = self.fields
-        self.loadprofiles = misc.DEFAULT_LOAD_PROFILE
+        self.loadprofiles = constants.DEFAULT_LOAD_PROFILE
         
         # State variables
         self.window = window
@@ -117,11 +120,11 @@ class ProjectModel:
         self.update_project_fields(old_fields)
         
     def edit_loadprofiles(self):
-        xlim = misc.GRAPH_LOAD_TIME_LIMITS
-        ylim = misc.GRAPH_LOAD_CURRENT_LIMITS
+        xlim = constants.GRAPH_LOAD_TIME_LIMITS
+        ylim = constants.GRAPH_LOAD_CURRENT_LIMITS
         xlabel = 'Time (Hr)'
         ylabel = 'Diversity Factor'
-        database_path = misc.open_library('load_profiles.csv')
+        database_path = open_library('load_profiles.csv')
         loadprofiles_copy = copy.deepcopy(self.loadprofiles)
         dialog = GraphViewDialog(self.window, 
                                 'Edit Load Profiles',
@@ -133,7 +136,7 @@ class ProjectModel:
             self.modify_loadprofiles(loadprofiles_copy)
 
     def view_protection_coordination(self):
-        selected_elements = self.get_selected(codes=misc.PROTECTION_ELEMENT_CODES + misc.DAMAGE_ELEMENT_CODES + ('element_display_node',))
+        selected_elements = self.get_selected(codes=constants.PROTECTION_ELEMENT_CODES + constants.DAMAGE_ELEMENT_CODES + ('element_display_node',))
         if selected_elements:
             # Populate voltage levels for breakers
             if self.status['power_results'] == False or self.stack.haschanged():
@@ -143,7 +146,7 @@ class ProjectModel:
             dialog = ProtectionViewDialog(self.window, self.program_state, selected_elements)
             dialog.run()
         else:
-            return (misc.WARNING, 'No protection elements selected.')
+            return (constants.WARNING, 'No protection elements selected.')
         
     @undoable
     def modify_loadprofiles(self, loadprofiles):
@@ -326,12 +329,12 @@ class ProjectModel:
                                 for gnode in gnodes:
                                     if gnode in elementids:
                                         element = self.drawing_models[k1][k2]
-                                        element.set_selection(select=True, color=misc.COLOR_SELECTED_WARNING)
+                                        element.set_selection(select=True, color=style.COLOR_SELECTED_WARNING)
                                         self.mark_page(k1)
                 else:
                     for k1,k2 in elementids:
                         element = self.drawing_models[k1][k2]
-                        element.set_selection(select=True, color=misc.COLOR_SELECTED_WARNING)
+                        element.set_selection(select=True, color=style.COLOR_SELECTED_WARNING)
                         self.mark_page(k1)
             self.drawing_view.refresh(redraw=True)
         log.info('ProjectModel - select_powermodel - select')
@@ -402,11 +405,11 @@ class ProjectModel:
             self.powermodel = PandaPowerModel(self.networkmodel, self.loadprofiles, f_hz)
             
             if which in ('all', 'lf'):
-                self.powermodel.build_power_model(mode=misc.POWER_MODEL_LINEFAULT)
+                self.powermodel.build_power_model(mode=constants.POWER_MODEL_LINEFAULT)
             if which in ('all', 'gf'):
-                self.powermodel.build_power_model(mode=misc.POWER_MODEL_GROUNDFAULT)
+                self.powermodel.build_power_model(mode=constants.POWER_MODEL_GROUNDFAULT)
             if which in ('all', 'powerflow'):
-                self.powermodel.build_power_model(mode=misc.POWER_MODEL_POWERFLOW)
+                self.powermodel.build_power_model(mode=constants.POWER_MODEL_POWERFLOW)
                 
             if which in ('all', 'lf', 'gf', 'powerflow'):
                 self.status['power_model'] = True
@@ -524,12 +527,12 @@ class ProjectModel:
         base_elements = self.networkmodel.get_elements_sorted_loc()  # Get sorted element dict
         
         # Setup local variables
-        refs = misc.ReferenceCounter(1)  # Counter for base references
+        refs = ReferenceCounter(1)  # Counter for base references
         prefix_codes = dict()  # Prefix codes for elements for assembly references
         changed = []  # Undo tracking of changed elements
         base_ref = dict()  # Base references dictionary
         for code, model in self.program_state['element_models'].items():
-            if code not in misc.NON_ELEMENT_CODES:
+            if code not in constants.NON_ELEMENT_CODES:
                 base_ref[code] = model(project_settings=self.get_project_fields(full=True)).fields['ref']['value'].strip('?')
         base_ref['element_assembly'] = 'A'
         
@@ -597,7 +600,7 @@ class ProjectModel:
         if mode in ("New elements only", "Selected elements only"):
             for key, model in base_elements.items():
                 code = model.code
-                if code not in misc.NON_ELEMENT_CODES:
+                if code not in constants.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
@@ -618,7 +621,7 @@ class ProjectModel:
         if mode == "All":
             for key, model in base_elements.items():
                 code = model.code
-                if code not in misc.NON_ELEMENT_CODES:
+                if code not in constants.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
@@ -635,7 +638,7 @@ class ProjectModel:
             # Modify references
             for key, model in base_elements.items():
                 code = model.code
-                if code not in misc.NON_ELEMENT_CODES:
+                if code not in constants.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
@@ -651,7 +654,7 @@ class ProjectModel:
         elif mode == "Selected elements only":
             for key, model in zip(selected_keys, selected_elements):
                 code = model.code
-                if code not in misc.NON_ELEMENT_CODES:
+                if code not in constants.NON_ELEMENT_CODES:
                     code_ref = base_ref[code]
                     if key in prefix_codes:
                         prefix = prefix_codes[key]
@@ -675,7 +678,7 @@ class ProjectModel:
         # Populate mapping
         for drawing_model in self.drawing_models:
             sheetno = drawing_model.fields['sheet_no']['value']
-            slnos = drawing_model.get_element_codes(codes=misc.REFERENCE_CODES)
+            slnos = drawing_model.get_element_codes(codes=constants.REFERENCE_CODES)
             for slno in slnos:
                 element = drawing_model.elements[slno]
                 ref = element.fields['ref']['value']
@@ -710,7 +713,7 @@ class ProjectModel:
         # Update largest counter for reference elements
         for key, model in base_elements.items():
             code = model.code
-            if code in misc.REFERENCE_CODES:
+            if code in constants.REFERENCE_CODES:
                 ref = model.fields['ref']['value']
                 try:
                     count = int(ref.lstrip('CR'))
@@ -769,7 +772,7 @@ class ProjectModel:
             call_at_exit()
         
     def export_pdf_report(self, foldername, settings, call_at_exit=None):
-        template_path = misc.abs_path("templates")
+        template_path = abs_path("templates")
         env = Environment(loader=FileSystemLoader(template_path))
         
         # General variables
@@ -780,7 +783,7 @@ class ProjectModel:
         export_boq_flag = report_settings['export_boq']['value']
         export_loadprofiles_flag = report_settings['export_loadprofiles']['value']
         export_ana_flag = report_settings['export_analysis']['value']
-        gen_variables = {'program_version'        : 'v' + misc.PROGRAM_VER,
+        gen_variables = {'program_version'        : 'v' + constants.PROGRAM_VER,
                          'project_name'           : project_settings['project_name']['value'],
                          'drawing_field_approved' : project_settings['drawing_field_approved']['value'],
                          'drawing_field_dept'     : project_settings['drawing_field_dept']['value'],
@@ -789,7 +792,7 @@ class ProjectModel:
                          'doc_author': project_settings['drawing_field_approved']['value'],
                          'doc_subject': "Project Report",
                          'doc_lang': project_settings['drawing_field_lang']['value'],
-                         'doc_creator':misc.PROGRAM_NAME + ' v' + misc.PROGRAM_VER,
+                         'doc_creator':constants.PROGRAM_NAME + ' v' + constants.PROGRAM_VER,
                          'doc_create_date': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
                          'doc_mod_date': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()}
         
@@ -806,25 +809,25 @@ class ProjectModel:
         base_elements = self.networkmodel.base_elements
         # First pass add all required elements
         for key, model in base_elements.items():
-            if 'ref' in model.fields and model.code not in misc.NON_ELEMENT_CODES:
+            if 'ref' in model.fields and model.code not in constants.NON_ELEMENT_CODES:
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
                 if export_elements_flag:
-                    element_tables[key] = misc.fields_to_table(model.fields, insert_graph=export_graphs_flag)
+                    element_tables[key] = fields_to_table(model.fields, insert_graph=export_graphs_flag)
             # Lines
-            if model.code in misc.LINE_ELEMENT_CODES:
+            if model.code in constants.LINE_ELEMENT_CODES:
                 element_lines.append(model)
             # Loads
-            if model.code in misc.LOAD_ELEMENT_CODES:
+            if model.code in constants.LOAD_ELEMENT_CODES:
                 element_loads.append(model)
             # Switches
-            if model.code in misc.SWITCH_ELEMENT_CODES:
+            if model.code in constants.SWITCH_ELEMENT_CODES:
                 element_switches.append(model)
             # Nodes
-            if model.code in misc.DISPLAY_ELEMENT_CODES:
+            if model.code in constants.DISPLAY_ELEMENT_CODES:
                 element_nodes[int(model.fields['ref']['value'])] = model
             # Loads
-            if model.code in misc.LOADPROFILE_CODES and model.fields['load_profile']['value'] in self.loadprofiles:
+            if model.code in constants.LOADPROFILE_CODES and model.fields['load_profile']['value'] in self.loadprofiles:
                 loadprofile_captions_used.add(model.fields['load_profile']['value'])
 
         # Second pass for adding assmebly details
@@ -841,12 +844,12 @@ class ProjectModel:
                 for s in children_list:
                     children_str = children_str + ', ' + s
                 children_str = children_str[2:]
-                assembly_fields['children'] = misc.get_field_dict('str', 'Sub-elements', '', children_str, status_inactivate=False)
+                assembly_fields['children'] = get_field_dict('str', 'Sub-elements', '', children_str, status_inactivate=False)
                 # Add element
                 element_captions[key] = model.fields['ref']['value'] + ' - ' + model.name
                 element_refs[key] = model.fields['ref']['value']
                 if export_elements_flag:
-                    element_tables[key] = misc.fields_to_table(assembly_fields, insert_graph=export_graphs_flag)
+                    element_tables[key] = fields_to_table(assembly_fields, insert_graph=export_graphs_flag)
         # Sort by reference
         element_captions = dict(sorted(element_captions.items(), key=lambda item:item[1]))
         if export_elements_flag:
@@ -855,16 +858,16 @@ class ProjectModel:
         # BOQ
         boq_tables = dict()
         boq_captions = dict()
-        E = misc.ELEMENT_FIELD
-        R = misc.ELEMENT_RESULT
-        P = misc.ELEMENT_PLACEHOLDER
+        E = constants.ELEMENT_FIELD
+        R = constants.ELEMENT_RESULT
+        P = constants.ELEMENT_PLACEHOLDER
         if export_boq_flag:
             # Lines
             if element_lines:
                 col_codes = ['ref', 'name', 'designation', 'type', 'parallel', 'length_km', 'max_i_ka', 'df', 'in_service', 'loading_percent_max', 'pl_mw_max', 'pl_perc_max']
                 col_captions = ['Reference', 'Name', 'Designation', 'Type', '# Parallel Lines',  'Length', 'Imax', 'Derating Factor', 'In Service ?', '% Loading', 'P loss', '% P loss']
                 code_sources = [E,E,E,E,E,E,E,E,E,R,R,R]
-                table = misc.elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines',
+                table = elements_to_table(element_lines, col_codes, col_captions, code_sources, 'boq_lines',
                                             show_element_class=True, sum_cols=[10])
                 boq_tables['boq_lines'] = table
                 boq_captions['boq_lines'] = 'Lines'
@@ -902,7 +905,7 @@ class ProjectModel:
                 col_codes = ['ref', 'name', 'sn_kva', 'cos_phi', 'sa', 'sb', 'sc', 'in_service', 'load_profile']
                 col_captions = ['Reference', 'Name', 'Rated power', 'PF', 'Sa', 'Sb', 'Sc', 'In Service ?', 'Load Profile']
                 code_sources = [E,E,P,P,P,P,P,E,E]
-                table = misc.elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads',
+                table = elements_to_table(element_loads, col_codes, col_captions, code_sources, 'boq_loads',
                                             show_element_class=True, modifyfunc=modifyfunc_load, sum_cols=[2])
                 boq_tables['element_loads'] = table
                 boq_captions['element_loads'] = 'Loads'
@@ -921,7 +924,7 @@ class ProjectModel:
                 col_captions = ['Reference', 'Name', 'Type', 'Sub type', 'Poles', 'Un', 'In',
                                 'Line protection curve', 'Ground protection curve', 'Closed']
                 code_sources = [E,E,E,E,E,E,E,E,E,E]
-                table = misc.elements_to_table(element_switches, col_codes, col_captions, code_sources, 'boq_switches',
+                table = elements_to_table(element_switches, col_codes, col_captions, code_sources, 'boq_switches',
                                             show_element_class=False, modifyfunc=modifyfunc_switch)
                 boq_tables['element_switches'] = table
                 boq_captions['element_switches'] = 'Switches'
@@ -931,7 +934,7 @@ class ProjectModel:
                 col_codes = ['ref', 'vn_kv', 'delv_perc_max', 'ikss_ka_3ph_max', 'ikss_ka_3ph_min', 'ipss_ka_3ph_max', 'ikss_ka_1ph_max', 'ikss_ka_1ph_min']
                 col_captions = ['Node ID', 'Vn', 'ΔV', 'Isc (sym, max)', 'Isc (sym, min)', 'Isc (pk, max)', 'Isc (L-G, max)', 'Isc (L-G, min)']
                 code_sources = [E,R,R,R,R,R,R,R]
-                table = misc.elements_to_table(nodes_sorted_by_name, col_codes, col_captions, code_sources, 'boq_nodes',
+                table = elements_to_table(nodes_sorted_by_name, col_codes, col_captions, code_sources, 'boq_nodes',
                                             show_slno=False, show_element_class=False)
                 boq_tables['element_nodes'] = table
                 boq_captions['element_nodes'] = 'Nodes'
@@ -944,8 +947,8 @@ class ProjectModel:
             # Sort
             loadprofile_captions = dict(sorted(loadprofile_captions.items(), key=lambda item:item[1]))
             # Add images
-            xlim = misc.GRAPH_LOAD_TIME_LIMITS
-            ylim = misc.GRAPH_LOAD_CURRENT_LIMITS
+            xlim = constants.GRAPH_LOAD_TIME_LIMITS
+            ylim = constants.GRAPH_LOAD_CURRENT_LIMITS
             xlabel = 'Time (Hr)'
             ylabel = 'Diversity Factor'
             params = {}
@@ -961,7 +964,7 @@ class ProjectModel:
             analysis_flag = True
         else: 
             analysis_flag = False
-        ana_opt_table = misc.fields_to_table(self.get_project_fields(page='Simulation'))
+        ana_opt_table = fields_to_table(self.get_project_fields(page='Simulation'))
         
         # Analysis results
         ana_res_captions = dict()
@@ -970,9 +973,9 @@ class ProjectModel:
             base_elements = self.networkmodel.base_elements
             # First pass add all required elements
             for key, model in base_elements.items():
-                if 'ref' in model.fields and (model.code not in misc.REFERENCE_CODES) and (model.code != 'element_assembly'):
+                if 'ref' in model.fields and (model.code not in constants.REFERENCE_CODES) and (model.code != 'element_assembly'):
                     if model.res_fields:
-                        table = misc.fields_to_table(model.res_fields, insert_graph=export_graphs_flag)
+                        table = fields_to_table(model.res_fields, insert_graph=export_graphs_flag)
                         ana_res_captions[str(key)+'_res'] = model.fields['ref']['value'] + ' - ' + model.name
                         ana_res_tables[str(key)+'_res'] = table
             # Sort by reference
@@ -1000,15 +1003,15 @@ class ProjectModel:
         
         # Load CSS file
         template_css = env.get_template("report.css")
-        template_vars_css = {'report_font': misc.REPORT_FONT_FACE,
-                             'report_font_size': misc.REPORT_FONT_SIZE}
+        template_vars_css = {'report_font': style.REPORT_FONT_FACE,
+                             'report_font_size': style.REPORT_FONT_SIZE}
         css_out = template_css.render(template_vars_css)
         css_obj = io.BytesIO(bytes(css_out, 'utf-8'))
         
         # Render HTML, PDF
-        filename_pdf = misc.posix_path(foldername, 'report.pdf')
-        filename_html = misc.posix_path(foldername, 'report.html')
-        filename_css = misc.posix_path(foldername, 'report.css')
+        filename_pdf = posix_path(foldername, 'report.pdf')
+        filename_html = posix_path(foldername, 'report.html')
+        filename_css = posix_path(foldername, 'report.css')
         with open(filename_html, 'w', encoding='utf-8') as fp:
             fp.write(html_out)
         with open(filename_css, 'w', encoding='utf-8') as fp:
@@ -1024,20 +1027,20 @@ class ProjectModel:
         surface.set_metadata(cairo.PDFMetadata.TITLE, proj_fields['project_name']['value'])
         surface.set_metadata(cairo.PDFMetadata.AUTHOR, proj_fields['drawing_field_approved']['value'])
         surface.set_metadata(cairo.PDFMetadata.SUBJECT, 'Electrical Schematic Drawing')
-        surface.set_metadata(cairo.PDFMetadata.CREATOR, misc.PROGRAM_NAME + ' v' + misc.PROGRAM_VER)
+        surface.set_metadata(cairo.PDFMetadata.CREATOR, constants.PROGRAM_NAME + ' v' + constants.PROGRAM_VER)
         surface.set_metadata(cairo.PDFMetadata.CREATE_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
         surface.set_metadata(cairo.PDFMetadata.MOD_DATE, datetime.datetime.now().astimezone().replace(microsecond=0).isoformat())
         context = cairo.Context(surface)
         # If dark mode, load correct values while drawing
         if self.program_state['dark_mode']:
-            misc.reset_dark_mode_drawing_values()
+            style.reset_dark_mode_drawing_values()
         for drawing_model in self.drawing_models:
             surface.set_size(drawing_model.fields['page_width']['value'], drawing_model.fields['page_height']['value'])
             drawing_model.export_drawing(context)
             surface.show_page()
         # If dark mode, restore original values
         if self.program_state['dark_mode']:
-            misc.set_dark_mode_drawing_values()  
+            style.set_dark_mode_drawing_values()  
         surface.finish()
         if call_at_exit:
             call_at_exit()
@@ -1057,7 +1060,7 @@ class ProjectModel:
             drawing_names.append(page_name)
         proj_pages.append(('proj_loadprofiles.json', self.loadprofiles))
         proj_settings = {'proj_drawing_names'  : drawing_names,
-                         'proj_fields'         : misc.get_fields_dict_trunc(self.fields)}
+                         'proj_fields'         : get_fields_dict_trunc(self.fields)}
         return [proj_settings, proj_pages]
             
     def set_model(self, document, pages):
@@ -1067,7 +1070,7 @@ class ProjectModel:
         if ('proj_drawing_names' in document and 
             'proj_fields' in document and 
             'proj_loadprofiles.json' in pages):
-            self.fields = misc.update_fields_dict(self.fields, document['proj_fields'])
+            self.fields = update_fields_dict(self.fields, document['proj_fields'])
             self.program_state['project_settings_main'] = self.fields['Information']
             self.program_state['project_settings'] = self.fields
             self.loadprofiles = pages['proj_loadprofiles.json']

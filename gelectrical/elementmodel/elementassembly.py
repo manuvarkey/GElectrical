@@ -27,7 +27,9 @@ from gi.repository import Gtk, Gdk
 import cairo
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.fields import get_fields_trunc
+from ..core.paths import abs_path
 from .element import ElementModel
 
 # Get logger object
@@ -40,7 +42,7 @@ class ElementAssembly(ElementModel):
     code = 'element_assembly'
     name = 'Assembly'
     group = ''
-    icon = misc.abs_path('icons', 'assembly.svg')
+    icon = abs_path('icons', 'assembly.svg')
 
     def __init__(self, children_codes=None, children=None, **kwargs):
         # Global
@@ -70,10 +72,10 @@ class ElementAssembly(ElementModel):
         # Preprocessing
         
         # Render text
-        self.text_model = [[(self.element_rect_width/misc.M + 1, (misc.SCHEM_FONT_SPACING - misc.SCHEM_FONT_SIZE)/misc.M), "${name}, ${ref}", True],
-                           [(self.element_rect_width/misc.M + 1, None), "${text1}", True],
-                           [(self.element_rect_width/misc.M + 1, None), "${text2}", True],
-                           [(self.element_rect_width/misc.M + 1, None), "${text3}", True]]
+        self.text_model = [[(self.element_rect_width/constants.M + 1, (style.SCHEM_FONT_SPACING - style.SCHEM_FONT_SIZE)/constants.M), "${name}, ${ref}", True],
+                           [(self.element_rect_width/constants.M + 1, None), "${text1}", True],
+                           [(self.element_rect_width/constants.M + 1, None), "${text2}", True],
+                           [(self.element_rect_width/constants.M + 1, None), "${text3}", True]]
         self.render_text(context, self.text_model)
         # Render schem
         (tx0, ty0, tw0, th0) = self.text_extends[0]
@@ -82,9 +84,9 @@ class ElementAssembly(ElementModel):
         (tx3, ty3, tw3, th3) = self.text_extends[3]
         tw = max(tw0, tw1, tw2, tw3)
         self.schem_model = [['RECT',(0, 0), 
-                             (self.element_rect_width + tw)/misc.M + 2, 
-                             self.element_rect_height/misc.M, 
-                             False, misc.GROUP_DRAW_PATTERN, 'thin']]
+                             (self.element_rect_width + tw)/constants.M + 2, 
+                             self.element_rect_height/constants.M, 
+                             False, constants.GROUP_DRAW_PATTERN, 'thin']]
         self.render_model(context, self.schem_model)
         
         # Post processing
@@ -110,7 +112,7 @@ class ElementAssembly(ElementModel):
                 'y': self.y,
                 'orientation': self.orientation,
                 'ports': copy.deepcopy(self.ports),
-                'fields': misc.get_fields_trunc(self.fields),
+                'fields': get_fields_trunc(self.fields),
                 'element_rect_width': self.element_rect_width,
                 'element_rect_height': self.element_rect_height,
                 'children_codes': self.children_codes}
