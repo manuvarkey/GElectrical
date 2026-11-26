@@ -23,7 +23,16 @@
    "step": "run_powerflow"
   }
  ],
- "traceback": "Traceback (most recent call last):\n  File \"<ROOT>/tools/baseline/capture.py\", line 659, in step\n    value = func()\n            ^^^^^^\n  File \"<ROOT>/tools/baseline/capture.py\", line 691, in <lambda>\n    ok = step('run_powerflow', lambda: project.run_powerflow(pf_method))[0]\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<ROOT>/gelectrical/model/project.py\", line 434, in run_powerflow\n    self.powermodel.run_powerflow(pf_type, runpp_3ph=True)\n  File \"<ROOT>/gelectrical/model/pandapower.py\", line 609, in run_powerflow\n    pp.runpp_3ph(self.power_model, run_control=True)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/pf/runpp_3ph.py\", line 424, in runpp_3ph\n    y_0_t, y_1_t, y_2_t = _get_y_bus(ppci0, ppci1, ppci2, recycle)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/pf/runpp_3ph.py\", line 605, in _get_y_bus\n    y_0_bus, y_0_f, y_0_t = makeYbus(ppci0[\"baseMVA\"], ppci0[\"bus\"], ppci0[\"branch\"])\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFloatingPointError: divide by zero encountered in divide\n",
+ "traceback": [
+  "<ROOT>/gelectrical/model/project.py:run_powerflow",
+  "<ROOT>/gelectrical/model/pandapower.py:run_powerflow",
+  "pandapower/pf/runpp_3ph.py:runpp_3ph",
+  "pandapower/pf/runpp_3ph.py:_get_y_bus",
+  "pandapower/pypower/makeYbus.py:makeYbus",
+  "numpy/_core/_ufunc_config.py:inner",
+  "pandapower/pypower/makeYbus.py:branch_vectors",
+  "FloatingPointError: divide by zero encountered in divide"
+ ],
  "warnings": [
   "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
   "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"

@@ -23,7 +23,21 @@
    "step": "run_powerflow_timeseries"
   }
  ],
- "traceback": "Traceback (most recent call last):\n  File \"<ROOT>/tools/baseline/capture.py\", line 659, in step\n    value = func()\n            ^^^^^^\n  File \"<ROOT>/gelectrical/model/project.py\", line 448, in run_powerflow_timeseries\n    self.powermodel.run_powerflow_timeseries(runpp_3ph=True)\n  File \"<ROOT>/gelectrical/model/pandapower.py\", line 1277, in run_powerflow_timeseries\n    timeseries.run_timeseries(self.power_model, time_steps=time_steps, run=pp.runpp_3ph)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/timeseries/run_time_series.py\", line 364, in run_timeseries\n    run_loop(net, ts_variables, **kwargs)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/timeseries/run_time_series.py\", line 331, in run_loop\n    run_time_step(net, time_step, ts_variables, run_control_fct, output_writer_fct, **kwargs)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/timeseries/run_time_series.py\", line 130, in run_time_step\n    run_control_fct(net, ctrl_variables=ts_variables, **kwargs)\nNotImplementedError: Three winding transformers are not implemented for unbalanced calculations\n",
+ "traceback": [
+  "<ROOT>/gelectrical/model/project.py:run_powerflow_timeseries",
+  "<ROOT>/gelectrical/model/pandapower.py:run_powerflow_timeseries",
+  "pandapower/timeseries/run_time_series.py:run_timeseries",
+  "pandapower/timeseries/run_time_series.py:run_loop",
+  "pandapower/timeseries/run_time_series.py:run_time_step",
+  "pandapower/control/run_control.py:run_control",
+  "pandapower/control/run_control.py:control_implementation",
+  "pandapower/control/run_control.py:_evaluate_net",
+  "pandapower/pf/runpp_3ph.py:runpp_3ph",
+  "pandapower/pd2ppc.py:_pd2ppc_recycle",
+  "pandapower/pd2ppc.py:_pd2ppc",
+  "pandapower/pd2ppc_zero.py:_build_branch_ppc_zero",
+  "NotImplementedError: Three winding transformers are not implemented for unbalanced calculations"
+ ],
  "warnings": [
   "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
   "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"

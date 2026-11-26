@@ -164,8 +164,13 @@ directories, `GTK_THEME=Adwaita:light` and `LC_ALL=C.UTF-8`:
 - Drawings are rendered with the same `DrawingModel.export_drawing` code onto
   a Cairo image surface at 150 DPI. PNG comparison is skipped (with a warning)
   when the resolved fonts in `environment.json` differ from the baseline.
-- Undo snapshots store element codes/references and a SHA-256 of the storage
-  model instead of full models.
+- Undo snapshots store element codes/references and the number of storage
+  model differences against the initial model (floats compared with the
+  field tolerance) instead of full models; `undo.json` contains no floats.
+  `status.json` tracebacks list `file:function` frames without line numbers.
+  Both keep these artefacts independent of last-bit float results and of
+  unrelated code moves (the first CI run showed ~1e-14 differences in curve
+  points between machines, inside tolerance everywhere else).
 - Node keys are `N[...]` (sorted local node ids, e.g. `(0, 3):1`); virtual
   source/sink nodes are `T[<element>]`.
 - The legacy analysis runs on the model as loaded, without drawing the sheets

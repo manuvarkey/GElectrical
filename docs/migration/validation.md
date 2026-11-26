@@ -86,3 +86,20 @@ Navigation: [migration index](README.md) · [testing guide](../testing.md).
   build (no user-manual pages changed), interactive review of the coverage
   projects in the GTK app. PNG comparison in CI will be skipped if the runner
   resolves different fonts (`osifont` is installed locally).
+
+## 2026-11-26 — M1 first CI run (PR manuvarkey/GElectrical#27)
+
+- Run 45856511403 at `dfe63cf`: Windows smoke **passed**; Linux smoke
+  **passed**; Linux regression baseline **failed** in 11 of 17 projects, only
+  in `undo.json`. Cause: undo snapshots used a bit-exact SHA-256 of the
+  storage model and stored float values without tolerance; protection curve
+  points differ by ~1e-14 between the runner and the capture machine. All
+  other artefacts matched within the documented tolerances. Drawing PNGs
+  were skipped as designed (runner resolves DejaVu fonts, baseline osifont /
+  Noto Sans Mono).
+- Fix (harness only): tolerance-aware undo snapshot summaries, difference
+  paths without values, float-free structure descriptions in `d8.json`,
+  line-number-free tracebacks in `status.json`. Re-captured: only
+  `undo.json` (17), `status.json` (27) and `sample__sample/d8.json`
+  changed; no numerical artefact changed. Local `xvfb-run -a pixi run -e
+  test test`: 38 passed. Hosted re-run: pending on the next push.

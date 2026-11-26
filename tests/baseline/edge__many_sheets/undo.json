@@ -3,6 +3,7 @@
   {
    "label": "modify_ref_field",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -132,8 +133,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "42020895a51ace7c"
+    ]
    },
    "redocount": 1,
    "redotext": null,
@@ -143,6 +143,7 @@
   {
    "label": "insert_load",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -276,8 +277,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "a1d6ae7a13ed0e36"
+    ]
    },
    "redocount": 2,
    "redotext": null,
@@ -287,6 +287,7 @@
   {
    "label": "delete_element_0",
    "model": {
+    "differences_vs_initial": 177,
     "sheets": [
      [
       [
@@ -416,8 +417,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "01a1c08cf3e90810"
+    ]
    },
    "redocount": 3,
    "redotext": null,
@@ -427,6 +427,7 @@
   {
    "label": "renumber_all",
    "model": {
+    "differences_vs_initial": 182,
     "sheets": [
      [
       [
@@ -556,8 +557,7 @@
        "X7"
       ]
      ]
-    ],
-    "stored_sha256": "8a7da061bfd4c051"
+    ]
    },
    "redocount": 4,
    "redotext": null,
@@ -567,6 +567,7 @@
   {
    "label": "setup_base_model",
    "model": {
+    "differences_vs_initial": 182,
     "sheets": [
      [
       [
@@ -748,8 +749,7 @@
        "8"
       ]
      ]
-    ],
-    "stored_sha256": "8a7da061bfd4c051"
+    ]
    },
    "redocount": 6,
    "redotext": null,
@@ -761,6 +761,7 @@
   {
    "label": "Redo Modify 'ref' field  of 'External Grid' element",
    "model": {
+    "differences_vs_initial": 177,
     "sheets": [
      [
       [
@@ -890,8 +891,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "01a1c08cf3e90810"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Add draw element at '5'",
@@ -901,6 +901,7 @@
   {
    "label": "Redo Add draw element at '5'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -1034,8 +1035,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "bbf96305699c9231"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -1045,6 +1045,7 @@
   {
    "label": "Redo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 175,
     "sheets": [
      [
       [
@@ -1174,8 +1175,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "2b0a59f7d09b5c80"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Renumber Elements - All",
@@ -1185,6 +1185,7 @@
   {
    "label": "Redo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 185,
     "sheets": [
      [
       [
@@ -1314,8 +1315,7 @@
        "X8"
       ]
      ]
-    ],
-    "stored_sha256": "acd399739fa59b0b"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Clear analysis results",
@@ -1325,6 +1325,7 @@
   {
    "label": "Redo Clear analysis results",
    "model": {
+    "differences_vs_initial": 185,
     "sheets": [
      [
       [
@@ -1454,8 +1455,7 @@
        "X8"
       ]
      ]
-    ],
-    "stored_sha256": "acd399739fa59b0b"
+    ]
    },
    "redocount": 5,
    "redotext": "Redo Add node elements",
@@ -1465,6 +1465,7 @@
   {
    "label": "Redo Add node elements",
    "model": {
+    "differences_vs_initial": 185,
     "sheets": [
      [
       [
@@ -1646,8 +1647,7 @@
        "8"
       ]
      ]
-    ],
-    "stored_sha256": "acd399739fa59b0b"
+    ]
    },
    "redocount": 6,
    "redotext": null,
@@ -1659,6 +1659,7 @@
   {
    "label": "Undo Add node elements",
    "model": {
+    "differences_vs_initial": 182,
     "sheets": [
      [
       [
@@ -1788,8 +1789,7 @@
        "X7"
       ]
      ]
-    ],
-    "stored_sha256": "8a7da061bfd4c051"
+    ]
    },
    "redocount": 5,
    "redotext": "Redo Add node elements",
@@ -1799,6 +1799,7 @@
   {
    "label": "Undo Clear analysis results",
    "model": {
+    "differences_vs_initial": 182,
     "sheets": [
      [
       [
@@ -1928,8 +1929,7 @@
        "X7"
       ]
      ]
-    ],
-    "stored_sha256": "8a7da061bfd4c051"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Clear analysis results",
@@ -1939,6 +1939,7 @@
   {
    "label": "Undo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 177,
     "sheets": [
      [
       [
@@ -2068,8 +2069,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "01a1c08cf3e90810"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Renumber Elements - All",
@@ -2079,6 +2079,7 @@
   {
    "label": "Undo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -2212,8 +2213,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "d12dee1f9b7e5a35"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -2223,6 +2223,7 @@
   {
    "label": "Undo Add draw element at '5'",
    "model": {
+    "differences_vs_initial": 177,
     "sheets": [
      [
       [
@@ -2352,8 +2353,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "01a1c08cf3e90810"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Add draw element at '5'",
@@ -2363,6 +2363,7 @@
   {
    "label": "Undo Modify 'ref' field  of 'External Grid' element",
    "model": {
+    "differences_vs_initial": 177,
     "sheets": [
      [
       [
@@ -2492,8 +2493,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "01a1c08cf3e90810"
+    ]
    },
    "redocount": 0,
    "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
@@ -2505,6 +2505,7 @@
   {
    "label": "Undo Add node elements",
    "model": {
+    "differences_vs_initial": 185,
     "sheets": [
      [
       [
@@ -2634,8 +2635,7 @@
        "X8"
       ]
      ]
-    ],
-    "stored_sha256": "acd399739fa59b0b"
+    ]
    },
    "redocount": 5,
    "redotext": "Redo Add node elements",
@@ -2645,6 +2645,7 @@
   {
    "label": "Undo Clear analysis results",
    "model": {
+    "differences_vs_initial": 185,
     "sheets": [
      [
       [
@@ -2774,8 +2775,7 @@
        "X8"
       ]
      ]
-    ],
-    "stored_sha256": "acd399739fa59b0b"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Clear analysis results",
@@ -2785,6 +2785,7 @@
   {
    "label": "Undo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 175,
     "sheets": [
      [
       [
@@ -2914,8 +2915,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "8c8a311bd4e8f59d"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Renumber Elements - All",
@@ -2925,6 +2925,7 @@
   {
    "label": "Undo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -3058,8 +3059,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "5a1d9f8c721204d9"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -3069,6 +3069,7 @@
   {
    "label": "Undo Add draw element at '5'",
    "model": {
+    "differences_vs_initial": 175,
     "sheets": [
      [
       [
@@ -3198,8 +3199,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "8c8a311bd4e8f59d"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Add draw element at '5'",
@@ -3209,6 +3209,7 @@
   {
    "label": "Undo Modify 'ref' field  of 'External Grid' element",
    "model": {
+    "differences_vs_initial": 175,
     "sheets": [
      [
       [
@@ -3338,8 +3339,7 @@
        "X6"
       ]
      ]
-    ],
-    "stored_sha256": "8c8a311bd4e8f59d"
+    ]
    },
    "redocount": 0,
    "redotext": "Redo Modify 'ref' field  of 'External Grid' element",
@@ -3348,376 +3348,56 @@
   }
  ],
  "undo_all_differences": [
-  {
-   "loaded": "element_busbar",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/code",
-   "stored": "element_grid"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/DF",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "int",
-    "value": 200
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/In",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 16
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/Isc",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
-   "stored": {
-    "type": "bool",
-    "value": true
-   }
-  },
-  {
-   "loaded": {
-    "type": "int",
-    "value": 2
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_btm",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "int",
-    "value": 1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_top",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/name",
-   "stored": {
-    "type": "str",
-    "value": "EXTERNAL GRID"
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
-   "stored": {
-    "type": "float",
-    "value": 0.1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r_grid",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "B1",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref/value",
-   "stored": "G1"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
-   "stored": {
-    "type": "float",
-    "value": 0.1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
-   "stored": {
-    "type": "float",
-    "value": 10
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
-   "stored": {
-    "type": "float",
-    "value": 5
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
-   "stored": {
-    "type": "float",
-    "value": 0.415
-   }
-  },
-  {
-   "loaded": {
-    "type": "int",
-    "value": 14
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/width",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": "<structure d55d170ab34ee66b>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/ports",
-   "stored": "<structure bb65e5c9951e2138>"
-  },
-  {
-   "loaded": 392,
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/x",
-   "stored": 384
-  },
-  {
-   "loaded": 96,
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/y",
-   "stored": 48
-  },
-  {
-   "loaded": "element_load",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/code",
-   "stored": "element_busbar"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/DF",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/In",
-   "stored": {
-    "type": "int",
-    "value": 200
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/Isc",
-   "stored": {
-    "type": "float",
-    "value": 16
-   }
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.8
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/cos_phi",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "bool",
-    "value": true
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/in_service",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "graph",
-    "value": "load_prof_1"
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/load_profile",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "bool",
-    "value": true
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/mode",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/n_btm",
-   "stored": {
-    "type": "int",
-    "value": 2
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/n_top",
-   "stored": {
-    "type": "int",
-    "value": 1
-   }
-  },
-  {
-   "loaded": {
-    "type": "str",
-    "value": ""
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/name",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/r_grid",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": "X1",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/ref/value",
-   "stored": "B1"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/scaling",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 2
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/sn_kva",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/width",
-   "stored": {
-    "type": "int",
-    "value": 14
-   }
-  },
-  {
-   "loaded": "<structure 671ce415a7263127>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/ports",
-   "stored": "<structure d55d170ab34ee66b>"
-  },
-  {
-   "loaded": 128,
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/y",
-   "stored": 96
-  },
-  {
-   "loaded": "element_line_cable",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/code",
-   "stored": "element_load"
-  },
-  {
-   "loaded": {
-    "type": "int",
-    "value": 30
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/ambient_temp",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/armour_cross_section",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "str",
-    "value": "Copper"
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/armour_material",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/armour_sc_current_rating",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/c0g_nf_per_km",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/c0n_nf_per_km",
-   "stored": "<missing>"
-  }
+  "/pages/proj_drawing_page_0.json/1/elements/0/code",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/DF",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/In",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/Isc",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_btm",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_top",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/name",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/r_grid",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref/value",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/width",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
+  "/pages/proj_drawing_page_0.json/1/elements/0/ports",
+  "/pages/proj_drawing_page_0.json/1/elements/0/x",
+  "/pages/proj_drawing_page_0.json/1/elements/0/y",
+  "/pages/proj_drawing_page_0.json/1/elements/1/code",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/DF",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/In",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/Isc",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/cos_phi",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/in_service",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/load_profile",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/mode",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/n_btm",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/n_top",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/name",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/r_grid",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/ref/value",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/scaling",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/sn_kva",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/width",
+  "/pages/proj_drawing_page_0.json/1/elements/1/ports",
+  "/pages/proj_drawing_page_0.json/1/elements/1/y",
+  "/pages/proj_drawing_page_0.json/1/elements/2/code",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/ambient_temp",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/armour_cross_section",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/armour_material",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/armour_sc_current_rating",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/c0g_nf_per_km",
+  "/pages/proj_drawing_page_0.json/1/elements/2/fields/c0n_nf_per_km"
  ],
  "undo_all_restores_initial": false
 }

@@ -4,10 +4,10 @@
    "error": "RuntimeError: no element with a ref field",
    "label": "modify_ref_field",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 0,
    "redotext": null,
@@ -17,6 +17,7 @@
   {
    "label": "insert_load",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -24,8 +25,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "ee46d84d2da65def"
+    ]
    },
    "redocount": 1,
    "redotext": null,
@@ -35,10 +35,10 @@
   {
    "label": "delete_element_0",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 2,
    "redotext": null,
@@ -48,10 +48,10 @@
   {
    "label": "renumber_all",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 3,
    "redotext": null,
@@ -61,10 +61,10 @@
   {
    "label": "setup_base_model",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 5,
    "redotext": null,
@@ -76,6 +76,7 @@
   {
    "label": "Redo Add draw element at '0'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -83,8 +84,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "ee46d84d2da65def"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -94,10 +94,10 @@
   {
    "label": "Redo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Renumber Elements - All",
@@ -107,10 +107,10 @@
   {
    "label": "Redo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Clear analysis results",
@@ -120,10 +120,10 @@
   {
    "label": "Redo Clear analysis results",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Add node elements",
@@ -133,10 +133,10 @@
   {
    "label": "Redo Add node elements",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 5,
    "redotext": null,
@@ -148,10 +148,10 @@
   {
    "label": "Undo Add node elements",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Add node elements",
@@ -161,10 +161,10 @@
   {
    "label": "Undo Clear analysis results",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Clear analysis results",
@@ -174,10 +174,10 @@
   {
    "label": "Undo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Renumber Elements - All",
@@ -187,6 +187,7 @@
   {
    "label": "Undo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -194,8 +195,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "ee46d84d2da65def"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -205,10 +205,10 @@
   {
    "label": "Undo Add draw element at '0'",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 0,
    "redotext": "Redo Add draw element at '0'",
@@ -220,10 +220,10 @@
   {
    "label": "Undo Add node elements",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Add node elements",
@@ -233,10 +233,10 @@
   {
    "label": "Undo Clear analysis results",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Clear analysis results",
@@ -246,10 +246,10 @@
   {
    "label": "Undo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Renumber Elements - All",
@@ -259,6 +259,7 @@
   {
    "label": "Undo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -266,8 +267,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "ee46d84d2da65def"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -277,10 +277,10 @@
   {
    "label": "Undo Add draw element at '0'",
    "model": {
+    "differences_vs_initial": 0,
     "sheets": [
      []
-    ],
-    "stored_sha256": "9ec7a6b5ce6e8272"
+    ]
    },
    "redocount": 0,
    "redotext": "Redo Add draw element at '0'",

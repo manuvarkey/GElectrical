@@ -31,7 +31,17 @@
    "step": "run_linetoground_sccalc"
   }
  ],
- "traceback": "Traceback (most recent call last):\n  File \"<ROOT>/tools/baseline/capture.py\", line 659, in step\n    value = func()\n            ^^^^^^\n  File \"<ROOT>/gelectrical/model/project.py\", line 474, in run_linetoground_sccalc\n    self.powermodel.run_linetoground_sccalc(lv_tol_percent=sim_settings['lv_tol_percent']['value'],\n  File \"<ROOT>/gelectrical/model/pandapower.py\", line 1670, in run_linetoground_sccalc\n    sc.calc_sc(self.power_model_gf, fault='1ph', case='max', lv_tol_percent=lv_tol_percent,\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/shortcircuit/calc_sc.py\", line 158, in calc_sc\n    _calc_sc_1ph(net, bus)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/shortcircuit/calc_sc.py\", line 237, in _calc_sc_1ph\n    _calc_ybus(ppci_0)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/shortcircuit/impedance.py\", line 44, in _calc_ybus\n    Ybus, Yf, Yt = makeYbus(ppci[\"baseMVA\"], ppci[\"bus\"], ppci[\"branch\"])\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFloatingPointError: divide by zero encountered in divide\n",
+ "traceback": [
+  "<ROOT>/gelectrical/model/project.py:run_linetoground_sccalc",
+  "<ROOT>/gelectrical/model/pandapower.py:run_linetoground_sccalc",
+  "pandapower/shortcircuit/calc_sc.py:calc_sc",
+  "pandapower/shortcircuit/calc_sc.py:_calc_sc_1ph",
+  "pandapower/shortcircuit/impedance.py:_calc_ybus",
+  "pandapower/pf/makeYbus_numba.py:makeYbus",
+  "numpy/_core/_ufunc_config.py:inner",
+  "pandapower/pypower/makeYbus.py:branch_vectors",
+  "FloatingPointError: divide by zero encountered in divide"
+ ],
  "warnings": [
   "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
   "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"

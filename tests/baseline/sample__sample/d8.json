@@ -187,9 +187,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure a1c3820ded57cdf3>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_l/1",
-   "stored": "<structure 90ad521f61717fc6>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
@@ -217,9 +217,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure 0b1ffb2483685d6a>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/data/curve_u/1",
-   "stored": "<structure 0c307d0bd8e00ee3>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
@@ -237,29 +237,29 @@
    "stored": "d.t_ins_max"
   },
   {
-   "loaded": "<structure d8994d06fa807180>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/graph_model/1/0/xval",
-   "stored": "<structure f4398ea11d9b4c66>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure 25b06c52445629bc>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/graph_model/1/0/yval",
-   "stored": "<structure a2400400c27a8d53>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure ba92975e65d5f762>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/i_f",
-   "stored": "<structure ccafb508baf82558>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure f6793f369a57c917>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/i_m",
-   "stored": "<structure 898ee6c7042dfcca>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure a68851248c22f929>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/4/fields/pcurve_l/value/parameters/i_nf",
-   "stored": "<structure 600c88f4bc706dd9>"
+   "stored": "<list 4 items>"
   },
   {
    "loaded": "Thermal Magnetic",
@@ -322,9 +322,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure a1c3820ded57cdf3>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_l/1",
-   "stored": "<structure 90ad521f61717fc6>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
@@ -352,9 +352,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure 0b1ffb2483685d6a>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/data/curve_u/1",
-   "stored": "<structure 0c307d0bd8e00ee3>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
@@ -372,29 +372,29 @@
    "stored": "d.t_ins_max"
   },
   {
-   "loaded": "<structure 48680c9a12f7f55f>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/graph_model/1/0/xval",
-   "stored": "<structure 713dccaa0958a5c1>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure 98cfc112b36d693c>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/graph_model/1/0/yval",
-   "stored": "<structure d0f2be0bb8268f0a>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure ba92975e65d5f762>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/i_f",
-   "stored": "<structure ccafb508baf82558>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure f6793f369a57c917>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/i_m",
-   "stored": "<structure 898ee6c7042dfcca>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure a68851248c22f929>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/16/fields/pcurve_l/value/parameters/i_nf",
-   "stored": "<structure 600c88f4bc706dd9>"
+   "stored": "<list 4 items>"
   },
   {
    "loaded": "Thermal Magnetic",
@@ -412,9 +412,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure a1c3820ded57cdf3>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_l/1",
-   "stored": "<structure 90ad521f61717fc6>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
@@ -442,9 +442,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure 0b1ffb2483685d6a>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/data/curve_u/1",
-   "stored": "<structure 0c307d0bd8e00ee3>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
@@ -462,29 +462,29 @@
    "stored": "d.t_ins_max"
   },
   {
-   "loaded": "<structure 48680c9a12f7f55f>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/graph_model/1/0/xval",
-   "stored": "<structure 713dccaa0958a5c1>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure 98cfc112b36d693c>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/graph_model/1/0/yval",
-   "stored": "<structure d0f2be0bb8268f0a>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure ba92975e65d5f762>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/i_f",
-   "stored": "<structure ccafb508baf82558>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure f6793f369a57c917>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/i_m",
-   "stored": "<structure 898ee6c7042dfcca>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure a68851248c22f929>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/17/fields/pcurve_l/value/parameters/i_nf",
-   "stored": "<structure 600c88f4bc706dd9>"
+   "stored": "<list 4 items>"
   },
   {
    "loaded": "Thermal Magnetic",
@@ -502,9 +502,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure a1c3820ded57cdf3>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_l/1",
-   "stored": "<structure 90ad521f61717fc6>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100-d.tol_im_m)/100)*f.In",
@@ -532,9 +532,9 @@
    "stored": "d.t_conv*3600"
   },
   {
-   "loaded": "<structure 0b1ffb2483685d6a>",
+   "loaded": "<list 2 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/data/curve_u/1",
-   "stored": "<structure 0c307d0bd8e00ee3>"
+   "stored": "<list 10 items>"
   },
   {
    "loaded": "(d.i_m*(100+d.tol_im_p)/100)*f.In",
@@ -552,29 +552,29 @@
    "stored": "d.t_ins_max"
   },
   {
-   "loaded": "<structure 48680c9a12f7f55f>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/graph_model/1/0/xval",
-   "stored": "<structure 713dccaa0958a5c1>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure 98cfc112b36d693c>",
+   "loaded": "<list 207 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/graph_model/1/0/yval",
-   "stored": "<structure d0f2be0bb8268f0a>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure ba92975e65d5f762>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/i_f",
-   "stored": "<structure ccafb508baf82558>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure f6793f369a57c917>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/i_m",
-   "stored": "<structure 898ee6c7042dfcca>"
+   "stored": "<list 4 items>"
   },
   {
-   "loaded": "<structure a68851248c22f929>",
+   "loaded": "<list 5 items>",
    "path": "/pages/proj_drawing_page_0.json/1/elements/18/fields/pcurve_l/value/parameters/i_nf",
-   "stored": "<structure 600c88f4bc706dd9>"
+   "stored": "<list 4 items>"
   },
   {
    "loaded": "Thermal Magnetic",
@@ -617,14 +617,14 @@
    "stored": "1/1"
   },
   {
-   "loaded": "<structure 7b9dc2d540c3b281>",
+   "loaded": "<list 203 items>",
    "path": "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/graph_model/1/0/xval",
-   "stored": "<structure 1d13a73c79c375d4>"
+   "stored": "<list 107 items>"
   },
   {
-   "loaded": "<structure 4e3fdd053b7f152c>",
+   "loaded": "<list 203 items>",
    "path": "/pages/proj_drawing_page_1.json/1/elements/3/fields/pcurve_l/value/graph_model/1/0/yval",
-   "stored": "<structure 7b63183d8c0c8966>"
+   "stored": "<list 107 items>"
   },
   {
    "loaded": "Class 10A",

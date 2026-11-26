@@ -259,15 +259,19 @@ def value_differences(actual, expected, path=''):
     elif actual == expected:
         return out
     if isinstance(expected, (dict, list)) or isinstance(actual, (dict, list)):
-        out.append({'path': path, 'stored': '<structure %s>' % _digest(expected),
-                    'loaded': '<structure %s>' % _digest(actual)})
+        out.append({'path': path, 'stored': _shape(expected), 'loaded': _shape(actual)})
     else:
         out.append({'path': path, 'stored': expected, 'loaded': actual})
     return out
 
 
-def _digest(value):
-    return hashlib.sha256(canonical.dumps(value).encode('utf-8')).hexdigest()[:16]
+def _shape(value):
+    """Float-free description of a structure (type and size)."""
+    if isinstance(value, dict):
+        return '<dict %d keys>' % len(value)
+    if isinstance(value, list):
+        return '<list %d items>' % len(value)
+    return value
 
 
 def d8_report(filename, session):
@@ -624,6 +628,23 @@ def report_text(html):
 # Capture steps
 # ---------------------------------------------------------------------------
 
+def stable_traceback(exc):
+    """Frames as ``file:function`` without line numbers or harness frames,
+    so the artefact does not change when unrelated code moves."""
+    frames = []
+    for frame in traceback.extract_tb(exc.__traceback__):
+        path = frame.filename.replace(os.sep, '/')
+        if path.startswith(HERE.replace(os.sep, '/')):
+            continue
+        marker = path.find('site-packages/')
+        if marker >= 0:
+            path = path[marker + len('site-packages/'):]
+        else:
+            path = normalize_message(path)
+        frames.append('%s:%s' % (path, frame.name))
+    return frames + [normalize_message('%s: %s' % (type(exc).__name__, exc))]
+
+
 class WarningCollector(logging.Handler):
     def __init__(self):
         super().__init__(level=logging.WARNING)
@@ -665,7 +686,7 @@ def run_mode(session, pf_method, three_phase, extra=None):
         except Exception as exc:
             status['steps'].append({'step': name, 'ok': False,
                                     'error': normalize_message('%s: %s' % (type(exc).__name__, exc))})
-            status['traceback'] = normalize_message(traceback.format_exc(limit=6))
+            status['traceback'] = stable_traceback(exc)
             return False, None
 
     try:
@@ -841,12 +862,15 @@ def renumber_capture(session, mode):
     return result
 
 
-def model_summary(session):
+def model_summary(session, initial):
+    """Element codes/refs per sheet and the tolerance-aware difference count
+    of the storage model against ``initial`` (floats via TOL_FIELD, so the
+    summary does not depend on last-bit float differences between machines)."""
     sheets = []
     for drawing_model in session.project.drawing_models:
         sheets.append([[e.code, e.fields.get('ref', {}).get('value')] for e in drawing_model.elements])
     return {'sheets': sheets,
-            'stored_sha256': _digest(stored_model(session))}
+            'differences_vs_initial': len(value_differences(stored_model(session), initial))}
 
 
 def undo_capture(session):
@@ -860,7 +884,7 @@ def undo_capture(session):
     def snapshot(label):
         return {'label': label, 'undocount': stack.undocount(), 'redocount': stack.redocount(),
                 'undotext': stack.undotext(), 'redotext': stack.redotext(),
-                'model': model_summary(session)}
+                'model': model_summary(session, initial)}
 
     drawing_model = project.drawing_models[0]
     target = None
@@ -920,8 +944,11 @@ def undo_capture(session):
     after_undo = stored_model(session)
     drain('redo', 'redo')
     drain('undo', 'undo_again')
-    log['undo_all_restores_initial'] = canonical.dumps(after_undo) == canonical.dumps(initial)
-    log['undo_all_differences'] = value_differences(after_undo, initial)[:50]
+    differences = value_differences(after_undo, initial)
+    log['undo_all_restores_initial'] = not differences
+    # Paths only: the values are in model.json and would tie this artefact
+    # to last-bit float results.
+    log['undo_all_differences'] = sorted({d['path'] for d in differences})[:50]
     return log
 
 

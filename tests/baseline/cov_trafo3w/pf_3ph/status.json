@@ -23,7 +23,15 @@
    "step": "run_powerflow"
   }
  ],
- "traceback": "Traceback (most recent call last):\n  File \"<ROOT>/tools/baseline/capture.py\", line 659, in step\n    value = func()\n            ^^^^^^\n  File \"<ROOT>/tools/baseline/capture.py\", line 691, in <lambda>\n    ok = step('run_powerflow', lambda: project.run_powerflow(pf_method))[0]\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<ROOT>/gelectrical/model/project.py\", line 434, in run_powerflow\n    self.powermodel.run_powerflow(pf_type, runpp_3ph=True)\n  File \"<ROOT>/gelectrical/model/pandapower.py\", line 609, in run_powerflow\n    pp.runpp_3ph(self.power_model, run_control=True)\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/pf/runpp_3ph.py\", line 405, in runpp_3ph\n    _, ppci0 = _pd2ppc_recycle(net, 0, recycle=recycle)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<ROOT>/.pixi/envs/test/lib/python3.12/site-packages/pandapower/pd2ppc.py\", line 37, in _pd2ppc_recycle\n    return _pd2ppc(net, sequence=sequence)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nNotImplementedError: Three winding transformers are not implemented for unbalanced calculations\n",
+ "traceback": [
+  "<ROOT>/gelectrical/model/project.py:run_powerflow",
+  "<ROOT>/gelectrical/model/pandapower.py:run_powerflow",
+  "pandapower/pf/runpp_3ph.py:runpp_3ph",
+  "pandapower/pd2ppc.py:_pd2ppc_recycle",
+  "pandapower/pd2ppc.py:_pd2ppc",
+  "pandapower/pd2ppc_zero.py:_build_branch_ppc_zero",
+  "NotImplementedError: Three winding transformers are not implemented for unbalanced calculations"
+ ],
  "warnings": [
   "FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!",
   "PyGTKDeprecationWarning: Using positional arguments with the GObject constructor has been deprecated. Please specify keyword(s) for \"label\" or use a class specific constructor. See: https://wiki.gnome.org/Projects/PyGObject/InitializerDeprecations"

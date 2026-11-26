@@ -3,6 +3,7 @@
   {
    "label": "modify_ref_field",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -58,8 +59,7 @@
        "M3"
       ]
      ]
-    ],
-    "stored_sha256": "eeb53831e892ba5d"
+    ]
    },
    "redocount": 1,
    "redotext": null,
@@ -69,6 +69,7 @@
   {
    "label": "insert_load",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -128,8 +129,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "2f60263a0d697bf5"
+    ]
    },
    "redocount": 2,
    "redotext": null,
@@ -139,6 +139,7 @@
   {
    "label": "delete_element_0",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -194,8 +195,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "a3c5774103b76ebb"
+    ]
    },
    "redocount": 3,
    "redotext": null,
@@ -205,6 +205,7 @@
   {
    "label": "renumber_all",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -260,8 +261,7 @@
        "X3"
       ]
      ]
-    ],
-    "stored_sha256": "3c8d55e5169af24e"
+    ]
    },
    "redocount": 4,
    "redotext": null,
@@ -271,6 +271,7 @@
   {
    "label": "setup_base_model",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -378,8 +379,7 @@
        "13"
       ]
      ]
-    ],
-    "stored_sha256": "3c8d55e5169af24e"
+    ]
    },
    "redocount": 6,
    "redotext": null,
@@ -391,6 +391,7 @@
   {
    "label": "Redo Modify 'ref' field  of 'Bus Bar' element",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -446,8 +447,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "a3c5774103b76ebb"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Add draw element at '13'",
@@ -457,6 +457,7 @@
   {
    "label": "Redo Add draw element at '13'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -516,8 +517,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "39c41a78b4ce487b"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -527,6 +527,7 @@
   {
    "label": "Redo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -582,8 +583,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "a75af205f25c5b2b"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Renumber Elements - All",
@@ -593,6 +593,7 @@
   {
    "label": "Redo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -648,8 +649,7 @@
        "X4"
       ]
      ]
-    ],
-    "stored_sha256": "e625636d7a2104a7"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Clear analysis results",
@@ -659,6 +659,7 @@
   {
    "label": "Redo Clear analysis results",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -714,8 +715,7 @@
        "X4"
       ]
      ]
-    ],
-    "stored_sha256": "e625636d7a2104a7"
+    ]
    },
    "redocount": 5,
    "redotext": "Redo Add node elements",
@@ -725,6 +725,7 @@
   {
    "label": "Redo Add node elements",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -832,8 +833,7 @@
        "13"
       ]
      ]
-    ],
-    "stored_sha256": "e625636d7a2104a7"
+    ]
    },
    "redocount": 6,
    "redotext": null,
@@ -845,6 +845,7 @@
   {
    "label": "Undo Add node elements",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -900,8 +901,7 @@
        "X3"
       ]
      ]
-    ],
-    "stored_sha256": "3c8d55e5169af24e"
+    ]
    },
    "redocount": 5,
    "redotext": "Redo Add node elements",
@@ -911,6 +911,7 @@
   {
    "label": "Undo Clear analysis results",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -966,8 +967,7 @@
        "X3"
       ]
      ]
-    ],
-    "stored_sha256": "3c8d55e5169af24e"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Clear analysis results",
@@ -977,6 +977,7 @@
   {
    "label": "Undo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -1032,8 +1033,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "a3c5774103b76ebb"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Renumber Elements - All",
@@ -1043,6 +1043,7 @@
   {
    "label": "Undo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -1102,8 +1103,7 @@
        "UNDO-TEST"
       ]
      ]
-    ],
-    "stored_sha256": "2388a2dffcec4256"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -1113,6 +1113,7 @@
   {
    "label": "Undo Add draw element at '13'",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -1168,8 +1169,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "a3c5774103b76ebb"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Add draw element at '13'",
@@ -1179,6 +1179,7 @@
   {
    "label": "Undo Modify 'ref' field  of 'Bus Bar' element",
    "model": {
+    "differences_vs_initial": 541,
     "sheets": [
      [
       [
@@ -1234,8 +1235,7 @@
        "X?"
       ]
      ]
-    ],
-    "stored_sha256": "a3c5774103b76ebb"
+    ]
    },
    "redocount": 0,
    "redotext": "Redo Modify 'ref' field  of 'Bus Bar' element",
@@ -1247,6 +1247,7 @@
   {
    "label": "Undo Add node elements",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -1302,8 +1303,7 @@
        "X4"
       ]
      ]
-    ],
-    "stored_sha256": "e625636d7a2104a7"
+    ]
    },
    "redocount": 5,
    "redotext": "Redo Add node elements",
@@ -1313,6 +1313,7 @@
   {
    "label": "Undo Clear analysis results",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -1368,8 +1369,7 @@
        "X4"
       ]
      ]
-    ],
-    "stored_sha256": "e625636d7a2104a7"
+    ]
    },
    "redocount": 4,
    "redotext": "Redo Clear analysis results",
@@ -1379,6 +1379,7 @@
   {
    "label": "Undo Renumber Elements - All",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -1434,8 +1435,7 @@
        "X3"
       ]
      ]
-    ],
-    "stored_sha256": "196e03e2240d189a"
+    ]
    },
    "redocount": 3,
    "redotext": "Redo Renumber Elements - All",
@@ -1445,6 +1445,7 @@
   {
    "label": "Undo Delete draw elements at '[0]'",
    "model": {
+    "differences_vs_initial": 1,
     "sheets": [
      [
       [
@@ -1504,8 +1505,7 @@
        "G1"
       ]
      ]
-    ],
-    "stored_sha256": "8fc036e79280188c"
+    ]
    },
    "redocount": 2,
    "redotext": "Redo Delete draw elements at '[0]'",
@@ -1515,6 +1515,7 @@
   {
    "label": "Undo Add draw element at '13'",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -1570,8 +1571,7 @@
        "X3"
       ]
      ]
-    ],
-    "stored_sha256": "196e03e2240d189a"
+    ]
    },
    "redocount": 1,
    "redotext": "Redo Add draw element at '13'",
@@ -1581,6 +1581,7 @@
   {
    "label": "Undo Modify 'ref' field  of 'Bus Bar' element",
    "model": {
+    "differences_vs_initial": 531,
     "sheets": [
      [
       [
@@ -1636,8 +1637,7 @@
        "X3"
       ]
      ]
-    ],
-    "stored_sha256": "196e03e2240d189a"
+    ]
    },
    "redocount": 0,
    "redotext": "Redo Modify 'ref' field  of 'Bus Bar' element",
@@ -1646,376 +1646,56 @@
   }
  ],
  "undo_all_differences": [
-  {
-   "loaded": "element_grid",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/code",
-   "stored": "element_busbar"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/DF",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/In",
-   "stored": {
-    "type": "int",
-    "value": 400
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/Isc",
-   "stored": {
-    "type": "float",
-    "value": 25
-   }
-  },
-  {
-   "loaded": {
-    "type": "bool",
-    "value": true
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_btm",
-   "stored": {
-    "type": "int",
-    "value": 3
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_top",
-   "stored": {
-    "type": "int",
-    "value": 3
-   }
-  },
-  {
-   "loaded": {
-    "type": "str",
-    "value": "EXTERNAL GRID"
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/name",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/r_grid",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": "G1",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref/value",
-   "stored": "B1"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 20
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 10
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.415
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/width",
-   "stored": {
-    "type": "int",
-    "value": 16
-   }
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<structure bb65e5c9951e2138>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/ports",
-   "stored": "<structure 1e204332e31b1f58>"
-  },
-  {
-   "loaded": 224,
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/x",
-   "stored": 232
-  },
-  {
-   "loaded": 152,
-   "path": "/pages/proj_drawing_page_0.json/1/elements/0/y",
-   "stored": 200
-  },
-  {
-   "loaded": "element_staticgenerator",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/code",
-   "stored": "element_grid"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.1
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/k",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "graph",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/load_profile",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "S.GENERATOR",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/name/value",
-   "stored": "EXTERNAL GRID"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.015
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/p_mw",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0.002
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/q_mvar",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/r0x0_max",
-   "stored": {
-    "type": "float",
-    "value": 0.1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/r0x0_min",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": "G2",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/ref/value",
-   "stored": "G1"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/rx_max",
-   "stored": {
-    "type": "float",
-    "value": 0.1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/rx_min",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/s_sc_max_mva",
-   "stored": {
-    "type": "float",
-    "value": 20
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/s_sc_min_mva",
-   "stored": {
-    "type": "float",
-    "value": 10
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/va_degree",
-   "stored": {
-    "type": "float",
-    "value": 0
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vm_pu",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/vn_kv",
-   "stored": {
-    "type": "float",
-    "value": 0.415
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/x0x_max",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/fields/x0x_min",
-   "stored": {
-    "type": "float",
-    "value": 1
-   }
-  },
-  {
-   "loaded": 352,
-   "path": "/pages/proj_drawing_page_0.json/1/elements/1/x",
-   "stored": 224
-  },
-  {
-   "loaded": "element_single_phase_staticgenerator",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/code",
-   "stored": "element_staticgenerator"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 4
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/p_kw",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/p_mw",
-   "stored": {
-    "type": "float",
-    "value": 0.015
-   }
-  },
-  {
-   "loaded": {
-    "type": "str",
-    "value": "B"
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/phase",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": {
-    "type": "float",
-    "value": 0
-   },
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/q_kvar",
-   "stored": "<missing>"
-  },
-  {
-   "loaded": "<missing>",
-   "path": "/pages/proj_drawing_page_0.json/1/elements/2/fields/q_mvar",
-   "stored": {
-    "type": "float",
-    "value": 0.002
-   }
-  }
+  "/pages/proj_drawing_page_0.json/1/elements/0/code",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/DF",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/In",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/Isc",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/in_service",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_btm",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/n_top",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/name",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_max",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/r0x0_min",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/r_grid",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/ref/value",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_max",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/rx_min",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_max_mva",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/s_sc_min_mva",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/va_degree",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/vm_pu",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/vn_kv",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/width",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_max",
+  "/pages/proj_drawing_page_0.json/1/elements/0/fields/x0x_min",
+  "/pages/proj_drawing_page_0.json/1/elements/0/ports",
+  "/pages/proj_drawing_page_0.json/1/elements/0/x",
+  "/pages/proj_drawing_page_0.json/1/elements/0/y",
+  "/pages/proj_drawing_page_0.json/1/elements/1/code",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/k",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/load_profile",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/name/value",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/p_mw",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/q_mvar",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/r0x0_max",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/r0x0_min",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/ref/value",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/rx_max",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/rx_min",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/s_sc_max_mva",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/s_sc_min_mva",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/va_degree",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/vm_pu",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/vn_kv",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/x0x_max",
+  "/pages/proj_drawing_page_0.json/1/elements/1/fields/x0x_min",
+  "/pages/proj_drawing_page_0.json/1/elements/1/x",
+  "/pages/proj_drawing_page_0.json/1/elements/10/code",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/I0",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/In",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/Isc",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/Un",
+  "/pages/proj_drawing_page_0.json/1/elements/10/fields/ambient_temp"
  ],
  "undo_all_restores_initial": false
 }
