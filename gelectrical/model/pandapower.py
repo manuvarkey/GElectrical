@@ -121,9 +121,9 @@ class PandaPowerModel:
                 elementcode, local_nodes, model = power_model_sub
                 if elementcode == 'bus':
                     node = get_node(local_nodes[0])
-                    power_model.bus.name.at[node] = model['name']
-                    power_model.bus.vn_kv.at[node] = model['vn_kv']
-                    power_model.bus.type.at[node] = model['type']
+                    power_model.bus.at[node, 'name'] = model['name']
+                    power_model.bus.at[node, 'vn_kv'] = model['vn_kv']
+                    power_model.bus.at[node, 'type'] = model['type']
                 elif elementcode == 'switch':
                     node0 = get_node(local_nodes[0])
                     node1 = get_node(local_nodes[1])
@@ -245,7 +245,7 @@ class PandaPowerModel:
                     for power_node in zone:  # Update all nodes in zone
                         node = self.power_nodes_inverted[power_node]
                         if node not in voltage_updated_from:
-                            power_model.bus.vn_kv.at[power_node] = vn_kv
+                            power_model.bus.at[power_node, 'vn_kv'] = vn_kv
                             voltage_updated_from[node] = [e_code]
                         else:
                             voltage_updated_from[node].append(e_code)
@@ -666,8 +666,9 @@ class PandaPowerModel:
                                     q_mvar += self.power_model['asymmetric_load']['q_b_mvar'][load_index]*RF
                                     q_mvar += self.power_model['asymmetric_load']['q_c_mvar'][load_index]*RF
                             # Add phantom power injection element to take up balance power
+                            # type='wye': pandapower < 3.5 default, now None
                             sgen_index = pp.create_sgen(self.power_model, bus_index,
-                                p_mw=p_mw, q_mvar=q_mvar)
+                                p_mw=p_mw, q_mvar=q_mvar, type='wye')
             pp.runpp(self.power_model, run_control=True, calculate_voltage_angles = True)
 
         # Data modification functions

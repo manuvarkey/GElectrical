@@ -12,28 +12,55 @@ channels = ["conda-forge"]
 platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
 
 [dependencies]
-python = "3.12.*"
+python = "3.14.*"
 # GUI stack
 gtk3 = ">=3.24"
 pygobject = "*"
 pycairo = "*"
 adwaita-icon-theme = "*"
 librsvg = "*"  # gdk-pixbuf SVG loader for the element icons
-# Analysis
-pandapower = ">=3.2"
-numpy = "*"
+# Analysis. pandapower itself comes from PyPI (see [pypi-dependencies]);
+# its compiled and pure-Python dependencies come from conda-forge here.
+numpy = "<2.5"  # pandapower 3.5.6 requirements mirrored here
 numba = "*"
-scipy = "*"
-pandas = "*"
-networkx = "*"
+scipy = ">=1.15"
+pandas = "2.3.*"
+networkx = ">=3.6,<4"
 shapely = "*"
 matplotlib = "*"
-# Reporting / IO
-weasyprint = "*"
+packaging = ">=26,<27"
+tqdm = ">=4.68,<5"
+colorama = "==0.4.6"
+deepdiff = ">=9.1,<10"
+geojson = ">=3.3,<4"
+typing_extensions = ">=4.16,<5"
+pandera-base = ">=0.32,<1"
+# Reporting / IO. WeasyPrint itself comes from PyPI (see [pypi-dependencies]);
+# its native libraries (Pango, HarfBuzz, fontconfig) and compiled Python
+# dependencies come from conda-forge here.
+pango = "*"
+cffi = "*"
+pillow = "*"
+fonttools = ">=4.59.2"
+brotli-python = "*"
+zopfli = "*"
+pydyf = ">=0.11"
+tinycss2 = ">=1.5"
+cssselect2 = ">=0.8"
+pyphen = "*"
+tinyhtml5 = ">=2.0.0b1"
 jinja2 = "*"
 mako = "*"
 openpyxl = "*"
 appdirs = "*"
+
+# Pure-Python packages taken from PyPI through pixi (locked in pixi.lock),
+# ADR 0015 and ADR 0016. Return them to conda-forge once the feedstocks
+# publish these versions.
+[pypi-dependencies]
+pandapower = "==3.5.6"
+# Same version as the official weasyprint-windows-onedir executable (ADR 0016).
+weasyprint = "==70.0"
 
 [activation]
 scripts = ["tools/pixi_activate.sh"]
