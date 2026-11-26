@@ -84,16 +84,18 @@ pixi run python ...   # any ad-hoc script inside the env
   (cachebox, brotli, zopfli) don't build under MinGW. Add dependencies with
   `pixi add <pkg>` and commit both `pixi.toml` and `pixi.lock`.
 - Exception: a **pure-Python** package missing or outdated on conda-forge may be
-  added with `pixi add --pypi <pkg>` (locked in `pixi.lock`). Planned use:
-  pandapower 3.5.x and, if needed, WeasyPrint at the version of the Windows
-  executable ([ADR 0015](docs/decisions/0015-python-and-pandapower-versions.md),
+  added with `pixi add --pypi <pkg>` (locked in `pixi.lock`). Current use:
+  pandapower 3.5.6 and WeasyPrint 70.0 (the version of the Windows
+  executable) ([ADR 0015](docs/decisions/0015-python-and-pandapower-versions.md),
   [ADR 0016](docs/decisions/0016-weasyprint-windows-executable.md)).
   Compiled packages always come from conda-forge.
-- The environment is Python 3.12 with pandapower 3.2.1 until milestone M1b
-  moves it to Python 3.14 and the latest pandapower.
+- The environment is Python 3.14 with pandapower 3.5.6 and WeasyPrint 70.0
+  (milestone M1b). When a PyPI package's dependency is solved by conda-forge,
+  mirror the package's version bounds in `[dependencies]` (see `pixi.toml`).
 - `requirements.txt` / `setup.py` are legacy pins used by packaging
   (Flatpak/Snap/PyInstaller). Keep them in sync when changing deps, but they are
-  not the dev environment (they currently pin pandapower 2.14.9: defect D11).
+  not the dev environment. The Flatpak manifest still pins pandapower 2.14.9
+  (see the M1b entry in the validation log).
 - Activation (`tools/pixi_activate.*`) registers the librsvg gdk-pixbuf loader
   (the SVG icons fail to load without it).
 - Node.js/npm workspaces and Rust/Tauri arrive with milestones M5/M6; follow

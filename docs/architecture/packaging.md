@@ -15,10 +15,13 @@ Navigation: [index](../README.md) · [backend](backend.md) ·
 | Flatpak | GNOME 46 runtime; builds GEOS and Python deps | `com.kavilgroup.gelectrical.json`, `build_flatpak.sh` |
 | Snap | core22 | `snapcraft.yaml`, `snap/` |
 | Python package | `setup.py`, `MANIFEST.in` | legacy |
-| Development | pixi (conda-forge), Python 3.12 | `pixi.toml`, `pixi.lock` |
+| Development | pixi (conda-forge; pandapower and WeasyPrint from PyPI), Python 3.14 | `pixi.toml`, `pixi.lock` |
 
-`requirements.txt` pins pandapower 2.14.9 while `pixi.toml` requires
-pandapower ≥ 3.2 (defect D11).
+`requirements.txt` and `setup.py` pin pandapower 3.5.6 and WeasyPrint 70.0 like
+`pixi.lock` (M1b, defect D11). The Flatpak manifest still builds pandapower
+2.14.9 and WeasyPrint 62.3 on GNOME 46 (Python 3.11), and Snap (core22,
+Python 3.10) cannot install the new pins; both need updating before their next
+release.
 
 ## 2. Target shape
 

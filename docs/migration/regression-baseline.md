@@ -1,7 +1,10 @@
 # Regression baseline
 
 Status: sections 1–6 define the baseline; section 7 is **current** (implemented
-in milestone M1 on 2026-11-26, Python 3.12.16, pandapower 3.2.1).
+in milestone M1 on 2026-11-26 with Python 3.12.16 and pandapower 3.2.1;
+re-baselined in M1b on 2026-11-26 with Python 3.14.10, pandapower 3.5.6 and
+WeasyPrint 70.0 after owner approval of the
+[difference report](validation.md)).
 Navigation: [migration index](README.md) · [testing guide](../testing.md) ·
 [implementation plan](implementation-plan.md#m1--regression-baseline-and-test-scaffold).
 
@@ -124,7 +127,9 @@ xvfb-run -a pixi run -e test build-test-projects     # regenerate tests/projects
 ```
 
 `baseline-capture` without `--out` overwrites `tests/baseline/`. Do this only
-for an approved re-baseline (section 6), never to make a change pass.
+for an approved re-baseline (section 6), never to make a change pass, and pass
+`--reason "<validation-log reference>"`: it is stored as `baseline_reason` in
+`environment.json`.
 
 ### 7.1 What a capture does
 
@@ -190,10 +195,10 @@ errors):
 
 | Project | Outcome |
 | --- | --- |
-| `cov_impedance` | Line-to-ground SC fails: `KeyError: 'gf0_pu'` (zero-sequence impedance columns expected by pandapower 3.2.1) |
+| `cov_impedance` | Line-to-ground SC fails: `KeyError: 'gf0_pu'` (zero-sequence impedance columns expected by pandapower; still fails with 3.5.6) |
 | `cov_xward` | Line-to-ground SC fails: `FloatingPointError` in `makeYbus` (zero sequence) |
 | `cov_trafo3w` | Line-to-ground SC fails: `AttributeError` (no vector group for `trafo3w`); 3-phase PF not implemented for `trafo3w` in pandapower |
-| `cov_generation` | 3-phase PF fails with a synchronous generator: `KeyError: 'res_gen_3ph'` |
+| `cov_generation` | 3-phase PF with a synchronous generator on the grid bus: pandapower 3.2.1 raised `KeyError: 'res_gen_3ph'`; since M1b (3.5.6) it completes with a singular matrix and `NaN` 3-phase results (recorded as is; handling not yet decided) |
 | `cov_radial_lv`, `cov_advanced` | 3-phase PF does not converge |
 | `edge/empty`, `edge/islanded` | Diagnostics return critical errors; analysis stops |
 | `cov_generation`, `cov_static_generation`, `edge/missing_loadprofile` | Report export fails (`KeyError`) because a load profile value is not a key of the project load profiles (static generators default to `0`) |
