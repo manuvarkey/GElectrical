@@ -56,7 +56,7 @@ import operator
 
 __all__ = ['ExpressionError', 'ExpressionNotAllowed', 'Policy', 'compile_expression', 'evaluate',
            'evaluate_numeric', 'format_template', 'parse_template',
-           'NUMERIC_POLICY', 'DEFAULT_FUNCTIONS']
+           'NUMERIC_POLICY', 'NUMERIC_CONSTANTS', 'DEFAULT_FUNCTIONS']
 
 # Limits
 MAX_LENGTH = 2000        # characters of one expression
@@ -103,12 +103,18 @@ DEFAULT_FUNCTIONS = {'abs': abs,
                      'log10': math.log10,
                      }
 
+# Numeric entry: the operators, constants and functions of GEstimator's
+# ``NumericExpression`` (estimator/arithmetic.py at 6ba679b4)
 NUMERIC_FUNCTIONS = {'abs': abs,
                      'min': min,
                      'max': max,
                      'round': round,
-                     'sqrt': math.sqrt,
+                     **{name: getattr(math, name) for name in (
+                         'sqrt', 'cbrt', 'ceil', 'floor', 'trunc',
+                         'sin', 'cos', 'tan', 'asin', 'acos', 'atan',
+                         'exp', 'log', 'log10', 'degrees', 'radians')},
                      }
+NUMERIC_CONSTANTS = {'pi': math.pi, 'e': math.e}
 
 
 class Policy:
@@ -119,7 +125,8 @@ class Policy:
                 raising ``ExpressionError``; ``obj.name`` is allowed only for
                 objects of these types (subclasses included)
     methods:    type -> set of method names callable as ``obj.name(...)``
-    names:      allow namespace names (``False`` for pure numeric input)
+    names:      ``True`` to allow any namespace name, ``False`` for none, or
+                a collection of the allowed names (numeric constants)
     strings:    allow string literals
     containers: allow tuple, list and dict literals and subscripts
     """
@@ -129,7 +136,7 @@ class Policy:
         self.functions = dict(DEFAULT_FUNCTIONS if functions is None else functions)
         self.attributes = dict(attributes or {})
         self.methods = {key: frozenset(value) for key, value in (methods or {}).items()}
-        self.names = names
+        self.names = names if isinstance(names, bool) else frozenset(names)
         self.strings = strings
         self.containers = containers
 
@@ -156,7 +163,7 @@ class Policy:
         return allowed
 
 
-NUMERIC_POLICY = Policy(functions=NUMERIC_FUNCTIONS, names=False,
+NUMERIC_POLICY = Policy(functions=NUMERIC_FUNCTIONS, names=NUMERIC_CONSTANTS,
                         strings=False, containers=False)
 
 
@@ -206,7 +213,8 @@ def _validate(node, policy, text, depth=0):
     elif kind is ast.Name:
         if node.id.startswith('_'):
             raise ExpressionNotAllowed('Name %r is not allowed' % node.id, text)
-        if not policy.names and node.id not in policy.functions:
+        if (policy.names is not True and node.id not in policy.functions
+                and (policy.names is False or node.id not in policy.names)):
             raise ExpressionNotAllowed('Name %r is not allowed in a numeric expression' % node.id, text)
     elif kind is ast.Attribute:
         if node.attr.startswith('_') or not policy.attributes:
@@ -456,14 +464,20 @@ def evaluate(text, namespace=None, policy=None):
 def evaluate_numeric(text):
     """Evaluate numeric user input such as ``'2*(3.5+1)'`` or ``'1e3/3'``.
 
-    Only numbers, arithmetic and ``abs``, ``min``, ``max``, ``round`` and
-    ``sqrt`` are accepted. Returns an int, float or bool (as Python ``eval``
-    of the same text did)."""
+    Accepted (as GEstimator's ``NumericExpression``): numbers, ``+ - * / //
+    % **``, unary ``+``/``-``, the constants ``pi`` and ``e`` and the
+    functions ``abs``, ``min``, ``max``, ``round``, ``sqrt``, ``cbrt``,
+    ``ceil``, ``floor``, ``trunc``, ``sin``, ``cos``, ``tan``, ``asin``,
+    ``acos``, ``atan`` (radians), ``exp``, ``log`` (natural, or ``log(x,
+    base)``), ``log10``, ``degrees`` and ``radians``. Returns a finite int,
+    float or bool (as Python ``eval`` of the same text did)."""
     if not isinstance(text, str):
         text = str(text)
-    value = evaluate(text, None, NUMERIC_POLICY)
+    value = evaluate(text, NUMERIC_CONSTANTS, NUMERIC_POLICY)
     if not isinstance(value, (int, float)):
         raise ExpressionError('Result is not a number', text)
+    if not math.isfinite(value):
+        raise ExpressionError('Result is not a finite number', text)
     return value
 
 

@@ -461,9 +461,11 @@ Branched from `feat/m2-milestone` (M2 not yet merged to `master`).
 - Curve function names containing `.` (`IEC_S_INV_3.0`, `IEC_S_INV_1.3`)
   failed with `SyntaxError` under `eval` and now resolve (unused in bundled
   data and test projects).
-- Numeric field entry and spreadsheet formulas accept numbers, arithmetic and
-  `abs`, `min`, `max`, `round`, `sqrt` only (previously any Python
-  expression).
+- Numeric field entry and spreadsheet formulas accept the operators,
+  constants (`pi`, `e`) and math functions of GEstimator's
+  `NumericExpression` (list in ADR 0011); previously any Python expression.
+  Non-finite results (`1e400`) are rejected; `pi`, `e` and the `math`
+  functions were not available under `eval` before.
 - Copy/paste uses a JSON payload; text copied by an older version (pickle)
   is rejected with a log warning. The floating preview is built from stored
   models; inserted elements were already copies (`get_element_copy`).

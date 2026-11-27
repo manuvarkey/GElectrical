@@ -166,13 +166,27 @@ def test_text_formatting_needs_literal_format():
 @pytest.mark.parametrize('text, expected', [
     ('5', 5), (' 5 ', 5), ('2*(3.5+1)', 9.0), ('1e3/4', 250.0), ('-2', -2),
     ('abs(-2)', 2), ('max(1, 2)', 2), ('sqrt(16)', 4.0), ('True', True),
+    # Operators, constants and functions of GEstimator's NumericExpression
+    ('7 // 2', 3), ('7 % 3', 1), ('2**0.5', math.sqrt(2)), ('+3', 3),
+    ('pi', math.pi), ('e', math.e), ('2*pi*50', 2 * math.pi * 50),
+    ('round(2.567, 2)', 2.57), ('min(3, 1, 2)', 1),
+    ('cbrt(-8)', -2.0), ('ceil(1.2)', 2), ('floor(-1.5)', -2), ('trunc(-1.5)', -1),
+    ('sin(pi/2)', 1.0), ('cos(0)', 1.0), ('tan(0)', 0.0),
+    ('asin(1)', math.pi / 2), ('acos(1)', 0.0), ('atan(1)', math.pi / 4),
+    ('exp(0)', 1.0), ('log(e)', 1.0), ('log(8, 2)', 3.0), ('log10(1000)', 3.0),
+    ('degrees(pi)', 180.0), ('radians(180)', math.pi),
+    ('sqrt(3)*0.415*100', math.sqrt(3) * 0.415 * 100),
 ])
 def test_numeric(text, expected):
     assert evaluate_numeric(text) == expected
 
 
 @pytest.mark.parametrize('text', ['', '1,000', "'1'", 'x', 'f.In', '05', "__import__('os')",
-                                  '[1]', 'int(2)', '1 if 1 else 2 == "a"'])
+                                  '[1]', 'int(2)', '1 if 1 else 2 == "a"',
+                                  # domain, range and call errors
+                                  'log(0)', 'log(2, 1)', 'asin(2)', 'sqrt(-1)', 'exp(1000)',
+                                  '1e400', '10.0**400', 'round(1.5, 1.5)', 'min()', 'sin(1, 2)',
+                                  'sin(x=1)', 'pi.real', 'math.pi', 'pi()', 'tau', 'inf', 'nan'])
 def test_numeric_rejects(text):
     with pytest.raises(ExpressionError):
         evaluate_numeric(text)

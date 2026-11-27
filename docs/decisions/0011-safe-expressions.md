@@ -65,8 +65,16 @@ project and clipboard samples are rejected; CI static check forbids `eval`,
   (`model/rulescheck.py`: also `Element` instance variables, the six curve
   geometries of `ProtectionModel` and its methods `contains`, `get_current`,
   `get_time`); `LABEL_POLICY` (`symbols/formatter.py`: names only);
-  `NUMERIC_POLICY` (numbers, arithmetic, `abs`, `min`, `max`, `round`,
-  `sqrt`) for field entry and spreadsheet formulas.
+  `NUMERIC_POLICY` for field entry and spreadsheet formulas: the operators,
+  constants and functions of GEstimator's `NumericExpression`
+  (`estimator/arithmetic.py` at `6ba679b4`): `+ - * / // % **`, unary
+  `+`/`-`, `pi`, `e`, `abs`, `min`, `max`, `round`, `sqrt`, `cbrt`, `ceil`,
+  `floor`, `trunc`, `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `exp`,
+  `log` (one or two arguments), `log10`, `degrees`, `radians`; the result
+  must be a finite number. GEstimator's tighter range limits (200 characters,
+  magnitude 1e12, powers within ±12) are not adopted, so that values the
+  legacy entry accepted stay valid; comparisons and conditional expressions,
+  which `eval` accepted, also stay valid.
 - Protection curves keep the previous error handling: a curve item whose
   value fails to evaluate is logged and skipped as before, but an
   `ExpressionNotAllowed` is never skipped. Loading a project raises
