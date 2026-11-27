@@ -23,7 +23,7 @@ It should be possible to install the application using the default package manag
 ### Linux
 
 * Install GTK3 from your distribution package manager.
-* Run `pip install appdirs pycairo numpy numba scipy pandas mako networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely`.
+* Run `pip install appdirs pycairo numpy numba scipy pandas networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely`.
 * Clone this repository `git clone https://github.com/manuvarkey/GElectrical.git`
 * Run `gelectrical_launcher.py` from cloned directory.
 
@@ -32,7 +32,7 @@ It should be possible to install the application using the default package manag
 * Install `git`, `msys2`, `visualstudio2022-workload-vctools` and `gvs_build` by folowing this link [gvsbuild](https://github.com/wingtk/gvsbuild).
 * Setup GTK3 and PyGObject development envirnonment using `gvs_build` by running `gvsbuild build --enable-gi --py-wheel gtk3 pygobject adwaita-icon-theme`.
 * Add required environment variables as suggested in the above link. Please see [Create and Modify Environment Variables on Windows](https://docs.oracle.com/en/database/oracle/machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html) for more information about setting up environment varables.
-* Run `pip install appdirs pycairo numpy numba scipy pandas mako networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely` in powershell.
+* Run `pip install appdirs pycairo numpy numba scipy pandas networkx matplotlib pandapower jinja2 weasyprint openpyxl shapely` in powershell.
 * Clone this repository using `git clone https://github.com/manuvarkey/GElectrical.git`.
 * Run `python gelectrical_launcher.py` from the cloned directory.
 
@@ -42,7 +42,6 @@ It should be possible to install the application using the default package manag
     * undo - Included along with distribution.
     * appdirs (v1.4.4) - Not included
     * openpyxl - Not included
-    * mako - Not included
     * numba - Not included
     * pandapower (v2.10.1) - Not included
     * numpy - Not included

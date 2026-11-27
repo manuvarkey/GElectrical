@@ -35,6 +35,7 @@ from ..elementmodel.template import Template, TitleBlock
 from ..elementmodel.elementassembly import ElementAssembly
 from ..elementmodel.reference import Reference
 from ..elementmodel.wire import Wire
+from .clipboard import encode_elements, decode_elements
 
 
 # Get logger object
@@ -110,6 +111,36 @@ class DrawingModel:
         model['elements'] = element_models
         return ['DrawingModel', model]
             
+    def new_element_from_model(self, base_model):
+        """New element of this drawing from a stored element model
+        (``element.get_model()``)"""
+        code = base_model['code']
+        if code == 'element_assembly':
+            element = ElementAssembly()
+        elif code == 'element_wire':
+            element = Wire()
+        else:
+            element = self.element_models[code](project_settings=self.parent.fields)
+            if code in constants.LOADPROFILE_CODES:
+                element.fields['load_profile']['selection_list'] = self.parent.loadprofiles
+        element.set_model(base_model, self.get_gid())
+        return element
+
+    def get_clipboard_text(self):
+        """Clipboard text (JSON, D2) of the selected elements, or ``None``"""
+        elements, assembly_dict = self.get_selected(assembly_info=True)
+        if elements:
+            return encode_elements(elements, assembly_dict)
+        return None
+
+    def elements_from_clipboard(self, text):
+        """Validate clipboard ``text``; returns ``(elements, assembly_dict)``
+        for :meth:`add_floating_model`. Raises ``ClipboardError``."""
+        codes = set(self.element_models) | {'element_assembly', 'element_wire'}
+        models, assembly_dict = decode_elements(text, codes)
+        elements = [self.new_element_from_model(model) for model in models]
+        return elements, assembly_dict
+
     def set_model(self, model, copy_elements=True):
         """Set storage model"""
         self.elements = []
@@ -117,17 +148,7 @@ class DrawingModel:
             if copy_elements:
                 # Load elements
                 for base_model in model[1]['elements']:
-                    code = base_model['code']
-                    if code == 'element_assembly':
-                        element = ElementAssembly()
-                    elif code == 'element_wire':
-                        element = Wire()
-                    else:
-                        element = self.element_models[code](project_settings=self.parent.fields)
-                        if code in constants.LOADPROFILE_CODES:
-                            element.fields['load_profile']['selection_list'] = self.parent.loadprofiles
-                    element.set_model(base_model, self.get_gid())
-                    self.elements.append(element)
+                    self.elements.append(self.new_element_from_model(base_model))
                     
                 # Update gid_assembly for elements
                 for el_no, element in enumerate(self.elements):

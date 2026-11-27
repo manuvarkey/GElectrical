@@ -22,7 +22,7 @@
 #  
 # 
 
-import logging, copy, pickle, codecs, bisect
+import logging, copy, bisect
 from gi.repository import Gtk, Gdk, GLib
 import cairo
 
@@ -537,10 +537,8 @@ class DrawingView:
     
     def copy_selected(self, button=None):
         """Copy selected item to clipboard"""
-        elements = self.drawing_model.get_selected(assembly_info=True)
-        if elements: # if selection exists
-            test_string = "DrawingGroup"
-            text = codecs.encode(pickle.dumps([test_string, elements]), "base64").decode() # dump item as text
+        text = self.drawing_model.get_clipboard_text()  # versioned JSON (D2)
+        if text: # if selection exists
             clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
             clipboard.set_text(text,-1) # push to clipboard
             log.info('DrawingView - copy_selected - Items copied to clipboard')
@@ -552,17 +550,13 @@ class DrawingView:
         clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         text = clipboard.wait_for_text() # get text from clipboard
         if text != None:
-            test_string = "DrawingGroup"
             try:
-                itemlist = pickle.loads(codecs.decode(text.encode(), "base64"))  # recover item from string
-                if itemlist[0] == test_string:
-                    group, assembly_dict = itemlist[1]
-                    self.drawing_model.add_floating_model(group, assembly_dict)
-                    self.set_mode(misc.MODE_INSERT)
-                else:
-                    log.warning('DrawingView - paste - No valid data in clipboard')
-            except:
-                log.warning('DrawingView - paste - No valid data in clipboard')
+                group, assembly_dict = self.drawing_model.elements_from_clipboard(text)
+            except Exception as e:  # validated JSON only, never executed (D2)
+                log.warning('DrawingView - paste - No valid data in clipboard: ' + str(e))
+            else:
+                self.drawing_model.add_floating_model(group, assembly_dict)
+                self.set_mode(misc.MODE_INSERT)
         else:
             log.warning('DrawingView - paste - No text in clipboard')
             

@@ -21,7 +21,7 @@
 #
 #
 
-import pickle, codecs, os.path, copy, logging
+import codecs, os.path, copy, logging
 
 from gi.repository import Gtk, Gdk, GLib, Pango
 

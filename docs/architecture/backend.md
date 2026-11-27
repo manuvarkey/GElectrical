@@ -249,7 +249,9 @@ evaluated by `core.expressions`.
 ## 9. Security and robustness
 
 - No `eval`, `exec` or `pickle` on project, database, clipboard or MCP data
-  ([ADR 0011](../decisions/0011-safe-expressions.md)).
+  ([ADR 0011](../decisions/0011-safe-expressions.md)). *Current since M3*
+  (`core/expressions.py`, `core/database.py`, `model/clipboard.py`; report
+  autoescape and URL fetcher in `reports/export.py`).
 - Validate file paths; resolve library files only inside allowed roots.
 - Save atomically (temporary file in the same directory, fsync, replace) and
   keep the previous file as a backup. See [project format](project-format.md).

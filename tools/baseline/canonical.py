@@ -221,6 +221,20 @@ def _close(a, b, tol):
     return abs(a - b) <= abs_tol + rel_tol * abs(b)
 
 
+_SIGNED_ZERO = re.compile(r'(?<![\w.])-(?=0(?:\.0+)?(?![\w.]))')
+
+
+def normalize_signed_zero(text):
+    """Write ``-0.0``/``-0`` tokens in formatted text as ``0.0``/``0``.
+
+    Numbers already compare equal (``-0.0 == 0.0``); formatted result
+    strings and report text keep the sign of zero, which depends on the
+    floating point path of the machine (seen between CI runners for exact
+    zero results). Not a tolerance: only the sign of an exact zero is
+    ignored (owner decision 2026-11-27)."""
+    return _SIGNED_ZERO.sub('', text)
+
+
 def _is_number(value):
     return isinstance(value, (int, float)) and not isinstance(value, bool)
 
@@ -273,6 +287,9 @@ def compare(actual, expected, artefact, max_diffs=50):
             stats['max_abs'] = max(stats['max_abs'], delta)
             if tol is None or not _close(a, b, tol):
                 diffs.append('%s: %r != %r (|d|=%.3g, tol=%s)' % (fmt(path), a, b, delta, tol))
+            return
+        if isinstance(a, str) and isinstance(b, str) and \
+                normalize_signed_zero(a) == normalize_signed_zero(b):
             return
         if a != b:
             diffs.append('%s: %r != %r' % (fmt(path), _short(a), _short(b)))

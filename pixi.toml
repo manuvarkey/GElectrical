@@ -51,7 +51,6 @@ cssselect2 = ">=0.8"
 pyphen = "*"
 tinyhtml5 = ">=2.0.0b1"
 jinja2 = "*"
-mako = "*"
 openpyxl = "*"
 appdirs = "*"
 

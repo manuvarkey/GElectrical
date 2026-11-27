@@ -29,6 +29,7 @@ from collections.abc import MutableMapping
 from uuid import uuid4 as uuid
 
 from . import style
+from .expressions import ExpressionError, Policy, evaluate_numeric
 
 
 class ReferenceCounter:
@@ -77,6 +78,23 @@ class Element:
         # Add convinence variables
         self.r = FieldDict(element.res_fields)
         self.f = FieldDict(element.fields)
+
+# Safe expression access (ADR 0011): ``f.code`` reads a field value
+
+def field_dict_attribute(obj, name):
+    """Attribute resolver of :class:`FieldDict` for safe expressions"""
+    if name in obj.store:
+        return obj[name]
+    raise ExpressionError('Unknown field %r' % name)
+
+def element_attribute(obj, name):
+    """Attribute resolver of :class:`Element`: public instance variables"""
+    if name in vars(obj):
+        return vars(obj)[name]
+    raise ExpressionError('Unknown element attribute %r' % name)
+
+FIELD_POLICY = Policy(attributes={FieldDict: field_dict_attribute})
+"""Expressions over field dictionaries (``f.In * d.i_r``)"""
 
 def get_uid():
     """Get unique id as identifier"""
@@ -181,7 +199,7 @@ def get_fields_from_params(parameters, modify_code=''):
     def get_validation_func(decimal, min, max):
         def validation_func(text):
             try:
-                validated = round(float(eval(text)), decimal)
+                validated = round(float(evaluate_numeric(text)), decimal)
                 if min is not None:
                     if validated < min:
                         validated = min

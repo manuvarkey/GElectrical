@@ -14,7 +14,6 @@ geojson==3.3.0
 Jinja2==3.1.6
 kiwisolver==1.5.1
 llvmlite==0.50.0
-Mako==1.4.3
 MarkupSafe==3.0.4
 matplotlib==3.11.2
 mypy-extensions==1.1.0

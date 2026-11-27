@@ -28,7 +28,7 @@ setup(
     # (docs/decisions). Keep in sync with pixi.toml and requirements.txt.
     python_requires=">=3.14,<3.15",
     install_requires=["appdirs", "pycairo", "numpy>=1.26,<2.5", "numba>=0.68", "scipy>=1.15",
-                      "pandas~=2.3", "mako", "networkx~=3.6", "matplotlib", "pandapower==3.5.6",
+                      "pandas~=2.3", "networkx~=3.6", "matplotlib", "pandapower==3.5.6",
                       "jinja2", "weasyprint==70.0", "openpyxl", "shapely", "PyGObject"],
    
     

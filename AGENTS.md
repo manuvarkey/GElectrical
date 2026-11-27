@@ -10,7 +10,8 @@ headless Python backend, an MCP server and the EngineeringUI library. Phase 1
 [risks and decisions](docs/migration/risks-and-decisions.md#2-owner-decisions)).
 Migration code so far: the M1 regression baseline, the M1b environment, the
 M2 headless engine (`gelectrical/` importable without GTK; legacy UI in
-`gelectrical/gtk/`) and the M6 frontend foundation (`modern/` shell with mock
+`gelectrical/gtk/`), M3 safe expressions (`core/expressions.py`; no `eval`,
+pickle or Mako) and the M6 frontend foundation (`modern/` shell with mock
 data, `packages/engineering-ui/`); no application services or Tauri yet.
 Do not start a migration milestone unless the user asks for it.
 
@@ -51,8 +52,9 @@ Do not start a migration milestone unless the user asks for it.
 5. **Headless engine.** New engine code must not import GTK, Tauri, MCP,
    transport or `modern` code (headless Cairo is allowed).
 6. **No code execution from data.** Do not add `eval`, `exec` or `pickle` on
-   project, database, clipboard or request data; existing uses are scheduled
-   for removal ([ADR 0011](docs/decisions/0011-safe-expressions.md)).
+   project, database, clipboard or request data; evaluate expressions with
+   `gelectrical/core/expressions.py` ([ADR 0011](docs/decisions/0011-safe-expressions.md)).
+   `tests/engine/test_security.py` fails on any such call.
 7. **EngineeringUI boundary.** `packages/engineering-ui/`
    (`@kavilgroup/engineering-ui`) is **MIT** licensed and never imports
    application code or backend method names. Only MIT-compatible code enters
@@ -152,12 +154,13 @@ planned: engine/service pytest, Playwright workflows) are in
 gelectrical_launcher.py      entry point (logging setup, runs gelectrical.gtk.app.MainApp)
 gelectrical/__init__.py      version only (no GTK import)
 gelectrical/core/            constants, style (run-time colours/fonts), fields, paths,
-                             undoable/group, geometry (replaces cairo.Region), interpolation
+                             undoable/group, geometry (replaces cairo.Region), interpolation,
+                             expressions (safe evaluator, ADR 0011), database (library refs)
 gelectrical/elementmodel/    one module per element family; ElementModel base in element.py;
                              each class has a unique `code`; registry.py is the code -> class map
-gelectrical/symbols/         symbol geometry/extents, labels (Mako), text backends, Cairo rendering
+gelectrical/symbols/         symbol geometry/extents, labels (safe ${...} templates), text backends, Cairo rendering
 gelectrical/model/           project (headless, event notifications), drawing, networkmodel,
-                             pandapower, protection, rulescheck, graph
+                             pandapower, protection, rulescheck, graph, clipboard (JSON payload)
 gelectrical/analysis/        pipeline.py: diagnostics -> power flow -> short circuit -> results; rules check
 gelectrical/persistence/     gepro.py: .gepro read/write
 gelectrical/reports/         report HTML/PDF, drawing PDF, JSON exports, tables, graphs (Agg), spreadsheet

@@ -181,6 +181,11 @@ pending. Headless drawings with Cairo text use a separate 1 % raster limit
 
 ## M3 — Safe expressions and security hardening
 
+*Status (2026-11-27): implemented on `feat/m3-safe-expressions` (branched
+from `feat/m2-milestone`); owner review pending. Evidence in the
+[validation log](validation.md) M3 entry; implementation notes in
+[ADR 0011](../decisions/0011-safe-expressions.md#implementation-m3-2026-11-27).*
+
 - **Objective:** remove arbitrary code execution paths without changing results.
 - **Scope:** D1, D2, D3, D10.
 - **Dependencies:** M1b (oracle on the new environment), M2 (core module location).

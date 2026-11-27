@@ -24,6 +24,7 @@ import logging, copy
 
 # local files import
 from ..core import constants, style
+from ..core.expressions import ExpressionNotAllowed
 from ..core.fields import get_field_dict, get_fields_trunc
 from ..core.geometry import rect_overlaps, rect_contains_point
 from .tooltips import tooltips
@@ -179,12 +180,22 @@ class ElementModel:
             self.y = model['y']
             self.orientation = model['orientation']
             self.ports = copy.deepcopy(model['ports'])
-            for code in self.fields:
-                if code in model['fields']:
-                    self.set_text_field_value(code, model['fields'][code]['value'])
-            self.gid = gid
-            self.model_loading = False
-            self.set_model_cleanup()
+            stage = 'fields'
+            try:
+                for code in self.fields:
+                    if code in model['fields']:
+                        stage = 'field ' + code
+                        self.set_text_field_value(code, model['fields'][code]['value'])
+                self.gid = gid
+                self.model_loading = False
+                stage = 'curves and parameters'
+                self.set_model_cleanup()
+            except ExpressionNotAllowed as e:
+                # Stored expression outside the whitelist (ADR 0011): reject
+                # with element and field, never execute
+                self.model_loading = False
+                ref = model['fields'].get('ref', {}).get('value', '')
+                raise ExpressionNotAllowed('Element %s %s, %s: %s' % (self.code, ref, stage, e)) from None
             self.extents_stale = True
             
     def set_gid(self, gid):

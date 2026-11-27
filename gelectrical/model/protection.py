@@ -30,7 +30,8 @@ from shapely import Polygon, Point, LineString
 
 # local files import
 from ..core import constants
-from ..core.fields import FieldDict, get_fields_from_params, update_params_from_fields, update_params_from_params
+from ..core.expressions import ExpressionNotAllowed, evaluate
+from ..core.fields import FieldDict, FIELD_POLICY, get_fields_from_params, update_params_from_fields, update_params_from_params
 from ..core.interpolation import log_interpolate_piecewise
 
 # Get logger object
@@ -324,8 +325,17 @@ class ProtectionModel():
         us_co8_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 5.95, 0.18, 2, **clean_iec(vars))
         us_co2_inverse = lambda tms, i_n, i1, i2, t_min, n, **vars: iec(tms/7, i_n, i1, i2, t_min, n, 0.02394, 0.01694, 0.02, **clean_iec(vars))
         
+        var_dict = {'f': f, 'd': d}
+
+        def eval_value(x):
+            """Curve parameter: numbers, lists and dicts as stored, text as a
+            safe expression over ``f`` (element fields) and ``d`` (curve
+            parameters); ADR 0011"""
+            if isinstance(x, (int, float, list, dict)):
+                return x
+            return evaluate(x, var_dict, FIELD_POLICY)
+
         def eval_curve(curve):
-            var_dict = {'f': f, 'd': d}
             func_dict = {   'point'         : point,
                             'POINT'         : point,
                             'POINTS'        : points,
@@ -352,10 +362,11 @@ class ProtectionModel():
             curve_t = []
             for func_str, *data in curve:
                 if func_str in func_dict:
-                    func = eval(func_str, func_dict)
+                    func = func_dict[func_str]
                 else:
-                    func_eval = eval(func_str, var_dict)
-                    if func_eval in func_dict:
+                    # Curve type given by an expression (e.g. a parameter)
+                    func_eval = evaluate(func_str, var_dict, FIELD_POLICY)
+                    if isinstance(func_eval, str) and func_eval in func_dict:
                         func = func_dict[func_eval]
                     else:
                         func = None
@@ -363,19 +374,23 @@ class ProtectionModel():
                     # Handle case when parameters are passed as var-> value dict
                     if len(data) == 1 and isinstance(data[0], dict):
                         try:
-                            data_eval = {key:(x if isinstance(x, (int, float, list, dict)) else eval(x, var_dict)) for key,x in data[0].items()}
+                            data_eval = {key:eval_value(x) for key,x in data[0].items()}
                             i_array, t_array = func(**data_eval)
                             curve_i += i_array
                             curve_t += t_array
+                        except ExpressionNotAllowed:
+                            raise  # possible code injection: reported, never skipped
                         except Exception as e:
                             log.exception('Error evaluating curve - data skipped')
                     # Handle case when parameters are passed as list
                     else:
                         try:
-                            data_eval = [x if isinstance(x, (int, float, list, dict)) else eval(x, var_dict) for x in data]
+                            data_eval = [eval_value(x) for x in data]
                             i_array, t_array = func(*data_eval)
                             curve_i += i_array
                             curve_t += t_array
+                        except ExpressionNotAllowed:
+                            raise  # possible code injection: reported, never skipped
                         except Exception as e:
                             log.exception('Error evaluating curve - data skipped')
                     
@@ -383,8 +398,7 @@ class ProtectionModel():
             return curve
         
         def eval_criterion(criterion):
-            var_dict = {'f': f, 'd': d}
-            return eval(criterion, var_dict)
+            return evaluate(criterion, var_dict, FIELD_POLICY)
 
         # Evaluate curves
         curve_upper = []

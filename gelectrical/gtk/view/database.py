@@ -29,6 +29,7 @@ import numpy as np
 # local files import
 from ... import misc
 from ...misc import undoable, group
+from ...core.database import parse_data_reference
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -193,7 +194,7 @@ class DatabaseView:
                             elif data_type == 'data':
                                 try:
                                     if value:
-                                        (subdir, data_filename, params_filename) = eval(value)
+                                        (subdir, data_filename, params_filename) = parse_data_reference(value)
                                         dirname = misc.dir_from_path(self.data_path)
                                         valuepath_params = misc.posix_path(dirname, subdir, params_filename)
                                         with open(valuepath_params, 'r', encoding='utf-8') as fp:

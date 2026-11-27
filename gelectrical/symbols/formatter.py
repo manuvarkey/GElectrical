@@ -23,20 +23,18 @@
 
 """Label text of schematic symbols.
 
-``text_model`` expressions are Mako templates over the element field values
-(``"${sn_kva}kVA"``), as before M2. Replacing Mako by a declarative format is
-scheduled with the safe-expressions work (D3, M3).
+``text_model`` expressions are templates over the element field values
+(``"${sn_kva}kVA"``, ``"${'%g'%(In)}A"``). Each ``${...}`` is evaluated with
+the safe expression evaluator and replaced by ``str`` of its value, as the
+Mako templates used before M3 did (D3, ADR 0011).
 """
 
-from mako.template import Template as ExprTemplate
+from ..core.expressions import format_template, Policy
 
-_templates = dict()
+# Names are field values; no attribute access or method calls are needed
+LABEL_POLICY = Policy()
 
 
 def format_label(expr, values):
     """Render the label expression ``expr`` with field ``values``"""
-    template = _templates.get(expr)
-    if template is None:
-        template = ExprTemplate(expr)
-        _templates[expr] = template
-    return template.render(**values)
+    return format_template(expr, values, LABEL_POLICY)

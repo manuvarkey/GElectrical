@@ -97,7 +97,7 @@ imports every view. No engine module can currently be imported without GTK.
 | `fields` | Field dicts (`type`, `caption`, `unit`, `value`, `selection_list`, `status_enable`, `status_inactivate`, `decimal`, `validation_func`, `alter_structure`, `tooltip`, ...) |
 | `res_fields` | Analysis results in the same field-dict shape, not persisted |
 | `schem_model` | Imperative list of drawing primitives (`LINE`, `CURVE`, `ARC`, `CIRCLE`, `RECT`, `PATH`) in grid units |
-| `text_model` | List of `[(x, y), mako_expr, display, size, weight, alignment]` |
+| `text_model` | List of `[(x, y), label_template, display, size, weight, alignment]` |
 | `render_element(context)` | Draws with Cairo/Pango and **computes `model_width/height` as a side effect** |
 | `get_nodes(code)` | Ports that form electrical nodes, including cross-sheet references |
 | `get_power_model(code, mode)` | pandapower element tuples per model mode |
@@ -265,16 +265,16 @@ of them may change behaviour and needs an explicit decision and verification.
 
 | ID | Issue | Location | Impact |
 | --- | --- | --- | --- |
-| D1 | `eval()` of expression strings stored in project files and databases | `model/protection.py`, `model/rulescheck.py`, `view/database.py`, `misc.py`, `view/field.py` | Opening an untrusted `.gepro` can execute arbitrary code; unacceptable once MCP or file association exposes it |
-| D2 | `pickle` round trip through the system clipboard | `view/drawing.py` copy/paste | Pasting crafted clipboard text executes code |
-| D3 | Mako templates for symbol text (`${int(length_km*1000)}`) | `elementmodel/*` | Templates are code-defined today, but the mechanism executes Python; unsuitable for declarative symbols |
+| D1 | `eval()` of expression strings stored in project files and databases | `model/protection.py`, `model/rulescheck.py`, `view/database.py`, `misc.py`, `view/field.py` | Opening an untrusted `.gepro` can execute arbitrary code; unacceptable once MCP or file association exposes it. **Fixed in M3:** safe AST evaluator `core/expressions.py` for curves, rules and numeric entry; `ast.literal_eval` for database references ([ADR 0011](../decisions/0011-safe-expressions.md)); `tests/engine/test_security.py::test_malicious_project_rejected` |
+| D2 | `pickle` round trip through the system clipboard | `view/drawing.py` copy/paste | Pasting crafted clipboard text executes code. **Fixed in M3:** versioned JSON payload validated before paste (`model/clipboard.py`) |
+| D3 | Mako templates for symbol text (`${int(length_km*1000)}`) | `elementmodel/*` | Templates are code-defined today, but the mechanism executes Python; unsuitable for declarative symbols. **Fixed in M3:** `${...}` fields evaluated by the safe evaluator (`symbols/formatter.py`); Mako removed. Declarative label formats for the new frontend stay with M7 |
 | D4 | Project defaults alias module globals (`default_project_settings`, `DEFAULT_LOAD_PROFILE`) | `model/project.py` | Edits leak into later "new project" instances in the same process; blocks multi-session backends. **Fixed in M2:** `ProjectModel` deep-copies the default settings and load profiles (`core.fields.new_project_settings`, `core.constants.default_load_profile`); test `tests/engine/test_persistence.py::test_projects_do_not_share_defaults` |
 | D5 | Element identity is the list index `(page, index)`; assemblies store child indices | `model/drawing.py`, `elementassembly.py` | Fragile across deletes/reorders; unsuitable for MCP references and frontend diffing |
 | D6 | Non-atomic save (ZIP written over the target) | `__init__.py:on_save` | A crash during save can corrupt the project |
 | D7 | Analysis mutates the drawing (display nodes) inside the undo stack | `model/project.py:setup_base_model` | Undo history and dirty state change when only analysing. **Confirmed in M1:** `setup_base_model` adds two undo entries ("Clear analysis results", "Add node elements"; `undo.json`) |
 | D8 | Values change silently on load: `set_model` replays every field through `set_text_field_value`, whose side effects (selection lists, recalculation, curve re-evaluation from the database) can overwrite stored values | `set_model` + `set_text_field_value` + `set_field_selection_list` | **Confirmed in M1:** `sample.gepro` 97 changed values, `kerala_inspectorate_sample.gepro` 4, `voltage_test.gepro` 0 (e.g. `r0n_ohm_per_km` 0.458 → 10000, `r_ohm_per_km` 0.431 → 0.448, protection curve expressions replaced). Files saved by the current code: 0 changes; save → load is idempotent for all 17 baseline projects. Details: `tests/baseline/*/d8.json` |
 | D9 | Worker threads update GTK widgets and models during analysis | `run_command`, `ProjectModel.update_results` | Thread-safety risk; analysis cannot be isolated |
-| D10 | Report HTML not autoescaped; WeasyPrint resolves URLs in content | `export_pdf_report` | User text can inject markup or reference local files in reports |
+| D10 | Report HTML not autoescaped; WeasyPrint resolves URLs in content | `export_pdf_report` | User text can inject markup or reference local files in reports. **Fixed in M3:** Jinja2 autoescape for HTML templates, generated tables as `Markup`, WeasyPrint URL fetcher limited to `data:` and the generated `report.css` |
 | D11 | `requirements.txt` pins pandapower 2.14.9 while `pixi.toml` requires `>=3.2` | packaging | Legacy packaging builds a different solver version. **M1b:** `requirements.txt` and `setup.py` now pin pandapower 3.5.6; the Flatpak manifest still pins 2.14.9 |
 | D12 | Source headers state GPL-2.0-or-later; `LICENSE` is GPLv3 text | all modules | Licence statement inconsistent; see [ADR 0013](../decisions/0013-licensing.md) |
 | D13 | Duplicate `code` for `Template` and `TitleBlock` (`element_template`) | `elementmodel/template.py` | Breaks the "unique code" invariant if templates become registry entries |
@@ -358,7 +358,7 @@ pandapower 3.2.1, Linux, `xvfb-run`), branch `feat/m1-regression-baseline`.
 | Element ports/extents depend on rendering | Confirmed and extended: bus bar ports (`n_top`/`n_btm`) are only recomputed when the element is drawn; an undrawn element keeps the ports it had |
 | Capture determinism | Two captures (`PYTHONHASHSEED` 0 and 1) are byte-identical, including drawings |
 
-Not checked at runtime: thread-safety (D9), report URL resolution (D10),
+Not checked at runtime: thread-safety (D9), report URL resolution (D10; restricted in M3),
 packaging (D11), 60 Hz behaviour. `PandaPowerModel.build_power_model` creates
 networks with `pp.create_empty_network()` without `f_hz` (code reading; every
 baseline project is 50 Hz, so the effect of 60 Hz projects is unmeasured).

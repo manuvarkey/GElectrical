@@ -14,7 +14,7 @@ Navigation: [index](../README.md) · [frontend](frontend.md) · [backend](backen
   rotate `R` and port cycling `C`), add wire (click points, finish on
   double/middle click or on a port, cancel with right click or Escape).
 - Each element draws itself from `schem_model` (primitives in grid units) and
-  `text_model` (Mako expressions over field values). Orientation is a 90°
+  `text_model` (`${...}` label templates over field values, evaluated by the safe expression evaluator since M3; Mako before). Orientation is a 90°
   rotation; there is no mirroring or free rotation.
 - Connectivity is computed later by `NetworkModel` from coincident port
   coordinates; the editor does not maintain connection records.

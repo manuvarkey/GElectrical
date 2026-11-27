@@ -25,9 +25,12 @@
 step 9): pandapower HTML/JSON, element graph, report HTML/PDF (Jinja2 and
 WeasyPrint) and drawing PDF (Cairo). No GTK imports."""
 
-import logging, copy, datetime, io, math
+import logging, copy, datetime, io, math, os
+from urllib.parse import urlsplit
+from urllib.request import url2pathname
 import cairo
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+from markupsafe import Markup, escape
 
 # local files import
 from ..core import constants, style
@@ -55,9 +58,37 @@ def export_json(project, filename, call_at_exit=None):
     if call_at_exit:
         call_at_exit()
     
+def report_environment():
+    """Jinja2 environment of the report templates. HTML templates are
+    autoescaped (D10): user text is escaped unless the code marks it as
+    generated markup with :class:`markupsafe.Markup`."""
+    return Environment(loader=FileSystemLoader(abs_path("templates")),
+                       autoescape=select_autoescape(enabled_extensions=('html',),
+                                                    default_for_string=False))
+
+def report_url_fetcher(allowed_files):
+    """WeasyPrint URL fetcher that only resolves ``data:`` URLs and the
+    given local files (D10): report content cannot reference other local
+    files or network resources."""
+    from weasyprint.urls import URLFetcher
+    allowed = {os.path.realpath(path) for path in allowed_files}
+
+    class ReportURLFetcher(URLFetcher):
+        def fetch(self, url, headers=None):
+            parts = urlsplit(url)
+            scheme = parts.scheme.lower()
+            if scheme == 'data':
+                return super().fetch(url, headers)
+            if scheme == 'file' and parts.netloc in ('', 'localhost'):
+                if os.path.realpath(url2pathname(parts.path)) in allowed:
+                    return super().fetch(url, headers)
+            log.warning('report_url_fetcher - resource not allowed in report - ' + url[:200])
+            raise ValueError('Resource not allowed in report: ' + url[:200])
+
+    return ReportURLFetcher(allowed_protocols=('data', 'file'), allow_redirects=False)
+
 def export_pdf_report(project, foldername, settings, call_at_exit=None):
-    template_path = abs_path("templates")
-    env = Environment(loader=FileSystemLoader(template_path))
+    env = report_environment()
     
     # General variables
     project_settings = project.get_project_fields()
@@ -71,7 +102,7 @@ def export_pdf_report(project, foldername, settings, call_at_exit=None):
                      'project_name'           : project_settings['project_name']['value'],
                      'drawing_field_approved' : project_settings['drawing_field_approved']['value'],
                      'drawing_field_dept'     : project_settings['drawing_field_dept']['value'],
-                     'drawing_field_address'  : project_settings['drawing_field_address']['value'].replace('\n','</br>'),
+                     'drawing_field_address'  : escape(project_settings['drawing_field_address']['value']).replace('\n', Markup('</br>')),
                      'doc_title': project_settings['project_name']['value'],
                      'doc_author': project_settings['drawing_field_approved']['value'],
                      'doc_subject': "Project Report",
@@ -268,6 +299,13 @@ def export_pdf_report(project, foldername, settings, call_at_exit=None):
     
     # Load HTML file    
     template = env.get_template("report.html")
+    # Generated HTML (tables, embedded images) is markup; captions and
+    # project text are escaped by the template (D10)
+    element_tables = {key: Markup(value) for key, value in element_tables.items()}
+    boq_tables = {key: Markup(value) for key, value in boq_tables.items()}
+    loadprofile_images = {key: Markup(value) for key, value in loadprofile_images.items()}
+    ana_opt_table = Markup(ana_opt_table)
+    ana_res_tables = {key: Markup(value) for key, value in ana_res_tables.items()}
     template_vars = {'gen_variables': gen_variables,
                      'element_captions': element_captions,
                      'element_tables': element_tables,
@@ -301,7 +339,9 @@ def export_pdf_report(project, foldername, settings, call_at_exit=None):
     with open(filename_css, 'w', encoding='utf-8') as fp:
         fp.write(css_out)
     from weasyprint import HTML
-    HTML(string=html_out, base_url=foldername).write_pdf(filename_pdf, stylesheets=[css_obj])
+    url_fetcher = report_url_fetcher([filename_css])
+    HTML(string=html_out, base_url=foldername, url_fetcher=url_fetcher).write_pdf(
+        filename_pdf, stylesheets=[css_obj])
     
     if call_at_exit:
         call_at_exit()
