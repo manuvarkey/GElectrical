@@ -69,6 +69,14 @@ Values are compared as `|a - b| <= abs_tol + rel_tol * |b|`.
 | Drawing raster | — | ≤ 0.1 % differing pixels at 150 DPI after anti-aliasing tolerance | Font hinting differences |
 | Drawing raster, headless engine with Cairo toy text (M2) | — | ≤ 1 % differing pixels at 150 DPI after anti-aliasing tolerance | Glyph rendering differs from PangoCairo (kerning, synthetic bold); geometry is identical. Owner decision 2026-11-27 ([ADR 0018](../decisions/0018-headless-engine-split.md)); applies only to headless captures with `text_backend` `cairo` |
 
+Sign of zero (M3, owner decision 2026-11-27): text values (formatted result
+strings such as `'1.0 < -0.0'`) and `report.txt` are compared after writing
+exact-zero tokens `-0`/`-0.0` as `0`/`0.0`
+(`canonical.normalize_signed_zero`). Numbers already compare equal
+(`-0.0 == 0.0`); the sign of an exact zero in formatted text differed between
+CI runners for `edge__unconnected` and `edge__unusual_values`. No tolerance
+changes and no other value is affected.
+
 Tolerances apply to repeat runs in the same environment. When dependency
 versions change (for example a pandapower update), differences larger than the
 tolerances are investigated, explained in the validation log and the baseline

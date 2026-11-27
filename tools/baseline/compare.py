@@ -97,7 +97,8 @@ def compare_project(actual_dir, expected_dir, compare_drawings=True, headless=Fa
             failures.extend('%s: %s' % (rel, d) for d in diffs)
         elif name.endswith('.txt'):
             with open(a, encoding='utf-8') as fa, open(b, encoding='utf-8') as fb:
-                ta, tb = fa.read().splitlines(), fb.read().splitlines()
+                ta = canonical.normalize_signed_zero(fa.read()).splitlines()
+                tb = canonical.normalize_signed_zero(fb.read()).splitlines()
             if ta != tb:
                 import difflib
                 diff = list(difflib.unified_diff(tb, ta, 'baseline', 'capture', lineterm='', n=1))

@@ -487,9 +487,22 @@ Branched from `feat/m2-milestone` (M2 not yet merged to `master`).
   **11/11**.
 - Headless import criterion of M2 still passes; `git diff --check` clean.
 
+### CI and sign of zero
+
+The first hosted run of PR #31 failed 4 baseline tests (legacy and headless,
+`edge__unconnected`, `edge__unusual_values`); the same 4 tests failed on the
+`master` pushes 45935157857 and 45880852604 and passed on other runs. Every
+difference was the sign of an exact zero in formatted text (`'1.0 < -0.0'`
+vs `'1.0 < 0.0'`, report `-0.0` vs `0.0`). Owner decision (2026-11-27): the
+baseline comparison writes exact-zero tokens without sign in text values and
+`report.txt` (`canonical.normalize_signed_zero`,
+[regression baseline §3](regression-baseline.md#3-tolerances));
+`tests/engine/test_baseline_compare.py`. Tolerances and `tests/baseline/`
+unchanged.
+
 ### Not run / open
 
-- Interactive GTK session by hand; Windows/macOS; hosted CI.
+- Interactive GTK session by hand; Windows/macOS.
 - Packaging builds (Flatpak manifest edited, not built).
 - Sphinx build (installation pages edited only to drop `mako` from the
   `pip install` list).
