@@ -1,6 +1,7 @@
 # 0018. Headless engine split: notifications, symbol layers and text backends
 
-- Status: Proposed (implemented in M2; owner review pending)
+- Status: Proposed (implemented in M2; raster limit for Cairo text accepted by
+  the owner on 2026-11-27; owner review of the ADR pending)
 - Date: 2026-11-27
 - Related: [implementation plan M2](../migration/implementation-plan.md#m2--headless-engine-extraction-poc-1),
   [backend §2](../architecture/backend.md#2-engine-package-gelectrical),
@@ -70,9 +71,11 @@ rendering with PangoCairo text; module-level defaults were shared (D4, D15).
 - Headless drawings differ from the legacy raster only in glyph rendering
   (0.12 %–0.61 % of pixels at 150 dpi in all 25 baseline drawings, above
   the 0.1 % baseline limit). With PangoCairo text the headless drawings are
-  pixel-identical. A raster limit for Cairo text is an **open owner
-  decision**; until then the headless baseline test reports, but does not
-  check, the raster difference.
+  pixel-identical. The owner chose (2026-11-27) a separate raster limit for
+  headless captures with Cairo text: at most **1 %** differing pixels
+  (`HEADLESS_CAIRO_TEXT_PIXEL_FRACTION` in `tools/baseline/canonical.py`),
+  instead of PangoCairo in the sidecar. The 0.1 % limit for the legacy
+  capture and for PangoCairo-text captures is unchanged.
 - `osifont` is resolved through the system font configuration for both
   backends (not bundled in the package yet).
 

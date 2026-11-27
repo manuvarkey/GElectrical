@@ -87,8 +87,9 @@ on all 249 elements of the baseline projects, Cairo extents differ from
 PangoCairo extents by at most 3 drawing units (one grid unit is 16;
 `tests/test_symbols_extents.py`). Glyph rendering differs (kerning, synthetic
 bold), so headless drawings differ from the legacy raster by 0.12–0.61 % of
-pixels at 150 dpi (all 25 drawings above the 0.1 % limit); with PangoCairo text they are pixel-identical. The raster
-limit for Cairo text is an open owner decision. `osifont` is resolved through
+pixels at 150 dpi (all 25 drawings above the 0.1 % limit); with PangoCairo text they are pixel-identical. Headless
+captures with Cairo text are checked against a separate 1 % raster limit
+(owner decision 2026-11-27, ADR 0018). `osifont` is resolved through
 the system font configuration (fontconfig on Linux) for both backends.
 
 ## 3. Domain identity

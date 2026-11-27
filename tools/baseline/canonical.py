@@ -140,6 +140,11 @@ EXACT = None
 
 DRAWING_PIXEL_FRACTION = 0.001   # at most 0.1 % differing pixels
 DRAWING_CHANNEL_TOLERANCE = 32   # anti-aliasing tolerance per colour channel
+# Headless engine with the Cairo toy text API (owner decision, M2, 2026-11-27):
+# glyph rendering differs from the PangoCairo baseline, geometry does not.
+# Applies only to headless captures with Cairo text; all other captures use
+# DRAWING_PIXEL_FRACTION.
+HEADLESS_CAIRO_TEXT_PIXEL_FRACTION = 0.01   # at most 1 % differing pixels
 
 _PERCENT_UNITS = ('%',)
 _ANGLE_RE = re.compile(r'(^|_)va(_|$)|degree')

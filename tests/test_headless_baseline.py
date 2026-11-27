@@ -6,11 +6,11 @@ the documented tolerances, unchanged. Differences from the legacy capture:
 
 * GTK-only warnings (``PyGTKDeprecationWarning``) are not expected.
 * Drawings: the headless engine draws text with the Cairo toy API, the
-  baseline was drawn with PangoCairo. Raster comparison therefore runs only
-  for captures made with ``GELECTRICAL_TEXT_BACKEND=pango`` (PangoCairo text
-  without GTK); for Cairo text the measured difference is reported as a
-  warning. The owner decides on a raster limit for Cairo text (validation
-  log, M2 entry); no tolerance is widened here.
+  baseline was drawn with PangoCairo, so glyph pixels differ. Cairo text
+  captures are checked against ``HEADLESS_CAIRO_TEXT_PIXEL_FRACTION`` (1 %,
+  owner decision, validation log M2 entry). Captures made with
+  ``GELECTRICAL_TEXT_BACKEND=pango`` (PangoCairo text without GTK) use the
+  normal 0.1 % limit. The legacy baseline limit is unchanged.
 
 Set ``GELECTRICAL_HEADLESS_CAPTURE=/path`` to reuse an existing capture.
 """
@@ -64,8 +64,10 @@ def test_headless_project_matches_baseline(headless_root, project):
     pango_text = _environment(headless_root).get('text_backend') == 'pango'
     failures, notes = compare.compare_project(
         actual, os.path.join(BASELINE, project),
-        compare_drawings=pango_text and compare.fonts_match(headless_root, BASELINE),
-        headless=True)
+        compare_drawings=compare.fonts_match(headless_root, BASELINE),
+        headless=True,
+        pixel_fraction=(canonical.DRAWING_PIXEL_FRACTION if pango_text
+                        else canonical.HEADLESS_CAIRO_TEXT_PIXEL_FRACTION))
     for note in notes:
         warnings.warn('%s: %s' % (project, note))
     assert not failures, '\n'.join(failures[:60])

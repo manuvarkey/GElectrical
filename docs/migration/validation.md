@@ -323,8 +323,8 @@ Status: **implemented with mock data; acceptance criteria met locally**
 
 ## 2026-11-27 — M2 headless engine extraction (branch `feat/m2-milestone`)
 
-Status: **implemented; acceptance met except one owner decision** (raster
-limit for headless drawings with Cairo text, below). Owner review pending.
+Status: **implemented; acceptance met** (raster limit for headless drawings
+with Cairo text set by the owner, below). Owner review pending.
 
 - Environment: unchanged from M1b (Python 3.14.10, pandapower 3.5.6,
   WeasyPrint 70.0, GTK 3.24.52; `pixi.lock` not modified, only tasks added to
@@ -351,7 +351,7 @@ limit for headless drawings with Cairo text, below). Owner review pending.
 | --- | --- |
 | `python -c "import sys; sys.modules['gi'] = None; import gelectrical.model.project, gelectrical.analysis.pipeline, gelectrical.persistence.gepro, gelectrical.reports"` | **Passes** (`tests/engine/test_headless_import.py`; a second test checks that no `gi`, `gelectrical.gtk` or `gelectrical.misc` module is loaded by the engine) |
 | Headless pipeline on all baseline projects matches the baseline within tolerance | **Passes** for every JSON and text artefact of all 17 projects (model, round trip, D8, curves, topology, pandapower inputs, diagnostics, all 6 analysis modes, results, node results, rules, renumbering, undo, report text) with the documented tolerances. `capture.py --headless`, PyGObject blocked, no display. Expected difference handled without widening tolerances: one `PyGTKDeprecationWarning` (emitted by `Gtk.Label` in the GTK tab code) is absent from the headless `status.json` files |
-| Drawing PDF visual diff within threshold | **Open (owner decision).** Headless drawings with PangoCairo text (`GELECTRICAL_TEXT_BACKEND=pango`, no GTK): **25/25 rasters pixel-identical** (0.0000 %) to the baseline, so geometry and stroke rendering are unchanged. With the headless default (Cairo toy text API) the rasters differ by **0.12–0.61 %** of pixels (all 25 above the 0.1 % limit) because glyph rendering differs (kerning, synthetic bold). No raster limit was widened; `tests/test_headless_baseline.py` reports the difference as a warning and checks rasters only for Pango-text captures. Owner to choose: accept a separate raster limit for Cairo text, or use PangoCairo in the sidecar (decision rule option 2) |
+| Drawing PDF visual diff within threshold | **Passes with the owner-approved limit for Cairo text.** Headless drawings with PangoCairo text (`GELECTRICAL_TEXT_BACKEND=pango`, no GTK): **25/25 rasters pixel-identical** (0.0000 %) to the baseline, so geometry and stroke rendering are unchanged. With the headless default (Cairo toy text API) the rasters differ by **0.12–0.61 %** of pixels (all 25 above the 0.1 % limit) because glyph rendering differs (kerning, synthetic bold). Owner decision (2026-11-27): a separate limit of **1 %** differing pixels for headless captures with Cairo text (`HEADLESS_CAIRO_TEXT_PIXEL_FRACTION`), instead of PangoCairo in the sidecar; the 0.1 % limit for legacy and PangoCairo-text captures is unchanged. `tests/test_headless_baseline.py` and `compare.py` now check Cairo-text rasters against it: `pixi run -e test test-headless` **18/18 passed**, all 25 rasters within 1 % (0.12–0.61 %) |
 | Report generated | **Yes**: headless `report.html`/`report.pdf` in every project where the legacy capture produced one (D18 failures unchanged); `report.txt` identical |
 | Legacy GTK app passes the smoke test and a manual check list | Smoke **3/3**. Check list scripted under `xvfb-run` against the real `MainWindow` (open, new tab, notebook switching, undo/redo of tabs, remove/reorder sheets, tab labels, palette insert with rotation, click selection, port hit test, field edit and undo, analysis, rules check into the messages view, diagnostic selection marking, save and reopen, drawing export, renumber and undo, protection coordination warning): **24/24**. Not exercised interactively by hand |
 
@@ -384,6 +384,8 @@ legacy raster is pixel-identical.
   empty and negative rectangles), 0 mismatches.
 - Full headless capture with PangoCairo text: rasters 25/25 at 0.0000 %; all
   other artefacts as above.
+- After the owner decision: `pixi run -e test test-headless` (Cairo text,
+  1 % raster limit) **18 passed**; `pixi run -e test test-engine` **55 passed**.
 - `xvfb-run -a pixi run smoke`: **3/3** (after every step and on the final code).
 - `pixi run headless sample_files/sample.gepro`: analysis completed (time
   series, 3-phase from the file settings), 1 diagnostic warning, rules check
@@ -393,7 +395,6 @@ legacy raster is pixel-identical.
 
 ### Not run / open
 
-- Owner decision on headless raster limit (above).
 - Interactive GTK session by hand (`pixi run start`); Windows/macOS; hosted CI
   (workflow extended: headless run without display, headless baseline in the
   Linux test job, engine tests and headless run on Windows).
