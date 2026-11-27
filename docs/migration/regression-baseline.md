@@ -67,6 +67,7 @@ Values are compared as `|a - b| <= abs_tol + rel_tol * |b|`.
 | Curve points (A, s) | 1e-12 | 1e-9 | NumPy evaluation |
 | Polygon vertices | 1e-9 | 1e-9 | Shapely operations |
 | Drawing raster | — | ≤ 0.1 % differing pixels at 150 DPI after anti-aliasing tolerance | Font hinting differences |
+| Drawing raster, headless engine with Cairo toy text (M2) | — | ≤ 1 % differing pixels at 150 DPI after anti-aliasing tolerance | Glyph rendering differs from PangoCairo (kerning, synthetic bold); geometry is identical. Owner decision 2026-11-27 ([ADR 0018](../decisions/0018-headless-engine-split.md)); applies only to headless captures with `text_backend` `cairo` |
 
 Tolerances apply to repeat runs in the same environment. When dependency
 versions change (for example a pandapower update), differences larger than the
@@ -108,13 +109,13 @@ changing display-node handling) requires:
 
 | Item | Location |
 | --- | --- |
-| Capture harness | `tools/baseline/capture.py` (one subprocess per project), `tools/baseline/legacy.py` (drives `MainWindow`) |
+| Capture harness | `tools/baseline/capture.py` (one subprocess per project), `tools/baseline/legacy.py` (drives `MainWindow`), `tools/baseline/headless.py` (`--headless`: drives the headless `ProjectModel`, PyGObject blocked, M2) |
 | Canonical form and tolerances | `tools/baseline/canonical.py` (section 3 table as constants) |
 | Comparison | `tools/baseline/compare.py` (CLI and test helper) |
 | Coverage project generator | `tools/baseline/build_projects.py` |
 | Coverage and edge projects | `tests/projects/*.gepro`, `tests/projects/edge/*.gepro` |
 | Baseline | `tests/baseline/<project>/`, `tests/baseline/environment.json` |
-| Test | `tests/test_baseline.py` |
+| Test | `tests/test_baseline.py` (legacy GTK capture), `tests/test_headless_baseline.py` (headless capture, M2) |
 | CI | `.github/workflows/quality.yml` |
 
 Commands:
@@ -124,7 +125,19 @@ xvfb-run -a pixi run -e test test                    # capture afresh and compar
 xvfb-run -a pixi run -e test baseline-capture --out /tmp/cap
 pixi run -e test python tools/baseline/compare.py /tmp/cap tests/baseline
 xvfb-run -a pixi run -e test build-test-projects     # regenerate tests/projects
+pixi run -e test baseline-capture --headless --out /tmp/caph   # headless engine, no display
+pixi run -e test test-headless                       # headless capture and compare
 ```
+
+The headless comparison uses the same tolerances. Two differences are
+expected and handled without widening any tolerance: GTK-only warnings
+(`PyGTKDeprecationWarning`) are not expected in its `status.json`, and drawing
+rasters are checked against the separate 1 % limit for Cairo toy text
+(section 3, [ADR 0018](../decisions/0018-headless-engine-split.md)). A capture
+with `GELECTRICAL_TEXT_BACKEND=pango` (PangoCairo text, still no GTK) checks
+the rasters with the normal 0.1 % limit. `compare.py` selects the limit from
+`text_backend` in the capture's `environment.json`; the legacy capture always
+uses 0.1 %.
 
 `baseline-capture` without `--out` overwrites `tests/baseline/`. Do this only
 for an approved re-baseline (section 6), never to make a change pass, and pass

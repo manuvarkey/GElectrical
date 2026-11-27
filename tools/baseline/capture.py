@@ -564,7 +564,8 @@ def render_drawings(session, folder):
     project = session.project
     misc = session.misc
     files = []
-    if project.program_state['dark_mode']:
+    dark_mode = misc.check_dark_mode()
+    if dark_mode:
         misc.reset_dark_mode_drawing_values()
     try:
         scale = DRAWING_DPI / 72.0
@@ -582,7 +583,7 @@ def render_drawings(session, folder):
             surface.write_to_png(os.path.join(folder, name))
             files.append(name)
     finally:
-        if project.program_state['dark_mode']:
+        if dark_mode:
             misc.set_dark_mode_drawing_values()
     return files
 
@@ -900,8 +901,8 @@ def undo_capture(session):
         setter('ref', 'UNDO-TEST')
 
     def act_insert():
-        Load = project.program_state['element_models']['element_load']
-        element = Load((800, 800), project_settings=project.program_state['project_settings'])
+        Load = project.element_models['element_load']
+        element = Load((800, 800), project_settings=project.fields)
         element.fields['load_profile']['selection_list'] = project.loadprofiles
         drawing_model.insert_element_at_index(element)
 
@@ -956,15 +957,24 @@ def undo_capture(session):
 # Command line
 # ---------------------------------------------------------------------------
 
-def run_single(filename, out_dir):
-    import legacy
+def session_module(headless=False):
+    """Capture backend: legacy GTK window (default) or headless engine (M2)"""
+    if headless:
+        import headless as module
+    else:
+        import legacy as module
+    return module
+
+
+def run_single(filename, out_dir, headless=False):
+    legacy = session_module(headless)
     legacy.isolate_environment()
     logging.basicConfig(level=logging.ERROR, format='%(levelname)s - %(name)s - %(message)s')
     summary = capture_project(os.path.abspath(filename), out_dir, legacy)
     print(json.dumps(summary))
 
 
-def capture_all(projects, out_root, hash_seed='0', clean=True, reason=None):
+def capture_all(projects, out_root, hash_seed='0', clean=True, reason=None, headless=False):
     """Capture ``projects`` into ``out_root``; return (summaries, failures).
 
     ``reason`` is stored as ``baseline_reason`` in ``environment.json``: for an
@@ -980,7 +990,8 @@ def capture_all(projects, out_root, hash_seed='0', clean=True, reason=None):
         env = dict(os.environ)
         env['PYTHONHASHSEED'] = str(hash_seed)
         proc = subprocess.run([sys.executable, os.path.abspath(__file__), '--single',
-                               os.path.abspath(filename), '--out', out_dir],
+                               os.path.abspath(filename), '--out', out_dir]
+                              + (['--headless'] if headless else []),
                               capture_output=True, text=True, env=env, cwd=ROOT)
         if proc.returncode != 0:
             failures.append((name, proc.stdout[-4000:] + proc.stderr[-4000:]))
@@ -991,7 +1002,8 @@ def capture_all(projects, out_root, hash_seed='0', clean=True, reason=None):
         print('OK  ', name, summaries[name].get('modes'), file=sys.stderr)
     # Environment manifest (from a child process with the same isolation)
     env = dict(os.environ)
-    proc = subprocess.run([sys.executable, os.path.abspath(__file__), '--environment'],
+    proc = subprocess.run([sys.executable, os.path.abspath(__file__), '--environment']
+                          + (['--headless'] if headless else []),
                           capture_output=True, text=True, env=env, cwd=ROOT)
     if proc.returncode == 0:
         manifest = json.loads(proc.stdout.strip().splitlines()[-1])
@@ -1012,30 +1024,34 @@ def main(argv):
     parser.add_argument('--environment', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--hash-seed', default='0',
                         help='PYTHONHASHSEED for the capture subprocesses (default 0)')
+    parser.add_argument('--headless', action='store_true',
+                        help='capture with the headless engine instead of the GTK window (M2)')
     parser.add_argument('--reason',
                         help='approved re-baseline: validation-log reference stored in environment.json')
     args = parser.parse_args(argv)
 
     if args.single:
-        run_single(args.single, args.out)
+        run_single(args.single, args.out, args.headless)
         return 0
     if args.environment:
-        import legacy
+        legacy = session_module(args.headless)
         legacy.isolate_environment()
         misc = legacy.import_legacy()[1]
         manifest = environment_manifest(misc)
         session = legacy.LegacySession()
         try:
-            manifest['registered_element_codes'] = sorted(
-                session.project.program_state['element_models'])
-            manifest['dark_mode'] = session.project.program_state['dark_mode']
+            manifest['registered_element_codes'] = sorted(session.project.element_models)
+            manifest['dark_mode'] = misc.check_dark_mode()
+            from gelectrical.symbols.text import get_text_backend
+            manifest['text_backend'] = get_text_backend().name
         finally:
             session.close()
         print(json.dumps(canon(manifest)))
         return 0
 
     projects = args.projects or default_projects()
-    summaries, failures = capture_all(projects, args.out, args.hash_seed, reason=args.reason)
+    summaries, failures = capture_all(projects, args.out, args.hash_seed, reason=args.reason,
+                                      headless=args.headless)
     for name, output in failures:
         print('\n==== %s ====\n%s' % (name, output), file=sys.stderr)
     print('%d/%d projects captured into %s' % (len(summaries), len(projects), args.out))

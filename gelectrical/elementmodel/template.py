@@ -22,12 +22,9 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
-from mako.template import Template as ExprTemplate
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
-from .. import misc
+from ..core import constants, style
 from .element import ElementModel
 
 # Get logger object
@@ -41,33 +38,34 @@ class Template(ElementModel):
     name = 'Template'
     group = 'Miscellaneous'
     icon = None
+    fixed_extents = True
 
-    def __init__(self, width=misc.PAGE_WIDTH, height=misc.PAGE_HEIGHT, **kwargs):
+    def __init__(self, width=constants.PAGE_WIDTH, height=constants.PAGE_HEIGHT, **kwargs):
         # Global
         ElementModel.__init__(self, (0,0), **kwargs)
         self.ports = []
         self.fields = dict()
         
-        self.border_left = 15/misc.POINT_TO_MM/misc.M
-        self.border_right = 5/misc.POINT_TO_MM/misc.M
-        self.border_top = 5/misc.POINT_TO_MM/misc.M
-        self.border_bottom = 5/misc.POINT_TO_MM/misc.M
-        self.border_width = 5/misc.POINT_TO_MM/misc.M
+        self.border_left = 15/constants.POINT_TO_MM/constants.M
+        self.border_right = 5/constants.POINT_TO_MM/constants.M
+        self.border_top = 5/constants.POINT_TO_MM/constants.M
+        self.border_bottom = 5/constants.POINT_TO_MM/constants.M
+        self.border_width = 5/constants.POINT_TO_MM/constants.M
         self.set_dimensions(width, height)
         
-    def set_dimensions(self, width=misc.PAGE_WIDTH, height=misc.PAGE_HEIGHT):
+    def set_dimensions(self, width=constants.PAGE_WIDTH, height=constants.PAGE_HEIGHT):
         # Set page dimensions
-        self.model_width = width/misc.POINT_TO_MM/misc.M
-        self.model_height = height/misc.POINT_TO_MM/misc.M
+        self.model_width = width/constants.POINT_TO_MM/constants.M
+        self.model_height = height/constants.POINT_TO_MM/constants.M
         # Set drawing area dimentions
         drawing_width = self.model_width - self.border_left - self.border_right - 2*self.border_width
         drawing_height = self.model_height - self.border_top - self.border_bottom - 2*self.border_width
         # Reference system dimentions
-        horizontal_ref_nos = 2*round(drawing_width/2/(50/misc.POINT_TO_MM/misc.M))
-        vertical_ref_nos = 2*round(drawing_height/2/(50/misc.POINT_TO_MM/misc.M))
+        horizontal_ref_nos = 2*round(drawing_width/2/(50/constants.POINT_TO_MM/constants.M))
+        vertical_ref_nos = 2*round(drawing_height/2/(50/constants.POINT_TO_MM/constants.M))
         horizontal_ref_length = drawing_width/horizontal_ref_nos
         vertical_ref_length = drawing_height/vertical_ref_nos
-        D = self.border_width/2 - misc.SCHEM_FONT_SIZE/ misc.M/2
+        D = self.border_width/2 - style.SCHEM_FONT_SIZE/ constants.M/2
         # Helper functions
         def line(x, y, length, orientation):
             if orientation == 'horizontal':
@@ -129,9 +127,6 @@ class Template(ElementModel):
             self.text_model.append([(x1+self.border_width/3,y-vertical_ref_length/2), refcode, True])
             self.text_model.append([(x2+self.border_width/3,y-vertical_ref_length/2), refcode, True])
             
-    def modify_extends(self):
-        pass
-            
             
 class TitleBlock(ElementModel):
     """Class for rendering cross reference elements"""
@@ -140,6 +135,7 @@ class TitleBlock(ElementModel):
     name = 'Template'
     group = 'Miscellaneous'
     icon = None
+    fixed_extents = True
 
     def __init__(self, **kwargs):
         # Global
@@ -147,9 +143,9 @@ class TitleBlock(ElementModel):
         self.ports = []
         self.fields = dict()
         
-        F = 1/misc.POINT_TO_MM/misc.M
+        F = 1/constants.POINT_TO_MM/constants.M
         D = 1*F
-        T = misc.SCHEM_FONT_SIZE/misc.M + 2*D
+        T = style.SCHEM_FONT_SIZE/constants.M + 2*D
         self.model_width = 180*F
         self.model_height = 36*F
         self.schem_model = [['RECT',(0,0), self.model_width, self.model_height, False, []],
@@ -166,41 +162,39 @@ class TitleBlock(ElementModel):
                             ['LINE',(0, 9*F), (180*F, 9*F), []],
                             ['LINE',(73*F, 18*F), (180*F, 18*F), []],
                             ['LINE',(130*F, 27*F), (180*F, 27*F), []], ]
-        self.text_model = [[(D, D), 'Responsible dept.', True, misc.TITLE_FONT_SIZE_SMALL], 
-                           [(28*F+D, D), 'Technical reference', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(73*F+D, D), 'Created by', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(118*F+D, D), 'Approved by', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(73*F+D, 9*F+D), 'Document Type', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(73*F+D, 18*F+D), 'Title, Supplementary Title', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(130*F+D, 9*F+D), 'Document Status', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(130*F+D, 27*F+D), 'Rev.', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(137*F+D, 27*F+D), 'Date of issue', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(160*F+D, 27*F+D), 'Lang.', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(170*F+D, 27*F+D), 'Sheet', True, misc.TITLE_FONT_SIZE_SMALL],
-                           [(D, 9*F-T), '${drawing_field_dept}', True, misc.TITLE_FONT_SIZE], 
-                           [(28*F+D, 9*F-T), '${drawing_field_techref}', True, misc.TITLE_FONT_SIZE],
-                           [(73*F+D, 9*F-T), '${drawing_field_created}', True, misc.TITLE_FONT_SIZE],
-                           [(118*F+D, 9*F-T), '${drawing_field_approved}', True, misc.TITLE_FONT_SIZE],
-                           [(73*F+D, 18*F-T), '${type}', True, misc.TITLE_FONT_SIZE],
-                           [(73*F+D, 27*F-T), '${project_name}', True, misc.TITLE_FONT_SIZE],
-                           [(73*F+D, 27*F+D), '${title}', True, misc.TITLE_FONT_SIZE],
-                           [(130*F+D, 18*F-T), '${status}', True, misc.TITLE_FONT_SIZE],
-                           [(130*F+D, 36*F-T), '${rev}', True, misc.TITLE_FONT_SIZE],
-                           [(137*F+D, 36*F-T), '${date_of_issue}', True, misc.TITLE_FONT_SIZE],
-                           [(160*F+D, 36*F-T), '${drawing_field_lang}', True, misc.TITLE_FONT_SIZE],
-                           [(170*F+D, 36*F-T), '${sheet_no}', True, misc.TITLE_FONT_SIZE],
-                           [(73*F/2, 18*F-T), '${drawing_field_address}', True, misc.TITLE_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(130*F+50*F/2, 22.5*F-0.5*T), '${drawing_no}', True, misc.TITLE_FONT_SIZE, misc.SCHEM_FONT_WEIGHT_BOLD, 'center'], ]
+        self.text_model = [[(D, D), 'Responsible dept.', True, style.TITLE_FONT_SIZE_SMALL], 
+                           [(28*F+D, D), 'Technical reference', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(73*F+D, D), 'Created by', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(118*F+D, D), 'Approved by', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(73*F+D, 9*F+D), 'Document Type', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(73*F+D, 18*F+D), 'Title, Supplementary Title', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(130*F+D, 9*F+D), 'Document Status', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(130*F+D, 27*F+D), 'Rev.', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(137*F+D, 27*F+D), 'Date of issue', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(160*F+D, 27*F+D), 'Lang.', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(170*F+D, 27*F+D), 'Sheet', True, style.TITLE_FONT_SIZE_SMALL],
+                           [(D, 9*F-T), '${drawing_field_dept}', True, style.TITLE_FONT_SIZE], 
+                           [(28*F+D, 9*F-T), '${drawing_field_techref}', True, style.TITLE_FONT_SIZE],
+                           [(73*F+D, 9*F-T), '${drawing_field_created}', True, style.TITLE_FONT_SIZE],
+                           [(118*F+D, 9*F-T), '${drawing_field_approved}', True, style.TITLE_FONT_SIZE],
+                           [(73*F+D, 18*F-T), '${type}', True, style.TITLE_FONT_SIZE],
+                           [(73*F+D, 27*F-T), '${project_name}', True, style.TITLE_FONT_SIZE],
+                           [(73*F+D, 27*F+D), '${title}', True, style.TITLE_FONT_SIZE],
+                           [(130*F+D, 18*F-T), '${status}', True, style.TITLE_FONT_SIZE],
+                           [(130*F+D, 36*F-T), '${rev}', True, style.TITLE_FONT_SIZE],
+                           [(137*F+D, 36*F-T), '${date_of_issue}', True, style.TITLE_FONT_SIZE],
+                           [(160*F+D, 36*F-T), '${drawing_field_lang}', True, style.TITLE_FONT_SIZE],
+                           [(170*F+D, 36*F-T), '${sheet_no}', True, style.TITLE_FONT_SIZE],
+                           [(73*F/2, 18*F-T), '${drawing_field_address}', True, style.TITLE_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],
+                           [(130*F+50*F/2, 22.5*F-0.5*T), '${drawing_no}', True, style.TITLE_FONT_SIZE, constants.SCHEM_FONT_WEIGHT_BOLD, 'center'], ]
     
     def set_fields(self, fields):
         self.fields = fields
         # Set page dimensions
-        border_right = 5/misc.POINT_TO_MM/misc.M
-        border_bottom = 5/misc.POINT_TO_MM/misc.M
-        border_width = 5/misc.POINT_TO_MM/misc.M
+        border_right = 5/constants.POINT_TO_MM/constants.M
+        border_bottom = 5/constants.POINT_TO_MM/constants.M
+        border_width = 5/constants.POINT_TO_MM/constants.M
         
-        self.x = (self.fields['page_width']['value']/misc.M - border_right - border_width - self.model_width)*misc.M
-        self.y = (self.fields['page_height']['value']/misc.M - border_bottom - border_width - self.model_height)*misc.M
-        
-    def modify_extends(self):
-        pass
+        self.x = (self.fields['page_width']['value']/constants.M - border_right - border_width - self.model_width)*constants.M
+        self.y = (self.fields['page_height']['value']/constants.M - border_bottom - border_width - self.model_height)*constants.M
+

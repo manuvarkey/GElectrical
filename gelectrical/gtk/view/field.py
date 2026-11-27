@@ -25,7 +25,7 @@ from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 import cairo
 
 # local files import
-from .. import misc
+from ... import misc
 from .graph import GraphView, GraphViewDialog
 
 # Get logger object

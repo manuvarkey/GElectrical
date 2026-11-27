@@ -12,7 +12,7 @@ setup(
     author_email="manuvarkey@gmail.com",
 
     # Packages
-    packages = ['gelectrical', 'gelectrical.model', 'gelectrical.view', 'gelectrical.elementmodel'],
+    packages = find_packages(include=['gelectrical', 'gelectrical.*']),
     include_package_data = True, # Include additional files into the package
 
     # Details

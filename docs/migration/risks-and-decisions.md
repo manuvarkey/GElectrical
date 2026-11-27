@@ -55,6 +55,7 @@ approved; rows that depend on a PoC keep the stated decision rule.
 | Q17 | Upgrade timing | New milestone M1b: after the baseline on the current environment, before the M2 refactor | [plan](implementation-plan.md#m1b--python-and-pandapower-upgrade) |
 | Q18 | WeasyPrint on Windows | Official Windows onedir executable in packaged Windows builds; Python package elsewhere; one pinned version everywhere | [ADR 0016](../decisions/0016-weasyprint-windows-executable.md) |
 | Q19 | EngineeringUI npm name | `@kavilgroup/engineering-ui` | [ADR 0012](../decisions/0012-engineering-ui-package.md) |
+| Q20 | Raster check for headless drawings with Cairo toy text (2026-11-27, M2) | Separate limit: at most 1 % differing pixels for headless Cairo-text captures; 0.1 % stays for legacy and PangoCairo captures; no PangoCairo in the sidecar | [ADR 0018](../decisions/0018-headless-engine-split.md), [regression baseline §3](regression-baseline.md#3-tolerances) |
 
 No owner decisions are open. New questions are added here with an ID.
 

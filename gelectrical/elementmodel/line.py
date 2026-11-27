@@ -18,10 +18,12 @@
 #  
 # 
 
-import os, cairo, math, copy
+import os, math, copy
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.fields import set_field_selection_list
+from ..core.paths import abs_path, open_library
 from .element import ElementModel
 from ..model.protection import ProtectionModel
 
@@ -31,7 +33,7 @@ class Line(ElementModel):
     code = 'element_line'
     name = 'Line'
     group = 'Components'
-    icon = misc.abs_path('icons', 'line.svg')
+    icon = abs_path('icons', 'line.svg')
     tooltip = """<b>Line</b>
 
 Creates a generic line element.
@@ -42,7 +44,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
     def __init__(self, cordinates=(0,0), calculate=True, **kwargs):
         # Global
         ElementModel.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('line.csv')
+        self.database_path = open_library('line.csv')
         self.model_width = 0
         self.model_height = 0
         self.ports = [[2, 0], [2, 8]]
@@ -105,8 +107,8 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                        'dcurve': self.get_field_dict('data', 'Damage curve', '', None,
                                                                     alter_structure=True,
                                                                     status_inactivate=True)}
-        self.fields['dcurve']['graph_options'] = (misc.GRAPH_PROT_CURRENT_LIMITS, 
-                                                    misc.GRAPH_PROT_TIME_LIMITS, 
+        self.fields['dcurve']['graph_options'] = (constants.GRAPH_PROT_CURRENT_LIMITS, 
+                                                    constants.GRAPH_PROT_TIME_LIMITS, 
                                                     'CURRENT IN AMPERES', 
                                                     'TIME IN SECONDS', {})
         self.text_model = [[(3.5,1), "${ref}", True],
@@ -117,9 +119,8 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
             self.calculate_damage_curve()
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         if self.fields['type']['value'] == 'Over Head':
             self.schem_model = [ 
                              ['LINE',(2,0),(2,8), []],
@@ -148,15 +149,9 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
             self.schem_model += SYMBOL_PEN
         if self.fields['symbol']['value'] in ['N', 'PE+N']:
             self.schem_model += SYMBOL_N
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -166,7 +161,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
         nodes = ((p0, (ports[0],)),(p1, (ports[1],)))
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         line_type = self.fields['r_ohm_per_km']['value']
         if line_type == 'Over Head':
@@ -175,7 +170,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
             line_type_code = 'cs'
         p0 = code + ':0'
         p1 = code + ':1'
-        if mode in (misc.POWER_MODEL_POWERFLOW, misc.POWER_MODEL_LINEFAULT):
+        if mode in (constants.POWER_MODEL_POWERFLOW, constants.POWER_MODEL_LINEFAULT):
             power_model = (('line', (p0,p1), {'name': self.fields['ref']['value'],
                                         'length_km': self.fields['length_km']['value'],
                                         'r_ohm_per_km': self.fields['r_ohm_per_km']['value'],
@@ -192,7 +187,7 @@ Use this element for MV/ HV cables and overhead lines if the parameters of the l
                                         'type': line_type_code,
                                         'parallel': self.fields['parallel']['value'],
                                         'in_service': self.fields['in_service']['value'],}),)
-        elif mode == misc.POWER_MODEL_GROUNDFAULT:
+        elif mode == constants.POWER_MODEL_GROUNDFAULT:
             power_model = (('line', (p0,p1), {'name': self.fields['ref']['value'],
                                         'length_km': self.fields['length_km']['value'],
                                         'r_ohm_per_km': self.fields['r_ohm_per_km']['value'],
@@ -252,7 +247,7 @@ class LTCableIEC(Line):
     code = 'element_line_cable'
     name = 'LV Cable (IEC)'
     group = 'Components'
-    icon = misc.abs_path('icons', 'line.svg')
+    icon = abs_path('icons', 'line.svg')
     tooltip = """<b>LV Cable (IEC)</b>
 
 Creates a low voltage cable element. The parameters of the line are evaluated as per IEC standards.
@@ -261,7 +256,7 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Line.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('cable_iec.csv')
+        self.database_path = open_library('cable_iec.csv')
         self.text_model = [[(3.5,1), "${ref}", True],
                            [(3.5,None), "${parallel}#${designation}", True],
                            [(3.5,None), "${int(length_km*1000)}m", True],
@@ -580,9 +575,8 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
         self.calculate_parameters()
         self.assign_tootltips()
         
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.schem_model = copy.deepcopy(self.schem_models_dict[self.fields['laying_type']['value']])
         ## Add symbols
         SYMBOL_P = [['LINE',(1.25,5),(2.75,4.5), [], 'thin'],
@@ -598,15 +592,9 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             self.schem_model += SYMBOL_PEN
         if self.fields['neutral_xsec']['value'] != 0 and self.fields['cpe']['value'] != 'Neutral':
             self.schem_model += SYMBOL_N
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def set_text_field_value(self, code, value):
         if self.fields and code in self.fields:
@@ -614,13 +602,13 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
             # Modify variables based on selection
             modified = {}
             if code == 'conductor_material':
-                misc.set_field_selection_list(self.fields, 'conductor_cross_section', 
+                set_field_selection_list(self.fields, 'conductor_cross_section', 
                                               self.cross_section_dict[value], modified)
             elif code == 'insulation_material':
-                misc.set_field_selection_list(self.fields, 'ambient_temp', 
+                set_field_selection_list(self.fields, 'ambient_temp', 
                                               self.ambient_temp_dict[value], modified)
             elif code == 'laying_type':
-                misc.set_field_selection_list(self.fields, 'laying_type_sub', 
+                set_field_selection_list(self.fields, 'laying_type_sub', 
                                               self.laying_arrangements_dict[value], modified)
                 if value in self.laying_types[5:7]:
                     self.fields['ground_temp']['status_enable'] = True
@@ -632,16 +620,16 @@ Creates a low voltage cable element. The parameters of the line are evaluated as
                     self.fields['soil_thermal_resistivity']['status_enable'] = False
                 code1 = self.fields['laying_type']['selection_list'].index(value)
                 code2 = 0
-                misc.set_field_selection_list(self.fields, 'no_in_group', 
+                set_field_selection_list(self.fields, 'no_in_group', 
                                               self.no_groups_dict[code1, code2], modified)
-                misc.set_field_selection_list(self.fields, 'no_of_layers', 
+                set_field_selection_list(self.fields, 'no_of_layers', 
                                               self.no_layers_dict[code1, code2], modified)
             elif code == 'laying_type_sub':
                 code1 = self.fields['laying_type']['selection_list'].index(self.fields['laying_type']['value'])
                 code2 = self.fields['laying_type_sub']['selection_list'].index(value)
-                misc.set_field_selection_list(self.fields, 'no_in_group', 
+                set_field_selection_list(self.fields, 'no_in_group', 
                                               self.no_groups_dict[code1, code2], modified)
-                misc.set_field_selection_list(self.fields, 'no_of_layers', 
+                set_field_selection_list(self.fields, 'no_of_layers', 
                                               self.no_layers_dict[code1, code2], modified)
             elif code == 'cpe':
                 code_cpe = self.fields['cpe']['selection_list'].index(value)
@@ -951,7 +939,7 @@ class LTCableCustom(Line):
     code = 'element_line_custom'
     name = 'Line (Custom Geometry)'
     group = 'Components'
-    icon = misc.abs_path('icons', 'line.svg')
+    icon = abs_path('icons', 'line.svg')
     tooltip = """<b>Line (Custom Geometry)</b>
 
 Creates a line element of custom geometry. The parameters of the line are evaluated from the line geometry.
@@ -962,7 +950,7 @@ Use this element for overhead lines where parameters of the line are not known b
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Line.__init__(self, cordinates, **kwargs)
-        self.database_path = misc.open_library('line_custom.csv')
+        self.database_path = open_library('line_custom.csv')
         
         # Data dropdowns
         self.laying_types = ['OH Line - \n3 phase with earth return\nGeneral geometry', 
@@ -1069,20 +1057,20 @@ Use this element for overhead lines where parameters of the line are not known b
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
-                    misc.set_field_selection_list(self.fields, 'cpe', self.cpe_list, modified)
+                    set_field_selection_list(self.fields, 'cpe', self.cpe_list, modified)
                     self.fields['type']['value'] = 'Over Head'
                     self.fields['symbol']['value'] = 'PEN'
                 elif value in self.laying_types[4:6]:
                     self.fields['dims_d']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
-                    misc.set_field_selection_list(self.fields, 'cpe', self.cpe_list, modified)
+                    set_field_selection_list(self.fields, 'cpe', self.cpe_list, modified)
                     self.fields['type']['value'] = 'Over Head'
                     self.fields['symbol']['value'] = 'N'
                 elif value in self.laying_types[6]:
                     self.fields['dims_d1']['status_enable'] = True
                     self.fields['dims_d2']['status_enable'] = True
                     self.fields['cpe']['status_enable'] = True
-                    misc.set_field_selection_list(self.fields, 'cpe', self.armour_list, modified)
+                    set_field_selection_list(self.fields, 'cpe', self.armour_list, modified)
                     self.fields['armour_material']['status_enable'] = True
                     self.fields['armour_cross_section']['status_enable'] = True
                     self.fields['type']['value'] = 'Under Ground'
@@ -1256,7 +1244,7 @@ class BusTrunking(Line):
     code = 'element_line_bus'
     name = 'Bus Trunking'
     group = 'Components'
-    icon = misc.abs_path('icons', 'line_bus.svg')
+    icon = abs_path('icons', 'line_bus.svg')
     tooltip = """<b>Bus Trunking</b>
 
 Creates a bus trunking element with known parameters.
@@ -1265,7 +1253,7 @@ Creates a bus trunking element with known parameters.
     def __init__(self, cordinates=(0,0), **kwargs):
         # Global
         Line.__init__(self, cordinates, calculate=False, **kwargs)
-        self.database_path = misc.open_library('line_busbar.csv')
+        self.database_path = open_library('line_busbar.csv')
         # Modify existing fields
         self.fields['conductor_material']['status_enable'] = False
         self.fields['insulation_material']['status_enable'] = False
@@ -1348,9 +1336,8 @@ Creates a bus trunking element with known parameters.
         self.fields['dcurve']['value'] = self.damage_model.get_evaluated_model(self.fields)
 
 
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.schem_model = [ 
                             ['LINE',(2,0),(2,8), []],
                             # Symbol
@@ -1361,12 +1348,6 @@ Creates a bus trunking element with known parameters.
                             ['LINE',(2.5,2),(3,1.5), [], 'thin'],
                             ['LINE',(3,6.5),(2.5,6), [], 'thin'],
                         ]
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])

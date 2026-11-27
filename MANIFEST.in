@@ -1,7 +1,7 @@
-recursive-include gelectrical/interface *.glade
-recursive-include gelectrical/interface *.ui
-recursive-include gelectrical/interface *.svg
-recursive-include gelectrical/interface *.png
+recursive-include gelectrical/gtk/interface *.glade
+recursive-include gelectrical/gtk/interface *.ui
+recursive-include gelectrical/gtk/interface *.svg
+recursive-include gelectrical/gtk/interface *.png
 recursive-include gelectrical/database *.csv
 recursive-include gelectrical/database *.json
 recursive-include gelectrical/database *.svg

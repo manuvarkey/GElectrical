@@ -18,11 +18,11 @@
 #  
 # 
 
-import os, cairo
-from gi.repository import PangoCairo
+import os
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path
 from .element import ElementModel
 
 
@@ -32,7 +32,7 @@ class Impedance(ElementModel):
     code = 'element_impedance'
     name = 'Impedance'
     group = 'Components'
-    icon = misc.abs_path('icons', 'impedance.svg')
+    icon = abs_path('icons', 'impedance.svg')
     tooltip = """<b>Impedance</b>
 
 Creates a per unit impedance element connected in series with other elements.
@@ -64,19 +64,8 @@ Creates a per unit impedance element connected in series with other elements.
                            [(3,None), "${name}", True]]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -86,7 +75,7 @@ Creates a per unit impedance element connected in series with other elements.
         nodes = ((p0, (ports[0],)),(p1, (ports[1],)))
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         p1 = code + ':1'
@@ -106,7 +95,7 @@ class Inductance(Impedance):
     code = 'element_inductance'
     name = 'Inductance'
     group = 'Components'
-    icon = misc.abs_path('icons', 'inductance.svg')
+    icon = abs_path('icons', 'inductance.svg')
     tooltip = """<b>Inductance</b>
 
 Creates a per unit inductance element connected in series with other elements.

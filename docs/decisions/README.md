@@ -29,6 +29,7 @@ evidence, recorded in the same ADR), **Accepted**, **Superseded by NNNN**, **Rej
 | [0015](0015-python-and-pandapower-versions.md) | Python 3.14 with Numba; latest pandapower from PyPI through pixi | Accepted |
 | [0016](0016-weasyprint-windows-executable.md) | WeasyPrint executable on Windows; one pinned version everywhere | Accepted |
 | [0017](0017-frontend-workspace-build.md) | Frontend workspace resolution, EngineeringUI build and toolchain pins | Proposed (implemented in M6) |
+| [0018](0018-headless-engine-split.md) | Headless engine split: model notifications, symbol layers, text backends | Proposed (implemented in M2) |
 
 ## Template
 

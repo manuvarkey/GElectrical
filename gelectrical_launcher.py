@@ -42,7 +42,8 @@ if sys.stdout is None:
 if sys.stderr is None:
     sys.stderr = NullWriter()
 
-from gelectrical import MainApp, misc
+from gelectrical import misc
+from gelectrical.gtk.app import MainApp
 
 if __name__ == '__main__':
     # Setup logging

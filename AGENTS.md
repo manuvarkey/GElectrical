@@ -8,9 +8,10 @@ network analysis desktop application with pandapower as the solver backend.
 headless Python backend, an MCP server and the EngineeringUI library. Phase 1
 (planning) is complete and was reviewed by the owner on 2026-11-26 (decisions in
 [risks and decisions](docs/migration/risks-and-decisions.md#2-owner-decisions)).
-Migration code so far: the M1 regression baseline, the M1b environment and
-the M6 frontend foundation (`modern/` shell with mock data,
-`packages/engineering-ui/`); no backend, services or Tauri yet.
+Migration code so far: the M1 regression baseline, the M1b environment, the
+M2 headless engine (`gelectrical/` importable without GTK; legacy UI in
+`gelectrical/gtk/`) and the M6 frontend foundation (`modern/` shell with mock
+data, `packages/engineering-ui/`); no application services or Tauri yet.
 Do not start a migration milestone unless the user asks for it.
 
 ## Read first
@@ -75,7 +76,8 @@ GTK3, PyGObject, pandapower and WeasyPrint for Windows, Linux and macOS.
 ```bash
 pixi install          # creates .pixi/envs/default (git-ignored)
 pixi run start        # launch the GUI
-pixi run smoke        # end-to-end check on sample_files/**/*.gepro
+pixi run smoke        # end-to-end check on sample_files/**/*.gepro (GTK window)
+pixi run headless x.gepro   # headless open, analyse, export (no GTK, no display)
 pixi run -e test test # regression baseline (pytest; needs a display / xvfb-run)
 pixi run python ...   # any ad-hoc script inside the env
 ```
@@ -147,19 +149,23 @@ planned: engine/service pytest, Playwright workflows) are in
 ## Current layout
 
 ```
-gelectrical_launcher.py      entry point (logging setup, runs MainApp)
-gelectrical/__init__.py      MainApp (Gtk.Application) + MainWindow: UI callbacks,
-                             open/save, on_run_analysis pipeline, element registry
-gelectrical/misc.py          constants, default settings, field helpers, GTK/Cairo helpers,
-                             undoable/group, file version
-gelectrical/undo.py          vendored undo library (undo.Stack, @undoable generators)
-gelectrical/model/           project, drawing, networkmodel, pandapower, protection,
-                             rulescheck, graph
+gelectrical_launcher.py      entry point (logging setup, runs gelectrical.gtk.app.MainApp)
+gelectrical/__init__.py      version only (no GTK import)
+gelectrical/core/            constants, style (run-time colours/fonts), fields, paths,
+                             undoable/group, geometry (replaces cairo.Region), interpolation
 gelectrical/elementmodel/    one module per element family; ElementModel base in element.py;
-                             each class has a unique `code`
-gelectrical/view/            GTK views/dialogs (drawing canvas, fields, results, messages,
-                             protection, database, graphs)
-gelectrical/interface/       Glade .glade/.ui files
+                             each class has a unique `code`; registry.py is the code -> class map
+gelectrical/symbols/         symbol geometry/extents, labels (Mako), text backends, Cairo rendering
+gelectrical/model/           project (headless, event notifications), drawing, networkmodel,
+                             pandapower, protection, rulescheck, graph
+gelectrical/analysis/        pipeline.py: diagnostics -> power flow -> short circuit -> results; rules check
+gelectrical/persistence/     gepro.py: .gepro read/write
+gelectrical/reports/         report HTML/PDF, drawing PDF, JSON exports, tables, graphs (Agg), spreadsheet
+gelectrical/undo.py          vendored undo library (undo.Stack)
+gelectrical/gtk/             legacy GTK UI (ADR 0014): app.py (MainApp, MainWindow), project.py
+                             (GtkProjectModel: views + dialogs), view/, interface/ (Glade),
+                             widgets.py, pango_text.py (PangoCairo text backend)
+gelectrical/misc.py          legacy re-export shim for gelectrical.gtk only (imports GTK)
 gelectrical/database/        CSV/JSON equipment libraries
 gelectrical/templates/       Jinja2 HTML/CSS report templates (WeasyPrint)
 gelectrical/icons/           SVG element icons
@@ -169,9 +175,11 @@ modern/                      Vue 3 + Quasar app shell (M6: mock data, no backend
 packages/engineering-ui/     EngineeringUI (@kavilgroup/engineering-ui, MIT): theme, icons,
                              shell components, inspector; Storybook and Vitest tests
 sample_files/                sample .gepro projects (used by the smoke test)
-tools/                       smoke test, pixi activation scripts, npm boundary/licence checks
-tools/baseline/              regression baseline capture/compare, coverage project generator
-tests/                       test_baseline.py, baseline/ (canonical JSON), projects/ (.gepro)
+tools/                       smoke test, headless_run.py, pixi activation scripts, npm checks
+tools/baseline/              regression baseline capture (legacy GTK or --headless)/compare,
+                             coverage project generator
+tests/                       test_baseline.py (+ headless), engine/ (unit tests, no GTK),
+                             baseline/ (canonical JSON), projects/ (.gepro)
 ```
 
 The proposed structure is in [ARCHITECTURE.md](ARCHITECTURE.md#proposed-repository-structure).
@@ -182,11 +190,14 @@ The proposed structure is in [ARCHITECTURE.md](ARCHITECTURE.md#proposed-reposito
   per module, and log messages formatted as `'Class - method - message'`.
 - Element field definitions live in each element class (`self.fields`), with
   results in `res_fields`. A new element type needs: a class with a unique `code`,
-  registration wherever existing elements are enumerated (grep an existing
-  `code` such as `element_load` to find every touch point), an icon, and
-  pandapower mapping in `model/pandapower.py`.
+  registration in `elementmodel/registry.py` (grep an existing `code` such as
+  `element_load` for other touch points), an icon, and pandapower mapping in
+  `model/pandapower.py`. Symbol data stays in the class (`schem_model`,
+  `text_model`, `update_symbol()`, `symbol_active()`); drawing is in `symbols/`.
+- Engine modules (everything outside `gelectrical/gtk/` and `misc.py`) import
+  `gelectrical.core.*`, never `misc` or `gi`; `tests/engine` blocks `gi`.
 - `.gepro` files are zips with `document.json` plus per-drawing JSON, versioned
-  by `misc.PROJECT_FILE_VER`.
+  by `core.constants.PROJECT_FILE_VER`; read/write through `persistence/gepro.py`.
 - New data files (database, templates, icons, glade) must also be added to the
   packaging manifests: `pyinstaller_spec.spec`, `MANIFEST.in`, and the
   Flatpak/Snap configs if relevant.

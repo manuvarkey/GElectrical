@@ -13,7 +13,7 @@ contract and does not authorize implementation outside its milestone.
 | M0 | Planning and architecture documents | Done; reviewed by the owner 2026-11-26 |
 | M1 | Regression baseline and test scaffold on the legacy code | Not started |
 | M1b | Python 3.14 + latest pandapower upgrade with difference report | Not started |
-| M2 | Headless engine extraction (PoC 1) | Not started |
+| M2 | Headless engine extraction (PoC 1) | Implemented 2026-11-27 (`feat/m2-milestone`); owner review and headless raster-limit decision pending |
 | M3 | Safe expressions and security hardening | Not started |
 | M4 | Application services and JSON Lines backend | Not started |
 | M5 | Sidecar packaging PoC (PoC 2) | Not started |

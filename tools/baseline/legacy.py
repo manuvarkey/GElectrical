@@ -47,9 +47,9 @@ def import_legacy():
     gi.require_version('Gtk', '3.0')
     gi.require_version('GdkPixbuf', '2.0')
     from gi.repository import Gtk  # noqa: F401
-    import gelectrical
+    from gelectrical.gtk import app
     from gelectrical import misc
-    return gelectrical, misc
+    return app, misc
 
 
 class LegacySession:

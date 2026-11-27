@@ -27,8 +27,9 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Gtk, Gio, GdkPixbuf
 
-from gelectrical import MainWindow, misc
-from gelectrical.view.analysis import AnalysisSettingsDialog
+from gelectrical import misc
+from gelectrical.gtk.app import MainWindow
+from gelectrical.gtk.view.analysis import AnalysisSettingsDialog
 
 log = logging.getLogger('smoke_test')
 

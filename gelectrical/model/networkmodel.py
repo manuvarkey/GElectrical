@@ -28,7 +28,7 @@ import numpy as np
 from html import escape
 
 # local files import
-from .. import misc
+from ..core import constants
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -51,10 +51,11 @@ class Tag(object):
 class NetworkModel:
     """Class for modelling a Network"""
 
-    def __init__(self, program_state):
+    def __init__(self, project):
+        """``project``: the ProjectModel (sheets and element registry)"""
         # Data
-        self.program_state = program_state
-        self.drawing_models = self.program_state['project'].drawing_models
+        self.project = project
+        self.drawing_models = project.drawing_models
 
         # Generated
         self.base_elements = dict()  # Addressing by (page, slno)
@@ -207,7 +208,7 @@ class NetworkModel:
                                 port = eport
                                 break
                         if port:
-                            DisplayElementNode = self.program_state['element_models']['element_display_node']
+                            DisplayElementNode = self.project.element_models['element_display_node']
                             node_element = DisplayElementNode(port[1:], ref)
                             self.node_elements[(k1, gnode)] = node_element
                             if gnode not in self.node_elements_bygnode:
@@ -235,21 +236,21 @@ class NetworkModel:
             term_node_count = 1
         for ekey, element in self.base_elements.items():
             code = element.code
-            if code not in (*misc.NON_ELEMENT_CODES, 'element_busbar'):
+            if code not in (*constants.NON_ELEMENT_CODES, 'element_busbar'):
                 if 'ref' in element.fields:
                     ref = element.fields['ref']['value']
                 else:
                     ref = ''
                 gnodes = self.gnode_element_mapping_inverted[ekey]
-                if code in misc.LINE_ELEMENT_CODES and element.fields['in_service']['value'] == False:
+                if code in constants.LINE_ELEMENT_CODES and element.fields['in_service']['value'] == False:
                     disabled_lines.append(gnodes)
-                if code in misc.SWITCH_ELEMENT_CODES and element.fields['closed']['value'] == False:
+                if code in constants.SWITCH_ELEMENT_CODES and element.fields['closed']['value'] == False:
                     disabled_switches.append(gnodes)
-                if code in misc.TRAFO_ELEMENT_CODES:
+                if code in constants.TRAFO_ELEMENT_CODES:
                     tranformers.append(gnodes)
                 # Single port elements
                 if len(gnodes) == 1:
-                    if code in misc.SUPPLY_ELEMENT_CODES:
+                    if code in constants.SUPPLY_ELEMENT_CODES:
                         self.graph.add_edge(term_node_count, gnodes[0], key=ekey, code=code, ref=ref)
                         self.graph_source_nodes.add(term_node_count)
                         if element.fields['in_service']['value'] == False:
@@ -386,7 +387,7 @@ class NetworkModel:
         element = self.base_elements[ekey]
         results = dict()
         # If source node, return null
-        if element.code in misc.SUPPLY_ELEMENT_CODES:
+        if element.code in constants.SUPPLY_ELEMENT_CODES:
             return results
         # Search in a path from g0 to all sources
         for source in graph_source_nodes:
@@ -426,12 +427,12 @@ class NetworkModel:
         element = self.base_elements[ekey]
         results = dict()
         # If load node, return null
-        if len(gnodes) == 1 and element.code not in (misc.SUPPLY_ELEMENT_CODES + ('element_busbar',)):
+        if len(gnodes) == 1 and element.code not in (constants.SUPPLY_ELEMENT_CODES + ('element_busbar',)):
             return results
         # Search in sink paths by excluding each path to source
         for source in graph_source_nodes:
             # If source element is selected, do not exclude upstream nodes
-            if element.code in misc.SUPPLY_ELEMENT_CODES:
+            if element.code in constants.SUPPLY_ELEMENT_CODES:
                 upstream_nodes = set()
                 start_gnodes = [gnodes[0]]
             # If busbar element is selected, do not exclude upstream nodes

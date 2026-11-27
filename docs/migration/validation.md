@@ -320,3 +320,86 @@ Status: **implemented with mock data; acceptance criteria met locally**
 - The Storybook test run needs the Playwright browser once
   (`npx playwright install chromium-headless-shell`); locally the cached
   revision for Playwright 1.65.0 was used.
+
+## 2026-11-27 — M2 headless engine extraction (branch `feat/m2-milestone`)
+
+Status: **implemented; acceptance met** (raster limit for headless drawings
+with Cairo text set by the owner, below). Owner review pending.
+
+- Environment: unchanged from M1b (Python 3.14.10, pandapower 3.5.6,
+  WeasyPrint 70.0, GTK 3.24.52; `pixi.lock` not modified, only tasks added to
+  `pixi.toml`). Linux x86_64; `osifont` installed system-wide.
+- Structure ([ADR 0014](../decisions/0014-legacy-gtk-location.md),
+  [ADR 0018](../decisions/0018-headless-engine-split.md)): `MainApp`/`MainWindow`,
+  `view/`, `interface/` moved to `gelectrical/gtk/`; `misc.py` split into
+  `core/` (constants, style, fields, paths, undoable, geometry, interpolation),
+  `symbols/`, `reports/` and `gtk/widgets.py`, with `misc.py` kept as a
+  GTK-only re-export; `elementmodel/registry.py` (D14); element rendering moved
+  to `symbols/` behind `update_symbol()`/`symbol_active()`/`get_symbol_layers()`;
+  `cairo.Region` replaced by `core/geometry.py`; headless `ProjectModel` with
+  event notifications and `GtkProjectModel` (views, dialogs) in the GTK UI;
+  `analysis/pipeline.py`, `persistence/gepro.py`, `reports/export.py`,
+  `reports/graph.py` (Matplotlib without GUI backend); D4 and D15 fixed;
+  `tools/headless_run.py` (`pixi run headless`).
+- Engine code that computes results (`model/pandapower.py`, `networkmodel.py`
+  logic, `protection.py`, `rulescheck.py`, element power models and field side
+  effects) is unchanged apart from imports.
+
+### Acceptance criteria
+
+| Criterion | Result |
+| --- | --- |
+| `python -c "import sys; sys.modules['gi'] = None; import gelectrical.model.project, gelectrical.analysis.pipeline, gelectrical.persistence.gepro, gelectrical.reports"` | **Passes** (`tests/engine/test_headless_import.py`; a second test checks that no `gi`, `gelectrical.gtk` or `gelectrical.misc` module is loaded by the engine) |
+| Headless pipeline on all baseline projects matches the baseline within tolerance | **Passes** for every JSON and text artefact of all 17 projects (model, round trip, D8, curves, topology, pandapower inputs, diagnostics, all 6 analysis modes, results, node results, rules, renumbering, undo, report text) with the documented tolerances. `capture.py --headless`, PyGObject blocked, no display. Expected difference handled without widening tolerances: one `PyGTKDeprecationWarning` (emitted by `Gtk.Label` in the GTK tab code) is absent from the headless `status.json` files |
+| Drawing PDF visual diff within threshold | **Passes with the owner-approved limit for Cairo text.** Headless drawings with PangoCairo text (`GELECTRICAL_TEXT_BACKEND=pango`, no GTK): **25/25 rasters pixel-identical** (0.0000 %) to the baseline, so geometry and stroke rendering are unchanged. With the headless default (Cairo toy text API) the rasters differ by **0.12–0.61 %** of pixels (all 25 above the 0.1 % limit) because glyph rendering differs (kerning, synthetic bold). Owner decision (2026-11-27): a separate limit of **1 %** differing pixels for headless captures with Cairo text (`HEADLESS_CAIRO_TEXT_PIXEL_FRACTION`), instead of PangoCairo in the sidecar; the 0.1 % limit for legacy and PangoCairo-text captures is unchanged. `tests/test_headless_baseline.py` and `compare.py` now check Cairo-text rasters against it: `pixi run -e test test-headless` **18/18 passed**, all 25 rasters within 1 % (0.12–0.61 %) |
+| Report generated | **Yes**: headless `report.html`/`report.pdf` in every project where the legacy capture produced one (D18 failures unchanged); `report.txt` identical |
+| Legacy GTK app passes the smoke test and a manual check list | Smoke **3/3**. Check list scripted under `xvfb-run` against the real `MainWindow` (open, new tab, notebook switching, undo/redo of tabs, remove/reorder sheets, tab labels, palette insert with rotation, click selection, port hit test, field edit and undo, analysis, rules check into the messages view, diagnostic selection marking, save and reopen, drawing export, renumber and undo, protection coordination warning): **24/24**. Not exercised interactively by hand |
+
+### Text metrics decision (backend.md, step 4)
+
+Cairo toy API extents vs PangoCairo extents on all 249 elements of the 17
+baseline projects: largest difference **3 drawing units** (limit one grid
+unit = 16) → option 1 (no `gi` in the sidecar) satisfies the decision rule
+(`tests/test_symbols_extents.py`).
+
+During the work the legacy capture found two regressions, both fixed before
+the final runs: `sample__sample/drawing_1.png` differed by 0.126 % because
+symbol extents were first measured at identity scale (assembly frames and
+reference lines follow text width; rendering now measures on the output
+context as before), and the motor symbols inherited the label update of
+`Load` (`Motor3ph`/`Motor1ph` now keep their own text). After the fixes every
+legacy raster is pixel-identical.
+
+### Checks run (local, Linux)
+
+- `xvfb-run -a pixi run -e test test` (final code): **111 passed** in
+  6 min 33 s: legacy baseline 38 (fresh GTK capture; all 25 drawing rasters
+  0.000000 % different), headless baseline 18 (rasters reported, not checked:
+  0.12–0.61 %), engine unit tests 55 (`tests/engine`, `gi` blocked:
+  fields, registry vs the baseline's 31 registered codes, geometry vs
+  `cairo.Region` on 20 000 random cases, symbols, persistence round trip on
+  3 samples and 8 coverage projects, pipeline, exports, headless import;
+  `tests/test_symbols_extents.py`).
+- Pure geometry fuzz against `cairo.Region`: 100 000 random cases (including
+  empty and negative rectangles), 0 mismatches.
+- Full headless capture with PangoCairo text: rasters 25/25 at 0.0000 %; all
+  other artefacts as above.
+- After the owner decision: `pixi run -e test test-headless` (Cairo text,
+  1 % raster limit) **18 passed**; `pixi run -e test test-engine` **55 passed**.
+- `xvfb-run -a pixi run smoke`: **3/3** (after every step and on the final code).
+- `pixi run headless sample_files/sample.gepro`: analysis completed (time
+  series, 3-phase from the file settings), 1 diagnostic warning, rules check
+  9 warnings / 12 info, `network.json`, `report.html`, `report.pdf`,
+  `drawing.pdf` written; no display.
+- `git diff --check` clean.
+
+### Not run / open
+
+- Interactive GTK session by hand (`pixi run start`); Windows/macOS; hosted CI
+  (workflow extended: headless run without display, headless baseline in the
+  Linux test job, engine tests and headless run on Windows).
+- Sphinx build (no user-manual pages changed).
+- Packaging builds (PyInstaller/Flatpak/Snap) with the new package layout:
+  manifests updated (`setup.py` uses `find_packages`, Glade path), not built.
+- `osifont` is still not bundled with the package (both text backends use the
+  system font configuration).

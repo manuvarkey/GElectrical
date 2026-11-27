@@ -27,9 +27,9 @@ import pandas as pd
 from gi.repository import Gtk, Gdk, GLib
 
 # local files import
-from .. import misc
-from ..misc import undoable, group
-from ..model.graph import GraphModel
+from ... import misc
+from ...misc import undoable, group
+from ...model.graph import GraphModel
 from .database import DatabaseView
 from .graph import GraphView
 from .field import FieldView
@@ -75,7 +75,7 @@ class ProtectionViewDialog():
         
         # Setup widgets
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(misc.abs_path("interface", "protectioneditor.glade"))
+        self.builder.add_from_file(misc.abs_path("gtk", "interface", "protectioneditor.glade"))
         self.builder.connect_signals(self)
         self.dialog_window = self.builder.get_object("dialog_window")
         self.dialog_window.set_title('Coordination view')

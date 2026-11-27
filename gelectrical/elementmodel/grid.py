@@ -18,11 +18,11 @@
 #  
 # 
 
-import os, cairo
-from gi.repository import PangoCairo
+import os
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path
 from .element import ElementModel
 
 
@@ -31,7 +31,7 @@ class Grid(ElementModel):
     code = 'element_grid'
     name = 'External Grid'
     group = 'Sources'
-    icon = misc.abs_path('icons', 'grid.svg')
+    icon = abs_path('icons', 'grid.svg')
     tooltip = """<b>External Grid</b>
 
 Creates an external grid connection.
@@ -75,19 +75,8 @@ External grids represent the higher level power grid connection and are modelled
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
-        
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -96,7 +85,7 @@ External grids represent the higher level power grid connection and are modelled
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('ext_grid', (p0,), {'name': self.fields['ref']['value'],

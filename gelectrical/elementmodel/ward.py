@@ -18,11 +18,11 @@
 #  
 # 
 
-import os, cairo
-from gi.repository import PangoCairo
+import os
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path
 from .element import ElementModel
 
 
@@ -31,7 +31,7 @@ class Ward(ElementModel):
     code = 'element_ward'
     name = 'Ward Equivalent'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'ward.svg')
+    icon = abs_path('icons', 'ward.svg')
     tooltip = """<b>Ward Equivalent</b>
 
 A ward equivalent is a combination of an impedance load and a PQ load.
@@ -62,22 +62,15 @@ A ward equivalent is a combination of an impedance load and a PQ load.
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.text_model = [[(3,0.5), "${ref}", True],
                            [(3,None), "Ss=${ps_mw}+j${qs_mvar}MVA", True],
                            [(3,None), "Sz=${pz_mw}+j${qz_mvar}MVA", True],
                            [(3,None), "${name}", True]]
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -86,7 +79,7 @@ A ward equivalent is a combination of an impedance load and a PQ load.
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('ward', (p0,), {'name': self.fields['ref']['value'],
@@ -103,7 +96,7 @@ class XWard(ElementModel):
     code = 'element_xward'
     name = 'XWard Equivalent'
     group = 'Loads'
-    icon = misc.abs_path('icons', 'ward.svg')
+    icon = abs_path('icons', 'ward.svg')
     tooltip = """<b>Extended Ward Equivalent</b>
 
 An extended ward equivalent is a combination of an impedance load, a PQ load and a voltage source with an internal impedance.
@@ -137,23 +130,16 @@ An extended ward equivalent is a combination of an impedance load, a PQ load and
                            ]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        # Preprocessing
+    def update_symbol(self):
+        """Update symbol data (schematic, text, ports) from fields"""
         self.text_model = [[(3,0.5), "${ref}", True],
                            [(3,None), "Ss=${ps_mw}+j${qs_mvar}MVA", True],
                            [(3,None), "Sz=${pz_mw}+j${qz_mvar}MVA", True],
                            [(3,None), "${vm_pu}pu, ${r_ohm}+j${x_ohm}Ohm", True],
                            [(3,None), "${name}", True]]
-        # Render
-        if self.fields['in_service']['value']:
-            self.render_model(context, self.schem_model)
-            self.render_text(context, self.text_model)
-        else:
-            self.render_model(context, self.schem_model, color=misc.COLOR_INACTIVE)
-            self.render_text(context, self.text_model, color=misc.COLOR_INACTIVE)
-        # Post processing
-        self.modify_extends()
+
+    def symbol_active(self):
+        return bool(self.fields['in_service']['value'])
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -162,7 +148,7 @@ An extended ward equivalent is a combination of an impedance load, a PQ load and
         nodes = ((p0, (ports[0],)),)
         return nodes
         
-    def get_power_model(self, code, mode=misc.POWER_MODEL_POWERFLOW):
+    def get_power_model(self, code, mode=constants.POWER_MODEL_POWERFLOW):
         """Return pandapower model for analysis"""
         p0 = code + ':0'
         power_model = (('xward', (p0,), {'name': self.fields['ref']['value'],

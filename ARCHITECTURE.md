@@ -8,7 +8,9 @@ frontend over a headless Python backend). Detailed contracts live in
 [documentation index](docs/README.md).
 
 Status: Phase 1 (planning) complete and reviewed by the owner on 2026-11-26
-([decisions](docs/migration/risks-and-decisions.md#2-owner-decisions)). No modern code exists yet.
+([decisions](docs/migration/risks-and-decisions.md#2-owner-decisions)). Implemented
+so far: regression baseline (M1, M1b), headless engine (M2: `gelectrical/` imports
+without GTK, legacy UI in `gelectrical/gtk/`) and the frontend foundation (M6).
 
 ## Current implementation (GTK3)
 
@@ -24,10 +26,15 @@ flowchart LR
     GTK -. program_state dict .- PM
 ```
 
-Engine and GUI are interleaved: every engine module imports GTK through
-`gelectrical/__init__.py` and `misc.py`, element geometry is computed during
-Cairo rendering and `ProjectModel` owns GTK views. See the
-[existing application audit](docs/migration/existing-application-audit.md).
+Before M2 the engine and GUI were interleaved (every module imported GTK
+through `gelectrical/__init__.py` and `misc.py`, element geometry came from
+Cairo rendering, `ProjectModel` owned GTK views; see the
+[existing application audit](docs/migration/existing-application-audit.md)).
+Since M2 (*current*): the engine (`core`, `elementmodel`, `symbols`, `model`,
+`analysis`, `persistence`, `reports`) imports no GTK; `ProjectModel` notifies
+subscribers instead of owning views; the GTK UI (`gelectrical/gtk/`) subclasses
+it as `GtkProjectModel`, opens the dialogs and keeps PangoCairo text rendering.
+`program_state` survives only inside the GTK UI.
 
 ## Proposed architecture
 

@@ -25,7 +25,7 @@ from gi.repository import Gtk, Gdk, GLib
 import cairo
 
 # local files import
-from .. import misc
+from ... import misc
 
 # Get logger object
 log = logging.getLogger(__name__)

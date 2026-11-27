@@ -22,12 +22,10 @@
 
 import logging, copy
 from math import sin, cos, acos, asin, exp, log, log10
-from mako.template import Template as ExprTemplate
-from gi.repository import Gtk, Gdk
-import cairo
 
 # local files import
-from .. import misc
+from ..core import constants, style
+from ..core.paths import abs_path
 from .element import ElementModel
 
 # Get logger object
@@ -40,7 +38,7 @@ class Reference(ElementModel):
     code = 'element_reference'
     name = 'Cross Reference'
     group = 'Miscellaneous'
-    icon = misc.abs_path('icons', 'reference.svg')
+    icon = abs_path('icons', 'reference.svg')
     tooltip = """<b>Cross Reference</b>
 
 Cross reference elements allows connecting different parts of the scheme within/ across sheets.
@@ -58,24 +56,24 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
                        'sheet':    self.get_field_dict('str', 'Sheet Reference', '', '1'),
                        'title':     self.get_field_dict('str', 'Title', '', ''),
                        'sub_title':     self.get_field_dict('str', 'Sub Title', '', ''),}
-        self.text_model = [[(3,3-misc.SCHEM_FONT_SPACING/misc.M), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(3,3+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sheet}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(7,3-misc.SCHEM_FONT_SPACING/misc.M), "${title}", True],
-                           [(7,3+(misc.SCHEM_FONT_SPACING-misc.SCHEM_FONT_SIZE)/misc.M), "${sub_title}", True]]
+        self.text_model = [[(3,3-style.SCHEM_FONT_SPACING/constants.M), "${ref}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],
+                           [(3,3+(style.SCHEM_FONT_SPACING-style.SCHEM_FONT_SIZE)/constants.M), "${sheet}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],
+                           [(7,3-style.SCHEM_FONT_SPACING/constants.M), "${title}", True],
+                           [(7,3+(style.SCHEM_FONT_SPACING-style.SCHEM_FONT_SIZE)/constants.M), "${sub_title}", True]]
         self.assign_tootltips()
     
-    def render_element(self, context):
-        """Render element to context"""
-        self.render_text(context, self.text_model)
-        (tx1, ty1, tw1, th1) = self.text_extends[2]
-        (tx2, ty2, tw2, th2) = self.text_extends[3]
+    def get_symbol_layers(self):
+        """Labels first; the reference line follows the title width"""
+        text_extends = self.get_text_extents(self.text_model)
+        (tx1, ty1, tw1, th1) = text_extends[2]
+        (tx2, ty2, tw2, th2) = text_extends[3]
         width = max(tw1, tw2)
         #self.schem_model = [ 
                              #['CIRCLE', (3,3), 3, False, []],
-                             #['LINE', (0,3),(7 + width/misc.M,3), []],
+                             #['LINE', (0,3),(7 + width/constants.M,3), []],
                            #]
         if self.fields['title']['value'] or self.fields['sub_title']['value']:
-            xe = 7 + width/misc.M
+            xe = 7 + width/constants.M
         else:
             xe = 6
         self.schem_model = [ 
@@ -85,9 +83,7 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
                              ['LINE', (3,6),(6,3), []],
                              ['LINE', (0,3),(xe,3), []],
                            ]
-        self.render_model(context, self.schem_model)
-        # Post processing
-        self.modify_extends()
+        return [('text', self.text_model, None), ('schem', self.schem_model, None)]
         
     def get_nodes(self, code):
         """Return nodes for analysis"""
@@ -105,7 +101,7 @@ class ReferenceBox(Reference):
     code = 'element_reference_box'
     name = 'Cross Reference'
     group = 'Miscellaneous'
-    icon = misc.abs_path('icons', 'reference_box.svg')
+    icon = abs_path('icons', 'reference_box.svg')
     tooltip = """<b>Cross Reference</b>
 
 Cross reference elements allows connecting different parts of the scheme within/ across sheets.
@@ -126,13 +122,9 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
         self.set_model_from_param()
         self.assign_tootltips()        
         
-    def render_element(self, context):
-        """Render element to context"""
+    def get_symbol_layers(self):
         self.set_model_from_param()
-        self.render_text(context, self.text_model)
-        self.render_model(context, self.schem_model)
-        # Post processing
-        self.modify_extends()
+        return [('text', self.text_model, None), ('schem', self.schem_model, None)]
         
     # Private functions
     
@@ -150,12 +142,12 @@ Use the <b>Link</b> toolbar function to link cross reference elements.
         self.ports = [(width/2,0), (width/2,height)]
         self.schem_model = [['RECT', (0,0), width, height, False, []],
                             ['LINE',(width/2, 0), (width/2, h1), []]]
-        self.text_model = [[(width/4, h1 - misc.SCHEM_FONT_SPACING/misc.M), "${ref}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center'],
-                           [(3*width/4, h1 - misc.SCHEM_FONT_SPACING/misc.M), "${sheet}", True, misc.SCHEM_FONT_SIZE, misc.SCHEM_FONT_WEIGHT, 'center']]
+        self.text_model = [[(width/4, h1 - style.SCHEM_FONT_SPACING/constants.M), "${ref}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center'],
+                           [(3*width/4, h1 - style.SCHEM_FONT_SPACING/constants.M), "${sheet}", True, style.SCHEM_FONT_SIZE, constants.SCHEM_FONT_WEIGHT, 'center']]
         if self.fields['title']['value'] or self.fields['sub_title']['value']:
             self.schem_model.append(['LINE',(0,h1), (width, h1), []])
-            self.text_model.append([(0.5, (h1+h2) - misc.SCHEM_FONT_SPACING/misc.M), "${title}", True])
+            self.text_model.append([(0.5, (h1+h2) - style.SCHEM_FONT_SPACING/constants.M), "${title}", True])
         if self.fields['sub_title']['value']:
             self.schem_model.append(['LINE',(0, h1+h2), (width, h1+h2), []])
-            self.text_model.append([(0.5, height - misc.SCHEM_FONT_SPACING/misc.M), "${sub_title}", True])
+            self.text_model.append([(0.5, height - style.SCHEM_FONT_SPACING/constants.M), "${sub_title}", True])
             
