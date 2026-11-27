@@ -1,0 +1,31 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/Change.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "kind": {
+      "enum": [
+        "document",
+        "project",
+        "loadprofiles",
+        "sheet",
+        "sheet_removed",
+        "element_added",
+        "element",
+        "element_removed",
+        "analysis",
+        "saved"
+      ]
+    },
+    "uids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "kind"
+  ],
+  "title": "Change",
+  "type": "object"
+}

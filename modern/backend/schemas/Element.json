@@ -1,0 +1,87 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/Element.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "bounds": {
+      "items": {
+        "type": "integer"
+      },
+      "type": "array"
+    },
+    "children": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "code": {
+      "type": "string"
+    },
+    "database": {
+      "type": "boolean"
+    },
+    "field_schema": {
+      "items": {
+        "$ref": "FieldSchema.json"
+      },
+      "type": "array"
+    },
+    "field_state": {
+      "type": "object"
+    },
+    "fields": {
+      "type": "object"
+    },
+    "name": {
+      "type": "string"
+    },
+    "orientation": {
+      "enum": [
+        "vertical",
+        "horizontal"
+      ]
+    },
+    "points": {
+      "items": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "type": "array"
+    },
+    "ports": {
+      "items": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "type": "array"
+    },
+    "sheet_uid": {
+      "type": "string"
+    },
+    "uid": {
+      "type": "string"
+    },
+    "x": {
+      "type": "number"
+    },
+    "y": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "uid",
+    "code",
+    "sheet_uid",
+    "x",
+    "y",
+    "orientation",
+    "ports",
+    "fields"
+  ],
+  "title": "Element",
+  "type": "object"
+}

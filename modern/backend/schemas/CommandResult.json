@@ -1,0 +1,39 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/CommandResult.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "changes": {
+      "items": {
+        "$ref": "Change.json"
+      },
+      "type": "array"
+    },
+    "label": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "preview": {
+      "type": "boolean"
+    },
+    "revision": {
+      "type": "integer"
+    },
+    "value": {}
+  },
+  "required": [
+    "value",
+    "changes",
+    "label",
+    "revision",
+    "preview"
+  ],
+  "title": "CommandResult",
+  "type": "object"
+}

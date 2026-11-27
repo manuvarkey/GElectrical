@@ -1,0 +1,40 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/Message.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "category": {
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "severity": {
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "text": {
+      "type": "string"
+    },
+    "uids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "category",
+    "severity",
+    "text",
+    "uids",
+    "nodes"
+  ],
+  "title": "Message",
+  "type": "object"
+}

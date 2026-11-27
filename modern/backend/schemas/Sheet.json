@@ -1,0 +1,55 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/Sheet.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "elements": {
+      "items": {
+        "$ref": "Element.json"
+      },
+      "type": "array"
+    },
+    "field_schema": {
+      "items": {
+        "$ref": "FieldSchema.json"
+      },
+      "type": "array"
+    },
+    "fields": {
+      "type": "object"
+    },
+    "index": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "page": {
+      "properties": {
+        "grid": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "sheet_no": {
+      "type": "string"
+    },
+    "uid": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "uid",
+    "index",
+    "name",
+    "sheet_no"
+  ],
+  "title": "Sheet",
+  "type": "object"
+}

@@ -1,0 +1,25 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/Request.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string"
+    },
+    "params": {
+      "type": "object"
+    },
+    "session": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "method"
+  ],
+  "title": "Request",
+  "type": "object"
+}

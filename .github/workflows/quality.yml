@@ -78,6 +78,9 @@ jobs:
       - name: Engine tests (headless)
         run: pixi run -e test test-engine
 
+      - name: Service and protocol tests (headless backend)
+        run: pixi run -e test test-services
+
       - name: Headless run
         run: pixi run -e test headless sample_files/sample.gepro --out ${{ runner.temp }}/headless-run
 
