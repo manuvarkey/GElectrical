@@ -185,6 +185,24 @@ def set_field_selection_list(field, code, selection_list, modified=None):
             modified[code] = field[code]['value'] 
         field[code]['value'] = selection_list[0]
 
+def apply_alter_values(fields, code):
+    """Apply ``alter_values_dict`` of field ``code`` (``alter_structure``
+    fields): for the current value, hide the listed fields (default ``None``)
+    or show them with the given default value. Moved from the GTK field view
+    (M4) so that services apply the same side effects."""
+    alter_values_dict = fields[code]['alter_values_dict']
+    value = fields[code]['value']
+    if alter_values_dict and value in alter_values_dict:
+        alter_values_dict_cur = alter_values_dict[value]
+        for set_key in alter_values_dict_cur:
+            if set_key in fields:
+                set_value = alter_values_dict_cur[set_key]
+                if set_value is None:
+                    fields[set_key]['status_enable'] = False
+                else:
+                    fields[set_key]['status_enable'] = True
+                    fields[set_key]['value'] = set_value
+
 def get_fields_from_params(parameters, modify_code=''):
     """Return feilds from paramater dict
         Order of parameters: caption, unit, value, [selection_list, tooltip, data_type, status_enable, default_values_dict]
