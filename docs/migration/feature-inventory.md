@@ -57,7 +57,7 @@ Update status only with evidence.
 | B09 | Select all (`Ctrl+A`), deselect (`Escape`) | Drawing view key handler | M10 | Not started |
 | B10 | Move element by drag | GTK drag on drawing area moves **one** element (not assemblies): it is deleted and re-inserted as a floating model at the end of the element list; attached wires are not moved | M10 | Not started |
 | B11 | Delete (`Delete`) | Undoable `delete_rows` | M10 | Not started |
-| B12 | Cut / copy / paste (`Ctrl+X/C/V`) | Pickled elements via clipboard; paste becomes a floating model | M10 | Changed (safe clipboard format required, see D2) |
+| B12 | Cut / copy / paste (`Ctrl+X/C/V`) | Versioned JSON element payload via clipboard (M3, D2; pickle before); paste becomes a floating model | M10 | Changed (legacy app uses the safe format since M3; modern app not started) |
 | B13 | Group into assembly (`Ctrl+G`) | `add_assembly_from_selection`; assembly box moves/selects children | M10 | Not started |
 | B14 | Busbar with multiple ports and adjustable width | `BusBar.set_model_from_param` recomputes ports | M10 | Not started |
 | B15 | Cross-reference elements and linking | `element_reference(_box)`; *Link* dialog selects targets on other sheets; sheet numbers auto-filled (`reg_refs_sheets`) | M10 | Not started |

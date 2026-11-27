@@ -26,7 +26,9 @@ import logging, math
 
 # local files import
 from ..core import constants
-from ..core.fields import Element, FieldDict
+from ..core.expressions import ExpressionNotAllowed, compile_expression, evaluate
+from ..core.fields import Element, FieldDict, FIELD_POLICY, element_attribute
+from .protection import ProtectionModel
 # Get logger object
 log = logging.getLogger(__name__)
 
@@ -64,6 +66,39 @@ def get_message_data_struct(network, results_dict_pass, results_dict_fail):
             'Electrical Rules Check - Passed': message_list_pass}
 
 # Rules check rules and functions
+
+PROTECTION_ATTRIBUTES = frozenset({'linestring_upper', 'linestring_lower',
+                                   'linestring_upper_log', 'linestring_lower_log',
+                                   'polygon', 'polygon_log'})
+
+def protection_attribute(obj, name):
+    """Attribute resolver of :class:`ProtectionModel` for rule expressions"""
+    if name in PROTECTION_ATTRIBUTES:
+        return getattr(obj, name)
+    raise ExpressionNotAllowed('Protection model attribute %r is not allowed' % name)
+
+# Safe expression policy of rule expressions (ADR 0011): element fields and
+# results (``e.f``, ``e.r``), element variables such as ``e.damage_model``,
+# settings (``sr``, ``ss``) and the protection model queries
+RULES_POLICY = FIELD_POLICY.extend(
+    attributes={Element: element_attribute,
+                ProtectionModel: protection_attribute},
+    methods={ProtectionModel: ('contains', 'get_current', 'get_time')})
+
+def rule_expressions(rules):
+    """All expressions of ``rules`` (for validation)"""
+    expressions = []
+    for rule in rules.values():
+        check_expression, (match_codes, match_expression, match_type), *args = rule
+        expressions += [check_expression, match_expression]
+        for arg in args:
+            if arg[0] in ('self', 'upstream_node', 'downstream_node'):
+                expressions.append(arg[1])
+            elif arg[0] in ('upstream', 'downstream'):
+                expressions.append(arg[2])
+            elif arg[0] == 'match':
+                expressions += [arg[2], arg[3]]
+    return expressions
 
 electrical_rules = {
 # LINES
@@ -169,11 +204,17 @@ def rules_check(network, sim_settings, rules_settings, rules):
             ex: "e.f.i_ka + e.f.i_ka_max"
     """
 
+    # Rule expressions are code defined: an expression the policy rejects is
+    # a programming error and is reported, not skipped silently
+    for expression in rule_expressions(rules):
+        compile_expression(expression, RULES_POLICY)
+
     def eval_(expression_, dict_file):
-        """Fail safe eval function"""
+        """Fail safe evaluation: ``None`` when evaluation fails (missing
+        upstream data, results not available ...)"""
         try:
-            return eval(expression_, dict_file)
-        except:
+            return evaluate(expression_, dict_file, RULES_POLICY)
+        except Exception:
             return None
 
     results_dict_pass = dict()

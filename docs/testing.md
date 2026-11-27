@@ -13,7 +13,7 @@ since M1; the frontend Vitest and Storybook layers since M6).
 | --- | --- | --- |
 | Smoke test | `pixi run smoke` (`--keep` to inspect outputs; pass `.gepro` paths to limit) | Opens each sample, runs diagnostics, PF, both SC, rules check, exports JSON/report/drawing. Needs a display (`xvfb-run` on Linux) |
 | Regression baseline | `xvfb-run -a pixi run -e test test` | Captures every sample and coverage project with the legacy GTK code and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)); about 4 minutes |
-| Engine unit tests | `pixi run -e test test-engine` | `tests/engine/` (PyGObject blocked: fields, registry, geometry vs `cairo.Region`, symbols, persistence round trip, pipeline, headless import) and `tests/test_symbols_extents.py` (headless text metrics vs PangoCairo, needs PyGObject but no display). No display needed |
+| Engine unit tests | `pixi run -e test test-engine` | `tests/engine/` (PyGObject blocked: fields, registry, geometry vs `cairo.Region`, symbols, persistence round trip, pipeline, headless import; M3: safe expressions with every stored curve expression checked against Python `eval`, static check for `eval`/`exec`/`pickle`/Mako, malicious projects, clipboard, report escaping) and `tests/test_symbols_extents.py` (headless text metrics vs PangoCairo, needs PyGObject but no display). No display needed |
 | Headless baseline | `pixi run -e test test-headless` | Captures every baseline project with the headless engine (`capture.py --headless`, no GTK, no display) and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)) |
 | Headless run | `pixi run headless path/to/x.gepro [--out DIR]` | Open, analyse, rules check, export JSON/report/drawing without GTK |
 | Frontend (all) | `npm run check` | Prettier, dependency boundary, licences, tool tests, `vue-tsc`, Vitest, library and app builds |
@@ -31,7 +31,7 @@ since M1; the frontend Vitest and Storybook layers since M6).
 | --- | --- | --- | --- |
 | Regression baseline | pytest | `tests/test_baseline.py`, `tests/baseline/` | M1 |
 | Engine unit tests | pytest | `tests/engine/` | M2 |
-| Expression evaluator and security | pytest | `tests/engine/test_expressions.py`, `tests/security/` | M3 |
+| Expression evaluator and security | pytest | `tests/engine/test_expressions.py`, `tests/engine/test_security.py` | M3 |
 | Services (commands, undo, revisions, jobs, sessions) | pytest | `tests/services/` | M4 |
 | Protocol (spawned backend) | pytest | `tests/protocol/` | M4 |
 | MCP (SDK client) | pytest | `tests/mcp/` | M13 |

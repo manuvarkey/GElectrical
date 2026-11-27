@@ -20,12 +20,13 @@
 #  
 # 
 
-import logging, copy, pickle, codecs, bisect, json
+import logging, copy, codecs, bisect, json
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
 import cairo
 
 # local files import
 from ... import misc
+from ...core.expressions import evaluate_numeric
 from .graph import GraphView, GraphViewDialog
 
 # Get logger object
@@ -89,12 +90,12 @@ class FieldView:
                     validated = text
                 elif field['type'] == 'float':
                     try:
-                        validated = round(float(eval(text)), field['decimal'])
+                        validated = round(float(evaluate_numeric(text)), field['decimal'])
                     except:
                         validated = 0
                 elif field['type'] == 'int':
                     try:
-                        validated = int(eval(text))
+                        validated = int(evaluate_numeric(text))
                     except:
                         validated = 0
             widget.set_text(str(validated))
@@ -117,12 +118,12 @@ class FieldView:
                         validated = text
                     elif field['type'] == 'float':
                         try:
-                            validated = round(float(eval(text)), field['decimal'])
+                            validated = round(float(evaluate_numeric(text)), field['decimal'])
                         except:
                             validated = 0
                     elif field['type'] == 'int':
                         try:
-                            validated = int(eval(text))
+                            validated = int(evaluate_numeric(text))
                         except:
                             validated = 0
                 set_field(code, validated)  # set value

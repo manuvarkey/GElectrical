@@ -97,7 +97,7 @@ dependencies (`npm ls --all --json` and `pixi list` in CI with a licence check).
 | GEOS | LGPL-2.1 | Yes (dynamic linking) |
 | Matplotlib | Matplotlib licence (PSF-style) | Yes |
 | Jinja2 | BSD-3-Clause | Yes |
-| Mako (until removed) | MIT | Yes |
+| Mako (removed in M3) | MIT | Yes |
 | WeasyPrint | BSD-3-Clause | Yes |
 | Pango, HarfBuzz, fontconfig, cairo | LGPL-2.1+/MIT/MPL-1.1 (cairo dual) | Yes |
 | Pycairo | LGPL-2.1 / MPL-1.1 | Yes |

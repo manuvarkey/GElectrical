@@ -22,7 +22,7 @@
 #  
 # 
 
-import platform, logging, copy, pickle, codecs, bisect, math, base64
+import platform, logging, copy, codecs, bisect, math, base64
 from io import BytesIO
 from gi.repository import Gtk, Gdk, GLib
 import cairo

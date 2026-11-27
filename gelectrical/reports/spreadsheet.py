@@ -26,6 +26,8 @@
 import copy, logging
 import openpyxl
 
+from ..core.expressions import evaluate_numeric
+
 # Setup logger object
 log = logging.getLogger(__name__)
 
@@ -222,7 +224,7 @@ class Spreadsheet:
                                     formula = str(cell)[1:]
                                 else:
                                     formula = str(cell)
-                                evaluated = str(float(eval(formula)))
+                                evaluated = str(float(evaluate_numeric(formula)))
                                 cell_formated = formula
                             except:
                                 cell_formated = '0'
@@ -245,7 +247,7 @@ class Spreadsheet:
                                     formula = str(cell)[1:]
                                 else:
                                     formula = str(cell)
-                                evaluated = str(int(eval(formula)))
+                                evaluated = str(int(evaluate_numeric(formula)))
                                 cell_formated = formula
                             except:
                                 cell_formated = '0'

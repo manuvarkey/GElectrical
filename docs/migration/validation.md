@@ -403,3 +403,91 @@ legacy raster is pixel-identical.
   manifests updated (`setup.py` uses `find_packages`, Glade path), not built.
 - `osifont` is still not bundled with the package (both text backends use the
   system font configuration).
+
+## 2026-11-27 — M3 safe expressions and security hardening (branch `feat/m3-safe-expressions`)
+
+Status: **implemented; acceptance met locally.** Owner review pending.
+Branched from `feat/m2-milestone` (M2 not yet merged to `master`).
+
+- Environment: M1b/M2 environment with Mako removed (`pixi remove mako`;
+  `pixi.lock` drops `mako`, `importlib-metadata` and `zipp` only). Also removed
+  from `requirements.txt`, `setup.py`, the Flatpak manifest and the install
+  instructions.
+- Scope: D1, D2, D3, D10 ([ADR 0011](../decisions/0011-safe-expressions.md#implementation-m3-2026-11-27)).
+  New modules `core/expressions.py`, `core/database.py`, `model/clipboard.py`.
+  Converted call sites: `model/protection.py` (curves, selection criteria),
+  `model/rulescheck.py`, `core/fields.py` and `gtk/view/field.py` (numeric
+  entry), `reports/spreadsheet.py` (formulas), `gtk/view/database.py`
+  (curve file references), `symbols/formatter.py` (labels), `gtk/view/drawing.py`
+  (clipboard), `reports/export.py` and `reports/tables.py` (autoescape, URL
+  fetcher). Unused `pickle` imports removed from the GTK views.
+
+### Acceptance criteria
+
+| Criterion | Result |
+| --- | --- |
+| No `eval`/`exec`/`pickle.loads` on external data (static check in CI) | **Passes**: `tests/engine/test_security.py::test_no_code_execution_calls` parses every `.py` file of `gelectrical/`, `tools/`, `modern/` and the launcher; no `eval`, `exec`, `compile`, `__import__`, `pickle.load(s)`, `marshal.loads`, `yaml.load`, `pickle` or Mako import remains. One allowed entry: `__import__` in `tools/baseline/capture.py` (imports modules from its own constant list). Runs in the CI engine-test steps |
+| Curve and rules baselines unchanged | **Passes**: full regression baseline green (legacy and headless captures, all 17 projects, unchanged tolerances, `tests/baseline/` not regenerated) |
+| Malicious sample files rejected with a clear error | **Passes**: a copy of `sample.gepro` with `__import__('os').system(...)` injected in a protection selection criterion or a curve value fails to load with `ExpressionNotAllowed: Element element_fuse Q1, curves and parameters: Method 'system' is not allowed (expression ...)`; `os.system` is never called (test patches it). The GTK window refuses to open it with "Project could not be opened: unsupported expression - ..." (scripted check) |
+
+### Equivalence evidence
+
+- Curve expressions: all **439** distinct expressions stored in the bundled
+  databases and the 17 baseline projects parse under the whitelist and give
+  the same value as Python `eval` (or both fail), with two sets of test
+  parameters (`test_stored_expressions_match_python_eval`).
+- Rules: all 61 rule expressions compile under `RULES_POLICY`; rules results
+  identical (baseline `rules.json`).
+- Labels: Mako vs safe templates on every label of every element of the 17
+  projects, after load and after analysis: **1534 labels, 0 differences**;
+  default instances of every element class: 129 identical, 14 fail in both
+  (`TitleBlock` without its fields). One-off script before Mako was removed.
+- Database references: 453 `pcurve_l`/`pcurve_g` references in the bundled
+  CSV libraries parse to the same tuple as `eval`.
+- Reports: headless `report.html` of every project before and after the change
+  identical apart from Matplotlib SVG timestamps and generated ids; WeasyPrint
+  refused no resource.
+- Cost: evaluating the `acb_lnt/sr18.json` curve set takes 0.55 ms
+  (including Shapely); the full baseline took 7 min 3 s (M2: 6 min 33 s,
+  different load on the machine).
+
+### Behaviour changes (intended, no engineering result affected)
+
+- Expressions outside the whitelist (calls of other functions or methods,
+  dunder or private names, imports, lambdas, comprehensions, slices, huge
+  powers) are rejected instead of executed; projects containing them do not
+  open. A curve item that fails at run time (unknown field, division by zero)
+  is still logged and skipped as before.
+- Curve function names containing `.` (`IEC_S_INV_3.0`, `IEC_S_INV_1.3`)
+  failed with `SyntaxError` under `eval` and now resolve (unused in bundled
+  data and test projects).
+- Numeric field entry and spreadsheet formulas accept numbers, arithmetic and
+  `abs`, `min`, `max`, `round`, `sqrt` only (previously any Python
+  expression).
+- Copy/paste uses a JSON payload; text copied by an older version (pickle)
+  is rejected with a log warning. The floating preview is built from stored
+  models; inserted elements were already copies (`get_element_copy`).
+- Report: project and element text is HTML-escaped (`<`, `&` show as text);
+  the drawing address keeps its line breaks.
+
+### Checks run (local, Linux)
+
+- `xvfb-run -a pixi run -e test test`: **229 passed** in 7 min 3 s (legacy
+  baseline, headless baseline, engine tests incl. 81 expression and 37
+  security tests). Only warning: informational `pixi_lock_sha256` mismatch
+  (Mako removal).
+- `pixi run -e test test-engine`: **173 passed** (before the final doc edits;
+  code unchanged since).
+- `xvfb-run -a pixi run smoke`: **3/3**.
+- Scripted GTK check under `xvfb-run` with the real `MainWindow`: copy through
+  `Gtk.Clipboard` (JSON payload), paste into a floating model, insert, undo,
+  legacy pickle text rejected, numeric entry, malicious project not opened:
+  **11/11**.
+- Headless import criterion of M2 still passes; `git diff --check` clean.
+
+### Not run / open
+
+- Interactive GTK session by hand; Windows/macOS; hosted CI.
+- Packaging builds (Flatpak manifest edited, not built).
+- Sphinx build (installation pages edited only to drop `mako` from the
+  `pip install` list).

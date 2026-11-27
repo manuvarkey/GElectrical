@@ -22,7 +22,7 @@
 #  
 # 
 
-import os, platform, sys, queue, threading, logging, traceback, json, pickle
+import os, platform, sys, queue, threading, logging, traceback, json
 import io, codecs, importlib, copy, gi, concurrent.futures
 from zipfile import ZipFile
 import appdirs
@@ -41,6 +41,7 @@ from ..symbols.text import set_text_backend
 from .pango_text import PangoTextBackend
 from ..model import drawing
 from .. import analysis, persistence
+from ..core.expressions import ExpressionNotAllowed
 from ..elementmodel import registry
 from .project import GtkProjectModel
 from .view.drawing import DrawingSelectionDialog
@@ -191,6 +192,11 @@ class MainWindow():
             return False
         try:
             self.project.set_model(document, pages)
+        except ExpressionNotAllowed as e:
+            # Expression outside the safe whitelist in the file (ADR 0011)
+            log.error('MainWindow - open_project - Unsafe expression rejected - ' + str(e))
+            self.display_status(misc.ERROR, "Project could not be opened: unsupported expression - " + str(e))
+            return False
         except:
             log.exception("Error parsing project file - " + self.filename)
             self.display_status(misc.ERROR, "Project could not be opened: Error opening file")

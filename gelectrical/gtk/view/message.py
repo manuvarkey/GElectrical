@@ -20,7 +20,7 @@
 #  
 # 
 
-import logging, copy, pickle, codecs, bisect
+import logging, copy, codecs, bisect
 from gi.repository import Gtk, Gdk, GLib
 import cairo
 
