@@ -40,7 +40,7 @@ Update status only with evidence.
 | A19 | Progress display for long operations | `ProgressRevealer` with messages and fraction | M9 | Not started |
 | A20 | Splash screen | `SplashScreen` at startup | M14 | Not started (may be dropped if startup is fast) |
 | A21 | Show/hide left and right panes | Header bar toggles | M6 | Not started |
-| A22 | Logging to user log directory | `gelectrical_launcher.py` | M4 | Not started |
+| A22 | Logging to user log directory | `gelectrical_launcher.py` | M4 | In progress (M4: backend logs to stderr and `<user data>/logs/gelectrical-backend.log`; Done with the desktop shell, M9) |
 
 ## B. Schematic capture
 

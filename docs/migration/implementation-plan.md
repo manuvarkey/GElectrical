@@ -215,6 +215,14 @@ from `feat/m2-milestone`); owner review pending. Evidence in the
 
 ## M4 — Application services and desktop backend
 
+*Status (2026-11-27): implemented on `feat/m4-services` (branched from
+`master` after M3); owner decisions on the undo differences recorded 2026-11-27, review of the branch pending. Evidence in the
+[validation log](validation.md) M4 entry; reference in
+[backend protocol and services](../architecture/backend-protocol.md);
+decisions in [ADR 0019](../decisions/0019-service-layer-implementation.md).
+Not yet covered: protection coordination data set and settings spreadsheet
+(D03–D06, M11), recovery checkpoints (M9), `mcp_status`/`log` events (M13).*
+
 - **Objective:** a headless service layer and JSON Lines backend usable by any
   frontend and by MCP.
 - **Dependencies:** M2 (M3 for exposing user text input safely).

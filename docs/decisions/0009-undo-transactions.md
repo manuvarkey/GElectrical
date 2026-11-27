@@ -37,3 +37,12 @@ state after recalculation); the baseline round-trip artefact protects this.
 
 Undo sequence tests against legacy labels and states; atomicity tests with
 injected failures; performance measurement on a large synthetic project.
+
+## Implementation (M4, 2026-11-27)
+
+Measured in M4 and refined in [ADR 0019](0019-service-layer-implementation.md):
+whole-document snapshots with structural sharing (unchanged element models
+reuse the previous snapshot's objects) instead of per-part snapshots; labels
+recorded from the engine's `@undoable` actions. 5–8 ms per command on the
+sample projects, about 66 ms on a synthetic 2000-element project. Undo
+sequence, atomicity and label tests: `tests/services/`.

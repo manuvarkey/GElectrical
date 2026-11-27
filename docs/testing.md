@@ -5,7 +5,8 @@ Navigation: [documentation index](README.md) · [regression baseline](migration/
 
 Status: section 1 is **current**; sections 2–6 are **proposed** and are created
 by the milestones noted (the regression baseline layer and `quality.yml` exist
-since M1; the frontend Vitest and Storybook layers since M6).
+since M1; the frontend Vitest and Storybook layers since M6; service and
+protocol tests since M4).
 
 ## 1. Current checks
 
@@ -16,12 +17,14 @@ since M1; the frontend Vitest and Storybook layers since M6).
 | Engine unit tests | `pixi run -e test test-engine` | `tests/engine/` (PyGObject blocked: fields, registry, geometry vs `cairo.Region`, symbols, persistence round trip, pipeline, headless import; M3: safe expressions with every stored curve expression checked against Python `eval`, static check for `eval`/`exec`/`pickle`/Mako, malicious projects, clipboard, report escaping) and `tests/test_symbols_extents.py` (headless text metrics vs PangoCairo, needs PyGObject but no display). No display needed |
 | Headless baseline | `pixi run -e test test-headless` | Captures every baseline project with the headless engine (`capture.py --headless`, no GTK, no display) and compares with `tests/baseline/` ([regression baseline](migration/regression-baseline.md#7-implementation-current-m1)) |
 | Headless run | `pixi run headless path/to/x.gepro [--out DIR]` | Open, analyse, rules check, export JSON/report/drawing without GTK |
+| Service and protocol tests | `pixi run -e test test-services` | `tests/services/` (M4, PyGObject blocked, no display): legacy action vs service command table (undo label, one entry, same document, undo/redo), command contract (validation, injected-failure rollback, preview, stale revision, bounded history), sessions, uid persistence, atomic save, analysis of every baseline project through `analysis.start` compared with `tests/baseline/*/pf_bal`, JSON Lines tests against a spawned `python -m modern.backend`, JSON Schemas and the generated method table current. About 2 minutes |
+| Snapshot cost | `pixi run python tools/measure_services.py [--synthetic N]` | Capture, command, undo and delete times (ADR 0019) |
 | Frontend (all) | `npm run check` | Prettier, dependency boundary, licences, tool tests, `vue-tsc`, Vitest, library and app builds |
 | EngineeringUI tests | `npm test -w @kavilgroup/engineering-ui` | Vitest projects `unit` (happy-dom) and `storybook` (every story in Chromium via Playwright: play functions plus axe; any violation fails). Needs `npx playwright install chromium-headless-shell` once |
 | App shell tests | `npm test -w gelectrical-modern` | Vitest component tests with mock data |
 | Dependency boundary | `npm run check:boundaries` | EngineeringUI imports nothing outside its package, no app code or Tauri; root/theme/icons/composables never reach Quasar |
 | Storybook build | `npm run build-storybook` | Static Storybook in `packages/engineering-ui/storybook-static/` |
-| CI | `.github/workflows/quality.yml` | Linux: smoke + baseline under `xvfb-run`; Windows: smoke; Linux: frontend job (all npm checks + Storybook build) |
+| CI | `.github/workflows/quality.yml` | Linux: smoke + `pytest tests` (baseline, engine, services) under `xvfb-run`; Windows: smoke, engine and service tests; Linux: frontend job (all npm checks + Storybook build) |
 | Manual UI | `pixi run start [file.gepro]` | Exercise the change by hand |
 | Calculation changes | Compare before/after on `sample_files/` | State what moved and why |
 
@@ -33,7 +36,7 @@ since M1; the frontend Vitest and Storybook layers since M6).
 | Engine unit tests | pytest | `tests/engine/` | M2 |
 | Expression evaluator and security | pytest | `tests/engine/test_expressions.py`, `tests/engine/test_security.py` | M3 |
 | Services (commands, undo, revisions, jobs, sessions) | pytest | `tests/services/` | M4 |
-| Protocol (spawned backend) | pytest | `tests/protocol/` | M4 |
+| Protocol (spawned backend) | pytest | `tests/services/test_protocol.py` | M4 |
 | MCP (SDK client) | pytest | `tests/mcp/` | M13 |
 | Frontend units/components | Vitest | `modern/src/**/*.spec.ts`, `packages/engineering-ui/tests/` | M6 |
 | Component stories, a11y, interactions | Storybook + Vitest addon | `packages/engineering-ui/stories/` | M6 |

@@ -1,7 +1,8 @@
 # Project format (`.gepro`)
 
-Status: sections 1–3 describe the **current implementation**; sections 4–6 are
-**proposed** policy. Navigation: [index](../README.md) · [backend](backend.md)
+Status: sections 1–3 describe the **current implementation**; section 4 is
+**proposed** policy; sections 5–6 are current in the application services
+since M4 (the legacy GTK app is unchanged). Navigation: [index](../README.md) · [backend](backend.md)
 · [ADR 0008](../decisions/0008-project-format-compatibility.md).
 
 ## 1. Container (current)
@@ -83,7 +84,8 @@ missing keys keep defaults. This is the de facto migration mechanism.
   copies values with `model_loading = True` and calls `set_model_cleanup()`
   (usually `calculate_parameters()`).
 - Derived field state (selection lists, enabled flags) is recomputed, not read.
-- Saving overwrites the target file directly.
+- Saving overwrites the target file directly (legacy GTK app). The services
+  (M4) save atomically, see section 6.
 
 ## 4. Compatibility policy (proposed)
 
@@ -105,7 +107,7 @@ missing keys keep defaults. This is the de facto migration mechanism.
 6. Unknown element codes or fields are preserved on round trip where possible
    and reported, never silently dropped.
 
-## 5. Planned additive keys (proposed)
+## 5. Additive keys (current since M4)
 
 | Key | Location | Purpose |
 | --- | --- | --- |
@@ -113,11 +115,17 @@ missing keys keep defaults. This is the de facto migration mechanism.
 | `children_uids` | `element_assembly` | Robust assembly membership; `children_codes` kept for legacy readers |
 | `app` | `document.json` | `{"name": "GElectrical", "version": "...", "saved_by": "modern"}` provenance |
 
+*Current (M4):* the services write all three keys
+(`modern/backend/document.py`, `storage_model`); files without them get new
+`uid`s on open. The legacy GTK app ignores them and drops them when it saves.
+`tests/services/test_services.py` checks that a modern-saved file loads in
+the legacy loader to the same model.
+
 Curve definitions stay embedded in element fields (owner decision Q8,
 2026-11-26). They are evaluated with the safe evaluator from M3
 ([ADR 0011](../decisions/0011-safe-expressions.md)).
 
-## 6. Save procedure (proposed)
+## 6. Save procedure (current in the services since M4)
 
 1. Serialize all members in memory and validate the result by re-reading it.
 2. Write to a temporary file in the target directory, flush and `fsync`.
@@ -126,6 +134,10 @@ Curve definitions stay embedded in element fields (owner decision Q8,
 5. Write JSON as UTF-8 with explicit `encoding='utf-8'` when reading/writing
    member streams.
 6. Report failures without modifying the existing file.
+
+*Current (M4):* `persistence.write_gepro(..., atomic=True, backup=True)`
+implements steps 1–6 with one backup (`<name>.gepro.bak`); the legacy GTK
+save still writes in place.
 
 Recovery checkpoints (autosave of the working document to the user data
 directory) follow GEstimator's model and are planned in milestone M9.

@@ -506,3 +506,81 @@ unchanged.
 - Packaging builds (Flatpak manifest edited, not built).
 - Sphinx build (installation pages edited only to drop `mako` from the
   `pip install` list).
+
+## 2026-11-27 — M4 application services and desktop backend (branch `feat/m4-services`)
+
+Status: **implemented; acceptance met locally (Windows 11).** Owner review
+pending. Branched from `master` at `092822d` (M3 merged). Nothing committed
+at the time of this entry.
+
+- Scope: [plan M4](implementation-plan.md#m4--application-services-and-desktop-backend);
+  reference [backend protocol and services](../architecture/backend-protocol.md);
+  decisions [ADR 0019](../decisions/0019-service-layer-implementation.md).
+  New: `modern/backend/` (runtime with owner thread and job thread, sessions
+  with snapshot history, 60 methods in 11 services, JSON Lines entry point,
+  generated JSON Schemas), `gelectrical/core/ids.py`, `tools/measure_services.py`,
+  `tests/services/` (73 tests), `tests/engine/test_database_items.py`.
+- Engine changes (no engineering result affected): equipment-library loading
+  and item conversion moved from the GTK database dialog to
+  `core/database.py` (`load_database`, `validate_database_item`);
+  `alter_values_dict` handling moved from the GTK field view to
+  `core/fields.apply_alter_values`; `persistence.write_gepro` gained opt-in
+  `atomic`, `backup` and `app` (legacy save unchanged). The GTK views call the
+  moved functions.
+- Environment: no dependency change (`pixi.lock` unchanged); pixi tasks
+  `backend` and `test-services`; Windows CI job runs `test-services`.
+
+### Acceptance criteria
+
+| Criterion | Result |
+| --- | --- |
+| Feature-inventory engine behaviours callable through services | **Mostly**: project new/open/save/save as/settings, catalogue and field schemas, insert/paste/copy/delete/move/rotate/fields/wires/assemblies/references/renumber/sheets, library, load profiles, protection curves and parameters, analysis (all modes, diagnostics, rules check, results, cancel), exports (drawing PDF, report, pandapower JSON/HTML, element graph), undo/redo, program settings. **Not yet:** protection coordination data set with voltage scaling and the settings spreadsheet (D03–D06, M11) |
+| Each legacy user action maps to one command with the same undo granularity and label (table in tests) | **Passes**: `test_undo_labels.py`, 21 legacy actions performed with the legacy `undo.Stack` and as commands on the same file: same label, one entry, same stored document, undo restores, redo re-applies. Documented differences (move in place as one entry, new rotate/edit-wire commands, no entry for no-ops, clear results not undoable) in backend-protocol §5 |
+| Command atomicity: injected failures leave state unchanged | **Passes**: failure injected in the second `delete_rows` of a two-sheet delete; document, revision and history unchanged, session keeps working. Validation errors change nothing |
+| Analysis via services equals the baseline | **Passes**: all 17 baseline projects through `analysis.start` (pf_bal settings + rules check); element and node results of the analysed copy compared with `tests/baseline/*/pf_bal` with the unchanged tolerances; typed results equal the copy's values; rules messages equal; projects whose baseline run stops stop the same way (critical diagnostics, line-to-ground failure) |
+| `.gepro` saved by services opens in the legacy app with identical results | **Passes** for the model: a service-saved `sample.gepro` (with `uid`, `children_uids`, `app`) loads in the engine loader used by the GTK app to the same storage model as the original. The legacy GTK window itself was not opened on a service-saved file |
+| Required tests: services, undo/redo sequences, atomicity, preview rollback, stale revision, multi-session isolation, protocol by spawning the backend | **Pass**: `tests/services/` (test_services, test_undo_labels, test_analysis_baseline, test_protocol, test_schemas) |
+
+### Measurements
+
+Snapshot transactions (`tools/measure_services.py`, median of 5, Windows 11):
+5–8 ms per command, undo or redo on the sample projects; 65–66 ms on a
+synthetic 2000-element project (998 KB JSON). With structural sharing, 50
+commands on the synthetic project add 7.5 MB of traced memory. Analysis
+jobs take up to about 8 s per baseline project; queries are answered while a
+time-series analysis runs (`test_protocol.py`).
+
+### Checks run (local, Windows 11)
+
+- `pixi run -e test test-services`: **73 passed** in 1 min 55 s.
+
+### Owner decisions (2026-11-27, same day)
+
+- Move in place as one entry: approved. Clear results without an undo
+  entry: approved.
+- Analysis settings must also be saved: `analysis.start` now writes them to
+  the Simulation settings (undo entry `Update analysis settings` when they
+  change; `test_analysis_settings_are_saved_to_the_project`). After this
+  change `pixi run -e test test-services`: **74 passed** in 2 min 2 s.
+- `pixi run -e test test-engine` scope (`pytest tests/engine`): **228 passed**
+  (security scan includes `modern/`).
+- `pixi run smoke`: **3/3**.
+- `pixi run -e test test-headless`: **13 passed, 5 failed**. Every difference
+  is a traceback path in `*/status.json` that `tools/baseline/capture.py`
+  (`stable_traceback`, unchanged by this branch) does not rewrite to `<ROOT>`
+  on Windows; all engineering artefacts match. Linux CI runs this test.
+- Frontend: `npm run check:boundaries`, `check:licences`, `typecheck` pass;
+  `format:check` reports only CRLF line endings of the Windows checkout (clean
+  with `--end-of-line crlf`); `modern/backend/` added to `.prettierignore`.
+- Generated method table and JSON Schemas current (tests); doc links resolve;
+  `git diff --check` clean.
+
+### Not run / open
+
+- Legacy regression baseline with the GTK capture (`pixi run -e test test`)
+  and Linux; the CI run will cover them.
+- Interactive GTK session (the moved database-dialog and field-view code was
+  compiled and covered by `test_database_items.py`, not exercised by hand).
+- Packaged backend (M5), Rust bridge (M5/M9), recovery checkpoints (M9), MCP (M13).
+- Pre-existing: importing `gelectrical.elementmodel` before `gelectrical.model`
+  is a circular import (tests import in the working order).

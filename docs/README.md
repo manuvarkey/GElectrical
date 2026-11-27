@@ -27,7 +27,7 @@ application) or the **proposed architecture** (Tauri + Vue + headless Python).
 | Understand how the current app works | [Existing application audit](migration/existing-application-audit.md) |
 | Change calculations, elements, connectivity, pandapower mapping | [Backend](architecture/backend.md), [regression baseline](migration/regression-baseline.md) |
 | Change `.gepro` load/save or add stored data | [Project format](architecture/project-format.md), [ADR 0008](decisions/0008-project-format-compatibility.md) |
-| Add or change a service command, undo, revisions, analysis jobs | [Backend](architecture/backend.md), [ADR 0009](decisions/0009-undo-transactions.md), [ADR 0003](decisions/0003-backend-transport.md) |
+| Add or change a service command, undo, revisions, analysis jobs | [Backend protocol and services](architecture/backend-protocol.md) (current), [backend](architecture/backend.md), [ADR 0019](decisions/0019-service-layer-implementation.md), [ADR 0009](decisions/0009-undo-transactions.md), [ADR 0003](decisions/0003-backend-transport.md) |
 | Build Vue views, composables, backend client | [Frontend](architecture/frontend.md), [UI guidelines](ui-guidelines.md) |
 | Build or change reusable components | [EngineeringUI](architecture/engineering-ui.md), [package rules](../packages/engineering-ui/AGENTS.md) |
 | Work on the schematic editor or symbols | [Schematic editor](architecture/schematic-editor.md), [ADR 0004](decisions/0004-canonical-schematic-model.md), [ADR 0005](decisions/0005-schematic-library.md) |
@@ -51,7 +51,7 @@ docs/
 ├── testing.md                    current and planned checks
 ├── roadmap.md                    milestone status and post-parity work
 ├── architecture/                 target contracts (proposed until implemented)
-│   ├── backend.md  frontend.md  engineering-ui.md  project-format.md
+│   ├── backend.md  backend-protocol.md  frontend.md  engineering-ui.md  project-format.md
 │   ├── schematic-editor.md  graphing.md  design-services.md  mcp.md  packaging.md
 ├── migration/                    audit, inventory, plan, baseline, risks, validation log
 ├── decisions/                    architecture decision records
