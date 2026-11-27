@@ -27,6 +27,7 @@ import cairo
 # local files import
 from ... import misc
 from ...core.expressions import evaluate_numeric
+from ...core.fields import apply_alter_values
 from .graph import GraphView, GraphViewDialog
 
 # Get logger object
@@ -601,18 +602,7 @@ class FieldView:
 
     def update_alter_dict_status(self, code):
         """Update fields based on alter_values_dict"""
-        alter_values_dict = self.fields[code]['alter_values_dict']
-        value = self.fields[code]['value']
-        if alter_values_dict and value in alter_values_dict:
-            alter_values_dict_cur = alter_values_dict[value]
-            for set_key in alter_values_dict_cur:
-                if set_key in self.fields:
-                    set_value = alter_values_dict_cur[set_key]
-                    if set_value is None:
-                        self.fields[set_key]['status_enable'] = False
-                    else:
-                        self.fields[set_key]['status_enable'] = True
-                        self.fields[set_key]['value'] = set_value
+        apply_alter_values(self.fields, code)
         
     def update_widgets(self):
         self.update(self.fields, self.caption, self.get_field, self.set_field)

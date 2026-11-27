@@ -1,0 +1,50 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/ResultField.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "caption": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "decimal": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "value": {}
+  },
+  "required": [
+    "code",
+    "caption",
+    "value"
+  ],
+  "title": "ResultField",
+  "type": "object"
+}

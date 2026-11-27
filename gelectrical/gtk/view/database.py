@@ -22,14 +22,13 @@
 #  
 # 
 
-import logging, csv, json
+import logging
 from gi.repository import Gtk, Gdk, GLib
-import numpy as np
 
 # local files import
 from ... import misc
 from ...misc import undoable, group
-from ...core.database import parse_data_reference
+from ...core.database import load_database, validate_database_item
 
 # Get logger object
 log = logging.getLogger(__name__)
@@ -115,19 +114,7 @@ class DatabaseView:
             self.button.props.sensitive = True
             
             # Load Data
-            with open(data_path, encoding='utf-8') as csv_file:
-                csv_reader = csv.DictReader(csv_file, delimiter=';')
-                for row in csv_reader:
-                    item_name = row['item_name']
-                    item_category = row['item_category']
-                    if item_category in self.data:
-                        category_dict = self.data[item_category]
-                    else:
-                        category_dict = dict()
-                        self.data[item_category] = category_dict
-                    row.pop('item_category')
-                    row.pop('item_name')
-                    category_dict[item_name] = row
+            self.data = load_database(data_path)
                     
             self.store.clear()
             # Populate data
@@ -159,65 +146,11 @@ class DatabaseView:
                     item_category = self.filter[item_iter][1]
                     if item_name != item_category:
                         item = self.data[item_category][item_name]
-                        validated_dict = dict()
-                        for code, value in item.items():
-                            if self.field_view:
-                                data_type = self.field_view.fields[code]['type']
-                            else:
-                                data_type = self.fields[code]['type']
-
-                            if data_type == 'int':
-                                try:
-                                    validated = int(value)
-                                except:
-                                    validated = 0
-                            elif data_type == 'float':
-                                try:
-                                    validated = float(value)
-                                except:
-                                    validated = 0
-                            elif data_type == 'bool':
-                                try:
-                                    validated = bool(value)
-                                except:
-                                    validated = False
-                            elif data_type == 'graph':
-                                try:
-                                    dirname = misc.dir_from_path(self.data_path)
-                                    valuepath = misc.posix_path(dirname, value)
-                                    with open(valuepath, 'r', encoding='utf-8') as fileobj:
-                                        data = json.load(fileobj)
-                                        validated = data
-                                except:
-                                    validated = None
-                                    log.exception('run_dialog - validation failure while reading graph field')
-                            elif data_type == 'data':
-                                try:
-                                    if value:
-                                        (subdir, data_filename, params_filename) = parse_data_reference(value)
-                                        dirname = misc.dir_from_path(self.data_path)
-                                        valuepath_params = misc.posix_path(dirname, subdir, params_filename)
-                                        with open(valuepath_params, 'r', encoding='utf-8') as fp:
-                                            data_struct = json.load(fp)
-                                        validated = data_struct
-                                        if data_filename:
-                                            valuepath = misc.posix_path(dirname, subdir, data_filename)
-                                            data = np.loadtxt(valuepath, delimiter=',')
-                                            curve_u = []
-                                            curve_l = []
-                                            for row in data:
-                                                curve_u.append(('point', str(row[0])+'*f.In', str(row[1])))
-                                                curve_l.append(('point', str(row[2])+'*f.In', str(row[3])))
-                                            validated['data']['curve_u'] = curve_u
-                                            validated['data']['curve_l'] = curve_l
-                                    else:
-                                        validated = None
-                                except:
-                                    validated = None
-                                    log.exception('run_dialog - validation failure while reading data field')
-                            else:
-                                validated = value
-                            validated_dict[code] = validated
+                        if self.field_view:
+                            fields = self.field_view.fields
+                        else:
+                            fields = self.fields
+                        validated_dict = validate_database_item(fields, item, self.data_path)
 
                         if self.stack:
                             with group(self, 'Update data from database'):  # For grouping undo

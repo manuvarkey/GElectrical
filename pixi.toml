@@ -72,6 +72,8 @@ scripts = ["tools/pixi_activate.bat"]
 start = "python gelectrical_launcher.py"
 smoke = "python tools/smoke_test.py"
 headless = "python tools/headless_run.py"
+# Headless backend (milestone M4): JSON Lines on stdin/stdout
+backend = "python -m modern.backend"
 
 # Test feature (milestone M1): pytest for the regression baseline.
 # Shares the default solve group, so the test environment has exactly the
@@ -83,6 +85,7 @@ pytest = "*"
 test = "pytest tests"
 test-engine = "pytest tests/engine tests/test_symbols_extents.py"
 test-headless = "pytest tests/test_headless_baseline.py"
+test-services = "pytest tests/services"
 baseline-capture = "python tools/baseline/capture.py"
 build-test-projects = "python tools/baseline/build_projects.py"
 

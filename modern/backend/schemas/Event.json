@@ -1,0 +1,60 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/Event.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "changes": {
+      "items": {
+        "$ref": "Change.json"
+      },
+      "type": "array"
+    },
+    "dirty": {
+      "type": "boolean"
+    },
+    "error": {
+      "$ref": "Error.json"
+    },
+    "event": {
+      "enum": [
+        "changed",
+        "progress",
+        "job_finished",
+        "session_closed",
+        "mcp_status",
+        "log"
+      ]
+    },
+    "fraction": {
+      "type": "number"
+    },
+    "job": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer"
+    },
+    "session": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "event"
+  ],
+  "title": "Event",
+  "type": "object"
+}

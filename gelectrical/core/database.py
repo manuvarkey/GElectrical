@@ -67,3 +67,94 @@ def parse_data_reference(value):
     _check_part(data_filename, value, allow_empty=True)
     _check_part(params_filename, value, allow_empty=False)
     return subdir, data_filename, params_filename
+
+
+def load_database(data_path):
+    """Read a ``;``-separated equipment library CSV into
+    ``{category: {item_name: {field_code: text}}}`` (insertion order kept).
+    Moved from the GTK database dialog (M4)."""
+    import csv
+    data = dict()
+    with open(data_path, encoding='utf-8') as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=';')
+        for row in csv_reader:
+            item_name = row['item_name']
+            item_category = row['item_category']
+            if item_category in data:
+                category_dict = data[item_category]
+            else:
+                category_dict = dict()
+                data[item_category] = category_dict
+            row.pop('item_category')
+            row.pop('item_name')
+            category_dict[item_name] = row
+    return data
+
+
+def validate_database_item(fields, item, data_path):
+    """Convert the text values of a library ``item`` to field values using
+    the field types of ``fields``; returns ``{field_code: value}``.
+
+    Same conversions as the legacy GTK database dialog (moved in M4):
+    ``int``/``float``/``bool`` fall back to 0/0/False, ``graph`` values name a
+    JSON file next to the library, ``data`` values are protection curve
+    references (:func:`parse_data_reference`). Unreadable references give
+    ``None`` and are logged. Codes missing from ``fields`` raise ``KeyError``
+    as before."""
+    import json, logging, os
+    import numpy as np
+    log = logging.getLogger(__name__)
+    dirname = os.path.dirname(data_path)
+    validated_dict = dict()
+    for code, value in item.items():
+        data_type = fields[code]['type']
+        if data_type == 'int':
+            try:
+                validated = int(value)
+            except:
+                validated = 0
+        elif data_type == 'float':
+            try:
+                validated = float(value)
+            except:
+                validated = 0
+        elif data_type == 'bool':
+            try:
+                validated = bool(value)
+            except:
+                validated = False
+        elif data_type == 'graph':
+            try:
+                valuepath = os.path.normpath(os.path.join(dirname, value))
+                with open(valuepath, 'r', encoding='utf-8') as fileobj:
+                    validated = json.load(fileobj)
+            except:
+                validated = None
+                log.exception('validate_database_item - validation failure while reading graph field')
+        elif data_type == 'data':
+            try:
+                if value:
+                    (subdir, data_filename, params_filename) = parse_data_reference(value)
+                    valuepath_params = os.path.normpath(os.path.join(dirname, subdir, params_filename))
+                    with open(valuepath_params, 'r', encoding='utf-8') as fp:
+                        data_struct = json.load(fp)
+                    validated = data_struct
+                    if data_filename:
+                        valuepath = os.path.normpath(os.path.join(dirname, subdir, data_filename))
+                        data = np.loadtxt(valuepath, delimiter=',')
+                        curve_u = []
+                        curve_l = []
+                        for row in data:
+                            curve_u.append(('point', str(row[0])+'*f.In', str(row[1])))
+                            curve_l.append(('point', str(row[2])+'*f.In', str(row[3])))
+                        validated['data']['curve_u'] = curve_u
+                        validated['data']['curve_l'] = curve_l
+                else:
+                    validated = None
+            except:
+                validated = None
+                log.exception('validate_database_item - validation failure while reading data field')
+        else:
+            validated = value
+        validated_dict[code] = validated
+    return validated_dict

@@ -1,0 +1,99 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/FieldSchema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "alter_structure": {
+      "type": "boolean"
+    },
+    "caption": {
+      "type": "string"
+    },
+    "click_to_edit_message": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "code": {
+      "type": "string"
+    },
+    "decimal": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "editable": {
+      "type": "boolean"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "floating": {
+      "type": "boolean"
+    },
+    "max_chars": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "selection_images": {
+      "anyOf": [
+        {
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "selection_list": {
+      "anyOf": [
+        {
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "tooltip": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "code",
+    "type",
+    "caption",
+    "enabled",
+    "editable"
+  ],
+  "title": "FieldSchema",
+  "type": "object"
+}

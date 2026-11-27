@@ -1,0 +1,33 @@
+{
+  "$id": "https://gelectrical.kavilgroup/schemas/Error.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "enum": [
+        "INVALID_REQUEST",
+        "VALIDATION_ERROR",
+        "NOT_FOUND",
+        "STALE_REVISION",
+        "CONFLICT",
+        "FILE_ERROR",
+        "JOB_ERROR",
+        "CANCELLED",
+        "BACKEND_ERROR"
+      ]
+    },
+    "details": {},
+    "field": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "message"
+  ],
+  "title": "Error",
+  "type": "object"
+}

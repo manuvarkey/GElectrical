@@ -1,6 +1,10 @@
 # Backend architecture
 
-Status: **proposed** (Phase 1). The current implementation is described in the
+Status: **proposed** (Phase 1); sections 3–8 are **implemented** by milestone
+M4 in `modern/backend/` (reference: [backend protocol and services](backend-protocol.md),
+decisions in [ADR 0019](../decisions/0019-service-layer-implementation.md));
+*Current (M4)* notes below mark where the implementation refines this design.
+The legacy implementation is described in the
 [audit](../migration/existing-application-audit.md). Navigation:
 [index](../README.md) · [architecture overview](../../ARCHITECTURE.md) ·
 [project format](project-format.md) · [MCP](mcp.md) · [frontend](frontend.md).
@@ -103,6 +107,12 @@ the system font configuration (fontconfig on Linux) for both backends.
 - Global node numbers are analysis artefacts. Services expose nodes as stable
   sets of `(element uid, port index)` so results can be re-attached after edits.
 
+*Current (M4):* `uid`s are attributes set by the service layer
+(`modern/backend/document.py`), not part of `ElementModel.get_model()`, so
+engine copies never duplicate them; `gelectrical/core/ids.py` creates and
+checks them. Node keys are `N[uid:port|...]` (`drawing.connectivity`,
+analysis node overlay).
+
 ## 4. Runtime and sessions (`modern/backend/runtime.py`)
 
 Adapted from GEstimator's `Runtime`:
@@ -116,6 +126,9 @@ Adapted from GEstimator's `Runtime`:
   explicit session selection where a tool allows it.
 - HTTP/MCP threads only parse and authenticate; they submit work to the owner
   queue and wait for results with bounded timeouts.
+
+*Current (M4):* `Runtime` starts with session `main`; one job thread runs
+analysis and export jobs (no worker process yet, ADR 0019 point 5).
 
 ## 5. Application services (`modern/backend/services/`)
 
@@ -164,6 +177,11 @@ Proposed: snapshot-based transactions over the canonical document.
 - The vendored `undo.py` remains for the legacy GTK app until retirement.
 - History is bounded (configurable, default 200 entries). Opening or creating a
   project clears history, as today.
+
+*Current (M4):* whole-document snapshots with structural sharing; labels
+are recorded from the engine's `@undoable` actions through a recording stack
+(ADR 0019). The legacy-action-to-command table with its few differences is in
+[backend protocol §5](backend-protocol.md#5-undo-labels-legacy-action--service-command).
 
 ### Revisions and change events
 
@@ -228,8 +246,9 @@ with multiplexing and unsolicited events.
   if it does not exit.
 
 Method names are namespaced by service (`project.open`, `drawing.insert`,
-`analysis.start`, ...). The canonical list will be generated from the service
-registry and documented here when M4 lands.
+`analysis.start`, ...). *Current (M4):* the canonical list is generated from
+the service registry into [backend protocol and services](backend-protocol.md#6-methods);
+`mcp_status` and `log` events are not emitted yet (M13).
 
 ## 8. Data contracts (summary)
 

@@ -10,7 +10,10 @@ frontend over a headless Python backend). Detailed contracts live in
 Status: Phase 1 (planning) complete and reviewed by the owner on 2026-11-26
 ([decisions](docs/migration/risks-and-decisions.md#2-owner-decisions)). Implemented
 so far: regression baseline (M1, M1b), headless engine (M2: `gelectrical/` imports
-without GTK, legacy UI in `gelectrical/gtk/`) and the frontend foundation (M6).
+without GTK, legacy UI in `gelectrical/gtk/`), safe expressions (M3), application
+services and the JSON Lines backend (M4: `modern/backend/`, see
+[backend protocol and services](docs/architecture/backend-protocol.md)) and the
+frontend foundation (M6).
 
 ## Current implementation (GTK3)
 

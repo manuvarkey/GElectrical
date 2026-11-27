@@ -11,8 +11,10 @@ headless Python backend, an MCP server and the EngineeringUI library. Phase 1
 Migration code so far: the M1 regression baseline, the M1b environment, the
 M2 headless engine (`gelectrical/` importable without GTK; legacy UI in
 `gelectrical/gtk/`), M3 safe expressions (`core/expressions.py`; no `eval`,
-pickle or Mako) and the M6 frontend foundation (`modern/` shell with mock
-data, `packages/engineering-ui/`); no application services or Tauri yet.
+pickle or Mako), the M4 application services and JSON Lines backend
+(`modern/backend/`, `python -m modern.backend`; not yet connected to the
+frontend) and the M6 frontend foundation (`modern/` shell with mock data,
+`packages/engineering-ui/`); no Tauri or MCP yet.
 Do not start a migration milestone unless the user asks for it.
 
 ## Read first
@@ -26,7 +28,7 @@ Do not start a migration milestone unless the user asks for it.
 | --- | --- |
 | Engine: elements, calculations, connectivity, pandapower | [backend](docs/architecture/backend.md), [regression baseline](docs/migration/regression-baseline.md), [audit](docs/migration/existing-application-audit.md) |
 | `.gepro` load/save, stored data | [project format](docs/architecture/project-format.md) |
-| Services, commands, undo, protocol | [backend](docs/architecture/backend.md), [decisions](docs/decisions/README.md) |
+| Services, commands, undo, protocol | [backend protocol and services](docs/architecture/backend-protocol.md), [backend](docs/architecture/backend.md), [ADR 0019](docs/decisions/0019-service-layer-implementation.md) |
 | Vue app | [frontend](docs/architecture/frontend.md), [UI guidelines](docs/ui-guidelines.md) |
 | Reusable components | [EngineeringUI](docs/architecture/engineering-ui.md), [packages/engineering-ui/AGENTS.md](packages/engineering-ui/AGENTS.md) |
 | Schematic editor, symbols | [schematic editor](docs/architecture/schematic-editor.md) |
@@ -80,7 +82,9 @@ pixi install          # creates .pixi/envs/default (git-ignored)
 pixi run start        # launch the GUI
 pixi run smoke        # end-to-end check on sample_files/**/*.gepro (GTK window)
 pixi run headless x.gepro   # headless open, analyse, export (no GTK, no display)
+pixi run backend      # headless backend: JSON Lines on stdin/stdout (M4)
 pixi run -e test test # regression baseline (pytest; needs a display / xvfb-run)
+pixi run -e test test-services  # service, undo-label, baseline-through-services, protocol tests
 pixi run python ...   # any ad-hoc script inside the env
 ```
 
@@ -141,11 +145,17 @@ npm run check            # format, boundary, licences, type check, Vitest, build
    Storybook story tests with axe in light and dark, library and app builds)
    and `npm run build-storybook`. For visual changes run `npm run dev` or
    `npm run storybook` and check keyboard operation and both themes.
-6. Documentation-only changes: check links and `git diff --check`; build Sphinx
+6. Backend changes (`modern/backend/`): `pixi run -e test test-services`.
+   Commands go through `Session.execute` (one entry, one revision, one event);
+   new or changed methods need `python -m modern.backend --write-docs` and,
+   for DTO changes, `--write-schemas modern/backend/schemas` (tests check both).
+   A legacy user action must keep its legacy undo label (table in
+   `tests/services/test_undo_labels.py`).
+7. Documentation-only changes: check links and `git diff --check`; build Sphinx
    only if user-manual pages changed.
 
-Test layers (current: pytest baseline, Vitest, Storybook story tests;
-planned: engine/service pytest, Playwright workflows) are in
+Test layers (current: pytest baseline, engine and service tests, Vitest,
+Storybook story tests; planned: MCP tests, Playwright workflows) are in
 [docs/testing.md](docs/testing.md).
 
 ## Current layout
@@ -153,7 +163,7 @@ planned: engine/service pytest, Playwright workflows) are in
 ```
 gelectrical_launcher.py      entry point (logging setup, runs gelectrical.gtk.app.MainApp)
 gelectrical/__init__.py      version only (no GTK import)
-gelectrical/core/            constants, style (run-time colours/fonts), fields, paths,
+gelectrical/core/            constants, style (run-time colours/fonts), fields, paths, ids,
                              undoable/group, geometry (replaces cairo.Region), interpolation,
                              expressions (safe evaluator, ADR 0011), database (library refs)
 gelectrical/elementmodel/    one module per element family; ElementModel base in element.py;
@@ -175,14 +185,21 @@ gelectrical/icons/           SVG element icons
 source/                      .ods sources for the database CSVs + artwork
 docs/                        user manual (Sphinx/MyST) + developer docs (see docs/README.md)
 modern/                      Vue 3 + Quasar app shell (M6: mock data, no backend yet)
+modern/backend/              headless backend (M4): runtime (owner thread, sessions, jobs),
+                             session (snapshot transactions, history), document (uids,
+                             snapshots), services/ (project, catalog, drawing, library,
+                             loadprofiles, protection, analysis, export, history, settings),
+                             protocol + __main__ (JSON Lines), schemas/ (generated JSON Schemas)
 packages/engineering-ui/     EngineeringUI (@kavilgroup/engineering-ui, MIT): theme, icons,
                              shell components, inspector; Storybook and Vitest tests
 sample_files/                sample .gepro projects (used by the smoke test)
-tools/                       smoke test, headless_run.py, pixi activation scripts, npm checks
+tools/                       smoke test, headless_run.py, measure_services.py, pixi activation
+                             scripts, npm checks
 tools/baseline/              regression baseline capture (legacy GTK or --headless)/compare,
                              coverage project generator
 tests/                       test_baseline.py (+ headless), engine/ (unit tests, no GTK),
-                             baseline/ (canonical JSON), projects/ (.gepro)
+                             services/ (M4 services and protocol), baseline/ (canonical
+                             JSON), projects/ (.gepro)
 ```
 
 The proposed structure is in [ARCHITECTURE.md](ARCHITECTURE.md#proposed-repository-structure).
